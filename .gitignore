@@ -110,3 +110,4 @@ $RECYCLE.BIN/
 data/*
 public/add/*
 .history
+package-lock.json
