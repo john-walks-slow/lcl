@@ -33,7 +33,8 @@ const Root = ({ dispatch }) => {
   const usedColors = useSelector(state => state.present.get('usedColors'));
   const frames = useSelector(state => state.present.get('frames'));
   const framesList = useSelector(state => state.present.get('frames').get('list'));
-  const type = framesList.length > 1 ? 'spritesheet' : 'single';
+  const isAnimate = framesList.size > 1;
+  const type = framesList.size > 1 ? 'spritesheet' : 'single';
   const activeFrameIndex = frames.get('activeIndex');
   const activeFrame = frames.getIn(['list', activeFrameIndex]);
   const grid = frames.getIn(['list', activeFrameIndex, 'grid']);
@@ -43,7 +44,7 @@ const Root = ({ dispatch }) => {
   const duration = useSelector(state => state.present.get('duration'));
   const options = {
     type,
-    framesList,
+    frames:framesList,
     activeFrame,
     columns,
     rows,
@@ -111,6 +112,9 @@ const Root = ({ dispatch }) => {
         movement,
         zFactor,
         link,
+        isAnimate,
+        columns,
+        rows
       });
       console.log(`Data uploaded ${result}`);
       setSubmitted(true);

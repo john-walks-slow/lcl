@@ -75,7 +75,7 @@ export function renderBlob(settings,callback) {
   const frameWidth = columns * cellSize;
   const frameHeight = rows * cellSize;
   const canvasWidth = frameWidth;
-  const canvasHeight =  
+  const canvasHeight =
     type === 'spritesheet' ? frameHeight * frames.size : frameHeight;
 
   const canvas = document.createElement('canvas');
