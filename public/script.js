@@ -3,10 +3,10 @@ const WINDOW_W = window.innerWidth || document.body.clientWidth;
 const WINDOW_H = window.innerHeight || document.body.clientHeight;
 const WINDOW_CENTER_X = WINDOW_W / 2;
 const WINDOW_CENTER_Y = WINDOW_H / 2;
-// const PLAYER_TARGET_W = Math.min(WINDOW_W / 9, WINDOW_H / 9 / 44 * 37);
-// const PLAYER_TARGET_H = Math.min(WINDOW_W / 9, WINDOW_H / 9 / 44 * 37) / 37 * 44;
-const PLAYER_TARGET_W = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37);
-const PLAYER_TARGET_H = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37) / 37 * 44;
+const PLAYER_TARGET_W = Math.min(WINDOW_W / 11, WINDOW_H / 11 / 44 * 37);
+const PLAYER_TARGET_H = Math.min(WINDOW_W / 11, WINDOW_H / 11 / 44 * 37) / 37 * 44;
+// const PLAYER_TARGET_W = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37);
+// const PLAYER_TARGET_H = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37) / 37 * 44;
 const OBJECT_W = { XL: PLAYER_TARGET_H * 1.8, L: PLAYER_TARGET_H * 1.3, M: PLAYER_TARGET_H*0.9, S: PLAYER_TARGET_H * 0.7, XS: PLAYER_TARGET_H * 0.4 }
 // density: target object count in a circle (r=OBJECT_M_W*8)
 const DIALOG_HEIGHT = WINDOW_H / 3.5;
@@ -24,9 +24,8 @@ const FONT_FAMILY_HEADER = "pixel"
 const TIME_DELAY = 0;
 const RANDOM_ZONE_W = OBJECT_W.XL;
 var DENSITY_OFFSET = OBJECT_W.M * 2;
-const MOVE_SPEED = PLAYER_TARGET_W;
+const MOVE_SPEED = PLAYER_TARGET_W*1.1;
 const ZONE_SIZE = MOVE_SPEED * 30;
-
 const timestamp = Date.parse(new Date());
 
 
@@ -135,7 +134,7 @@ class LoadingScene extends Phaser.Scene {
       this.load.spritesheet('player', 'assets/White.png', { frameWidth: 37, frameHeight: 44 });
       // [...Array(10000)].forEach(() => {
       //   objectList.push(createTestObject({
-      //     "birthday": 1637819836697,
+      //     "birthday": 1637818994985,
       //     "movement": "static",
       //     "size": "L",
       //     "columns": 18,
@@ -157,6 +156,7 @@ class LoadingScene extends Phaser.Scene {
             break;
         }
       });
+      objectList.sort((a,b)=>b.birthday-a.birthday)
       DENSITY_OFFSET = Math.min(OBJECT_W.L, DENSITY_OFFSET);
       this.load.on("complete", () => {
         console.log(objectList);
@@ -233,7 +233,6 @@ class MainScene extends Phaser.Scene {
     });
     console.log(PLAYER_TARGET_H);
     this.objectMap = [];
-    this.objectList = this.objectList.reverse();
     this.objects = this.physics.add.group();
     let previousDate = timestamp;
     let offset;
