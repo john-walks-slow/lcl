@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { resetGrid } from '../store/actions/actionCreators';
+import { resetGrid, updateUsedColors } from '../store/actions/actionCreators';
 
 const Reset = ({ resetGridDispatch }) => (
   <button type="button" className="reset" onClick={resetGridDispatch}>
@@ -9,7 +9,7 @@ const Reset = ({ resetGridDispatch }) => (
 );
 
 const mapDispatchToProps = dispatch => ({
-  resetGridDispatch: () => dispatch(resetGrid())
+  resetGridDispatch: () => {dispatch(resetGrid());dispatch(updateUsedColors())}
 });
 
 const ResetContainer = connect(
