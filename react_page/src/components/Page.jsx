@@ -19,7 +19,7 @@ const Root = ({ dispatch }) => {
   const [link, setLink] = useState("")
   const [size, setSize] = useState("M")
   const [movement, setMovement] = useState("static")
-  const [zFactor, setZFactor] = useState("1")
+  const [zFactor, setZFactor] = useState(1)
   const [submitted, setSubmitted] = useState(false)
   const [errorData, setErrorData] = useState()
   const [objectsService, setObjectsService] = useState();

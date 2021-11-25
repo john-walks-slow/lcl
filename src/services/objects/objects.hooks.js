@@ -12,19 +12,20 @@ const schema = yup.object().shape({
   size: yup.string().matches(/(XL|L|M|S|XS)/).required(),
   movement: yup.string().matches(/(static|float|flash|wander|bf)/).required(),
   zFactor: yup.number().min(0.2).max(2).required(),
-  link: yup.string().url().ensure(),
+  link: yup.mixed().oneOf([yup.string().url().ensure(),yup.string().max(0).ensure()]),
   birthday: yup.date().required(),
   seed: yup.array().length(2).of(yup.number()).required(),
 });
 
-const trimDialog = ({ data }) => {
+const trimDialog = (context) => {
   try {
     let linebreakCharacter = '\n'
-    if (data.dialog.indexOf('\r\n') > -1) {
+    if (context.data.dialog.indexOf('\r\n') > -1) {
       linebreakCharacter = '\r\n'
     }
-    let sentences = data.dialog.split(linebreakCharacter)
-    return sentences.map(s => s.trim()).filter(s => s != "");
+    let sentences = context.data.dialog.split(linebreakCharacter)
+    context.data.dialog = sentences.map(s => s.trim()).filter(s => s != "");
+    return context;
   }
   catch (error) {
     throw new Error(error)
@@ -49,13 +50,14 @@ const setSeed = async context => {
 
 
 schemaCheck = async (context) => {
-  const valid = await schema
+  console.log(context.data);
+  try {
+    const valid = await schema
     .isValid(context.data)
-  if (!valid) {
-    throw new Error('Invalid Schema');
-  } else {
-    return context;
+  } catch (error) {
+    throw new Error(error);
   }
+    return context;
 }
 
 module.exports = {
