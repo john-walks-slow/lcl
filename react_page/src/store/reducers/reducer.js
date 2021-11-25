@@ -16,11 +16,11 @@ function setInitialState(state) {
   //   position: 0
   // });
 
-  const labels = 0;
-  const boxes = 1;
-  const fats = 2;
-  const batteries = 3;
-  const telescopes = 4;
+  const labels = 999;
+  const boxes = 0;
+  const fats = 999;
+  const batteries = 0;
+  const telescopes = 999;
   const dataStored = getDataFromStorage(localStorage);
   // const dataStored = false;
   if (dataStored && 'player' in dataStored) {
