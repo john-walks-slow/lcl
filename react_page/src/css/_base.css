@@ -1,0 +1,81 @@
+html {
+  box-sizing: border-box;
+  background-color: $color-scorpion;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  position: relative;
+  font-family: $font-pixel;
+}
+
+body {
+  overflow: auto;
+}
+
+.app-container {
+  height: 100%;
+  width: 90%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 0.8em;
+  padding-right: 1em;
+  display: inline;
+  position: relative;
+  top: -0.9em;
+}
+
+h3 {
+  font-size: 1em;
+}
+
+.block {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}

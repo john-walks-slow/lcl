@@ -1,0 +1,25 @@
+.undo-redo {
+  margin: 10px;
+  lost-utility: clearfix;
+
+  button {
+    background: transparent;
+    border:none;
+    cursor: pointer;
+    lost-column: 1/2 0 0.5em;
+    font-size: 0.7em;
+    width:auto;
+  }
+
+  .undo-redo__icon--undo {
+    @mixin icon undo;
+
+    display: block;
+  }
+
+  .undo-redo__icon--redo {
+    @mixin icon redo;
+
+    display: block;
+  }
+}

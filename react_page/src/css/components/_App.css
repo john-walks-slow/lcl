@@ -1,0 +1,147 @@
+#app {
+  .app__main-container,
+  .app__central-container {
+    lost-utility: clearfix;
+  }
+  .app__main{
+max-width: 500px;
+  }
+  .app__main,
+  .app__central-container {
+    margin-bottom: 0.5em;
+  }
+
+  .app__frames-container {
+    margin-bottom: 0.3em;
+  }
+
+  .app__frames-container[data-tooltip]::after {
+    width: 80%;
+    margin-left: -40%;
+  }
+
+  .app__load-save-container {
+    margin-bottom: 2em;
+
+    .app__load-button {
+      @mixin button gray;
+    }
+
+    lost-utility: clearfix;
+
+    > div,
+    > button {
+      lost-column: 1/2 0 0.5em;
+    }
+  }
+
+  .app__social-container {
+    .app__download-button {
+      @mixin button brown;
+      @mixin icon download;
+
+      width: 100%;
+      margin-top: 1em;
+    }
+  }
+
+  .app__help-container {
+    lost-utility: clearfix;
+    margin: 1em 0;
+
+    > div {
+      lost-column: 1/2 0 0.5em;
+    }
+
+    .app__toggle-help-button {
+      @mixin button darkblue;
+      @mixin icon help;
+
+      &.selected {
+        box-shadow: 0 0 0 2px $color-silver;
+      }
+
+      width: 100%;
+    }
+
+    .app__shortcuts-button {
+      @mixin button darkblue;
+      @mixin icon keybindings;
+
+      width: 100%;
+    }
+  }
+
+  .app__copycss-button {
+    @mixin button white;
+
+    width: 100%;
+    margin-top: 1em;
+    font-weight: bold !important;
+    color: $color-mineShaft;
+  }
+
+  .app__preview-button {
+    @mixin button gray;
+
+    width: 100%;
+    margin: 0 0 0.6em;
+    display: table;
+  }
+
+  .app__tools-wrapper {
+
+    > div {
+      display: inline-block;
+      button {
+        font-size: 0.8em;
+        text-align: center;
+        color: $color-mineShaft;
+        width: 100%;
+        border: none;
+        background-color: transparent;
+
+        &:focus {
+          outline: 0;
+        }
+
+        &.selected {
+          color: $color-silver;
+          background-color: $color-mineShaft;
+
+          & > div {
+            background-color: $color-mineShaft;
+          }
+        }
+      }
+    }
+  }
+
+  .app__left-side,
+  .app__right-side {
+    width: 60%;
+  }
+
+  .app__right-side {
+    margin-left: auto;
+    margin-right: 0;
+  }
+  .john_tools{
+    width: 30%;
+    display: inline-block;
+    vertical-align:top;
+  }
+  .john_canvas{
+    width: 70%;
+    display: inline-block;
+  }
+  .palette-grid{
+    display: inline-block;
+
+  }
+  .john_output{
+    width: 95%;
+    margin:auto;
+  }
+
+}

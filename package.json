@@ -1,0 +1,73 @@
+{
+  "main": "src",
+  "name": "feathers-test",
+  "description": "",
+  "version": "0.0.0",
+  "homepage": "",
+  "private": true,
+  "keywords": [
+    "feathers"
+  ],
+  "author": {
+    "name": ""
+  },
+  "contributors": [],
+  "bugs": {},
+  "directories": {
+    "lib": "src",
+    "test": "test/",
+    "config": "config/"
+  },
+  "scripts": {
+    "start": "node src/",
+    "http-server": "http-server ./public",
+    "dev": "cd react_page && webpack --config webpack.config.js",
+    "build": "cd react_page && webpack --config webpack.production.config.js",
+    "clearDB": "rm data/objects.db",
+    "test": "npm run lint && npm run mocha",
+    "lint": "eslint src/. test/. --config .eslintrc.json --fix",
+    "mocha": "mocha test/ --recursive --exit"
+  },
+  "dependencies": {
+    "@feathersjs/configuration": "^4.5.11",
+    "@feathersjs/errors": "^4.5.11",
+    "@feathersjs/express": "^4.5.11",
+    "@feathersjs/feathers": "^4.5.11",
+    "@feathersjs/socketio": "^4.5.11",
+    "@feathersjs/transport-commons": "^4.5.11",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "feathers-blob": "^2.6.0",
+    "feathers-nedb": "^5.1.0",
+    "fs-blob-store": "^6.0.0",
+    "helmet": "^4.6.0",
+    "http-server": "^14.0.0",
+    "jquery": "^3.6.0",
+    "nedb": "^1.8.0",
+    "phaser": "3.55.2",
+    "serve-favicon": "^2.5.0",
+    "uuid": "^8.3.2",
+    "webpack": "^5.64.2",
+    "winston": "^3.3.3",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "axios": "^0.24.0",
+    "eslint": "^7.32.0",
+    "mocha": "^8.4.0",
+    "nodemon": "^2.0.15",
+    "terser-webpack-plugin": "^5.2.5",
+    "webpack-cli": "^4.9.1"
+  },
+  "engines": {
+    "node": "^14.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "standard": {
+    "env": [
+      "mocha"
+    ],
+    "ignore": []
+  }
+}

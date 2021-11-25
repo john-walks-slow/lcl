@@ -1,0 +1,19 @@
+.frames-handler {
+  lost-utility: clearfix;
+
+  .frames-handler__add {
+    height: 66px;
+    float: left;
+  }
+
+  .frame-handler__list {
+    display: flex;
+    padding: 0.2em;
+
+    .list__container {
+      height: 65px;
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
+}

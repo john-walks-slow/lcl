@@ -1,0 +1,29 @@
+.grid-container {
+  lost-utility: clearfix;
+  line-height: 0;
+  min-height: 1px;
+  width: 95%;
+  touch-action: none;
+
+  div {
+    float: left;
+    border: 1px solid grey;
+    border-width: 0.4px;
+  }
+
+  &.cell {
+    cursor: cell;
+  }
+
+  &.context-menu {
+    cursor: context-menu;
+  }
+
+  &.copy {
+    cursor: copy;
+  }
+
+  &.all-scroll {
+    cursor: all-scroll;
+  }
+}

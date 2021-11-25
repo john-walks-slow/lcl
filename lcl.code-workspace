@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+    "files.associations": {
+      "*.css": "scss",
+      "files.insertFinalNewline":"false"
+},
+"references.preferredLocation": "view"
+	}
+}
