@@ -490,26 +490,26 @@ class MainScene extends Phaser.Scene {
         this.camera.zoom == this.camera.zoomOutLevel && this.camera.zoomInAnim.play();
       }
       if ((this.cursors.left.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-        moveX(- MOVE_SPEED * 0.7);
-        moveY(- MOVE_SPEED * 0.7);
+        moveX(- MOVE_SPEED * 0.75);
+        moveY(- MOVE_SPEED * 0.75);
         this.gameDialog.dialogRetrigger = true;
         this.player.anims.play('runLeft', true);
       }
       else if ((this.cursors.left.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-        moveX(- MOVE_SPEED * 0.7);
-        moveY(MOVE_SPEED * 0.7);
+        moveX(- MOVE_SPEED * 0.75);
+        moveY(MOVE_SPEED * 0.75);
         this.gameDialog.dialogRetrigger = true;
         this.player.anims.play('runLeft', true);
       }
       else if ((this.cursors.right.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-        moveX(MOVE_SPEED * 0.7);
-        moveY(- MOVE_SPEED * 0.7);
+        moveX(MOVE_SPEED * 0.75);
+        moveY(- MOVE_SPEED * 0.75);
         this.gameDialog.dialogRetrigger = true;
         this.player.anims.play('runRight', true);
       }
       else if ((this.cursors.right.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-        moveX(MOVE_SPEED * 0.7);
-        moveY(MOVE_SPEED * 0.7);
+        moveX(MOVE_SPEED * 0.75);
+        moveY(MOVE_SPEED * 0.75);
         this.gameDialog.dialogRetrigger = true;
         this.player.anims.play('runRight', true);
       }
