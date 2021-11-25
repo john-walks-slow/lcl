@@ -7,7 +7,7 @@ const PLAYER_TARGET_W = Math.min(WINDOW_W / 11, WINDOW_H / 11 / 44 * 37);
 const PLAYER_TARGET_H = Math.min(WINDOW_W / 11, WINDOW_H / 11 / 44 * 37) / 37 * 44;
 // const PLAYER_TARGET_W = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37);
 // const PLAYER_TARGET_H = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37) / 37 * 44;
-const OBJECT_W = { XL: PLAYER_TARGET_H * 1.8, L: PLAYER_TARGET_H * 1.3, M: PLAYER_TARGET_H*0.9, S: PLAYER_TARGET_H * 0.7, XS: PLAYER_TARGET_H * 0.4 }
+const OBJECT_W = { XL: PLAYER_TARGET_H * 1.8, L: PLAYER_TARGET_H * 1.3, M: PLAYER_TARGET_H * 0.9, S: PLAYER_TARGET_H * 0.7, XS: PLAYER_TARGET_H * 0.4 }
 // density: target object count in a circle (r=OBJECT_M_W*8)
 const DIALOG_HEIGHT = WINDOW_H / 3.5;
 const TEXT_PADDING_W = Math.min(WINDOW_W / 15, 50);
@@ -24,7 +24,7 @@ const FONT_FAMILY_HEADER = "pixel"
 const TIME_DELAY = 0;
 const RANDOM_ZONE_W = OBJECT_W.XL;
 var DENSITY_OFFSET = OBJECT_W.M * 2;
-const MOVE_SPEED = PLAYER_TARGET_W*1.1;
+const MOVE_SPEED = PLAYER_TARGET_W * 1.1;
 const ZONE_SIZE = MOVE_SPEED * 30;
 const timestamp = Date.parse(new Date());
 
@@ -47,7 +47,7 @@ class Dialog extends Phaser.GameObjects.Container {
     this.scene = scene;
     this.depth = 999;
     this.dialogWindow = this.scene.add.sprite(WINDOW_CENTER_X, WINDOW_H - DIALOG_HEIGHT / 2 - DIALOG_PADDING_H, "dialog").setDisplaySize(WINDOW_W - DIALOG_PADDING_W, DIALOG_HEIGHT);
-    this.dialogHeader = this.scene.add.text(DIALOG_PADDING_W + TEXT_PADDING_W, WINDOW_H - DIALOG_HEIGHT - DIALOG_PADDING_H + TEXT_PADDING_H,  "???",
+    this.dialogHeader = this.scene.add.text(DIALOG_PADDING_W + TEXT_PADDING_W, WINDOW_H - DIALOG_HEIGHT - DIALOG_PADDING_H + TEXT_PADDING_H, "???",
       {
         color: 0xFFFFFF,
         fontStyle: "bold",
@@ -107,7 +107,7 @@ class Dialog extends Phaser.GameObjects.Container {
     this.dialogFadeIn.play();
     this.sentences = dialog;
     this.dialogIndex = 0;
-    if (name!=""){this.dialogHeader.setText(name)};
+    if (name != "") { this.dialogHeader.setText(name) };
     this.dialogText.setText(this.sentences[this.dialogIndex]);
     console.log(this.sentences);
   }
@@ -157,7 +157,7 @@ class LoadingScene extends Phaser.Scene {
             break;
         }
       });
-      objectList.sort((a,b)=>b.birthday-a.birthday)
+      objectList.sort((a, b) => b.birthday - a.birthday)
       DENSITY_OFFSET = Math.min(OBJECT_W.L, DENSITY_OFFSET);
       this.load.on("complete", () => {
         console.log(objectList);
@@ -237,7 +237,7 @@ class MainScene extends Phaser.Scene {
     this.objects = this.physics.add.group();
     let previousDate = timestamp;
     let offset;
-    let dateOffset = (PLAYER_TARGET_H + OBJECT_W.L) / 2 + 5;
+    let dateOffset = 0;
     this.objectList.forEach((o, i) => {
       if (timestamp - o.birthday < TIME_DELAY) { return; }
       dateOffset += Math.min(1, (previousDate - o.birthday) / (14 * 24 * 60 * 60)) * 5 * PLAYER_TARGET_W;
@@ -246,7 +246,8 @@ class MainScene extends Phaser.Scene {
       // console.log({ dateOffset, offset });
       // console.log(Math.min(1, (previousDate - o.birthday) / (30 * 24 * 60 * 60)));
       let rad = o.seed[0] * (Math.PI / 180);
-      let distance = o.seed[1] * RANDOM_ZONE_W + offset + dateOffset;
+      let sizeOffset = (PLAYER_TARGET_H + OBJECT_W[o.size]/o.zFactor) / 2;
+      let distance = o.seed[1] * RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
       o.x = Math.cos(rad) * distance;
       o.y = Math.sin(rad) * distance;
       o.zFactor = (o.zFactor == 1) ? o.zFactor - 0.1 + Math.random() * 0.2 : o.zFactor;
@@ -317,7 +318,7 @@ class MainScene extends Phaser.Scene {
       }
       // console.log(currentObj);
       // console.log(dialog);
-      if (currentObj.data.values.dialog) { this.gameDialog.showDialog(currentObj.data.values.dialog,currentObj.data.values.name) }
+      if (currentObj.data.values.dialog.length>0) { this.gameDialog.showDialog(currentObj.data.values.dialog, currentObj.data.values.name) }
       // }
     }
 
