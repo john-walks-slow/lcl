@@ -47,7 +47,7 @@ class Dialog extends Phaser.GameObjects.Container {
     this.scene = scene;
     this.depth = 999;
     this.dialogWindow = this.scene.add.sprite(WINDOW_CENTER_X, WINDOW_H - DIALOG_HEIGHT / 2 - DIALOG_PADDING_H, "dialog").setDisplaySize(WINDOW_W - DIALOG_PADDING_W, DIALOG_HEIGHT);
-    this.dialogHeader = this.scene.add.text(DIALOG_PADDING_W + TEXT_PADDING_W, WINDOW_H - DIALOG_HEIGHT - DIALOG_PADDING_H + TEXT_PADDING_H, "???",
+    this.dialogHeader = this.scene.add.text(DIALOG_PADDING_W + TEXT_PADDING_W, WINDOW_H - DIALOG_HEIGHT - DIALOG_PADDING_H + TEXT_PADDING_H,  "???",
       {
         color: 0xFFFFFF,
         fontStyle: "bold",
@@ -98,7 +98,7 @@ class Dialog extends Phaser.GameObjects.Container {
       }
     }
   }
-  showDialog(dialog) {
+  showDialog(dialog, name) {
     this.inDialog = true;
     // dialogWindow.on('pointerdown', () => { this.proceedDialog() });
     this.scene.input.on('pointerdown', () => { this.proceedDialog() });
@@ -107,6 +107,7 @@ class Dialog extends Phaser.GameObjects.Container {
     this.dialogFadeIn.play();
     this.sentences = dialog;
     this.dialogIndex = 0;
+    if (name!=""){this.dialogHeader.setText(name)};
     this.dialogText.setText(this.sentences[this.dialogIndex]);
     console.log(this.sentences);
   }
@@ -316,7 +317,7 @@ class MainScene extends Phaser.Scene {
       }
       // console.log(currentObj);
       // console.log(dialog);
-      if (currentObj.data.values.dialog) { this.gameDialog.showDialog(currentObj.data.values.dialog) }
+      if (currentObj.data.values.dialog) { this.gameDialog.showDialog(currentObj.data.values.dialog,currentObj.data.values.name) }
       // }
     }
 
@@ -443,6 +444,7 @@ class MainScene extends Phaser.Scene {
           // o.instance = this.physics.add.sprite(o.x,o.y,"object"+o.id);
           // console.log(this.objects);
           o.instance.depth = o.zFactor;
+          o.instance.setData("name", o.name);
           o.instance.setData("dialog", o.dialog);
           o.instance.setData("zFactor", o.zFactor);
           o.ratio < 1 ?
