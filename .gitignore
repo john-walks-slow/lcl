@@ -111,4 +111,3 @@ data/*
 public/add/*
 public/assets/objects/*
 .history
-package-lock.json
