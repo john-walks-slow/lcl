@@ -3,8 +3,8 @@ const WINDOW_W = window.innerWidth || document.body.clientWidth;
 const WINDOW_H = window.innerHeight || document.body.clientHeight;
 const WINDOW_CENTER_X = WINDOW_W / 2;
 const WINDOW_CENTER_Y = WINDOW_H / 2;
-const PLAYER_TARGET_W = Math.min(WINDOW_W /16, WINDOW_H /16 / 44 * 37);
-const PLAYER_TARGET_H = Math.min(WINDOW_W /16, WINDOW_H /16 / 44 * 37) / 37 * 44;
+const PLAYER_TARGET_W = Math.min(WINDOW_W /9, WINDOW_H /9 / 44 * 37);
+const PLAYER_TARGET_H = Math.min(WINDOW_W /9, WINDOW_H /9 / 44 * 37) / 37 * 44;
 const OBJECT_W = { XL: PLAYER_TARGET_H * 1.5, L: PLAYER_TARGET_H * 1.2, M: PLAYER_TARGET_H, S: PLAYER_TARGET_W, XS: PLAYER_TARGET_W * 0.8 }
 // density: target object count in a circle (r=OBJECT_M_W*8)
 const DIALOG_HEIGHT = WINDOW_H / 3.5;
@@ -21,11 +21,9 @@ const FONT_FAMILY_HEADER = "pixel"
 // const TIME_DELAY = 60 * 60 * 1000;
 const TIME_DELAY = 0;
 const RANDOM_ZONE_W = OBJECT_W.M * 2;
-
-
 const OBJECT_DENSITY = 0.05;
 const DENSITY_OFFSET = OBJECT_W.M;
-const MOVE_SPEED = PLAYER_TARGET_W*2;
+const MOVE_SPEED = PLAYER_TARGET_W*1.3;
 const ZONE_SIZE = MOVE_SPEED * 30;
 
 function createTestObject(object) {
@@ -172,9 +170,14 @@ class LoadingScene extends Phaser.Scene {
         this.scene.start("MainScene", { "objectList": objectList });
         this.scene.stop("LoadingScene");
       }, this);
+      this.load.on('progress',(progress)=>{
+        console.log(progress);
+        this.label.text ='Now Loading ' + ".".repeat(Math.round(progress*15));
+      })
       this.load.start();
     })
-    this.add.rectangle(0, 0, WINDOW_W, WINDOW_H, 0xFFFFFF);
+    this.add.rectangle(WINDOW_CENTER_X , WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0xFFFFFF);
+    this.label = this.add.text(30 , WINDOW_CENTER_Y,'Now Loading ',{align:"center",color:"#000000",fontSize:WINDOW_W/20})
     // Connect to the `http://feathers-api.com/messages` service
   }
   update() {
