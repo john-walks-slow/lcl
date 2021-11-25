@@ -1,45 +1,21 @@
-# feathers-test
+# LCL
+## —— 空间化、离散、不断膨胀的留言板
 
-> 
+### 简介
 
-## About
+这里是LCL，一个“共享的梦空间”。你可以在这个空间里留下会说话的像素物体，或探索其他人创造的物体。把大家脑袋里的想象放在同一个世界里，也许会很有趣吧？
 
-This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
+### 创造指南
 
-## Getting Started
+这里没有什么规则，随便创造什么都可以。但我不建议你在这里和别人交流，别人没法回复你，你的信息别人也不一定找得到。
 
-Getting up and running is as easy as 1, 2, 3.
+### 世界的规则
 
-1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
-2. Install your dependencies
+这个世界会不断膨胀，新加入的对象出现在世界中心附近，现有对象会随时间流逝以及世界密度的增加向外圈漂移。经过测试，这里至少可以容纳一百外个对象。
 
-    ```
-    cd path/to/feathers-test
-    npm install
-    ```
+### 为什么做这个
 
-3. Start your app
+有一天，我玩了很久游戏，我想：如果要做游戏，我一定要在游戏里留下一点自己的痕迹，比如今天喝的可乐、烦闷的感觉，今天身边的人还没有死。如果要做游戏，我也希望玩家可以在游戏里留下他们的痕迹，那不如创造一个大家可以随便留下痕迹的地方。
+### 关于LCL这个名字...
 
-    ```
-    npm start
-    ```
-
-## Testing
-
-Simply run `npm test` and all your tests in the `test/` directory will be run.
-
-## Scaffolding
-
-Feathers has a powerful command line interface. Here are a few things it can do:
-
-```
-$ npm install -g @feathersjs/cli          # Install Feathers CLI
-
-$ feathers generate service               # Generate a new Service
-$ feathers generate hook                  # Generate a new Hook
-$ feathers help                           # Show all commands
-```
-
-## Help
-
-For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
+LCL这个名字是来自EVA，不过这只是一个耍帅的名字，实际上和EVA没什么关系。我还想了另外几个名字，比如“白洞”。最个体的、最直接的、最共通的也许是一样的。
