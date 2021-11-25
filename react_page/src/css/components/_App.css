@@ -90,6 +90,7 @@ max-width: 500px;
   }
 
   .app__tools-wrapper {
+    margin-top: 10px;
 
     > div {
       display: inline-block;

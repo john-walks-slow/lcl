@@ -1,5 +1,4 @@
 .undo-redo {
-  margin: 10px;
   lost-utility: clearfix;
 
   button {
@@ -9,11 +8,12 @@
     lost-column: 1/2 0 0.5em;
     font-size: 0.7em;
     width:auto;
+    margin-right: 0px !important;
+    margin-bottom: 10px;
   }
 
   .undo-redo__icon--undo {
     @mixin icon undo;
-
     display: block;
   }
 
