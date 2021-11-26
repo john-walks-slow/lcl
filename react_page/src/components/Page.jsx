@@ -102,12 +102,11 @@ const Root = ({ dispatch }) => {
       link
     });
     try {
-      console.log(blob);
-      var result = await blobsService.create({ uri: blobURI });
-      console.log(`image uploaded ${result}`);
-      let _id = result.id.split('.')[0];
-      result = await objectsService.create({
-        _id,
+      // console.log(blob);
+      // var result = await blobsService.create({ uri: blobURI });
+      // console.log(`image uploaded ${result}`);
+      // let _id = result.id.split('.')[0];
+      let result = await objectsService.create({
         name,
         dialog,
         size,
@@ -116,7 +115,8 @@ const Root = ({ dispatch }) => {
         link,
         isAnimate,
         columns,
-        rows
+        rows,
+        blobURI
       });
       console.log(`Data uploaded ${result}`);
       setSubmitted(true);

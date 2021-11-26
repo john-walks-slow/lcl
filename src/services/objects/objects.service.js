@@ -1,12 +1,9 @@
 // Initializes the `objects` service on path `/objects`
 const { Objects } = require('./objects.class');
-const createModel = require('../../models/objects.model');
 const hooks = require('./objects.hooks');
 
 module.exports = function (app) {
   const options = {
-    Model: createModel(app),
-    multi: true,
     paginate: app.get('paginate')
   };
 
