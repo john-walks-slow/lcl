@@ -150,10 +150,16 @@ class LoadingScene extends Phaser.Scene {
         if (timestamp - o.birthday < (48 * 60 * 60)) { DENSITY_OFFSET -= 10; }
         switch (o.isAnimate) {
           case true:
-            this.load.spritesheet("object" + o._id, 'assets/objects/' + o._id + '.png', { frameWidth: o.columns, frameHeight: o.rows });
+            var shardsImg = new Image();
+            shardsImg.onload = () => {
+              this.textures.addSpriteSheet("object" + o._id, shardsImg, { frameWidth: o.columns, frameHeight: o.rows });
+            };
+            shardsImg.src = o.blobURI;
+            // this.load.spritesheet("object" + o._id, 'assets/objects/' + o._id + '.png', { frameWidth: o.columns, frameHeight: o.rows });
             break;
           default:
-            this.load.image("object" + o._id, 'assets/objects/' + o._id + '.png')
+            this.textures.addBase64("object" + o._id, o.blobURI);
+            // this.load.image("object" + o._id, 'assets/objects/' + o._id + '.png')
             break;
         }
       });
@@ -246,7 +252,7 @@ class MainScene extends Phaser.Scene {
       // console.log({ dateOffset, offset });
       // console.log(Math.min(1, (previousDate - o.birthday) / (30 * 24 * 60 * 60)));
       let rad = o.seed[0] * (Math.PI / 180);
-      let sizeOffset = (PLAYER_TARGET_H + OBJECT_W[o.size]/o.zFactor) / 2;
+      let sizeOffset = (PLAYER_TARGET_H + OBJECT_W[o.size] / o.zFactor) / 2;
       let distance = o.seed[1] * RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
       o.x = Math.cos(rad) * distance;
       o.y = Math.sin(rad) * distance;
@@ -318,7 +324,7 @@ class MainScene extends Phaser.Scene {
       }
       // console.log(currentObj);
       // console.log(dialog);
-      if (currentObj.data.values.dialog.length>0) { this.gameDialog.showDialog(currentObj.data.values.dialog, currentObj.data.values.name) }
+      if (currentObj.data.values.dialog.length > 0) { this.gameDialog.showDialog(currentObj.data.values.dialog, currentObj.data.values.name) }
       // }
     }
 
