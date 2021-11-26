@@ -63,6 +63,7 @@ module.exports = (production) => {
     },
     resolve: {
       extensions: ['.js', '.jsx'],
+
       fallback: {
         "fs": false,
         "tls": false,
@@ -89,6 +90,10 @@ module.exports = (production) => {
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': production ? '"production"' : '"development"'
+      }),
+
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
       }),
     ],
     optimization: production ? {
