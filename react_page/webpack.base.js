@@ -89,11 +89,8 @@ module.exports = (production) => {
         inject: true
       }),
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': production ? '"production"' : '"development"'
-      }),
-
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
+        "process.env": JSON.stringify(process.env),
+        "process.browser":true
       }),
     ],
     optimization: production ? {
