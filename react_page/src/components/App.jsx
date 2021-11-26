@@ -1,5 +1,4 @@
 import React from 'react';
-import CookieConsent from 'react-cookie-consent';
 import PreviewBox from './PreviewBox';
 import PixelCanvasContainer from './PixelCanvas';
 import CellSizeContainer from './CellSize';
@@ -154,38 +153,6 @@ export default class App extends React.Component {
 
         </div>
 
-        <CookieConsent
-          location="bottom"
-          buttonText="Got it!"
-          cookieName="pixelartcssCookiesAccepted"
-          style={{
-            background: '#313131',
-            fontSize: '13px',
-            textAlign: 'center'
-          }}
-          buttonStyle={{
-            background: '#bbbbbb',
-            color: '#4e503b',
-            fontSize: '13px'
-          }}
-          contentStyle={{
-            flex: '1 0 200px',
-            margin: '15px'
-          }}
-          expires={150}
-        >
-          By continuing to use this website you are giving consent to cookies
-          being used. Thank you.
-          <a
-            href="/cookies"
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-            style={{ textDecoration: 'none', color: '#5786c1' }}
-          >
-            {' '}
-            Learn more
-          </a>
-        </CookieConsent>
         <ModalContainer
           type={modalType}
           isOpen={modalOpen}
