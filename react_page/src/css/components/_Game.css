@@ -1,0 +1,27 @@
+#GAME_DIV{
+  overflow: hidden;
+}
+#GAME_MENU{
+  position: fixed;
+  right:15px;
+  top:15px;
+  opacity: 0;
+  transform:translateY(20px);
+  transition:  1000ms;
+}
+#GAME_MENU.show{
+  position: fixed;
+  transform:translateY(0);
+  right:15px;
+  top:15px;
+  opacity: 1;
+}
+.game__button-menu{
+  width: 10vw;
+  max-width: 80px;
+  image-rendering:  pixelated;
+
+}
+.game__button-menu:active{
+  transform: scale(0.8);
+}

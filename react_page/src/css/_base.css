@@ -16,12 +16,11 @@ body {
 }
 
 body {
-  overflow: auto;
+  overflow: hidden;
 }
 
 .app-container {
-  height: 100%;
-  width: 90%;
+
   margin: 0 auto;
   padding: 0;
 }

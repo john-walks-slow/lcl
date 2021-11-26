@@ -11,8 +11,8 @@ module.exports = {
     './src/index.jsx',
   ],
   output: {
-    path: path.join(__dirname, '../public/add'),
-    publicPath: './',
+    path: path.join(__dirname, '../public/'),
+    publicPath: '/static/',
     filename: 'bundle.js'
   },
   module: {
@@ -25,7 +25,7 @@ module.exports = {
         ]
       },
       {
-        test:   /\.css$/i,
+        test: /\.css$/i,
         use: [
           'style-loader',
           {
@@ -39,35 +39,58 @@ module.exports = {
       },
       {
         test: /\.(ttf|eot|svg|woff(2)?)(\?v=[\d.]+)?(\?[a-z0-9#-]+)?$/,
-        loader: 'url-loader?limit=100000&name=./css/[hash].[ext]'
+        loader: 'url-loader',
+        options: {
+          limit: 100000,
+          name: 'css/[hash].[ext]'
+        }
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[hash].[ext]'
+        }
       }
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
+    fallback: {
+      "fs": false,
+      "tls": false,
+      "net": false,
+      "path": false,
+      "zlib": false,
+      "http": false,
+      "https": false,
+      "crypto": false,
+      "assert": require.resolve("assert/"),
+      "stream": require.resolve("stream-browserify"),
+    }
   },
   // devServer: {
   //   contentBase: './build'
   // },
   plugins: [
     new CopyWebpackPlugin([
-      { from: 'src/assets/favicon.ico', to: 'favicon.ico' },
-      { from: 'src/assets/apple-touch-icon.png', to: 'apple-touch-icon.png' },
-      { from: 'src/assets/regular-icon.png', to: 'regular-icon.png' },
+      { from: 'src/assets/favicons', to: '/' },
     ]),
     new HtmlWebpackPlugin({
       template: './build/index.html',
-      inject: false
+      inject: true
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    })
 
   ],
   optimization: {
     minimizer: [
       new TerserPlugin({
-        sourceMap: true, // Must be set to true if using source-maps in production
         terserOptions: {
           compress: {
             drop_console: true,

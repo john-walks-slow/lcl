@@ -19,6 +19,8 @@ const channels = require('./channels');
 const mongodb = require('./mongodb');
 
 const app = express(feathers());
+var history = require('connect-history-api-fallback');
+
 
 // Load app configuration
 app.configure(configuration());
@@ -32,8 +34,7 @@ app.use(express.json({limit: '10mb'}));
 app.use(express.urlencoded({ limit: '10mb',extended: true }));
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
-app.use('/', express.static(app.get('public')));
-
+app.use(history())
 // Set up Plugins and providers
 app.configure(express.rest());
 app.configure(mongodb);
@@ -46,8 +47,12 @@ app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
 
+app.use('/static', express.static(app.get('public')));
+app.get('/*', function(req, res) {
+  res.sendFile('index.html', {root: app.get('public')});
+});
 // Configure a middleware for 404s and the error handler
-app.use(express.notFound());
+// app.use(express.notFound());
 app.use(express.errorHandler({ logger }));
 // app.use(logger)
 app.hooks(appHooks);

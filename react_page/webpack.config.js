@@ -11,8 +11,8 @@ module.exports = {
     './src/index.jsx',
   ],
   output: {
-    path: path.join(__dirname, '../public/add'),
-    publicPath: './',
+    path: path.join(__dirname, '../public/'),
+    publicPath: '/static/',
     filename: 'bundle.js'
   },
   module: {
@@ -25,7 +25,7 @@ module.exports = {
         ]
       },
       {
-        test:   /\.css$/i,
+        test: /\.css$/i,
         use: [
           'style-loader',
           {
@@ -37,28 +37,59 @@ module.exports = {
           'postcss-loader'
         ]
       },
+
       {
         test: /\.(ttf|eot|svg|woff(2)?)(\?v=[\d.]+)?(\?[a-z0-9#-]+)?$/,
-        loader: 'url-loader?limit=100000&name=./css/[hash].[ext]'
+        loader: 'url-loader',
+        options: {
+          limit: 100000,
+          name: 'css/[hash].[ext]',
+        }
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[hash].[ext]'
+        }
       }
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
+    fallback: {
+      "fs": false,
+      "tls": false,
+      "net": false,
+      "path": false,
+      "zlib": false,
+      "http": false,
+      "https": false,
+      "crypto": false,
+      "assert": require.resolve("assert/"),
+      "stream": require.resolve("stream-browserify"),
+    }
   },
   // devServer: {
   //   contentBase: './build'
   // },
   plugins: [
+    new CopyWebpackPlugin([
+      { from: 'src/assets/favicons', to: '../public' },
+    ]),
     new HtmlWebpackPlugin({
       template: './build/index.html',
-      inject: false
+      inject: true
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"development"'
     }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
+
   ],
   watch: true,
   target: "web",
-  stats: "detailed"
+  stats: "detailed",
 };

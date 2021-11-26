@@ -1,6 +1,25 @@
 .page__container {
-  padding-bottom: 60px;
 
+  opacity: 0;
+  transition: 500ms;
+
+  @media screen and (max-width: 600px) {
+    margin: 15px;
+  }
+  @media screen and (min-width: 600px) {
+    margin: 4% auto;
+    max-width: 500px;
+  }
+  padding-bottom: 60px;
+  .page__button-back {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    margin-right: 0;
+    color: grey;
+    position: relative;
+  }
   .page__submitted {
     margin: 20vh 5vw;
     display: none;
@@ -12,19 +31,12 @@
     opacity: 1;
     transition: all 300ms;
   }
-  .page__submit{
+  .page__submit {
     float: right;
     clear: both;
     padding: 0.3em 2em;
   }
   .page__form {
-    @media screen and (max-width: 600px) {
-      margin: 0;
-    }
-    @media screen and (min-width: 600px) {
-      margin: 4% auto;
-      max-width: 500px;
-    }
     padding-bottom: 20px;
     h1 {
       display: block;
@@ -33,10 +45,11 @@
       color: gainsboro;
       text-align: center;
       padding: 5px;
+      margin-top: 10px;
     }
     .page__label {
       sub {
-        font-size:0.6em;
+        font-size: 0.6em;
         position: relative;
         bottom: 5px;
       }
@@ -50,7 +63,7 @@
         display: block;
         margin: 10px 0 20px;
       }
-      .page__textarea.dialog{
+      .page__textarea.dialog {
         margin: 10px 0 15px;
         appearance: none;
         box-shadow: none;
@@ -64,7 +77,8 @@
         transition: background-color 0.3s;
       }
     }
-    button {
-    }
   }
+}
+.page__container.show {
+  opacity: 1;
 }

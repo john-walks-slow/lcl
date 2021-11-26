@@ -4,6 +4,13 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'pixel2';
+  src: url('fonts/files/pixel2.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* @font-face {
   font-family: 'minecraftiaregular';
   src: url('fonts/files/minecraftia-regular-webfont.eot');

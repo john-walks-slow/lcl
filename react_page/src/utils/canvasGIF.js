@@ -1,5 +1,5 @@
 import GIFEncoder from 'gif-encoder';
-import blobStream from 'blob-stream';
+// import blobStream from 'blob-stream';
 import { saveAs } from 'file-saver';
 import randomString from './random';
 
@@ -60,7 +60,7 @@ const saveCanvasToDisk = (blob, fileExtension) => {
   saveAs(blob, `${randomString()}.${fileExtension}`);
 };
 
-export function renderBlob(settings,callback) {
+export function renderBlob(settings, callback) {
   const {
     type,
     frames,
@@ -79,14 +79,7 @@ export function renderBlob(settings,callback) {
     type === 'spritesheet' ? frameHeight * frames.size : frameHeight;
 
   const canvas = document.createElement('canvas');
-  const gif = new GIFEncoder(canvasWidth, canvasHeight);
-  gif.pipe(blobStream()).on('finish', function() {
-    callback(this.toBlob());
-  });
 
-  gif.setRepeat(0); // loop indefinitely
-  gif.setDispose(3); // restore to previous
-  gif.writeHeader();
 
   switch (type) {
     case 'single':
@@ -106,42 +99,11 @@ export function renderBlob(settings,callback) {
         },
         frames
       );
-      canvas.toBlob(function(blob) {
+      canvas.toBlob(function (blob) {
         callback(blob); //png
       });
       break;
-    default: {
-      let previousInterval = 0;
-      frames.forEach((frame, idx, framesArray) => {
-        const isLastFrame = idx === framesArray.length - 1;
-        const currentInterval = isLastFrame
-          ? 100
-          : frames.get(idx).get('interval');
-        const diff = currentInterval - previousInterval;
-        const delay = diff * 0.01 * durationInMillisecond;
-
-        gif.setDelay(delay);
-        previousInterval = currentInterval;
-
-        gif.addFrame(
-          renderImageToCanvas(
-            type,
-            {
-              canvas,
-              canvasHeight,
-              canvasWidth
-            },
-            {
-              frame,
-              frameHeight,
-              frameWidth,
-              cellSize
-            }
-          )
-        );
-      });
-      gif.finish();
-    }
+    default:
   }
 }
 export function renderFrames(settings) {
@@ -163,14 +125,6 @@ export function renderFrames(settings) {
     type === 'spritesheet' ? frameHeight * frames.size : frameHeight;
 
   const canvas = document.createElement('canvas');
-  const gif = new GIFEncoder(canvasWidth, canvasHeight);
-  gif.pipe(blobStream()).on('finish', function() {
-    saveCanvasToDisk(this.toBlob(), 'gif');
-  });
-
-  gif.setRepeat(0); // loop indefinitely
-  gif.setDispose(3); // restore to previous
-  gif.writeHeader();
 
   switch (type) {
     case 'single':
@@ -190,41 +144,11 @@ export function renderFrames(settings) {
         },
         frames
       );
-      canvas.toBlob(function(blob) {
+      canvas.toBlob(function (blob) {
         saveCanvasToDisk(blob, 'png');
       });
       break;
     default: {
-      let previousInterval = 0;
-      frames.forEach((frame, idx, framesArray) => {
-        const isLastFrame = idx === framesArray.length - 1;
-        const currentInterval = isLastFrame
-          ? 100
-          : frames.get(idx).get('interval');
-        const diff = currentInterval - previousInterval;
-        const delay = diff * 0.01 * durationInMillisecond;
-
-        gif.setDelay(delay);
-        previousInterval = currentInterval;
-
-        gif.addFrame(
-          renderImageToCanvas(
-            type,
-            {
-              canvas,
-              canvasHeight,
-              canvasWidth
-            },
-            {
-              frame,
-              frameHeight,
-              frameWidth,
-              cellSize
-            }
-          )
-        );
-      });
-      gif.finish();
     }
   }
 }
