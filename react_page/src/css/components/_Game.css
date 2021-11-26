@@ -25,3 +25,22 @@
 .game__button-menu:active{
   transform: scale(0.8);
 }
+
+#GAME_INFO{
+  background-color: #00000010;
+  padding: 20px;
+  margin: auto;
+  width: max(600px,70vw);
+  height: 100vh;
+  position: fixed;
+  width:80vw;
+  max-width:400px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 500ms;
+  overflow: scroll;
+}
+#GAME_INFO.show{
+  pointer-events:initial;
+  opacity: 1;
+}

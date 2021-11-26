@@ -20,8 +20,10 @@ import whiteURL from '../assets/game/white.png'
 import labelURL from '../assets/game/label.png'
 import telescopeURL from '../assets/game/telescope.png'
 import { useParams, useNavigate } from "react-router-dom";
-
+import ReadMe from '../../../README.md'
+import ReactMarkdown from 'react-markdown'
 const Game = (props) => {
+
   const navigate = useNavigate();
   const WINDOW_W = window.innerWidth || document.body.clientWidth;
   const WINDOW_H = window.innerHeight || document.body.clientHeight;
@@ -50,9 +52,10 @@ const Game = (props) => {
   var DENSITY_OFFSET = OBJECT_W.M;
   const MOVE_SPEED = PLAYER_TARGET_W * 1.1;
   const ZOOM_OUT_LEVEL = 0.3;
-  const GRID_SIZE = Math.max(WINDOW_H,WINDOW_W) / ZOOM_OUT_LEVEL;
+  const GRID_SIZE = Math.max(WINDOW_H, WINDOW_W) / ZOOM_OUT_LEVEL;
   const timestamp = Date.parse(new Date());
   const [mainScene, setMainScene] = useState();
+  const [showInfo, setShowInfo] = useState();
 
   useEffect(() => {
     document.title = "LCL";
@@ -438,7 +441,8 @@ const Game = (props) => {
         this.camera.initAnim.on('complete', () => {
           this.camera.toggleZoom = () => {
             console.log('toggle');
-            this.camera.zoom < 1 ? this.camera.zoomInAnim.play() : this.camera.zoomOutAnim.play();
+            this.camera.zoom == 1&& this.camera.zoomOutAnim.play();
+            this.camera.zoom == ZOOM_OUT_LEVEL && this.camera.zoomInAnim.play()
           }
         })
       }
@@ -628,7 +632,12 @@ const Game = (props) => {
         <input className="game__button-menu" type="image" onClick={() => { navigate('/add') }} src={newBtnURL} />
         <input className="game__button-menu" type="image" onClick={() => { mainScene.camera.toggleZoom() }} src={mapBtnURL} />
         <input className="game__button-menu" type="image" src={bagBtnURL} />
-        <input className="game__button-menu" type="image" src={infoBtnURL} />
+        <input className="game__button-menu" type="image" onClick={() => {setShowInfo(!showInfo)}}src={infoBtnURL} />
+      </div>
+      <div id="GAME_INVENTORY"></div>
+      <div id="GAME_INFO" className={showInfo?"show":""}>
+        <ReactMarkdown>{ReadMe.toString()}</ReactMarkdown>
+
       </div>
       <div id="GAME_DIV"></div>
 
