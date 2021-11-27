@@ -4,16 +4,13 @@ import feathers from '@feathersjs/feathers';
 import rest from '@feathersjs/rest-client';
 import App from './App';
 import { renderBlob } from '../utils/canvasGIF';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate,useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { connect } from 'react-redux';
 import {
-  cellAction,
-  updateGridBoundaries,
-  moveDrawing,
-  changeHoveredCell
+  newProject
 } from '../store/actions/actionCreators';
 
 const Page = ({ dispatch }) => {
@@ -46,6 +43,7 @@ const Page = ({ dispatch }) => {
   const columns = frames.get('columns');
   const rows = frames.get('rows');
   const navigate = useNavigate();
+  const location = useLocation();
   const cellSize = 1;
   const duration = useSelector(state => state.present.get('duration'));
   const options = {
@@ -133,8 +131,8 @@ const Page = ({ dispatch }) => {
     }
   }
   useEffect(() => {
-    console.log(grid);
     setShow(true);
+    dispatch(newProject());
     document.body.style.overflow='auto';
     let app = feathers();
     // Connect to the same as the browser URL (only in the browser)
@@ -198,7 +196,7 @@ const Page = ({ dispatch }) => {
 
           <label className={"page__label"}   >
             深度 <sub>{telescopes <= 0 ? "设置深度需要望远镜" : ("望远镜数量：" + telescopes + (zFactor == 1 ? "" : `(-${telescopeConsumption})`))}</sub>
-            <input type="range" min="0.4" max="1.6" step="0.1" disabled={telescopes <= 0} value={2 - zFactor} onChange={(event) => { setZFactor(2 - event.target.value) }} placeholder="深度的范围是0.5 - 1.5（近大远小）" className="page__input" />
+            <input type="range" min="0.5" max="1.5" step="0.1" disabled={telescopes <= 0} value={2 - zFactor} onChange={(event) => { setZFactor(2 - event.target.value) }} placeholder="深度的范围是0.5 - 1.5（近大远小）" className="page__input" />
           </label>
 
           <input className="page__submit" disabled={error || uploading} type="submit" onClick={(e) => { submit(e); }} value={uploading ? "提交中..." : "提交"} />
