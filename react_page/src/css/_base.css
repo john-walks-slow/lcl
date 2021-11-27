@@ -18,7 +18,32 @@ body {
 body {
   overflow: hidden;
 }
-
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 5px 0px;
+  font-size: 0.8em;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 2em;
+  line-height: 0.1em;
+  margin-right: 0em;
+  vertical-align: -0.4em;
+}
+blockquote p {
+  display: inline;
+}
+input,
+textarea,
+button,
+select,
+a {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
 .app-container {
 
   margin: 0 auto;
