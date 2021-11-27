@@ -47,10 +47,10 @@ const Game = (props) => {
   const FONT_FAMILY = "pixel"
   const FONT_FAMILY_HEADER = "pixel"
   // const TIME_DELAY = 60 * 60 * 1000;
-  const TIME_DELAY = 0;
+  const TIME_DELAY = 60 * 60 * 1000;
   const RANDOM_ZONE_W = OBJECT_W.L;
   var DAY_OFFSET = OBJECT_W.M;
-  var DENSITY_OFFSET = OBJECT_W.XL;
+  var DENSITY_OFFSET = OBJECT_W.L;
   var ACTIVITY_OFFSET = 1;
   const MOVE_SPEED = PLAYER_TARGET_W * 1.4;
   const ZOOM_OUT_LEVEL = 0.3;
@@ -255,7 +255,7 @@ const Game = (props) => {
         // })
         this.player.on('pointerover', () => { this.pointerOnPlayer = true })
         this.player.on('pointerout', () => { this.pointerOnPlayer = false })
-        this.player.depth = 1;
+        this.player.depth = 0.9;
         this.camera.startFollow(this.player);
         this.camera.setBackgroundColor(0xFFFFFF);
         this.camera.setFollowOffset(0, -0);
@@ -281,7 +281,9 @@ const Game = (props) => {
         });
         this.camera.toggleZoom = () => { }
         this.objectMap = [];
-        this.objects = this.physics.add.group();
+        this.objects = this.physics.add.group({
+          // bounceX:0, bounceY:0
+        });
         this.physics.world.on('overlap', (o1, o2, b1, b2) => {
         })
         let movedObjects = [];
@@ -292,23 +294,36 @@ const Game = (props) => {
             //   o.x -= o.body.overlapX / 2;
             //   o.y -= o.body.overlapY / 2;
             // }
-
+            if (o.data.values.isBackground) { return; }
             let collidedObjects = this.physics.overlapRect(o.x - o.displayWidth / 2, o.y - o.displayHeight / 2, o.displayWidth, o.displayHeight);
-            collidedObjects = collidedObjects.filter(c =>
-              (c.gameObject.data.values.id != o.data.values.id) && !movedObjects.includes(c.gameObject));
             if (collidedObjects.length > 0) {
               collidedObjects.forEach((c) => {
                 let cg = c.gameObject;
-                // cg.alpha=0;
-                cg.x += o.displayWidth;
-                cg.y -= o.displayHeight;
-                movedObjects.push(cg);
-                // o.instance.alpha = 0;
-                // this.physics.world.separate(o.instance.body, c)
+                if (cg.data.values.id == o.data.values.id) {
+                  return;
+                }
+                if (cg.data.values.isBackground) {
+                  return
+                }
+                // if (movedObjects.find((a) => (a[0] == o.id && a[1] == cg.id))) {
+                //   return;
+                // }
+                let xI = cg.x<o.x  ? 1 : -1;
+                let yI = cg.y<o.y  ? 1 : -1;
+                if (cg.x<o.x){
+                  cg.x-= (cg.displayWidth- Math.abs(o.x - cg.x))*1.1
+                }else{
+                  o.x+= (o.displayWidth- Math.abs(o.x - cg.x))*1.1
+                }
+                if (cg.y<o.y){
+                  cg.y-= (cg.displayHeight- Math.abs(o.y - cg.y))*1.1
+                }else{
+                  o.y+= (o.displayHeight- Math.abs(o.y - cg.y))*1.1
+                }
+                movedObjects.push([cg.id, o.id]);
               })
             }
-          }, 150)
-
+          }, 50)
         }
         let previousDate = timestamp;
         let offset;
@@ -394,7 +409,7 @@ const Game = (props) => {
               // })
               // o.instance = this.physics.add.sprite(o.x,o.y,"object"+o.id);
               // console.log(this.objects);
-              o.instance.body.setImmovable(true);
+              o.instance.body.immovable = true;
               o.instance.depth = o.zFactor;
               o.zFactor < 1 && (o.instance.alpha = o.zFactor / 1.5);
               o.instance.setData("id", o._id);
@@ -408,12 +423,9 @@ const Game = (props) => {
                 o.instance.anims.play('spritesheet' + o._id)
               }
               if (o.dialog.length > 0) {
-                let phy = this.physics.add.collider(this.player, o.instance, this.colliderHandler)
-                o.instance.setData("collider", phy);
+                let collider = this.physics.add.collider(this.player, o.instance, this.colliderHandler)
+                o.instance.setData("collider", collider);
               }
-              setTimeout(() => {
-
-              }, 100)
               o.instance.refreshBody();
             })
           })
@@ -426,6 +438,7 @@ const Game = (props) => {
             })
           })
         }
+
         // this.objects.updateObjects(false, [0, 0]);
         // this.previousZone = [0, 0];
         this.gameDialog = new Dialog(this);
@@ -451,6 +464,10 @@ const Game = (props) => {
 
         // TODO: Better collider for background / foreground
         this.colliderHandler = (o1, o2) => {
+          // console.log(this.player.body.velocity);
+          // this.player.stopMovement();
+          console.log(this.player.body);
+
           if (this.gameDialog.inDialog) { return; }
           let currentObj;
           if (o1.texture.key == "player") {
@@ -461,33 +478,34 @@ const Game = (props) => {
           }
           if (currentObj.data.values.dialog.length > 0) {
             this.gameDialog.showDialog(currentObj.data.values.dialog, currentObj.data.values.name)
-            if (currentObj.data.values.isBackground) {
-              currentObj.data.values.collider.destroy();
-            }
+            // if (currentObj.data.values.isBackground) {
+            currentObj.data.values.collider.destroy();
+            // } else {
+            // currentObj.setData("dialog", []);
+            // }
           }
-          this.physics.collide(o1, o2);
-          let xOverlap = this.player.displayWidth / 2 + currentObj.displayWidth / 2 - Math.abs(this.player.x - currentObj.x)
-          let yOverlap = this.player.displayHeight / 2 + currentObj.displayHeight / 2 - Math.abs(this.player.y - currentObj.y)
-          // console.log(xOverlap, yOverlap);
-          if (xOverlap < 0 || yOverlap < 0) {
-            // return;
-          }
-          if (xOverlap < yOverlap && this.player.x < currentObj.x) {
-            this.player.setX(this.player.x + -0.1);
-            // console.log('left');
-          }
-          if (xOverlap < yOverlap && this.player.x > currentObj.x) {
-            this.player.setX(this.player.x - -0.1);
-            // console.log('right');
-          }
-          if (xOverlap > yOverlap && this.player.y < currentObj.y) {
-            this.player.setY(this.player.y + -0.1);
-            // console.log('up');
-          }
-          if (xOverlap > yOverlap && this.player.y > currentObj.y) {
-            this.player.setY(this.player.y - -0.1);
-            // console.log('down');
-          }
+          // this.physics.collide(o1, o2);
+          // let xOverlap = this.player.displayWidth / 2 + currentObj.displayWidth / 2 - Math.abs(this.player.x - currentObj.x)
+          // let yOverlap = this.player.displayHeight / 2 + currentObj.displayHeight / 2 - Math.abs(this.player.y - currentObj.y)
+          // // console.log(xOverlap, yOverlap);
+          // if (xOverlap < 0 || yOverlap < 0) {
+          //   // return;
+          // }
+          // if (xOverlap < yOverlap && this.player.x < currentObj.x) {
+          //   this.player.setX(this.player.x + -0.1);
+          //   // console.log('left');
+          // }
+          // if (xOverlap < yOverlap && this.player.x > currentObj.x) {
+          //   this.player.setX(this.player.x - -0.1);
+          //   // console.log('right');
+          // }
+          // if (xOverlap > yOverlap && this.player.y < currentObj.y) {
+          //   this.player.setY(this.player.y + -0.1);
+          //   // console.log('up');
+          // }
+          // if (xOverlap > yOverlap && this.player.y > currentObj.y) {
+          //   this.player.setY(this.player.y - -0.1);
+          //   // console.log('down');
           // }
         }
 
@@ -560,11 +578,15 @@ const Game = (props) => {
 
         this.player.moveX = (x) => {
           this.player.setVelocityX(x);
-          this.objects.children.each((o) => { o.setVelocityX(- x * (o.data.values.zFactor - 1)) })
+          // this.player.x += x / 100;
+          // this.player.x += x / 100;
+          // this.objects.children.each((o) => { o.x -= x / 100 * (o.data.values.zFactor - 1) })
         }
         this.player.moveY = (y) => {
           this.player.setVelocityY(y);
-          this.objects.children.each((o) => { o.setVelocityY(- y * (o.data.values.zFactor - 1)) })
+          // this.player.y += y / 100;
+
+          // this.objects.children.each((o) => { o.y -= y / 100 * (o.data.values.zFactor - 1) })
         }
         this.player.stopMovement = () => {
           if (this.player.anims.getName() == "runLeft") {
@@ -599,7 +621,9 @@ const Game = (props) => {
       }
 
       update() {
-        if (this.gameDialog.inDialog) {
+        this.objects.children.each((o) => { o.setVelocityX(-this.player.body.velocity.x * (o.data.values.zFactor - 1)) })
+        this.objects.children.each((o) => { o.setVelocityY(-this.player.body.velocity.y * (o.data.values.zFactor - 1)) })
+        if (this.gameDialog.inDialog || !this.player.body.blocked.none) {
           this.player.stopMovement();
         } else {
           // if (
