@@ -2,7 +2,7 @@ import { List, Map, fromJS } from 'immutable';
 import shortid from 'shortid';
 import * as types from '../actions/actionTypes';
 import { GRID_INITIAL_COLOR } from './activeFrameReducer';
-import { initStorage, getDataFromStorage } from '../../utils/storage';
+import { initStorage, getDataFromStorage, secureStorage } from '../../utils/storage';
 
 const getPositionFirstMatchInPalette = (grid, color) =>
   grid.findIndex(gridColor => gridColor.get('color') === color);
@@ -32,7 +32,6 @@ const addColorToLastGridCell = (palette, newColor) => {
 };
 
 const createPaletteGrid = () => {
-  const dataStored = getDataFromStorage(localStorage);
   // const colorList = [
   //   'rgba(0, 0, 0, 1)',
   //   'rgba(255, 0, 0, 1)',
@@ -65,7 +64,11 @@ const createPaletteGrid = () => {
   //   'rgba(56, 53, 53, 1)',
   //   'rgba(56, 53, 53, 1)'
   // ];
-  const colorList = (dataStored && 'player' in dataStored)?dataStored.player.palette:["#000000", "#FEFEFE"];
+  let player = secureStorage.getItem('player');
+  let colorList = ["#000000", "#FEFEFE"]
+  if (player && player.palette) {
+    colorList = colorList.concat(player.palette);
+  }
   return List(colorList).map(color => Map({ color, id: shortid.generate() }));
 }
 
@@ -79,7 +82,12 @@ const createPalette = () =>
     grid: createPaletteGrid(),
     position: 0
   });
-
+const setPaletteFromStorage =  (action) =>(
+  Map({
+    grid: List(action.palette).map(color => Map({ color, id: shortid.generate() })),
+    position:0
+  })
+)
 const getCellColor = ({ color }) => color || GRID_INITIAL_COLOR;
 
 const eyedropColor = (palette, action) => {
@@ -142,6 +150,8 @@ export default function paletteReducer(palette = createPalette(), action) {
       return disableColor(palette, action);
     case types.SET_DRAWING:
       return setPalette(palette, action);
+    case types.SET_STORAGE:
+      return setPaletteFromStorage(palette, action);
     default:
       return palette;
   }

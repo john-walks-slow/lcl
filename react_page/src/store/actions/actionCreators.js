@@ -85,16 +85,12 @@ export function setDrawing(
     hoveredIndex,
   };
 }
-export function setFeatures(
-  labels,
-  boxes,
-  telescopes,
-  batteries,
-  fats
+export function setStorage(
+  storage
 ) {
   return {
-    type: types.SET_FEATURES,
-    labels,boxes, telescopes, batteries, fats
+    type: types.SET_STORAGE,
+    storage
   };
 }
 

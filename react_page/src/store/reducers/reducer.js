@@ -5,7 +5,7 @@ import framesReducer from './framesReducer';
 import activeFrameReducer from './activeFrameReducer';
 import drawingToolReducer from './drawingToolReducer';
 import * as types from '../actions/actionTypes';
-import { initStorage, getDataFromStorage } from '../../utils/storage';
+import { initStorage, getDataFromStorage, secureStorage } from '../../utils/storage';
 
 function setInitialState(state) {
   const cellSize = 1;
@@ -15,33 +15,35 @@ function setInitialState(state) {
   //   grid: colorList,
   //   position: 0
   // });
-
-  const labels = 999;
-  const boxes = 0;
-  const fats = 999;
-  const batteries = 0;
-  const telescopes = 999;
-  const dataStored = getDataFromStorage(localStorage);
-  // const dataStored = false;
-  if (dataStored && 'player' in dataStored) {
-    let inventory = dataStored.player.inventory;
-    // palette.set('grid', List(inventory.palette));
-    labels = inventory.labels;
-    boxes = inventory.boxes;
-    telescopes = inventory.telescopes;
-    batteries = inventory.batteries;
-    fats = inventory.fats;
+  let player = secureStorage.getItem('player');
+  if (!player) {
+    player = {
+      palette: [],
+      labels: 0,
+      fats: 0,
+      telescopes: 0,
+      batteries: 0,
+      boxes: 0
+    }
+    secureStorage.setItem('player', player)
   }
+  const labels = player.labels;
+  const boxes = player.boxes;
+  const telescopes = player.telescopes;
+  const batteries = player.batteries;
+  const fats = player.fats;
   const initialState = {
     cellSize,
     loading: false,
     notifications: List(),
     duration: 1,
-    labels,
-    boxes,
-    telescopes,
-    batteries,
-    fats,
+    player: {
+      labels,
+      boxes,
+      telescopes,
+      batteries,
+      fats
+    }
     // palette,
   };
 
@@ -58,8 +60,15 @@ function updateUsedColors(state) {
   console.log(usedColors);
   return state.set('usedColors', usedColors);
 }
-function setFeatures(state, action) {
-  return state.merge({ labels: action.labels, boxes: action.boxes, telescopes: action.telescopes, batteries: action.batteries, fats: action.fats });
+function setStorage(state, action) {
+  const player = secureStorage.getItem('player')
+  secureStorage.setItem('player',
+    { ...player, ...action.storage })
+  return state.merge({
+    player: {
+      ...player
+    }
+  });
 }
 
 function setCellSize(state, cellSize) {
@@ -85,6 +94,7 @@ function setDuration(state, duration) {
 }
 
 function updateGridBoundaries(state, action) {
+  if (!action.gridElement) { return state; }
   const { x, y, width, height } = action.gridElement.getBoundingClientRect();
   return state.set('gridBoundaries', {
     x,
@@ -107,8 +117,8 @@ function partialReducer(state, action) {
       return setInitialState(state);
     case types.SET_DRAWING:
       return setDrawing(state, action);
-    case types.SET_FEATURES:
-      return setFeatures(state, action);
+    case types.SET_STORAGE:
+      return setStorage(state, action);
     case types.SET_CELL_SIZE:
       return setCellSize(state, action.cellSize);
     case types.SHOW_SPINNER:
