@@ -23,7 +23,8 @@ function setInitialState(state) {
       fats: 0,
       telescopes: 0,
       batteries: 0,
-      boxes: 0
+      boxes: 0,
+      ownItems:[]
     }
     secureStorage.setItem('player', player)
   }

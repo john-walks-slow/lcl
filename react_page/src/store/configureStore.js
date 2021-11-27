@@ -13,7 +13,8 @@ import {
   NEW_PROJECT,
   SET_DRAWING,
   SET_CELL_SIZE,
-  SET_RESET_GRID
+  SET_RESET_GRID,
+  SET_INITIAL_STATE
 } from './actions/actionTypes';
 
 const createIncludedActions = () =>

@@ -82,10 +82,10 @@ const createPalette = () =>
     grid: createPaletteGrid(),
     position: 0
   });
-const setPaletteFromStorage =  (action) =>(
+const setPaletteFromStorage = (action) => (
   Map({
     grid: List(action.palette).map(color => Map({ color, id: shortid.generate() })),
-    position:0
+    position: 0
   })
 )
 const getCellColor = ({ color }) => color || GRID_INITIAL_COLOR;

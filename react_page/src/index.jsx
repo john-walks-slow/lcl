@@ -10,16 +10,20 @@ import {
 import AddPage from './pages/AddPage';
 import GamePage from './pages/GamePage';
 
+import { Provider } from 'react-redux';
 
 const devMode = process.env.NODE_ENV === 'development';
 const store = configureStore(devMode);
 
 render(
   <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<GamePage />} />
-      <Route path="add" element={<AddPage store={store} />} />
-    </Routes>
+    <Provider store={store}>
+      <Routes>
+        <Route path="/" element={<GamePage dispatch={store.dispatch} />} />
+        <Route path="add" element={<AddPage dispatch={store.dispatch} />} />
+      </Routes>
+    </Provider>
+
   </BrowserRouter>
   , document.getElementById('app')
 );
