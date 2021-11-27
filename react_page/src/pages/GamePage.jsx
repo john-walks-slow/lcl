@@ -52,7 +52,7 @@ const Game = (props) => {
   var DAY_OFFSET = OBJECT_W.S;
   var DENSITY_OFFSET = OBJECT_W.M;
   var ACTIVITY_OFFSET = 1;
-  const MOVE_SPEED = PLAYER_TARGET_W * 3;
+  const MOVE_SPEED = PLAYER_TARGET_W * 1.4;
   const ZOOM_OUT_LEVEL = 0.3;
   const GRID_SIZE = Math.max(WINDOW_H, WINDOW_W) / ZOOM_OUT_LEVEL;
   const timestamp = Date.parse(new Date());
@@ -362,7 +362,7 @@ const Game = (props) => {
               // console.log(this.objects);
               o.instance.body.setImmovable(true);
               o.instance.depth = o.zFactor;
-              o.zFactor<1&&(o.instance.alpha =  o.zFactor/1.5);
+              o.zFactor < 1 && (o.instance.alpha = o.zFactor / 1.5);
               o.instance.setData("name", o.name);
               o.instance.setData("dialog", o.dialog);
               o.instance.setData("zFactor", o.zFactor);
@@ -636,14 +636,6 @@ const Game = (props) => {
             }
             else { this.player.stopMovement(); }
 
-          }
-          if (
-            this.cursors.up.isUp &&
-            this.cursors.left.isUp &&
-            this.cursors.down.isUp &&
-            this.cursors.right.isUp
-          ) {
-            this.player.stopMovement();
           }
         }
       }
