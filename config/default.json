@@ -2,9 +2,6 @@
   "host": "localhost",
   "port": 3030,
   "public": "../public/",
-  "paginate": {
-    "default": 10,
-    "max": 50
-  },
+  "paginate": false,
   "mongodb": "mongodb+srv://john:john2014MONGO@lcl-db.wlm7x.mongodb.net/lcl?retryWrites=true&w=majority"
 }
