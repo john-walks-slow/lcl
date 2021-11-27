@@ -49,12 +49,14 @@ const Game = (props) => {
   // const TIME_DELAY = 60 * 60 * 1000;
   const TIME_DELAY = 0;
   const RANDOM_ZONE_W = OBJECT_W.M;
+  var DAY_OFFSET = OBJECT_W.S;
   var DENSITY_OFFSET = OBJECT_W.M;
-  const MOVE_SPEED = PLAYER_TARGET_W * 1.1;
+  var ACTIVITY_OFFSET = 1;
+  const MOVE_SPEED = PLAYER_TARGET_W * 3;
   const ZOOM_OUT_LEVEL = 0.3;
   const GRID_SIZE = Math.max(WINDOW_H, WINDOW_W) / ZOOM_OUT_LEVEL;
   const timestamp = Date.parse(new Date());
-  const [mainScene, setMainScene] = useState();
+  let mainScene;
   const [showInfo, setShowInfo] = useState();
 
   useEffect(() => {
@@ -139,7 +141,10 @@ const Game = (props) => {
         this.dialogFadeIn.play();
         this.sentences = dialog;
         this.dialogIndex = 0;
-        if (name != "") { this.dialogHeader.setText(name) };
+        if (name != "") { this.dialogHeader.setText(name) }
+        else {
+          this.dialogHeader.setText('???')
+        }
         this.dialogText.setText(this.sentences[this.dialogIndex]);
         console.log(this.sentences);
       }
@@ -159,7 +164,7 @@ const Game = (props) => {
         var restClient = rest();
         // Configure an AJAX library (see below) with that client
         app.configure(restClient.fetch(window.fetch));
-        app.service('objects').find().then(({ data }) => {
+        app.service('objects').find({ paginate: false }).then((data) => {
           let objectList = data;
           console.log(objectList);
           this.load.image('bg', bgURL);
@@ -179,7 +184,7 @@ const Game = (props) => {
           //   }))
           // });
           objectList.forEach((o) => {
-            if (timestamp - o.birthday < (48 * 60 * 60)) { DENSITY_OFFSET -= 10; }
+            // if (timestamp - o.birthday < (48 * 60 * 60)) { ACTIVITY_OFFSET += 0.5; }
             switch (o.isAnimate) {
               case true:
                 var shardsImg = new Image();
@@ -196,7 +201,7 @@ const Game = (props) => {
             }
           });
           objectList.sort((a, b) => b.birthday - a.birthday)
-          DENSITY_OFFSET = Math.min(OBJECT_W.L, DENSITY_OFFSET);
+          // DENSITY_OFFSET = Math.min(OBJECT_W.L, DENSITY_OFFSET);
           this.load.on("complete", () => {
             console.log(objectList);
             this.scene.start("MainScene", { "objectList": objectList });
@@ -237,7 +242,7 @@ const Game = (props) => {
         this.objectList = data.objectList;
       }
       create() {
-        setMainScene(this);
+        mainScene = this;
         this.cursors = this.input.keyboard.createCursorKeys();
         this.camera = this.cameras.main;
         // this.add.tileSprite(WINDOW_CENTER_X, WINDOW_CENTER_Y,WINDOW_W,WINDOW_H,'bg');
@@ -253,7 +258,7 @@ const Game = (props) => {
         // })
         this.player.on('pointerover', () => { this.pointerOnPlayer = true })
         this.player.on('pointerout', () => { this.pointerOnPlayer = false })
-
+        this.player.depth = 1;
         this.camera.startFollow(this.player);
         this.camera.setBackgroundColor(0xFFFFFF);
         this.camera.setFollowOffset(0, -0);
@@ -286,7 +291,7 @@ const Game = (props) => {
         let dateOffset = 0;
         this.objectList.forEach((o, i) => {
           if (timestamp - o.birthday < TIME_DELAY) { return; }
-          dateOffset += Math.min(1, (previousDate - o.birthday) / (14 * 24 * 60 * 60)) * 5 * PLAYER_TARGET_W;
+          dateOffset += Math.min(14, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) * DAY_OFFSET;
           previousDate = o.birthday;
           offset = (DENSITY_OFFSET * (i ** 0.5));
           // console.log({ dateOffset, offset });
@@ -296,8 +301,18 @@ const Game = (props) => {
           let distance = o.seed[1] * RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
           o.x = Math.cos(rad) * distance;
           o.y = Math.sin(rad) * distance;
-          o.zFactor = (o.zFactor == 1) ? o.zFactor - 0.1 + Math.random() * 0.2 : o.zFactor;
+          o.isBackground = o.zFactor != 1;
+          // (o.zFactor > 1) && (o.zFactor =1.4);
+          // (o.zFactor < 1) && (o.zFactor =0.6);
+          // o.zFactor = (o.zFactor == 1) ? o.zFactor - 0.1 + Math.random() * 0.2 : o.zFactor;
           o.ratio = o.rows / o.columns;
+          if (o.ratio < 1) {
+            o.displayWidth = OBJECT_W[o.size] / o.zFactor;
+            o.displayHeight = OBJECT_W[o.size] / o.zFactor * o.ratio
+          } else {
+            o.displayWidth = OBJECT_W[o.size] / o.zFactor / o.ratio;
+            o.displayHeight = OBJECT_W[o.size] / o.zFactor;
+          }
           o.zone = [Math.ceil(o.x / GRID_SIZE), Math.ceil(o.y / GRID_SIZE)]
           o.isAnimate ? this.anims.create({
             key: 'spritesheet' + o._id,
@@ -328,19 +343,69 @@ const Game = (props) => {
           return results
         }
         this.previousZone = null;
+        this.objects.updateObjects = (previousZone, currentZone) => {
+          let previousZones = this.objectMap.getNearBy(previousZone);
+          let currentZones = this.objectMap.getNearBy(currentZone);
+          let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()))
+          let destroyZones = previousZones.filter(x => !currentZones.toString().includes(x.toString()))
+          console.log({ prev: previousZones, cur: currentZones });
+          console.log({ create: createZones, destroy: destroyZones });
+          createZones.forEach((zone) => {
+            // console.log(this.objectMap);
+            if (!this.objectMap[zone[0]]) { return; }
+            if (!this.objectMap[zone[0]][[zone[1]]]) { return; }
+            let os = this.objectMap[zone[0]][zone[1]];
+            os.forEach((o) => {
+              console.log(o);
+              o.instance = this.objects.create(o.x, o.y, "object" + o._id);
+              // o.instance = this.physics.add.sprite(o.x,o.y,"object"+o.id);
+              // console.log(this.objects);
+              o.instance.body.setImmovable(true);
+              o.instance.depth = o.zFactor;
+              o.zFactor<1&&(o.instance.alpha =  o.zFactor/1.5);
+              o.instance.setData("name", o.name);
+              o.instance.setData("dialog", o.dialog);
+              o.instance.setData("zFactor", o.zFactor);
+              o.instance.setData("isBackground", o.isBackground);
+              o.instance.setDisplaySize(o.displayWidth, o.displayHeight);
+              if (o.isAnimate) {
+                o.instance.anims.play('spritesheet' + o._id)
+              }
+              if (o.dialog.length > 0) {
+                let phy = this.physics.add.collider(this.player, o.instance, this.colliderHandler)
+                console.log(phy);
+                o.instance.setData("collider", phy);
+              }
+              o.instance.refreshBody();
 
+            })
+          })
+          destroyZones.forEach((zone) => {
+            if (!this.objectMap[zone[0]]) { return; }
+            if (!this.objectMap[zone[0]][[zone[1]]]) { return; }
+            let os = this.objectMap[zone[0]][zone[1]];
+            os.forEach((o) => {
+              this.objects.remove(o.instance, true, true)
+            })
+          })
+        }
+        // this.objects.updateObjects(false, [0, 0]);
+        // this.previousZone = [0, 0];
         this.gameDialog = new Dialog(this);
         this.reactMenu = document.getElementById('GAME_MENU');
         this.reactMenu.classList.add("show");
         const handleInput = (e) => {
           // if the click is not on the root react div, we call stopPropagation()
           let target = e.target;
+          // console.log(target);
           if (target.className == "game__button-menu") {
             e.stopPropagation();
           }
         }
+        // TODO: Remove input listener after dettached
         this.reactMenu.addEventListener('mousedown', handleInput)
         this.reactMenu.addEventListener('touchstart', handleInput)
+        // TODO: Better collider for background / foreground
         this.colliderHandler = (o1, o2) => {
           if (this.gameDialog.inDialog) { return; }
           let currentObj;
@@ -350,7 +415,13 @@ const Game = (props) => {
           else {
             currentObj = o1;
           }
-          console.log(currentObj);
+          if (currentObj.data.values.dialog.length > 0) {
+            this.gameDialog.showDialog(currentObj.data.values.dialog, currentObj.data.values.name)
+            if (currentObj.data.values.isBackground) {
+              currentObj.data.values.collider.destroy();
+            }
+          }
+
           let xOverlap = this.player.displayWidth / 2 + currentObj.displayWidth / 2 - Math.abs(this.player.x - currentObj.x)
           let yOverlap = this.player.displayHeight / 2 + currentObj.displayHeight / 2 - Math.abs(this.player.y - currentObj.y)
           // console.log(xOverlap, yOverlap);
@@ -373,9 +444,6 @@ const Game = (props) => {
             this.player.setY(this.player.y - -0.1);
             // console.log('down');
           }
-          // console.log(currentObj);
-          // console.log(dialog);
-          if (currentObj.data.values.dialog.length > 0) { this.gameDialog.showDialog(currentObj.data.values.dialog, currentObj.data.values.name) }
           // }
         }
 
@@ -441,15 +509,20 @@ const Game = (props) => {
         this.camera.initAnim.on('complete', () => {
           this.camera.toggleZoom = () => {
             console.log('toggle');
-            this.camera.zoom == 1&& this.camera.zoomOutAnim.play();
+            this.camera.zoom == 1 && this.camera.zoomOutAnim.play();
             this.camera.zoom == ZOOM_OUT_LEVEL && this.camera.zoomInAnim.play()
           }
         })
-      }
 
-      update() {
-        // console.log(this.player.x,this.player.y);
-        let stopMovement = () => {
+        this.player.moveX = (x) => {
+          this.player.setVelocityX(x);
+          this.objects.children.each((o) => { o.setVelocityX(- x * (o.data.values.zFactor - 1)) })
+        }
+        this.player.moveY = (y) => {
+          this.player.setVelocityY(y);
+          this.objects.children.each((o) => { o.setVelocityY(- y * (o.data.values.zFactor - 1)) })
+        }
+        this.player.stopMovement = () => {
           if (this.player.anims.getName() == "runLeft") {
             // player.anims.stopOnFrame(player.anims.currentAnim.frames[1]);
             // player.anims.chain();
@@ -474,134 +547,105 @@ const Game = (props) => {
             this.player.anims.play('standDown', true);
 
           }
-          moveX(0);
-          moveY(0);
-        }
-        let moveX = (x) => {
-          this.player.setVelocityX(x);
-          this.objects.children.each((o) => { o.setVelocityX(- x * (o.data.values.zFactor - 1)) })
-        }
-        let moveY = (y) => {
-          this.player.setVelocityY(y);
-          this.objects.children.each((o) => { o.setVelocityY(- y * (o.data.values.zFactor - 1)) })
+          this.player.moveX(0);
+          this.player.moveY(0);
         }
 
-        let updateObjects = (previousZone, currentZone) => {
-          let previousZones = this.objectMap.getNearBy(previousZone);
-          let currentZones = this.objectMap.getNearBy(currentZone);
-          let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()))
-          let destroyZones = previousZones.filter(x => !currentZones.toString().includes(x.toString()))
-          console.log({ prev: previousZones, cur: currentZones });
-          console.log({ create: createZones, destroy: destroyZones });
-          createZones.forEach((zone) => {
-            // console.log(this.objectMap);
-            if (!this.objectMap[zone[0]]) { return; }
-            if (!this.objectMap[zone[0]][[zone[1]]]) { return; }
-            let os = this.objectMap[zone[0]][zone[1]];
-            os.forEach((o) => {
-              console.log(o);
-              o.instance = this.objects.create(o.x, o.y, "object" + o._id);
-              // o.instance = this.physics.add.sprite(o.x,o.y,"object"+o.id);
-              // console.log(this.objects);
-              o.instance.depth = o.zFactor;
-              o.instance.setData("name", o.name);
-              o.instance.setData("dialog", o.dialog);
-              o.instance.setData("zFactor", o.zFactor);
-              o.ratio < 1 ?
-                o.instance.setDisplaySize(OBJECT_W[o.size] / o.zFactor, OBJECT_W[o.size] * o.ratio / o.zFactor)
-                : o.instance.setDisplaySize(OBJECT_W[o.size] / o.zFactor / o.ratio, OBJECT_W[o.size] / o.zFactor);
-              if (o.isAnimate) {
-                o.instance.anims.play('spritesheet' + o._id)
-              }
-              o.instance.refreshBody();
-              // this.objects.add(o.instance);
-              this.physics.add.collider(this.player, o.instance, this.colliderHandler);
-            })
-          })
-          destroyZones.forEach((zone) => {
-            if (!this.objectMap[zone[0]]) { return; }
-            if (!this.objectMap[zone[0]][[zone[1]]]) { return; }
-            let os = this.objectMap[zone[0]][zone[1]];
-            os.forEach((o) => {
-              this.objects.remove(o.instance, true, true)
-            })
-          })
-        }
 
+
+      }
+
+      update() {
         if (this.gameDialog.inDialog) {
-          stopMovement();
+          this.player.stopMovement();
+        } else {
+          // if (
+          //   Phaser.Input.Keyboard.JustDown(this.cursors.up) ||
+          //   Phaser.Input.Keyboard.JustDown(this.cursors.left) ||
+          //   Phaser.Input.Keyboard.JustDown(this.cursors.down) ||
+          //   Phaser.Input.Keyboard.JustDown(this.cursors.right)
+          // )
+
+          if (true) {
+            let currentZone = this.objectMap.getZone(this.player)
+            // console.log(currentZone,this.previousZone);
+            if (!(this.previousZone && currentZone[0] == this.previousZone[0] && currentZone[1] == this.previousZone[1])) {
+              this.objects.updateObjects(this.previousZone, currentZone);
+              this.previousZone = currentZone;
+            }
+            let mousePosX = this.input.activePointer.x - WINDOW_CENTER_X;
+            let mousePosY = WINDOW_CENTER_Y - this.input.activePointer.y;
+            // if (this.input.activePointer.isDown && (Math.abs(mousePosX) <= PLAYER_TARGET_W * 0.5 || Math.abs(mousePosY) <= PLAYER_TARGET_H * 0.5)){
+            // 	camera.toggleZoom();
+            // };
+            let isMouseMovement = this.input.activePointer.isDown && !this.pointerOnPlayer;
+            let mouseAngle = isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY]);
+            if (this.cursors.left.isDown || this.cursors.right.isDown || this.cursors.up.isDown || this.cursors.down.isDown || isMouseMovement) {
+              // camera.setZoom(1);
+              this.camera.zoom == this.camera.zoomOutLevel && this.camera.zoomInAnim.play();
+            }
+            if ((this.cursors.left.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
+              this.player.moveX(- MOVE_SPEED * 0.75);
+              this.player.moveY(- MOVE_SPEED * 0.75);
+              this.gameDialog.dialogRetrigger = true;
+              this.player.anims.play('runLeft', true);
+            }
+            else if ((this.cursors.left.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
+              this.player.moveX(- MOVE_SPEED * 0.75);
+              this.player.moveY(MOVE_SPEED * 0.75);
+              this.gameDialog.dialogRetrigger = true;
+              this.player.anims.play('runLeft', true);
+            }
+            else if ((this.cursors.right.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
+              this.player.moveX(MOVE_SPEED * 0.75);
+              this.player.moveY(- MOVE_SPEED * 0.75);
+              this.gameDialog.dialogRetrigger = true;
+              this.player.anims.play('runRight', true);
+            }
+            else if ((this.cursors.right.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
+              this.player.moveX(MOVE_SPEED * 0.75);
+              this.player.moveY(MOVE_SPEED * 0.75);
+              this.gameDialog.dialogRetrigger = true;
+              this.player.anims.play('runRight', true);
+            }
+            else if ((this.cursors.left.isDown) || (isMouseMovement && mousePosX < 0 && mouseAngle >= Math.PI * 0.375 && mouseAngle <= Math.PI * 0.625)) {
+              this.player.moveX(- MOVE_SPEED);
+              this.player.moveY(0);
+              this.gameDialog.dialogRetrigger = true;
+              this.player.anims.play('runLeft', true);
+            }
+            else if ((this.cursors.right.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.375 && mouseAngle <= Math.PI * 0.625)) {
+              this.player.moveX(MOVE_SPEED);
+              this.player.moveY(0);
+              this.gameDialog.dialogRetrigger = true;
+              this.player.anims.play('runRight', true);
+            }
+
+            else if ((this.cursors.down.isDown) || (isMouseMovement && mouseAngle >= Math.PI * 0.875)) {
+              this.player.moveX(0);
+              this.player.moveY(MOVE_SPEED);
+              this.gameDialog.dialogRetrigger = true;
+              this.player.anims.play('runDown', true);
+            }
+
+            else if ((this.cursors.up.isDown) || (isMouseMovement && mouseAngle <= Math.PI * 0.125)) {
+              this.player.moveX(0);
+              this.player.moveY(- MOVE_SPEED);
+              this.gameDialog.dialogRetrigger = true;
+              this.player.anims.play('runUp', true);
+            }
+            else { this.player.stopMovement(); }
+
+          }
+          if (
+            this.cursors.up.isUp &&
+            this.cursors.left.isUp &&
+            this.cursors.down.isUp &&
+            this.cursors.right.isUp
+          ) {
+            this.player.stopMovement();
+          }
         }
-        else {
-          let currentZone = this.objectMap.getZone(this.player)
-          // console.log(currentZone,this.previousZone);
-          if (!(this.previousZone && currentZone[0] == this.previousZone[0] && currentZone[1] == this.previousZone[1])) {
-            updateObjects(this.previousZone, currentZone);
-            this.previousZone = currentZone;
-          }
-          let mousePosX = this.input.activePointer.x - WINDOW_CENTER_X;
-          let mousePosY = WINDOW_CENTER_Y - this.input.activePointer.y;
-          // if (this.input.activePointer.isDown && (Math.abs(mousePosX) <= PLAYER_TARGET_W * 0.5 || Math.abs(mousePosY) <= PLAYER_TARGET_H * 0.5)){
-          // 	camera.toggleZoom();
-          // };
-          let isMouseMovement = this.input.activePointer.isDown && !this.pointerOnPlayer;
-          let mouseAngle = isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY]);
-          if (this.cursors.left.isDown || this.cursors.right.isDown || this.cursors.up.isDown || this.cursors.down.isDown || isMouseMovement) {
-            // camera.setZoom(1);
-            this.camera.zoom == this.camera.zoomOutLevel && this.camera.zoomInAnim.play();
-          }
-          if ((this.cursors.left.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-            moveX(- MOVE_SPEED * 0.75);
-            moveY(- MOVE_SPEED * 0.75);
-            this.gameDialog.dialogRetrigger = true;
-            this.player.anims.play('runLeft', true);
-          }
-          else if ((this.cursors.left.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-            moveX(- MOVE_SPEED * 0.75);
-            moveY(MOVE_SPEED * 0.75);
-            this.gameDialog.dialogRetrigger = true;
-            this.player.anims.play('runLeft', true);
-          }
-          else if ((this.cursors.right.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-            moveX(MOVE_SPEED * 0.75);
-            moveY(- MOVE_SPEED * 0.75);
-            this.gameDialog.dialogRetrigger = true;
-            this.player.anims.play('runRight', true);
-          }
-          else if ((this.cursors.right.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-            moveX(MOVE_SPEED * 0.75);
-            moveY(MOVE_SPEED * 0.75);
-            this.gameDialog.dialogRetrigger = true;
-            this.player.anims.play('runRight', true);
-          }
-          else if ((this.cursors.left.isDown) || (isMouseMovement && mousePosX < 0 && mouseAngle >= Math.PI * 0.375 && mouseAngle <= Math.PI * 0.625)) {
-            moveX(- MOVE_SPEED);
-            moveY(0);
-            this.gameDialog.dialogRetrigger = true;
-            this.player.anims.play('runLeft', true);
-          }
-          else if ((this.cursors.right.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.375 && mouseAngle <= Math.PI * 0.625)) {
-            moveX(MOVE_SPEED);
-            moveY(0);
-            this.gameDialog.dialogRetrigger = true;
-            this.player.anims.play('runRight', true);
-          }
-
-          else if ((this.cursors.down.isDown) || (isMouseMovement && mouseAngle >= Math.PI * 0.875)) {
-            moveX(0);
-            moveY(MOVE_SPEED);
-            this.gameDialog.dialogRetrigger = true;
-            this.player.anims.play('runDown', true);
-          }
-
-          else if ((this.cursors.up.isDown) || (isMouseMovement && mouseAngle <= Math.PI * 0.125)) {
-            moveX(0);
-            moveY(- MOVE_SPEED);
-            this.gameDialog.dialogRetrigger = true;
-            this.player.anims.play('runUp', true);
-          }
-          else { stopMovement(); }
-        }
-
       }
     }
 
@@ -622,7 +666,10 @@ const Game = (props) => {
     };
 
     var game = new Phaser.Game(config);
-
+    return (() => {
+      mainScene.scene.stop('MainScene');
+      mainScene.input.destroy();
+    });
   }
     , []);
 
@@ -632,10 +679,10 @@ const Game = (props) => {
         <input className="game__button-menu" type="image" onClick={() => { navigate('/add') }} src={newBtnURL} />
         <input className="game__button-menu" type="image" onClick={() => { mainScene.camera.toggleZoom() }} src={mapBtnURL} />
         <input className="game__button-menu" type="image" src={bagBtnURL} />
-        <input className="game__button-menu" type="image" onClick={() => {setShowInfo(!showInfo)}}src={infoBtnURL} />
+        <input className="game__button-menu" type="image" onClick={() => { setShowInfo(!showInfo) }} src={infoBtnURL} />
       </div>
       <div id="GAME_INVENTORY"></div>
-      <div id="GAME_INFO" className={showInfo?"show":""}>
+      <div id="GAME_INFO" className={showInfo ? "show" : ""}>
         <ReactMarkdown>{ReadMe.toString()}</ReactMarkdown>
 
       </div>
@@ -644,5 +691,6 @@ const Game = (props) => {
     </div>
 
   )
+
 }
 export default Game;
