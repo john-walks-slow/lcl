@@ -29,8 +29,8 @@ const Game = (props) => {
   const WINDOW_H = window.innerHeight || document.body.clientHeight;
   const WINDOW_CENTER_X = WINDOW_W / 2;
   const WINDOW_CENTER_Y = WINDOW_H / 2;
-  const PLAYER_TARGET_W = Math.min(WINDOW_W / 11, WINDOW_H / 11 / 44 * 37);
-  const PLAYER_TARGET_H = Math.min(WINDOW_W / 11, WINDOW_H / 11 / 44 * 37) / 37 * 44;
+  const PLAYER_TARGET_W = Math.min(WINDOW_W / 9, WINDOW_H / 11 / 44 * 37);
+  const PLAYER_TARGET_H = Math.min(WINDOW_W / 9, WINDOW_H / 11 / 44 * 37) / 37 * 44;
   // const PLAYER_TARGET_W = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37);
   // const PLAYER_TARGET_H = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37) / 37 * 44;
   const OBJECT_W = { XL: PLAYER_TARGET_H * 1.8, L: PLAYER_TARGET_H * 1.3, M: PLAYER_TARGET_H * 0.9, S: PLAYER_TARGET_H * 0.7, XS: PLAYER_TARGET_H * 0.4 }
@@ -286,6 +286,16 @@ const Game = (props) => {
         console.log(PLAYER_TARGET_H);
         this.objectMap = [];
         this.objects = this.physics.add.group();
+        this.objects.createCallback = (o) => {
+          let collidedObjects = this.physics.overlapRect(o.x - o.displayWidth / 2, o.y - o.displayHeight / 2, o.displayWidth, o.displayHeight);
+          collidedObjects = collidedObjects.filter(c => c.gameObject.data.values.id != o.instance.data.values.id);
+          if (collidedObjects.length>0) {
+            console.log(collidedObjects);
+            collidedObjects.forEach((c) => {
+              this.physics.world.separate(o.instance.body, c)
+            })
+          }
+        }
         let previousDate = timestamp;
         let offset;
         let dateOffset = 0;
@@ -318,6 +328,7 @@ const Game = (props) => {
             key: 'spritesheet' + o._id,
             frames: 'object' + o._id,
             frameRate: 2,
+            delay: Math.random()*1000,
             repeat: -1,
             repeatDelay: 0
           }) : false;
@@ -356,13 +367,18 @@ const Game = (props) => {
             if (!this.objectMap[zone[0]][[zone[1]]]) { return; }
             let os = this.objectMap[zone[0]][zone[1]];
             os.forEach((o) => {
-              console.log(o);
+              // this.physics.overlapRect(o.x-o.displayWidth/2, o.y-o.displayHeight/2, o.displayWidth, o.displayHeight,true,true);
+
               o.instance = this.objects.create(o.x, o.y, "object" + o._id);
+              // o.instance.on('addedtoscene',()=>{
+              //   console.log(collidedObjects);
+              // })
               // o.instance = this.physics.add.sprite(o.x,o.y,"object"+o.id);
               // console.log(this.objects);
               o.instance.body.setImmovable(true);
               o.instance.depth = o.zFactor;
               o.zFactor < 1 && (o.instance.alpha = o.zFactor / 1.5);
+              o.instance.setData("id", o._id);
               o.instance.setData("name", o.name);
               o.instance.setData("dialog", o.dialog);
               o.instance.setData("zFactor", o.zFactor);
@@ -376,8 +392,10 @@ const Game = (props) => {
                 console.log(phy);
                 o.instance.setData("collider", phy);
               }
-              o.instance.refreshBody();
+              setTimeout(() => {
 
+              }, 100)
+              o.instance.refreshBody();
             })
           })
           destroyZones.forEach((zone) => {
@@ -403,7 +421,7 @@ const Game = (props) => {
           let target = e.target;
           console.log(target);
           // if (target.className == "game__button-menu") {
-            e.stopPropagation();
+          e.stopPropagation();
           // }
         }
         // TODO: Remove input listener after dettached
@@ -428,7 +446,7 @@ const Game = (props) => {
               currentObj.data.values.collider.destroy();
             }
           }
-
+          this.physics.collide(o1, o2);
           let xOverlap = this.player.displayWidth / 2 + currentObj.displayWidth / 2 - Math.abs(this.player.x - currentObj.x)
           let yOverlap = this.player.displayHeight / 2 + currentObj.displayHeight / 2 - Math.abs(this.player.y - currentObj.y)
           // console.log(xOverlap, yOverlap);
