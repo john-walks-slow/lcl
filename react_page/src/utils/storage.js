@@ -1,7 +1,8 @@
 import { blank } from '../../examples/import-export/blank';
 // import { blank } from '../../examples/import-export/blank';
-
-const STORAGE_KEY = 'pixelart-react-v3-0-0';
+import SecureStorage from "secure-web-storage";
+var CryptoJS = require("crypto-js");
+const SECRET_KEY = 'arabbitloveacat';
 
 /*
  *  Storage data structure
@@ -16,6 +17,28 @@ const STORAGE_KEY = 'pixelart-react-v3-0-0';
  *  }
  *
  */
+
+export const secureStorage = new SecureStorage(localStorage, {
+  hash: function hash(key) {
+    key = CryptoJS.SHA256(key, SECRET_KEY);
+    return key.toString();
+  },
+  encrypt: function encrypt(data) {
+    data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+
+    data = data.toString();
+
+    return data;
+  },
+  decrypt: function decrypt(data) {
+    data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+
+    data = data.toString(CryptoJS.enc.Utf8);
+
+    return data;
+  }
+});
+
 
 function saveDataToStorage(storage, data) {
   try {
