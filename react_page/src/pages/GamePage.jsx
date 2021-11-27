@@ -48,9 +48,9 @@ const Game = (props) => {
   const FONT_FAMILY_HEADER = "pixel"
   // const TIME_DELAY = 60 * 60 * 1000;
   const TIME_DELAY = 0;
-  const RANDOM_ZONE_W = OBJECT_W.M;
-  var DAY_OFFSET = OBJECT_W.S;
-  var DENSITY_OFFSET = OBJECT_W.M;
+  const RANDOM_ZONE_W = OBJECT_W.L;
+  var DAY_OFFSET = OBJECT_W.M;
+  var DENSITY_OFFSET = OBJECT_W.XL;
   var ACTIVITY_OFFSET = 1;
   const MOVE_SPEED = PLAYER_TARGET_W * 1.4;
   const ZOOM_OUT_LEVEL = 0.3;
@@ -166,7 +166,6 @@ const Game = (props) => {
         app.configure(restClient.fetch(window.fetch));
         app.service('objects').find({ paginate: false }).then((data) => {
           let objectList = data;
-          console.log(objectList);
           this.load.image('bg', bgURL);
           this.load.image('dialog', dialogURL);
           this.load.spritesheet('player', whiteURL, { frameWidth: 37, frameHeight: 44 });
@@ -203,12 +202,10 @@ const Game = (props) => {
           objectList.sort((a, b) => b.birthday - a.birthday)
           // DENSITY_OFFSET = Math.min(OBJECT_W.L, DENSITY_OFFSET);
           this.load.on("complete", () => {
-            console.log(objectList);
             this.scene.start("MainScene", { "objectList": objectList });
             this.scene.stop("LoadingScene");
           }, this);
           this.load.on('progress', (progress) => {
-            console.log(progress);
             this.label.text = 'Now Loading ...' + ".".repeat(Math.round(progress * 15));
           })
           this.load.start();
@@ -283,22 +280,43 @@ const Game = (props) => {
           duration: 300,
         });
         this.camera.toggleZoom = () => { }
-        console.log(PLAYER_TARGET_H);
         this.objectMap = [];
         this.objects = this.physics.add.group();
+        this.physics.world.on('overlap', (o1, o2, b1, b2) => {
+        })
+        let movedObjects = [];
         this.objects.createCallback = (o) => {
-          let collidedObjects = this.physics.overlapRect(o.x - o.displayWidth / 2, o.y - o.displayHeight / 2, o.displayWidth, o.displayHeight);
-          collidedObjects = collidedObjects.filter(c => c.gameObject.data.values.id != o.instance.data.values.id);
-          if (collidedObjects.length>0) {
-            console.log(collidedObjects);
-            collidedObjects.forEach((c) => {
-              this.physics.world.separate(o.instance.body, c)
-            })
-          }
+          setTimeout(() => {
+            // console.log(o.body.touching);
+            // if (o.body.overlapX != 0 || o.body.overlapY != 0) {
+            //   o.x -= o.body.overlapX / 2;
+            //   o.y -= o.body.overlapY / 2;
+            // }
+
+            let collidedObjects = this.physics.overlapRect(o.x - o.displayWidth / 2, o.y - o.displayHeight / 2, o.displayWidth, o.displayHeight);
+            collidedObjects = collidedObjects.filter(c =>
+              (c.gameObject.data.values.id != o.data.values.id) && !movedObjects.includes(c.gameObject));
+            if (collidedObjects.length > 0) {
+              collidedObjects.forEach((c) => {
+                let cg = c.gameObject;
+                // cg.alpha=0;
+                cg.x += o.displayWidth;
+                cg.y -= o.displayHeight;
+                movedObjects.push(cg);
+                // o.instance.alpha = 0;
+                // this.physics.world.separate(o.instance.body, c)
+              })
+            }
+          }, 150)
+
         }
         let previousDate = timestamp;
         let offset;
         let dateOffset = 0;
+        function seededRandom(seed) {
+          var x = Math.sin(seed++) * 10000;
+          return x - Math.floor(x);
+        }
         this.objectList.forEach((o, i) => {
           if (timestamp - o.birthday < TIME_DELAY) { return; }
           dateOffset += Math.min(14, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) * DAY_OFFSET;
@@ -312,9 +330,9 @@ const Game = (props) => {
           o.x = Math.cos(rad) * distance;
           o.y = Math.sin(rad) * distance;
           o.isBackground = o.zFactor != 1;
+          (!o.isBackground) && (o.zFactor = o.zFactor - 0.04 + seededRandom(i) * 0.08);
           // (o.zFactor > 1) && (o.zFactor =1.4);
           // (o.zFactor < 1) && (o.zFactor =0.6);
-          // o.zFactor = (o.zFactor == 1) ? o.zFactor - 0.1 + Math.random() * 0.2 : o.zFactor;
           o.ratio = o.rows / o.columns;
           if (o.ratio < 1) {
             o.displayWidth = OBJECT_W[o.size] / o.zFactor;
@@ -328,7 +346,7 @@ const Game = (props) => {
             key: 'spritesheet' + o._id,
             frames: 'object' + o._id,
             frameRate: 2,
-            delay: Math.random()*1000,
+            delay: Math.random() * 1000,
             repeat: -1,
             repeatDelay: 0
           }) : false;
@@ -340,6 +358,7 @@ const Game = (props) => {
           }
           this.objectMap[o.zone[0]][o.zone[1]].push(o);
         })
+        console.log(this.objectList);
         this.objectMap.getZone = (player) => {
           return [Math.ceil(player.x / GRID_SIZE), Math.ceil(player.y / GRID_SIZE)]
         }
@@ -384,12 +403,12 @@ const Game = (props) => {
               o.instance.setData("zFactor", o.zFactor);
               o.instance.setData("isBackground", o.isBackground);
               o.instance.setDisplaySize(o.displayWidth, o.displayHeight);
+              o.instance.body.onOverlap = true;
               if (o.isAnimate) {
                 o.instance.anims.play('spritesheet' + o._id)
               }
               if (o.dialog.length > 0) {
                 let phy = this.physics.add.collider(this.player, o.instance, this.colliderHandler)
-                console.log(phy);
                 o.instance.setData("collider", phy);
               }
               setTimeout(() => {
