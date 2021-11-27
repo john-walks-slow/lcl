@@ -392,19 +392,26 @@ const Game = (props) => {
         // this.objects.updateObjects(false, [0, 0]);
         // this.previousZone = [0, 0];
         this.gameDialog = new Dialog(this);
-        this.reactMenu = document.getElementById('GAME_MENU');
-        this.reactMenu.classList.add("show");
+        let reactMenu = document.getElementById('GAME_MENU');
+        let gameInfo = document.getElementById('GAME_INFO');
+        reactMenu.classList.add("show");
+        this.reactComponents = [
+          reactMenu, gameInfo
+        ]
         const handleInput = (e) => {
           // if the click is not on the root react div, we call stopPropagation()
           let target = e.target;
-          // console.log(target);
-          if (target.className == "game__button-menu") {
+          console.log(target);
+          // if (target.className == "game__button-menu") {
             e.stopPropagation();
-          }
+          // }
         }
         // TODO: Remove input listener after dettached
-        this.reactMenu.addEventListener('mousedown', handleInput)
-        this.reactMenu.addEventListener('touchstart', handleInput)
+        this.reactComponents.forEach((c) => {
+          c.addEventListener('mousedown', handleInput)
+          c.addEventListener('touchstart', handleInput)
+        })
+
         // TODO: Better collider for background / foreground
         this.colliderHandler = (o1, o2) => {
           if (this.gameDialog.inDialog) { return; }
@@ -552,7 +559,6 @@ const Game = (props) => {
         }
 
 
-
       }
 
       update() {
@@ -659,8 +665,8 @@ const Game = (props) => {
 
     var game = new Phaser.Game(config);
     return (() => {
+      mainScene.input.keyboard.clearCaptures();
       mainScene.scene.stop('MainScene');
-      mainScene.input.destroy();
     });
   }
     , []);
