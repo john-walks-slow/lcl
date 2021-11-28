@@ -10,7 +10,7 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { secureStorage } from '../utils/storage';
 import { connect } from 'react-redux';
 import {
-  newProject, setStorage
+  newProject, setStorage, updateUsedColors
 } from '../store/actions/actionCreators';
 
 const Page = ({ dispatch }) => {
@@ -153,6 +153,7 @@ const Page = ({ dispatch }) => {
     document.title = "New Object";
     setShow(true);
     dispatch(newProject());
+    dispatch(updateUsedColors());
     document.body.style.overflow = 'auto';
     let app = feathers();
     // Connect to the same as the browser URL (only in the browser)
