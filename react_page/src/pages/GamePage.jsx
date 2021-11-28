@@ -9,22 +9,22 @@ import { renderBlob } from '../utils/canvasGIF';
 // import Phaser from 'jquery';
 import Phaser from 'phaser';
 
-import bgURL from '../assets/game/bg.png'
-import newBtnURL from '../assets/game/new.png'
-import bagBtnURL from '../assets/game/bag.png'
-import mapBtnURL from '../assets/game/map.png'
-import infoBtnURL from '../assets/game/info.png'
+import bgURL from '../assets/game/bg.png';
+import newBtnURL from '../assets/game/new.png';
+import bagBtnURL from '../assets/game/bag.png';
+import mapBtnURL from '../assets/game/map.png';
+import infoBtnURL from '../assets/game/info.png';
 // import colorURL from '../assets/game/color.png'
-import dialogURL from '../assets/game/dialog2.png'
-import boxURL from '../assets/game/boxes.png'
-import fatURL from '../assets/game/fats.png'
-import labelURL from '../assets/game/labels.png'
-import telescopeURL from '../assets/game/telescopes.png'
-import batteryURL from '../assets/game/batteries.png'
-import whiteURL from '../assets/game/white.png'
+import dialogURL from '../assets/game/dialog2.png';
+import boxURL from '../assets/game/boxes.png';
+import fatURL from '../assets/game/fats.png';
+import labelURL from '../assets/game/labels.png';
+import telescopeURL from '../assets/game/telescopes.png';
+import batteryURL from '../assets/game/batteries.png';
+import whiteURL from '../assets/game/white.png';
 import { useParams, useNavigate } from "react-router-dom";
-import ReadMe from '../../../README.md'
-import ReactMarkdown from 'react-markdown'
+import ReadMe from '../../../README.md';
+import ReactMarkdown from 'react-markdown';
 import { secureStorage } from '../utils/storage';
 
 
@@ -37,7 +37,7 @@ function xmur3(str) {
     h = Math.imul(h ^ h >>> 16, 2246822507);
     h = Math.imul(h ^ h >>> 13, 3266489909);
     return (h ^= h >>> 16) >>> 0;
-  }
+  };
 }
 function seededRandom(string) {
   let seed = xmur3(string);
@@ -67,7 +67,7 @@ const Game = ({ dispatch }) => {
   const PLAYER_TARGET_H = Math.min(WINDOW_W / 11, WINDOW_H / 11 / 44 * 37) / 37 * 44;
   // const PLAYER_TARGET_W = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37);
   // const PLAYER_TARGET_H = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37) / 37 * 44;
-  const OBJECT_W = { XL: PLAYER_TARGET_H * 2.5, L: PLAYER_TARGET_H * 2, M: PLAYER_TARGET_H * 1.4, S: PLAYER_TARGET_H * 1, XS: PLAYER_TARGET_H * 0.7 }
+  const OBJECT_W = { XL: PLAYER_TARGET_H * 2.5, L: PLAYER_TARGET_H * 2, M: PLAYER_TARGET_H * 1.4, S: PLAYER_TARGET_H * 1, XS: PLAYER_TARGET_H * 0.7 };
   // density: target object count in a circle (r=OBJECT_M_W*8)
 
   // const TIME_DELAY = 60 * 60 * 1000;
@@ -86,7 +86,7 @@ const Game = ({ dispatch }) => {
 
   useEffect(() => {
     document.title = "LCL";
-    document.body.style.overflow = "hidden"
+    document.body.style.overflow = "hidden";
 
     function createTestObject(object) {
       object._id = 3;
@@ -105,27 +105,27 @@ const Game = ({ dispatch }) => {
       constructor(scene) {
         super(scene);
         const DIALOG_HEIGHT = WINDOW_H / 3.5;
-        this.dialogHeight = DIALOG_HEIGHT
+        this.dialogHeight = DIALOG_HEIGHT;
         const TEXT_PADDING_W = Math.min(WINDOW_W / 15, 50);
-        this.textPaddingW = TEXT_PADDING_W
+        this.textPaddingW = TEXT_PADDING_W;
         const TEXT_PADDING_H = Math.min(WINDOW_H / 25);
-        this.textPaddingH = TEXT_PADDING_H
+        this.textPaddingH = TEXT_PADDING_H;
         const PADDING_BETWEEN = 10;
-        this.paddingBetween = PADDING_BETWEEN
+        this.paddingBetween = PADDING_BETWEEN;
         const DIALOG_PADDING_W = Math.min(WINDOW_W / 20, 70);
-        this.dialogPaddingW = DIALOG_PADDING_W
+        this.dialogPaddingW = DIALOG_PADDING_W;
         const DIALOG_PADDING_H = Math.min(WINDOW_W / 25, 30);
-        this.dialogPaddingH = DIALOG_PADDING_H
+        this.dialogPaddingH = DIALOG_PADDING_H;
         const FONT_SIZE = Math.max(WINDOW_H / 30, WINDOW_W / 40);
-        this.fontSize = FONT_SIZE
+        this.fontSize = FONT_SIZE;
         const FONT_SIZE_HEADER = FONT_SIZE * 1.2;
-        this.fontSizeHeader = FONT_SIZE_HEADER
+        this.fontSizeHeader = FONT_SIZE_HEADER;
         // const DIALOG_HEIGHT = FONT_SIZE*2+FONT_SIZE_HEADER+TEXT_PADDING_H*3 +PADDING_BETWEEN;
         // this.dialogHeight = DIALOG_HEIGHT
-        const FONT_FAMILY = "pixel"
-        this.fontFamily = FONT_FAMILY
-        const FONT_FAMILY_HEADER = "pixel"
-        this.fontFamilyHeader = FONT_FAMILY_HEADER
+        const FONT_FAMILY = "pixel";
+        this.fontFamily = FONT_FAMILY;
+        const FONT_FAMILY_HEADER = "pixel";
+        this.fontFamilyHeader = FONT_FAMILY_HEADER;
         this.scene = scene;
         this.depth = 999;
         this.dialogWindow = this.scene.add.sprite(WINDOW_CENTER_X, WINDOW_H - DIALOG_HEIGHT / 2 - DIALOG_PADDING_H, "dialog").setDisplaySize(WINDOW_W - DIALOG_PADDING_W, DIALOG_HEIGHT);
@@ -186,17 +186,17 @@ const Game = ({ dispatch }) => {
       showDialog(dialog, name, callback) {
         this.dialogCallback = callback || false;
         this.inDialog = true;
-        this.scene.camera.shake(100, 0.01)
+        this.scene.camera.shake(100, 0.01);
         // dialogWindow.on('pointerdown', () => { this.proceedDialog() });
-        this.scene.input.on('pointerdown', (e) => { this.proceedDialog() });
-        this.scene.input.keyboard.on('keydown-SPACE', () => { this.proceedDialog() });
+        this.scene.input.on('pointerdown', (e) => { this.proceedDialog(); });
+        this.scene.input.keyboard.on('keydown-SPACE', () => { this.proceedDialog(); });
 
         this.dialogFadeIn.play();
         this.sentences = dialog;
         this.dialogIndex = 0;
-        if (name != "") { this.dialogHeader.setText(name) }
+        if (name != "") { this.dialogHeader.setText(name); }
         else {
-          this.dialogHeader.setText('')
+          this.dialogHeader.setText('');
         }
         this.dialogText.setText(this.sentences[this.dialogIndex]);
         console.log(this.sentences);
@@ -209,12 +209,12 @@ const Game = ({ dispatch }) => {
         const height = width * 0.4;
         const padding = width / 8;
         const paddingTop = width / 9;
-        this.dialogWindow.setX(WINDOW_CENTER_X)
-        this.dialogWindow.setY(WINDOW_CENTER_Y)
+        this.dialogWindow.setX(WINDOW_CENTER_X);
+        this.dialogWindow.setY(WINDOW_CENTER_Y);
         this.dialogWindow.setDisplaySize(width, height);
-        this.dialogText.setX(WINDOW_CENTER_X - width / 2 + padding)
-        this.dialogText.setY(WINDOW_CENTER_Y - height / 2 + paddingTop)
-        this.dialogText.wordWrap = { width: width - padding * 2, useAdvancedWrap: true }
+        this.dialogText.setX(WINDOW_CENTER_X - width / 2 + padding);
+        this.dialogText.setY(WINDOW_CENTER_Y - height / 2 + paddingTop);
+        this.dialogText.wordWrap = { width: width - padding * 2, useAdvancedWrap: true };
       }
     }
     class LinkDialog extends Dialog {
@@ -225,14 +225,14 @@ const Game = ({ dispatch }) => {
         const padding = width / 10;
         const paddingTop = width / 9;
         this.link = '';
-        this.buttonSelected = "#000000"
-        this.dialogWindow.setX(WINDOW_CENTER_X)
-        this.dialogWindow.setY(WINDOW_CENTER_Y)
+        this.buttonSelected = "#000000";
+        this.dialogWindow.setX(WINDOW_CENTER_X);
+        this.dialogWindow.setY(WINDOW_CENTER_Y);
         this.dialogWindow.setDisplaySize(width, height);
-        this.dialogText.setText("它带着一个箱子，打开看看吗？")
-        this.dialogText.setX(WINDOW_CENTER_X - width / 2 + padding)
-        this.dialogText.setY(WINDOW_CENTER_Y - height / 2 + paddingTop)
-        this.dialogText.setWordWrapWidth(width - padding * 2, true)
+        this.dialogText.setText("它带着一个箱子，打开看看吗？");
+        this.dialogText.setX(WINDOW_CENTER_X - width / 2 + padding);
+        this.dialogText.setY(WINDOW_CENTER_Y - height / 2 + paddingTop);
+        this.dialogText.setWordWrapWidth(width - padding * 2, true);
         this.selectedOption = 0;
         this.dialogYes = this.scene.add.text(WINDOW_CENTER_X - width / 2 + padding, WINDOW_CENTER_Y + height / 2 - this.fontSizeHeader - paddingTop, " 是 ",
           {
@@ -240,18 +240,18 @@ const Game = ({ dispatch }) => {
             fontFamily: this.fontFamily,
             fontSize: (this.fontSizeHeader).toString() + "px",
           });
-        this.dialogYes.buttonId = "yes"
+        this.dialogYes.buttonId = "yes";
         this.dialogNo = this.scene.add.text(WINDOW_CENTER_X + padding, WINDOW_CENTER_Y + height / 2 - this.fontSizeHeader - paddingTop, " 否 ",
           {
             color: 0xFFFFFF,
             fontFamily: this.fontFamily,
             fontSize: (this.fontSizeHeader).toString() + "px",
           });
-        this.dialogNo.buttonId = "no"
+        this.dialogNo.buttonId = "no";
         // this.dialogSelection = this.scene.add.rectangle(
         //   WINDOW_CENTER_X - width/2+padding, WINDOW_CENTER_Y+height/2-this.fontSizeHeader-paddingTop,
         //   width/2,this.fontSizeHeader,0x000000,0.3)
-        this.add([this.dialogYes, this.dialogNo])
+        this.add([this.dialogYes, this.dialogNo]);
         this.select(1);
 
       }
@@ -280,12 +280,12 @@ const Game = ({ dispatch }) => {
         this.link = link;
         this.inDialog = true;
         this.scene.input.on('gameobjectdown', (pointer, o, event) => {
-          if (o.buttonId == "yes") { this.selectedOption = 0 }
-          if (o.buttonId == "no") { this.selectedOption = 1 }
-        })
-        this.scene.input.keyboard.on('keydown-LEFT', () => { this.select(0) });
-        this.scene.input.keyboard.on('keydown-RIGHT', () => { this.select(1) });
-        this.scene.input.keyboard.on('keydown-SPACE', () => { this.confirm() });
+          if (o.buttonId == "yes") { this.selectedOption = 0; }
+          if (o.buttonId == "no") { this.selectedOption = 1; }
+        });
+        this.scene.input.keyboard.on('keydown-LEFT', () => { this.select(0); });
+        this.scene.input.keyboard.on('keydown-RIGHT', () => { this.select(1); });
+        this.scene.input.keyboard.on('keydown-SPACE', () => { this.confirm(); });
         this.dialogFadeIn.play();
       }
     }
@@ -295,7 +295,7 @@ const Game = ({ dispatch }) => {
       constructor() {
         super({
           key: 'LoadingScene',
-        })
+        });
       }
       preload() { }
 
@@ -310,7 +310,7 @@ const Game = ({ dispatch }) => {
             '\n Reading database ...',
             '\n Loading contents ...',
             '.', '.', '.', '.', '.', '.', '.'
-          ]
+          ];
         app.configure(restClient.fetch(window.fetch));
         app.service('objects').find({ paginate: false }).then((data) => {
           let objectList = data;
@@ -352,29 +352,31 @@ const Game = ({ dispatch }) => {
                 break;
             }
           });
-          objectList.sort((a, b) => b.birthday - a.birthday)
+          objectList.sort((a, b) => b.birthday - a.birthday);
           // DENSITY_OFFSET = Math.min(OBJECT_W.L, DENSITY_OFFSET);
           this.load.on("complete", () => {
-            this.label.text += `\nStarting ...`
+            this.label.text += `\nStarting ...`;
             setTimeout(() => {
               this.scene.start("MainScene", { "objectList": objectList });
               this.scene.stop("LoadingScene");
-            }, 300)
+            }, 300);
 
           }, this);
           this.load.on('start', (progress) => {
             this.label.text +=
-              '\nWaiting for server response ...';
-          })
+              '\nFetching assets ...';
+          });
           let loadStart = false;
           this.load.on('filecomplete', (key, type, data) => {
-            if (!loadStart) { loadStart = true; this.label.text += '\nLoading Content ...' }
-            this.label.text += `\n- Fetching ${key} ..`
-          })
+            if (!loadStart) { loadStart = true; this.label.text += '\nLoading Content ...'; }
+            this.label.text += `\n- Fetching ${key} ..`;
+          });
           this.load.start();
-        })
+        });
         this.add.rectangle(WINDOW_CENTER_X, WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0x000000);
-        this.label = this.add.text(80, 80, new Date(timestamp).toString().split('GMT')[0] + "user@remote", { align: "left", color: "#FFFFFF", fontSize: 20 })
+        this.label = this.add.text(WINDOW_W / 20, 80,
+          new Date(timestamp).toString().split('GMT')[0] + "user@remote" + '\n Fetching object list...',
+          { align: "left", color: "#FFFFFF", fontSize: 16, wordWrap: { width: WINDOW_W * 0.9, useAdvancedWrap: true } });
       }
       update() {
 
@@ -419,22 +421,22 @@ const Game = ({ dispatch }) => {
         //   if (this.camera.zoom == 1) { this.camera.zoomOutAnim.play(); }
         //   if (this.camera.zoom == this.camera.zoomOutLevel) { this.camera.zoomInAnim.play(); }
         // })
-        this.player.on('pointerover', () => { this.pointerOnPlayer = true })
-        this.player.on('pointerout', () => { this.pointerOnPlayer = false })
+        this.player.on('pointerover', () => { this.pointerOnPlayer = true; });
+        this.player.on('pointerout', () => { this.pointerOnPlayer = false; });
         this.player.depth = 0.9;
         this.player.moveX = (x) => {
           this.player.setVelocityX(x);
           // this.player.x += x / 100;
           // this.player.x += x / 100;
           // this.objects.children.each((o) => { o.x -= x / 100 * (o.data.values.zFactor - 1) })
-        }
+        };
         this.player.moveY = (y) => {
           // this.camera.shake();
           this.player.setVelocityY(y);
           // this.player.y += y / 100;
 
           // this.objects.children.each((o) => { o.y -= y / 100 * (o.data.values.zFactor - 1) })
-        }
+        };
         this.player.stopMovement = () => {
           if (this.player.anims.getName() == "runLeft") {
             // player.anims.stopOnFrame(player.anims.currentAnim.frames[1]);
@@ -462,8 +464,8 @@ const Game = ({ dispatch }) => {
           }
           this.player.moveX(0);
           this.player.moveY(0);
-        }
-        this.gameObjects.add([this.player])
+        };
+        this.gameObjects.add([this.player]);
         this.camera.startFollow(this.player, false, 0.2, 0.2);
         this.camera.setBackgroundColor(0xFFFFFF);
         this.camera.setFollowOffset(0, -0);
@@ -489,15 +491,15 @@ const Game = ({ dispatch }) => {
           duration: 300,
         });
         this.camera.zoomIn = () => {
-          this.camera.zoomOutAnim.stop()
-          this.camera.zoomOutAnim.stop()
-          this.camera.zoomInAnim.play()
-        }
+          this.camera.zoomOutAnim.stop();
+          this.camera.zoomOutAnim.stop();
+          this.camera.zoomInAnim.play();
+        };
         this.camera.zoomOut = () => {
-          this.camera.zoomInAnim.stop()
-          this.camera.zoomOutAnim.play()
-        }
-        this.camera.toggleZoom = () => { }
+          this.camera.zoomInAnim.stop();
+          this.camera.zoomOutAnim.play();
+        };
+        this.camera.toggleZoom = () => { };
         this.objectMap = [];
         this.objects = this.physics.add.group({
           // bounceX:0, bounceY:0
@@ -522,7 +524,7 @@ const Game = ({ dispatch }) => {
             !player.ownItems.includes(currentObj.getData('id'))
           ) {
             this.itemDialog.showDialog([dialog]);
-            player[ITEM_LIST[currentObj.data.values.type].name]++
+            player[ITEM_LIST[currentObj.data.values.type].name]++;
             player.ownItems.push(currentObj.data.values.id);
             dispatch(setStorage(player));
           }
@@ -531,7 +533,7 @@ const Game = ({ dispatch }) => {
           // currentObj.data.values.collider.destroy();
           // currentObj.alpha=0;
 
-        }
+        };
         this.objectCollideHandler = (o1, o2) => {
           // console.log(this.player.body.velocity);
           // this.player.stopMovement();
@@ -551,7 +553,7 @@ const Game = ({ dispatch }) => {
                 if (currentObj.getData('link').length > 0) {
                   this.linkDialog.showDialog(currentObj.getData('link'));
                 }
-              })
+              });
             if (currentObj.data.values.isBackground) {
               currentObj.data.values.collider.destroy();
             } else {
@@ -559,8 +561,8 @@ const Game = ({ dispatch }) => {
             }
           }
           this.physics.collide(o1, o2);
-          let xOverlap = this.player.displayWidth / 2 + currentObj.displayWidth / 2 - Math.abs(this.player.x - currentObj.x)
-          let yOverlap = this.player.displayHeight / 2 + currentObj.displayHeight / 2 - Math.abs(this.player.y - currentObj.y)
+          let xOverlap = this.player.displayWidth / 2 + currentObj.displayWidth / 2 - Math.abs(this.player.x - currentObj.x);
+          let yOverlap = this.player.displayHeight / 2 + currentObj.displayHeight / 2 - Math.abs(this.player.y - currentObj.y);
           // console.log(xOverlap, yOverlap);
           if (xOverlap < 0 || yOverlap < 0) {
             // return;
@@ -581,7 +583,7 @@ const Game = ({ dispatch }) => {
             this.player.setY(this.player.y - -0.1);
             // console.log('down');
           }
-        }
+        };
         let movedObjects = [];
         this.objects.createCallback = (o) => {
           setTimeout(() => {
@@ -599,7 +601,7 @@ const Game = ({ dispatch }) => {
                   return;
                 }
                 if (cg.data.values.isBackground) {
-                  return
+                  return;
                 }
                 // if (movedObjects.find((a) => (a[0] == o.id && a[1] == cg.id))) {
                 //   return;
@@ -607,20 +609,20 @@ const Game = ({ dispatch }) => {
                 let xI = cg.x < o.x ? 1 : -1;
                 let yI = cg.y < o.y ? 1 : -1;
                 if (cg.x < o.x) {
-                  cg.x -= (cg.displayWidth - Math.abs(o.x - cg.x)) * 1.1
+                  cg.x -= (cg.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
                 } else {
-                  o.x += (o.displayWidth - Math.abs(o.x - cg.x)) * 1.1
+                  o.x += (o.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
                 }
                 if (cg.y < o.y) {
-                  cg.y -= (cg.displayHeight - Math.abs(o.y - cg.y)) * 1.1
+                  cg.y -= (cg.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
                 } else {
-                  o.y += (o.displayHeight - Math.abs(o.y - cg.y)) * 1.1
+                  o.y += (o.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
                 }
                 movedObjects.push([cg.id, o.id]);
-              })
+              });
             }
-          }, 50)
-        }
+          }, 50);
+        };
         let previousDate = timestamp;
         let offset;
         let dateOffset = 0;
@@ -649,12 +651,12 @@ const Game = ({ dispatch }) => {
           o.ratio = o.rows / o.columns;
           if (o.ratio < 1) {
             o.displayWidth = OBJECT_W[o.size] / o.zFactor;
-            o.displayHeight = OBJECT_W[o.size] / o.zFactor * o.ratio
+            o.displayHeight = OBJECT_W[o.size] / o.zFactor * o.ratio;
           } else {
             o.displayWidth = OBJECT_W[o.size] / o.zFactor / o.ratio;
             o.displayHeight = OBJECT_W[o.size] / o.zFactor;
           }
-          o.zone = [Math.ceil(o.x / GRID_SIZE), Math.ceil(o.y / GRID_SIZE)]
+          o.zone = [Math.ceil(o.x / GRID_SIZE), Math.ceil(o.y / GRID_SIZE)];
           o.isAnimate ? this.anims.create({
             key: 'spritesheet' + o._id,
             frames: 'object' + o._id,
@@ -664,16 +666,16 @@ const Game = ({ dispatch }) => {
             repeatDelay: 0
           }) : false;
           if (!this.objectMap[o.zone[0]]) {
-            this.objectMap[o.zone[0]] = []
+            this.objectMap[o.zone[0]] = [];
           }
           if (!this.objectMap[o.zone[0]][o.zone[1]]) {
-            this.objectMap[o.zone[0]][o.zone[1]] = []
+            this.objectMap[o.zone[0]][o.zone[1]] = [];
           }
           this.objectMap[o.zone[0]][o.zone[1]].push(o);
           if (ownItems.includes(o._id)) { return; }
           let itemId = Math.floor(seededRandom(o._id) * 20);
           console.log(itemId);
-          if (itemId >4) { return; }
+          if (itemId > 4) { return; }
           let itemRad = seededRandom(o.birthday.toString()) * Math.PI * 2;
           let itemDistance = seededRandom((o.birthday % 100).toString()) * RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
           console.log(itemRad, itemDistance);
@@ -684,37 +686,37 @@ const Game = ({ dispatch }) => {
             targets: item,
             duration: 600,
             props: { alpha: 0 },
-            onComplete: () => { item.destroy() }
-          })
+            onComplete: () => { item.destroy(); }
+          });
           item.alpha = 1;
           item.depth = 1;
 
-          item.setData('id', o._id)
+          item.setData('id', o._id);
           let collider = this.physics.add.collider(this.player, item, this.itemCollideHandler);
           item.setData('collider', collider);
           item.setData('type', itemId);
           this.gameObjects.add(item);
-        })
+        });
         console.log(this.objectList);
         this.objectMap.getZone = (player) => {
-          return [Math.ceil(player.x / GRID_SIZE), Math.ceil(player.y / GRID_SIZE)]
-        }
+          return [Math.ceil(player.x / GRID_SIZE), Math.ceil(player.y / GRID_SIZE)];
+        };
         this.objectMap.getNearBy = (zone) => {
-          if (!zone) { return [] }
+          if (!zone) { return []; }
           let results = [];
           [-1, 0, 1].forEach((v1) => {
             [-1, 0, 1].forEach((v2) => {
-              results.push([zone[0] + v1, zone[1] + v2])
-            })
-          })
-          return results
-        }
+              results.push([zone[0] + v1, zone[1] + v2]);
+            });
+          });
+          return results;
+        };
         this.previousZone = null;
         this.objects.updateObjects = (previousZone, currentZone) => {
           let previousZones = this.objectMap.getNearBy(previousZone);
           let currentZones = this.objectMap.getNearBy(currentZone);
-          let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()))
-          let destroyZones = previousZones.filter(x => !currentZones.toString().includes(x.toString()))
+          let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()));
+          let destroyZones = previousZones.filter(x => !currentZones.toString().includes(x.toString()));
           // console.log({ prev: previousZones, cur: currentZones });
           // console.log({ create: createZones, destroy: destroyZones });
           createZones.forEach((zone) => {
@@ -741,26 +743,26 @@ const Game = ({ dispatch }) => {
               o.instance.setDisplaySize(o.displayWidth, o.displayHeight);
               o.instance.body.onOverlap = true;
               if (o.isAnimate) {
-                o.instance.anims.play('spritesheet' + o._id)
+                o.instance.anims.play('spritesheet' + o._id);
               }
               if (o.dialog.length > 0) {
-                let collider = this.physics.add.collider(this.player, o.instance, this.objectCollideHandler)
+                let collider = this.physics.add.collider(this.player, o.instance, this.objectCollideHandler);
                 o.instance.setData("collider", collider);
               }
               o.instance.refreshBody();
               this.gameObjects.add(o.instance);
 
-            })
-          })
+            });
+          });
           destroyZones.forEach((zone) => {
             if (!this.objectMap[zone[0]]) { return; }
             if (!this.objectMap[zone[0]][[zone[1]]]) { return; }
             let os = this.objectMap[zone[0]][zone[1]];
             os.forEach((o) => {
-              this.objects.remove(o.instance, true, true)
-            })
-          })
-        }
+              this.objects.remove(o.instance, true, true);
+            });
+          });
+        };
 
         // this.objects.updateObjects(false, [0, 0]);
         // this.previousZone = [0, 0];
@@ -774,7 +776,7 @@ const Game = ({ dispatch }) => {
         reactMenu.classList.add("show");
         this.reactComponents = [
           reactMenu, gameInfo
-        ]
+        ];
         const handleInput = (e) => {
           // if the click is not on the root react div, we call stopPropagation()
           let target = e.target;
@@ -782,12 +784,12 @@ const Game = ({ dispatch }) => {
           // if (target.className == "game__button-menu") {
           e.stopPropagation();
           // }
-        }
+        };
         // TODO: Remove input listener after dettached
         this.reactComponents.forEach((c) => {
-          c.addEventListener('mousedown', handleInput)
-          c.addEventListener('touchstart', handleInput)
-        })
+          c.addEventListener('mousedown', handleInput);
+          c.addEventListener('touchstart', handleInput);
+        });
 
         // TODO: Better collider for background / foreground
 
@@ -857,15 +859,15 @@ const Game = ({ dispatch }) => {
           this.camera.zoom == ZOOM_OUT_LEVEL ?
             this.camera.zoomIn()
             : this.camera.zoomOut();
-        }
+        };
         this.camera.ignore(this.uis);
         this.staticCamera.ignore(this.gameObjects);
 
       }
 
       update() {
-        this.objects.children.each((o) => { o.setVelocityX(-this.player.body.velocity.x * (o.data.values.zFactor - 1)) })
-        this.objects.children.each((o) => { o.setVelocityY(-this.player.body.velocity.y * (o.data.values.zFactor - 1)) })
+        this.objects.children.each((o) => { o.setVelocityX(-this.player.body.velocity.x * (o.data.values.zFactor - 1)); });
+        this.objects.children.each((o) => { o.setVelocityY(-this.player.body.velocity.y * (o.data.values.zFactor - 1)); });
         if (this.gameDialog.inDialog || this.itemDialog.inDialog || this.linkDialog.inDialog || !this.player.body.blocked.none) {
           this.player.stopMovement();
         } else {
@@ -877,7 +879,7 @@ const Game = ({ dispatch }) => {
           // )
 
           if (true) {
-            let currentZone = this.objectMap.getZone(this.player)
+            let currentZone = this.objectMap.getZone(this.player);
             // console.log(currentZone,this.previousZone);
             if (!(this.previousZone && currentZone[0] == this.previousZone[0] && currentZone[1] == this.previousZone[1])) {
               this.objects.updateObjects(this.previousZone, currentZone);
@@ -978,10 +980,10 @@ const Game = ({ dispatch }) => {
   return (
     <div>
       <div id="GAME_MENU" >
-        <input className="game__button-menu" type="image" onClick={() => { navigate('/add') }} src={newBtnURL} />
-        <input className="game__button-menu" type="image" onClick={() => { mainScene.camera.toggleZoom() }} src={mapBtnURL} />
+        <input className="game__button-menu" type="image" onClick={() => { navigate('/add'); }} src={newBtnURL} />
+        <input className="game__button-menu" type="image" onClick={() => { mainScene.camera.toggleZoom(); }} src={mapBtnURL} />
         <input className="game__button-menu" type="image" src={bagBtnURL} />
-        <input className="game__button-menu" type="image" onClick={() => { setShowInfo(!showInfo) }} src={infoBtnURL} />
+        <input className="game__button-menu" type="image" onClick={() => { setShowInfo(!showInfo); }} src={infoBtnURL} />
       </div>
       <div id="GAME_INVENTORY"></div>
       <div id="GAME_INFO" className={showInfo ? "show" : ""}>
@@ -992,7 +994,7 @@ const Game = ({ dispatch }) => {
 
     </div>
 
-  )
+  );
 
-}
+};
 export default Game;
