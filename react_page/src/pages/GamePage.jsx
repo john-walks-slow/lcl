@@ -673,7 +673,7 @@ const Game = ({ dispatch }) => {
           if (ownItems.includes(o._id)) { return; }
           let itemId = Math.floor(seededRandom(o._id) * 20);
           console.log(itemId);
-          if (itemId > 5) { return; }
+          if (itemId >4) { return; }
           let itemRad = seededRandom(o.birthday.toString()) * Math.PI * 2;
           let itemDistance = seededRandom((o.birthday % 100).toString()) * RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
           console.log(itemRad, itemDistance);
