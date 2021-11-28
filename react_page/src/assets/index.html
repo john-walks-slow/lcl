@@ -13,14 +13,14 @@
 
 </head>
 
-<body>
-<script>
- if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/static/service-worker.js');
-  });
-}
-</script>
+<body style="background-color: #000000;">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/static/service-worker.js');
+      });
+    }
+  </script>
   <div id="app"></div>
 </body>
 
