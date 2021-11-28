@@ -205,7 +205,7 @@ const Game = ({ dispatch }) => {
     class ItemDialog extends Dialog {
       constructor(scene) {
         super(scene);
-        const width = Math.min(600, WINDOW_W * 0.85);
+        const width = Math.min(WINDOW_H / 2, WINDOW_W * 0.85);
         const height = width * 0.4;
         const padding = width / 8;
         const paddingTop = width / 9;
@@ -220,7 +220,7 @@ const Game = ({ dispatch }) => {
     class LinkDialog extends Dialog {
       constructor(scene) {
         super(scene);
-        const width = Math.min(600, WINDOW_W * 0.85);
+        const width = Math.min(WINDOW_H / 2, WINDOW_W * 0.85);
         const height = width * 0.6;
         const padding = width / 8;
         const paddingTop = width / 9;
