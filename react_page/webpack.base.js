@@ -85,7 +85,7 @@ module.exports = (production) => {
     plugins: [
       production?new CleanWebpackPlugin():()=>{},
       new CopyWebpackPlugin([
-        { from: 'src/assets/public', to: '../public' },
+        { from: 'src/assets/public_res', to: '../public' },
       ]),
       new WorkboxPlugin.GenerateSW({
         clientsClaim: true,

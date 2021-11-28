@@ -28,7 +28,7 @@
 
 #GAME_INFO{
   background-color: #00000010;
-  padding: 20px;
+  padding: 20px 20px 50px 20px;
   margin: auto;
   width: max(600px,70vw);
   height: 100vh;
