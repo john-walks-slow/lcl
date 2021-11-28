@@ -106,7 +106,7 @@ const Game = ({ dispatch }) => {
         super(scene);
         const DIALOG_HEIGHT = WINDOW_H / 3.5;
         this.dialogHeight = DIALOG_HEIGHT;
-        const TEXT_PADDING_W = Math.min(WINDOW_W / 15, 50);
+        const TEXT_PADDING_W = WINDOW_W > WINDOW_H ? WINDOW_W / 15 : 25;
         this.textPaddingW = TEXT_PADDING_W;
         const TEXT_PADDING_H = Math.min(WINDOW_H / 25);
         this.textPaddingH = TEXT_PADDING_H;
@@ -128,7 +128,7 @@ const Game = ({ dispatch }) => {
         this.fontFamilyHeader = FONT_FAMILY_HEADER;
         this.scene = scene;
         this.depth = 999;
-        this.dialogWindow = this.scene.add.sprite(WINDOW_CENTER_X, WINDOW_H - DIALOG_HEIGHT / 2 - DIALOG_PADDING_H, "dialog").setDisplaySize(WINDOW_W - DIALOG_PADDING_W, DIALOG_HEIGHT);
+        this.dialogWindow = this.scene.add.sprite(WINDOW_CENTER_X, WINDOW_H - DIALOG_HEIGHT / 2 - DIALOG_PADDING_H, "dialog").setDisplaySize(WINDOW_W - DIALOG_PADDING_W * 2, DIALOG_HEIGHT);
         this.dialogHeader = this.scene.add.text(DIALOG_PADDING_W + TEXT_PADDING_W, WINDOW_H - DIALOG_HEIGHT - DIALOG_PADDING_H + TEXT_PADDING_H, "",
           {
             color: 0xFFFFFF,
