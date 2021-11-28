@@ -63,8 +63,8 @@ const Game = ({ dispatch }) => {
   const WINDOW_H = window.innerHeight || document.body.clientHeight;
   const WINDOW_CENTER_X = WINDOW_W / 2;
   const WINDOW_CENTER_Y = WINDOW_H / 2;
-  const PLAYER_TARGET_W = Math.min(WINDOW_W / 8, WINDOW_H / 11 / 44 * 37);
-  const PLAYER_TARGET_H = Math.min(WINDOW_W / 8, WINDOW_H / 11 / 44 * 37) / 37 * 44;
+  const PLAYER_TARGET_W = Math.min(WINDOW_W / 11, WINDOW_H / 11 / 44 * 37);
+  const PLAYER_TARGET_H = Math.min(WINDOW_W / 11, WINDOW_H / 11 / 44 * 37) / 37 * 44;
   // const PLAYER_TARGET_W = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37);
   // const PLAYER_TARGET_H = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37) / 37 * 44;
   const OBJECT_W = { XL: PLAYER_TARGET_H * 2.5, L: PLAYER_TARGET_H * 2, M: PLAYER_TARGET_H * 1.4, S: PLAYER_TARGET_H * 1, XS: PLAYER_TARGET_H * 0.7 }
@@ -175,7 +175,7 @@ const Game = ({ dispatch }) => {
             // dialogWindow.off('pointerdown');
             this.scene.input.off('pointerdown');
             this.scene.input.keyboard.off('keydown-SPACE');
-            if (this.dialogCallback){
+            if (this.dialogCallback) {
               this.dialogCallback.apply();
             }
           } else {
@@ -183,10 +183,10 @@ const Game = ({ dispatch }) => {
           }
         }
       }
-      showDialog(dialog, name,callback) {
-        this.dialogCallback =callback || false;
+      showDialog(dialog, name, callback) {
+        this.dialogCallback = callback || false;
         this.inDialog = true;
-        this.scene.camera.shake(100,0.01)
+        this.scene.camera.shake(100, 0.01)
         // dialogWindow.on('pointerdown', () => { this.proceedDialog() });
         this.scene.input.on('pointerdown', (e) => { this.proceedDialog() });
         this.scene.input.keyboard.on('keydown-SPACE', () => { this.proceedDialog() });
@@ -207,8 +207,8 @@ const Game = ({ dispatch }) => {
         super(scene);
         const width = Math.min(600, WINDOW_W * 0.85);
         const height = width * 0.4;
-        const padding = width/8;
-        const paddingTop = width/9;
+        const padding = width / 8;
+        const paddingTop = width / 9;
         this.dialogWindow.setX(WINDOW_CENTER_X)
         this.dialogWindow.setY(WINDOW_CENTER_Y)
         this.dialogWindow.setDisplaySize(width, height);
@@ -221,9 +221,9 @@ const Game = ({ dispatch }) => {
       constructor(scene) {
         super(scene);
         const width = Math.min(600, WINDOW_W * 0.85);
-        const height = width*0.7;
-        const padding = width/10;
-        const paddingTop = width/9;
+        const height = width * 0.7;
+        const padding = width / 10;
+        const paddingTop = width / 9;
         this.link = '';
         this.buttonSelected = "#000000"
         this.dialogWindow.setX(WINDOW_CENTER_X)
@@ -232,38 +232,38 @@ const Game = ({ dispatch }) => {
         this.dialogText.setText("它带着一个箱子，打开看看吗？")
         this.dialogText.setX(WINDOW_CENTER_X - width / 2 + padding)
         this.dialogText.setY(WINDOW_CENTER_Y - height / 2 + paddingTop)
-        this.dialogText.setWordWrapWidth( width - padding *2,true)
+        this.dialogText.setWordWrapWidth(width - padding * 2, true)
         this.selectedOption = 0;
-        this.dialogYes = this.scene.add.text(WINDOW_CENTER_X - width/2+padding, WINDOW_CENTER_Y+height/2-this.fontSizeHeader-paddingTop, " 是 ",
-        {
-          color: 0xFFFFFF,
-          fontFamily:this.fontFamily,
-          fontSize: (this.fontSizeHeader).toString() + "px",
-        });
+        this.dialogYes = this.scene.add.text(WINDOW_CENTER_X - width / 2 + padding, WINDOW_CENTER_Y + height / 2 - this.fontSizeHeader - paddingTop, " 是 ",
+          {
+            color: 0xFFFFFF,
+            fontFamily: this.fontFamily,
+            fontSize: (this.fontSizeHeader).toString() + "px",
+          });
         this.dialogYes.buttonId = "yes"
-        this.dialogNo = this.scene.add.text(WINDOW_CENTER_X+padding, WINDOW_CENTER_Y+height/2-this.fontSizeHeader-paddingTop, " 否 ",
-        {
-          color: 0xFFFFFF,
-          fontFamily:this.fontFamily,
-          fontSize: (this.fontSizeHeader).toString() + "px",
-        });
+        this.dialogNo = this.scene.add.text(WINDOW_CENTER_X + padding, WINDOW_CENTER_Y + height / 2 - this.fontSizeHeader - paddingTop, " 否 ",
+          {
+            color: 0xFFFFFF,
+            fontFamily: this.fontFamily,
+            fontSize: (this.fontSizeHeader).toString() + "px",
+          });
         this.dialogNo.buttonId = "no"
         // this.dialogSelection = this.scene.add.rectangle(
         //   WINDOW_CENTER_X - width/2+padding, WINDOW_CENTER_Y+height/2-this.fontSizeHeader-paddingTop,
         //   width/2,this.fontSizeHeader,0x000000,0.3)
-        this.add([this.dialogYes,this.dialogNo])
+        this.add([this.dialogYes, this.dialogNo])
         this.select(1);
 
       }
-      select(i){
+      select(i) {
         this.selectedOption = i;
-        [this.dialogYes,this.dialogNo][i].setBackgroundColor(this.buttonSelected).setColor("#FFFFFF");
-        [this.dialogYes,this.dialogNo][1-i].setBackgroundColor("").setColor("#000000");
+        [this.dialogYes, this.dialogNo][i].setBackgroundColor(this.buttonSelected).setColor("#FFFFFF");
+        [this.dialogYes, this.dialogNo][1 - i].setBackgroundColor("").setColor("#000000");
       }
-      confirm(){
+      confirm() {
         this.inDialog = false;
         console.log(this.link);
-        if (this.link.length>0&& this.selectedOption==0){
+        if (this.link.length > 0 && this.selectedOption == 0) {
           window.open(this.link);
         }
         this.scene.input.keyboard.off('keydown-LEFT');
@@ -275,13 +275,14 @@ const Game = ({ dispatch }) => {
         this.link = "";
       }
 
-      showDialog(link){
+      showDialog(link) {
         console.log('show link');
         this.link = link;
         this.inDialog = true;
-        this.scene.input.on('gameobjectdown', (pointer,o,event)=>{
-          if (o.buttonId=="yes"){this.selectedOption=0}
-          if (o.buttonId=="no"){this.selectedOption=1}})
+        this.scene.input.on('gameobjectdown', (pointer, o, event) => {
+          if (o.buttonId == "yes") { this.selectedOption = 0 }
+          if (o.buttonId == "no") { this.selectedOption = 1 }
+        })
         this.scene.input.keyboard.on('keydown-LEFT', () => { this.select(0) });
         this.scene.input.keyboard.on('keydown-RIGHT', () => { this.select(1) });
         this.scene.input.keyboard.on('keydown-SPACE', () => { this.confirm() });
@@ -303,6 +304,13 @@ const Game = ({ dispatch }) => {
         // Connect to a different URL
         var restClient = rest();
         // Configure an AJAX library (see below) with that client
+        const connectText =
+          [new Date(timestamp).toString().split('GMT')[0] + "user@remote"
+            + '\n Waiting for server response ...',
+            '\n Reading database ...',
+            '\n Loading contents ...',
+            '.', '.', '.', '.', '.', '.', '.'
+          ]
         app.configure(restClient.fetch(window.fetch));
         app.service('objects').find({ paginate: false }).then((data) => {
           let objectList = data;
@@ -347,16 +355,26 @@ const Game = ({ dispatch }) => {
           objectList.sort((a, b) => b.birthday - a.birthday)
           // DENSITY_OFFSET = Math.min(OBJECT_W.L, DENSITY_OFFSET);
           this.load.on("complete", () => {
-            this.scene.start("MainScene", { "objectList": objectList });
-            this.scene.stop("LoadingScene");
+            this.label.text += `\nStarting ...`
+            setTimeout(() => {
+              this.scene.start("MainScene", { "objectList": objectList });
+              this.scene.stop("LoadingScene");
+            }, 300)
+
           }, this);
-          this.load.on('progress', (progress) => {
-            this.label.text = 'Now Loading ...' + ".".repeat(Math.round(progress * 15));
+          this.load.on('start', (progress) => {
+            this.label.text +=
+              '\nWaiting for server response ...';
+          })
+          let loadStart = false;
+          this.load.on('filecomplete', (key, type, data) => {
+            if (!loadStart) { loadStart = true; this.label.text += '\nLoading Content ...' }
+            this.label.text += `\n- Fetching ${key} ..`
           })
           this.load.start();
         })
         this.add.rectangle(WINDOW_CENTER_X, WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0x000000);
-        this.label = this.add.text(30, WINDOW_CENTER_Y, 'Now Loading ...', { align: "center", color: "#FFFFFF", fontSize: Math.min(WINDOW_W / 20, 40) })
+        this.label = this.add.text(80, 80, new Date(timestamp).toString().split('GMT')[0] + "user@remote", { align: "left", color: "#FFFFFF", fontSize: 20 })
       }
       update() {
 
@@ -387,6 +405,9 @@ const Game = ({ dispatch }) => {
         mainScene = this;
         this.cursors = this.input.keyboard.createCursorKeys();
         this.camera = this.cameras.main;
+        this.staticCamera = this.cameras.add();
+        this.gameObjects = this.add.layer();
+        this.uis = this.add.layer();
         // this.add.tileSprite(WINDOW_CENTER_X, WINDOW_CENTER_Y,WINDOW_W,WINDOW_H,'bg');
         // this.add.rectangle(WINDOW_CENTER_X, WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0xFFFFFF);
         this.player = this.physics.add.sprite(this.startPosX, this.startPosY, 'player')
@@ -401,16 +422,59 @@ const Game = ({ dispatch }) => {
         this.player.on('pointerover', () => { this.pointerOnPlayer = true })
         this.player.on('pointerout', () => { this.pointerOnPlayer = false })
         this.player.depth = 0.9;
-        this.camera.startFollow(this.player,false,0.2,0.2);
+        this.player.moveX = (x) => {
+          this.player.setVelocityX(x);
+          // this.player.x += x / 100;
+          // this.player.x += x / 100;
+          // this.objects.children.each((o) => { o.x -= x / 100 * (o.data.values.zFactor - 1) })
+        }
+        this.player.moveY = (y) => {
+          // this.camera.shake();
+          this.player.setVelocityY(y);
+          // this.player.y += y / 100;
+
+          // this.objects.children.each((o) => { o.y -= y / 100 * (o.data.values.zFactor - 1) })
+        }
+        this.player.stopMovement = () => {
+          if (this.player.anims.getName() == "runLeft") {
+            // player.anims.stopOnFrame(player.anims.currentAnim.frames[1]);
+            // player.anims.chain();
+            this.player.anims.play('standLeft', true);
+          }
+          if (this.player.anims.getName() == "runRight") {
+            // player.anims.stopOnFrame(player.anims.currentAnim.frames[1]);
+            // player.anims.chain();
+            // player.anims.chain('standRight');
+            this.player.anims.play('standRight', true);
+
+          }
+          if (this.player.anims.getName() == "runUp") {
+            // player.anims.stopOnFrame(player.anims.currentAnim.frames[1]);
+            // player.anims.chain();
+            this.player.anims.play('standUp', true);
+          }
+          if (this.player.anims.getName() == "runDown") {
+            // player.anims.stopOnFrame(player.anims.currentAnim.frames[1]);
+            // player.anims.chain();
+            // player.anims.chain('standDown');
+            this.player.anims.play('standDown', true);
+
+          }
+          this.player.moveX(0);
+          this.player.moveY(0);
+        }
+        this.gameObjects.add([this.player])
+        this.camera.startFollow(this.player, false, 0.2, 0.2);
         this.camera.setBackgroundColor(0xFFFFFF);
         this.camera.setFollowOffset(0, -0);
         this.camera.zoomOutLevel = ZOOM_OUT_LEVEL;
-        this.camera.setZoom(0.15);
+        this.camera.setZoom(0.01);
+        // this.camera.setAlpha(0.1);
         this.camera.initAnim = this.tweens.create({
           targets: this.camera,
           props: { 'zoom': 1 },
           ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-          duration: 2500,
+          duration: 3000,
         });
         this.camera.zoomOutAnim = this.tweens.create({
           targets: this.camera,
@@ -424,11 +488,12 @@ const Game = ({ dispatch }) => {
           ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
           duration: 300,
         });
-        this.camera.zoomIn=()=>{
+        this.camera.zoomIn = () => {
+          this.camera.zoomOutAnim.stop()
           this.camera.zoomOutAnim.stop()
           this.camera.zoomInAnim.play()
         }
-        this.camera.zoomOut=()=>{
+        this.camera.zoomOut = () => {
           this.camera.zoomInAnim.stop()
           this.camera.zoomOutAnim.play()
         }
@@ -482,15 +547,15 @@ const Game = ({ dispatch }) => {
           }
           if (currentObj.data.values.dialog.length > 0) {
             this.gameDialog.showDialog(currentObj.data.values.dialog, currentObj.data.values.name,
-              ()=>{
-                if (currentObj.getData('link').length>0){
+              () => {
+                if (currentObj.getData('link').length > 0) {
                   this.linkDialog.showDialog(currentObj.getData('link'));
                 }
               })
             if (currentObj.data.values.isBackground) {
-            currentObj.data.values.collider.destroy();
+              currentObj.data.values.collider.destroy();
             } else {
-            // currentObj.setData("dialog", []);
+              // currentObj.setData("dialog", []);
             }
           }
           this.physics.collide(o1, o2);
@@ -563,7 +628,7 @@ const Game = ({ dispatch }) => {
         this.items = this.physics.add.group({
           immovable: true
         });
-        let ownItems= secureStorage.getItem('player').ownItems;
+        let ownItems = secureStorage.getItem('player').ownItems;
 
         this.objectList.forEach((o, i) => {
           if (timestamp - o.birthday < TIME_DELAY) { return; }
@@ -605,10 +670,10 @@ const Game = ({ dispatch }) => {
             this.objectMap[o.zone[0]][o.zone[1]] = []
           }
           this.objectMap[o.zone[0]][o.zone[1]].push(o);
-          if (ownItems.includes(o._id)){return;}
-          let itemId = Math.floor(seededRandom(o._id) * 15);
+          if (ownItems.includes(o._id)) { return; }
+          let itemId = Math.floor(seededRandom(o._id) * 20);
           console.log(itemId);
-          if (itemId > 4) { return; }
+          if (itemId > 5) { return; }
           let itemRad = seededRandom(o.birthday.toString()) * Math.PI * 2;
           let itemDistance = seededRandom((o.birthday % 100).toString()) * RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
           console.log(itemRad, itemDistance);
@@ -621,13 +686,14 @@ const Game = ({ dispatch }) => {
             props: { alpha: 0 },
             onComplete: () => { item.destroy() }
           })
-          item.alpha=1;
-          item.depth=1;
+          item.alpha = 1;
+          item.depth = 1;
 
           item.setData('id', o._id)
           let collider = this.physics.add.collider(this.player, item, this.itemCollideHandler);
           item.setData('collider', collider);
           item.setData('type', itemId);
+          this.gameObjects.add(item);
         })
         console.log(this.objectList);
         this.objectMap.getZone = (player) => {
@@ -682,6 +748,8 @@ const Game = ({ dispatch }) => {
                 o.instance.setData("collider", collider);
               }
               o.instance.refreshBody();
+              this.gameObjects.add(o.instance);
+
             })
           })
           destroyZones.forEach((zone) => {
@@ -699,6 +767,8 @@ const Game = ({ dispatch }) => {
         this.gameDialog = new Dialog(this);
         this.itemDialog = new ItemDialog(this);
         this.linkDialog = new LinkDialog(this);
+        this.uis.add([this.gameDialog, this.itemDialog, this.linkDialog]);
+
         let reactMenu = document.getElementById('GAME_MENU');
         let gameInfo = document.getElementById('GAME_INFO');
         reactMenu.classList.add("show");
@@ -780,65 +850,23 @@ const Game = ({ dispatch }) => {
           repeatDelay: 0
         });
         this.player.anims.play('standRight');
+        this.camera.fadeIn();
         this.camera.initAnim.play();
-        this.camera.initAnim.on('complete', () => {
-          this.camera.toggleZoom = () => {
-            console.log('toggle');
-            this.camera.zoom == ZOOM_OUT_LEVEL?
+        this.camera.toggleZoom = () => {
+          console.log('toggle');
+          this.camera.zoom == ZOOM_OUT_LEVEL ?
             this.camera.zoomIn()
-            :this.camera.zoomOut();
-          }
-        })
-
-        this.player.moveX = (x) => {
-          this.player.setVelocityX(x);
-          // this.player.x += x / 100;
-          // this.player.x += x / 100;
-          // this.objects.children.each((o) => { o.x -= x / 100 * (o.data.values.zFactor - 1) })
+            : this.camera.zoomOut();
         }
-        this.player.moveY = (y) => {
-          // this.camera.shake();
-          this.player.setVelocityY(y);
-          // this.player.y += y / 100;
-
-          // this.objects.children.each((o) => { o.y -= y / 100 * (o.data.values.zFactor - 1) })
-        }
-        this.player.stopMovement = () => {
-          if (this.player.anims.getName() == "runLeft") {
-            // player.anims.stopOnFrame(player.anims.currentAnim.frames[1]);
-            // player.anims.chain();
-            this.player.anims.play('standLeft', true);
-          }
-          if (this.player.anims.getName() == "runRight") {
-            // player.anims.stopOnFrame(player.anims.currentAnim.frames[1]);
-            // player.anims.chain();
-            // player.anims.chain('standRight');
-            this.player.anims.play('standRight', true);
-
-          }
-          if (this.player.anims.getName() == "runUp") {
-            // player.anims.stopOnFrame(player.anims.currentAnim.frames[1]);
-            // player.anims.chain();
-            this.player.anims.play('standUp', true);
-          }
-          if (this.player.anims.getName() == "runDown") {
-            // player.anims.stopOnFrame(player.anims.currentAnim.frames[1]);
-            // player.anims.chain();
-            // player.anims.chain('standDown');
-            this.player.anims.play('standDown', true);
-
-          }
-          this.player.moveX(0);
-          this.player.moveY(0);
-        }
-
+        this.camera.ignore(this.uis);
+        this.staticCamera.ignore(this.gameObjects);
 
       }
 
       update() {
         this.objects.children.each((o) => { o.setVelocityX(-this.player.body.velocity.x * (o.data.values.zFactor - 1)) })
         this.objects.children.each((o) => { o.setVelocityY(-this.player.body.velocity.y * (o.data.values.zFactor - 1)) })
-        if (this.gameDialog.inDialog || this.itemDialog.inDialog ||this.linkDialog.inDialog || !this.player.body.blocked.none) {
+        if (this.gameDialog.inDialog || this.itemDialog.inDialog || this.linkDialog.inDialog || !this.player.body.blocked.none) {
           this.player.stopMovement();
         } else {
           // if (

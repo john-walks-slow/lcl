@@ -108,8 +108,6 @@ $RECYCLE.BIN/
 
 # Others
 data/*
-public/add/*
-public/assets/objects/*
 .history
 art
 /public

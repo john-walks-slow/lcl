@@ -1,8 +1,12 @@
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 const path = require('path');
+
 
 module.exports = (production) => {
   return {
@@ -15,7 +19,7 @@ module.exports = (production) => {
     output: {
       path: path.join(__dirname, '../public/'),
       publicPath: '/static/',
-      filename: 'bundle.js'
+      filename: '[name].bundle.js'
     },
     module: {
       rules: [
@@ -43,20 +47,18 @@ module.exports = (production) => {
             'postcss-loader'
           ]
         },
-
         {
-          test: /\.(ttf|eot|svg|woff(2)?)(\?v=[\d.]+)?(\?[a-z0-9#-]+)?$/,
-          loader: 'url-loader',
-          options: {
-            limit: 100000,
-            name: 'css/[hash].[ext]',
+          test: /\.(ttf|eot|svg|woff(2)?)(\?v=[\d.]+)?(\?[aZ09#]+)?$/,
+          type: 'asset/resource',
+          generator: {
+            filename: 'fonts/[hash][ext]'
           }
         },
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
           type: 'asset/resource',
           generator: {
-            filename: 'assets/[hash].[ext]'
+            filename: 'assets/[hash][ext]'
           }
         }
       ]
@@ -81,16 +83,23 @@ module.exports = (production) => {
     //   contentBase: './build'
     // },
     plugins: [
+      production?new CleanWebpackPlugin():()=>{},
       new CopyWebpackPlugin([
-        { from: 'src/assets/favicons', to: '../public' },
+        { from: 'src/assets/public', to: '../public' },
       ]),
+      new WorkboxPlugin.GenerateSW({
+        clientsClaim: true,
+        skipWaiting: true,
+        maximumFileSizeToCacheInBytes: 50000000,
+        include: [/\.(ttf|png|html)$/],
+      }),
       new HtmlWebpackPlugin({
-        template: './build/index.html',
+        template: 'src/assets/index.html',
         inject: true
       }),
       new webpack.DefinePlugin({
         "process.env": JSON.stringify(process.env),
-        "process.browser":true
+        "process.browser": true
       }),
     ],
     optimization: production ? {
