@@ -13,7 +13,6 @@ import GamePage from './pages/GamePage';
 
 export default function ({ dispatch }) {
   useEffect(() => {
-    document.body.style.backgroundColor = "white";
   }, []);
   return (
     <BrowserRouter>

@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const path = require('path');
 
@@ -82,8 +83,13 @@ module.exports = (production) => {
     // devServer: {
     //   contentBase: './build'
     // },
+    externals: {
+      phaser: 'Phaser',
+      react: 'React',
+      'react-dom': 'ReactDOM'
+    },
     plugins: [
-      production ? new CleanWebpackPlugin() : () => { },
+      production ? new CleanWebpackPlugin() : new BundleAnalyzerPlugin(),
       new CopyWebpackPlugin([
         { from: 'src/assets/public_res', to: '../public' },
       ]),

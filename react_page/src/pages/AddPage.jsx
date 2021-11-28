@@ -149,6 +149,7 @@ const Page = ({ dispatch }) => {
     }
   };
   useEffect(() => {
+    document.body.style.backgroundColor = "white";
     document.title = "New Object";
     setShow(true);
     dispatch(newProject());
@@ -166,9 +167,8 @@ const Page = ({ dispatch }) => {
     <div className={"page__container" + (show ? " show" : "")}>
       <div style={{ "textAlign": "right" }}>
         <button className="page__button-back" onClick={() => { navigate("/"); }}>
-          <FontAwesomeIcon
-            icon={faSignOutAlt}
-          />回到LCL</button>
+          <i class="fas fa-sign-out-alt"></i>
+          回到LCL</button>
       </div>
       {submitted ?
         <div className={"page__submitted" + (submitted ? " show" : "")}>

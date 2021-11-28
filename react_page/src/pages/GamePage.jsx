@@ -87,7 +87,7 @@ const Game = ({ dispatch }) => {
   useEffect(() => {
     document.title = "LCL";
     document.body.style.overflow = "hidden";
-
+    document.body.style.backgroundColor = "black";
     function createTestObject(object) {
       object._id = 3;
       object.seed = [Math.random() * 360, Math.random() ** 0.5];
@@ -214,15 +214,15 @@ const Game = ({ dispatch }) => {
         this.dialogWindow.setDisplaySize(width, height);
         this.dialogText.setX(WINDOW_CENTER_X - width / 2 + padding);
         this.dialogText.setY(WINDOW_CENTER_Y - height / 2 + paddingTop);
-        this.dialogText.wordWrap = { width: width - padding * 2, useAdvancedWrap: true };
+        this.dialogText.wordWrap = { width: width - padding * 2.5, useAdvancedWrap: true };
       }
     }
     class LinkDialog extends Dialog {
       constructor(scene) {
         super(scene);
         const width = Math.min(600, WINDOW_W * 0.85);
-        const height = width * 0.7;
-        const padding = width / 10;
+        const height = width * 0.6;
+        const padding = width / 8;
         const paddingTop = width / 9;
         this.link = '';
         this.buttonSelected = "#000000";
@@ -232,7 +232,7 @@ const Game = ({ dispatch }) => {
         this.dialogText.setText("它带着一个箱子，打开看看吗？");
         this.dialogText.setX(WINDOW_CENTER_X - width / 2 + padding);
         this.dialogText.setY(WINDOW_CENTER_Y - height / 2 + paddingTop);
-        this.dialogText.setWordWrapWidth(width - padding * 2, true);
+        this.dialogText.setWordWrapWidth(width - padding * 2.5, true);
         this.selectedOption = 0;
         this.dialogYes = this.scene.add.text(WINDOW_CENTER_X - width / 2 + padding, WINDOW_CENTER_Y + height / 2 - this.fontSizeHeader - paddingTop, " 是 ",
           {
@@ -261,7 +261,6 @@ const Game = ({ dispatch }) => {
         [this.dialogYes, this.dialogNo][1 - i].setBackgroundColor("").setColor("#000000");
       }
       confirm() {
-        this.inDialog = false;
         console.log(this.link);
         if (this.link.length > 0 && this.selectedOption == 0) {
           window.open(this.link);
@@ -271,7 +270,9 @@ const Game = ({ dispatch }) => {
         this.scene.input.keyboard.off('keydown-SPACE');
         this.scene.input.off('gameobjectdown');
         this.select(1);
-        this.dialogFadeOut.play();
+        this.dialogFadeOut.play().on('complete', () => {
+          this.inDialog = false;
+        });
         this.link = "";
       }
 
@@ -495,11 +496,11 @@ const Game = ({ dispatch }) => {
         });
         this.camera.zoomIn = () => {
           this.camera.zoomOutAnim.stop();
-          this.camera.zoomInAnim.play();
+          this.camera.zoomInAnim.play(true);
         };
         this.camera.zoomOut = () => {
           this.camera.zoomInAnim.stop();
-          this.camera.zoomOutAnim.play();
+          this.camera.zoomOutAnim.play(true);
         };
         this.camera.toggleZoom = () => { };
         this.objectMap = [];

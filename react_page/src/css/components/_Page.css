@@ -1,6 +1,6 @@
 .page__container {
   opacity: 0;
-  transition: 500ms;
+  transition: 1200ms;
 
   @media screen and (max-width: 600px) {
     margin: 15px;
@@ -47,7 +47,6 @@
       margin-top: 10px;
     }
     .page__label {
-
       input {
         margin: 10px 0 15px;
         padding: 5px 0;
@@ -55,7 +54,7 @@
         display: block;
       }
 
-      input:disabled{
+      input:disabled {
         background-color: lightgray;
       }
       select {
@@ -89,7 +88,7 @@
   display: inline-block;
   margin-right: 1em;
 }
-.page__div-color{
+.page__div-color {
   margin: 10px;
   font-style: italic;
 }
