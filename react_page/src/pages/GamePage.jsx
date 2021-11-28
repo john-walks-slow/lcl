@@ -112,9 +112,9 @@ const Game = ({ dispatch }) => {
         this.textPaddingH = TEXT_PADDING_H;
         const PADDING_BETWEEN = 10;
         this.paddingBetween = PADDING_BETWEEN;
-        const DIALOG_PADDING_W = Math.min(WINDOW_W / 20, 70);
+        const DIALOG_PADDING_W = WINDOW_W > WINDOW_H ? WINDOW_W / 7 : 15;
         this.dialogPaddingW = DIALOG_PADDING_W;
-        const DIALOG_PADDING_H = Math.min(WINDOW_W / 25, 30);
+        const DIALOG_PADDING_H = WINDOW_W > WINDOW_H ? WINDOW_H / 16 : 25;
         this.dialogPaddingH = DIALOG_PADDING_H;
         const FONT_SIZE = Math.max(WINDOW_H / 30, WINDOW_W / 40);
         this.fontSize = FONT_SIZE;
