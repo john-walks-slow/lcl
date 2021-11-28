@@ -76,7 +76,7 @@ const Game = ({ dispatch }) => {
   var DAY_OFFSET = OBJECT_W.M;
   var DENSITY_OFFSET = OBJECT_W.L;
   var ACTIVITY_OFFSET = 1;
-  const MOVE_SPEED = PLAYER_TARGET_W * 1.4;
+  const MOVE_SPEED = PLAYER_TARGET_W * 1.6;
   const ZOOM_OUT_LEVEL = 0.3;
   const GRID_SIZE = Math.max(WINDOW_H, WINDOW_W) / ZOOM_OUT_LEVEL;
   const timestamp = Date.parse(new Date());
