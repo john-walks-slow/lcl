@@ -15,7 +15,7 @@ import bagBtnURL from '../assets/game/bag.png'
 import mapBtnURL from '../assets/game/map.png'
 import infoBtnURL from '../assets/game/info.png'
 // import colorURL from '../assets/game/color.png'
-import dialogURL from '../assets/game/dialog.png'
+import dialogURL from '../assets/game/dialog2.png'
 import boxURL from '../assets/game/boxes.png'
 import fatURL from '../assets/game/fats.png'
 import labelURL from '../assets/game/labels.png'
@@ -63,11 +63,11 @@ const Game = ({ dispatch }) => {
   const WINDOW_H = window.innerHeight || document.body.clientHeight;
   const WINDOW_CENTER_X = WINDOW_W / 2;
   const WINDOW_CENTER_Y = WINDOW_H / 2;
-  const PLAYER_TARGET_W = Math.min(WINDOW_W / 9, WINDOW_H / 11 / 44 * 37);
-  const PLAYER_TARGET_H = Math.min(WINDOW_W / 9, WINDOW_H / 11 / 44 * 37) / 37 * 44;
+  const PLAYER_TARGET_W = Math.min(WINDOW_W / 8, WINDOW_H / 11 / 44 * 37);
+  const PLAYER_TARGET_H = Math.min(WINDOW_W / 8, WINDOW_H / 11 / 44 * 37) / 37 * 44;
   // const PLAYER_TARGET_W = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37);
   // const PLAYER_TARGET_H = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37) / 37 * 44;
-  const OBJECT_W = { XL: PLAYER_TARGET_H * 1.8, L: PLAYER_TARGET_H * 1.3, M: PLAYER_TARGET_H * 0.9, S: PLAYER_TARGET_H * 0.7, XS: PLAYER_TARGET_H * 0.4 }
+  const OBJECT_W = { XL: PLAYER_TARGET_H * 2.5, L: PLAYER_TARGET_H * 2, M: PLAYER_TARGET_H * 1.4, S: PLAYER_TARGET_H * 1, XS: PLAYER_TARGET_H * 0.7 }
   // density: target object count in a circle (r=OBJECT_M_W*8)
 
   // const TIME_DELAY = 60 * 60 * 1000;
@@ -103,18 +103,29 @@ const Game = ({ dispatch }) => {
     class Dialog extends Phaser.GameObjects.Container {
 
       constructor(scene) {
-        const DIALOG_HEIGHT = WINDOW_H / 3.5;
-        const TEXT_PADDING_W = Math.min(WINDOW_W / 15, 50);
-        const TEXT_PADDING_H = Math.min(WINDOW_H / 25);
-        const PADDING_BETWEEN = 10;
-        const DIALOG_PADDING_W = Math.min(WINDOW_W / 20, 70);
-        const DIALOG_PADDING_H = Math.min(WINDOW_W / 25, 30);
-        const FONT_SIZE = Math.max(WINDOW_H / 30, WINDOW_W / 40);
-        const FONT_SIZE_HEADER = FONT_SIZE * 1.2;
-        // const DIALOG_HEIGHT = FONT_SIZE*2+FONT_SIZE_HEADER+TEXT_PADDING_H*3 +PADDING_BETWEEN;
-        const FONT_FAMILY = "pixel"
-        const FONT_FAMILY_HEADER = "pixel"
         super(scene);
+        const DIALOG_HEIGHT = WINDOW_H / 3.5;
+        this.dialogHeight = DIALOG_HEIGHT
+        const TEXT_PADDING_W = Math.min(WINDOW_W / 15, 50);
+        this.textPaddingW = TEXT_PADDING_W
+        const TEXT_PADDING_H = Math.min(WINDOW_H / 25);
+        this.textPaddingH = TEXT_PADDING_H
+        const PADDING_BETWEEN = 10;
+        this.paddingBetween = PADDING_BETWEEN
+        const DIALOG_PADDING_W = Math.min(WINDOW_W / 20, 70);
+        this.dialogPaddingW = DIALOG_PADDING_W
+        const DIALOG_PADDING_H = Math.min(WINDOW_W / 25, 30);
+        this.dialogPaddingH = DIALOG_PADDING_H
+        const FONT_SIZE = Math.max(WINDOW_H / 30, WINDOW_W / 40);
+        this.fontSize = FONT_SIZE
+        const FONT_SIZE_HEADER = FONT_SIZE * 1.2;
+        this.fontSizeHeader = FONT_SIZE_HEADER
+        // const DIALOG_HEIGHT = FONT_SIZE*2+FONT_SIZE_HEADER+TEXT_PADDING_H*3 +PADDING_BETWEEN;
+        // this.dialogHeight = DIALOG_HEIGHT
+        const FONT_FAMILY = "pixel"
+        this.fontFamily = FONT_FAMILY
+        const FONT_FAMILY_HEADER = "pixel"
+        this.fontFamilyHeader = FONT_FAMILY_HEADER
         this.scene = scene;
         this.depth = 999;
         this.dialogWindow = this.scene.add.sprite(WINDOW_CENTER_X, WINDOW_H - DIALOG_HEIGHT / 2 - DIALOG_PADDING_H, "dialog").setDisplaySize(WINDOW_W - DIALOG_PADDING_W, DIALOG_HEIGHT);
@@ -164,12 +175,16 @@ const Game = ({ dispatch }) => {
             // dialogWindow.off('pointerdown');
             this.scene.input.off('pointerdown');
             this.scene.input.keyboard.off('keydown-SPACE');
+            if (this.dialogCallback){
+              this.dialogCallback.apply();
+            }
           } else {
             this.dialogText.setText(this.sentences[this.dialogIndex]);
           }
         }
       }
-      showDialog(dialog, name) {
+      showDialog(dialog, name,callback) {
+        this.dialogCallback =callback || false;
         this.inDialog = true;
         this.scene.camera.shake(100,0.01)
         // dialogWindow.on('pointerdown', () => { this.proceedDialog() });
@@ -202,6 +217,78 @@ const Game = ({ dispatch }) => {
         this.dialogText.wordWrap = { width: width - padding * 2, useAdvancedWrap: true }
       }
     }
+    class LinkDialog extends Dialog {
+      constructor(scene) {
+        super(scene);
+        const width = Math.min(600, WINDOW_W * 0.85);
+        const height = width*0.7;
+        const padding = width/10;
+        const paddingTop = width/9;
+        this.link = '';
+        this.buttonSelected = "#000000"
+        this.dialogWindow.setX(WINDOW_CENTER_X)
+        this.dialogWindow.setY(WINDOW_CENTER_Y)
+        this.dialogWindow.setDisplaySize(width, height);
+        this.dialogText.setText("它带着一个箱子，打开看看吗？")
+        this.dialogText.setX(WINDOW_CENTER_X - width / 2 + padding)
+        this.dialogText.setY(WINDOW_CENTER_Y - height / 2 + paddingTop)
+        this.dialogText.setWordWrapWidth( width - padding *2,true)
+        this.selectedOption = 0;
+        this.dialogYes = this.scene.add.text(WINDOW_CENTER_X - width/2+padding, WINDOW_CENTER_Y+height/2-this.fontSizeHeader-paddingTop, " 是 ",
+        {
+          color: 0xFFFFFF,
+          fontFamily:this.fontFamily,
+          fontSize: (this.fontSizeHeader).toString() + "px",
+        });
+        this.dialogYes.buttonId = "yes"
+        this.dialogNo = this.scene.add.text(WINDOW_CENTER_X+padding, WINDOW_CENTER_Y+height/2-this.fontSizeHeader-paddingTop, " 否 ",
+        {
+          color: 0xFFFFFF,
+          fontFamily:this.fontFamily,
+          fontSize: (this.fontSizeHeader).toString() + "px",
+        });
+        this.dialogNo.buttonId = "no"
+        // this.dialogSelection = this.scene.add.rectangle(
+        //   WINDOW_CENTER_X - width/2+padding, WINDOW_CENTER_Y+height/2-this.fontSizeHeader-paddingTop,
+        //   width/2,this.fontSizeHeader,0x000000,0.3)
+        this.add([this.dialogYes,this.dialogNo])
+        this.select(1);
+
+      }
+      select(i){
+        this.selectedOption = i;
+        [this.dialogYes,this.dialogNo][i].setBackgroundColor(this.buttonSelected).setColor("#FFFFFF");
+        [this.dialogYes,this.dialogNo][1-i].setBackgroundColor("").setColor("#000000");
+      }
+      confirm(){
+        this.inDialog = false;
+        console.log(this.link);
+        if (this.link.length>0&& this.selectedOption==0){
+          window.open(this.link);
+        }
+        this.scene.input.keyboard.off('keydown-LEFT');
+        this.scene.input.keyboard.off('keydown-RIGHT');
+        this.scene.input.keyboard.off('keydown-SPACE');
+        this.scene.input.off('gameobjectdown');
+        this.select(1);
+        this.dialogFadeOut.play();
+        this.link = "";
+      }
+
+      showDialog(link){
+        console.log('show link');
+        this.link = link;
+        this.inDialog = true;
+        this.scene.input.on('gameobjectdown', (pointer,o,event)=>{
+          if (o.buttonId=="yes"){this.selectedOption=0}
+          if (o.buttonId=="no"){this.selectedOption=1}})
+        this.scene.input.keyboard.on('keydown-LEFT', () => { this.select(0) });
+        this.scene.input.keyboard.on('keydown-RIGHT', () => { this.select(1) });
+        this.scene.input.keyboard.on('keydown-SPACE', () => { this.confirm() });
+        this.dialogFadeIn.play();
+      }
+    }
+
 
     class LoadingScene extends Phaser.Scene {
       constructor() {
@@ -394,36 +481,41 @@ const Game = ({ dispatch }) => {
             currentObj = o1;
           }
           if (currentObj.data.values.dialog.length > 0) {
-            this.gameDialog.showDialog(currentObj.data.values.dialog, currentObj.data.values.name)
-            // if (currentObj.data.values.isBackground) {
+            this.gameDialog.showDialog(currentObj.data.values.dialog, currentObj.data.values.name,
+              ()=>{
+                if (currentObj.getData('link').length>0){
+                  this.linkDialog.showDialog(currentObj.getData('link'));
+                }
+              })
+            if (currentObj.data.values.isBackground) {
             currentObj.data.values.collider.destroy();
-            // } else {
+            } else {
             // currentObj.setData("dialog", []);
-            // }
+            }
           }
-          // this.physics.collide(o1, o2);
-          // let xOverlap = this.player.displayWidth / 2 + currentObj.displayWidth / 2 - Math.abs(this.player.x - currentObj.x)
-          // let yOverlap = this.player.displayHeight / 2 + currentObj.displayHeight / 2 - Math.abs(this.player.y - currentObj.y)
-          // // console.log(xOverlap, yOverlap);
-          // if (xOverlap < 0 || yOverlap < 0) {
-          //   // return;
-          // }
-          // if (xOverlap < yOverlap && this.player.x < currentObj.x) {
-          //   this.player.setX(this.player.x + -0.1);
-          //   // console.log('left');
-          // }
-          // if (xOverlap < yOverlap && this.player.x > currentObj.x) {
-          //   this.player.setX(this.player.x - -0.1);
-          //   // console.log('right');
-          // }
-          // if (xOverlap > yOverlap && this.player.y < currentObj.y) {
-          //   this.player.setY(this.player.y + -0.1);
-          //   // console.log('up');
-          // }
-          // if (xOverlap > yOverlap && this.player.y > currentObj.y) {
-          //   this.player.setY(this.player.y - -0.1);
-          //   // console.log('down');
-          // }
+          this.physics.collide(o1, o2);
+          let xOverlap = this.player.displayWidth / 2 + currentObj.displayWidth / 2 - Math.abs(this.player.x - currentObj.x)
+          let yOverlap = this.player.displayHeight / 2 + currentObj.displayHeight / 2 - Math.abs(this.player.y - currentObj.y)
+          // console.log(xOverlap, yOverlap);
+          if (xOverlap < 0 || yOverlap < 0) {
+            // return;
+          }
+          if (xOverlap < yOverlap && this.player.x < currentObj.x) {
+            this.player.setX(this.player.x + -0.1);
+            // console.log('left');
+          }
+          if (xOverlap < yOverlap && this.player.x > currentObj.x) {
+            this.player.setX(this.player.x - -0.1);
+            // console.log('right');
+          }
+          if (xOverlap > yOverlap && this.player.y < currentObj.y) {
+            this.player.setY(this.player.y + -0.1);
+            // console.log('up');
+          }
+          if (xOverlap > yOverlap && this.player.y > currentObj.y) {
+            this.player.setY(this.player.y - -0.1);
+            // console.log('down');
+          }
         }
         let movedObjects = [];
         this.objects.createCallback = (o) => {
@@ -486,7 +578,7 @@ const Game = ({ dispatch }) => {
           o.x = Math.cos(rad) * distance;
           o.y = Math.sin(rad) * distance;
           o.isBackground = o.zFactor != 1;
-          (!o.isBackground) && (o.zFactor = o.zFactor - 0.04 + Math.random() * 0.08);
+          (!o.isBackground) && (o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2);
           // (o.zFactor > 1) && (o.zFactor =1.4);
           // (o.zFactor < 1) && (o.zFactor =0.6);
           o.ratio = o.rows / o.columns;
@@ -573,8 +665,9 @@ const Game = ({ dispatch }) => {
               // o.instance = this.physics.add.sprite(o.x,o.y,"object"+o.id);
               // console.log(this.objects);
               o.instance.depth = o.zFactor;
-              o.zFactor < 1 && (o.instance.alpha = o.zFactor / 1.5);
+              o.isBackground && (o.instance.alpha = o.zFactor / 1.5);
               o.instance.setData("id", o._id);
+              o.instance.setData("link", o.link);
               o.instance.setData("name", o.name.length > 0 ? o.name : '???');
               o.instance.setData("dialog", o.dialog);
               o.instance.setData("zFactor", o.zFactor);
@@ -605,6 +698,7 @@ const Game = ({ dispatch }) => {
         // this.previousZone = [0, 0];
         this.gameDialog = new Dialog(this);
         this.itemDialog = new ItemDialog(this);
+        this.linkDialog = new LinkDialog(this);
         let reactMenu = document.getElementById('GAME_MENU');
         let gameInfo = document.getElementById('GAME_INFO');
         reactMenu.classList.add("show");
@@ -744,7 +838,7 @@ const Game = ({ dispatch }) => {
       update() {
         this.objects.children.each((o) => { o.setVelocityX(-this.player.body.velocity.x * (o.data.values.zFactor - 1)) })
         this.objects.children.each((o) => { o.setVelocityY(-this.player.body.velocity.y * (o.data.values.zFactor - 1)) })
-        if (this.gameDialog.inDialog || this.itemDialog.inDialog || !this.player.body.blocked.none) {
+        if (this.gameDialog.inDialog || this.itemDialog.inDialog ||this.linkDialog.inDialog || !this.player.body.blocked.none) {
           this.player.stopMovement();
         } else {
           // if (
