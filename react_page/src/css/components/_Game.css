@@ -17,8 +17,8 @@
   opacity: 1;
 }
 .game__button-menu {
-  width: 10vw;
-  max-width: 80px;
+  width: 5vw;
+  min-width: 35px;
   image-rendering: pixelated;
 }
 .game__button-menu:active {
