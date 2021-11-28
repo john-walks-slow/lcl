@@ -239,14 +239,14 @@ const Game = ({ dispatch }) => {
             color: 0xFFFFFF,
             fontFamily: this.fontFamily,
             fontSize: (this.fontSizeHeader).toString() + "px",
-          });
+          }).setInteractive();
         this.dialogYes.buttonId = "yes";
         this.dialogNo = this.scene.add.text(WINDOW_CENTER_X + padding, WINDOW_CENTER_Y + height / 2 - this.fontSizeHeader - paddingTop, " 否 ",
           {
             color: 0xFFFFFF,
             fontFamily: this.fontFamily,
             fontSize: (this.fontSizeHeader).toString() + "px",
-          });
+          }).setInteractive();
         this.dialogNo.buttonId = "no";
         // this.dialogSelection = this.scene.add.rectangle(
         //   WINDOW_CENTER_X - width/2+padding, WINDOW_CENTER_Y+height/2-this.fontSizeHeader-paddingTop,
@@ -280,8 +280,10 @@ const Game = ({ dispatch }) => {
         this.link = link;
         this.inDialog = true;
         this.scene.input.on('gameobjectdown', (pointer, o, event) => {
-          if (o.buttonId == "yes") { this.selectedOption = 0; }
-          if (o.buttonId == "no") { this.selectedOption = 1; }
+          console.log(o);
+          if (o.buttonId == "yes") { this.select(0); }
+          if (o.buttonId == "no") { this.select(1); }
+          this.confirm();
         });
         this.scene.input.keyboard.on('keydown-LEFT', () => { this.select(0); });
         this.scene.input.keyboard.on('keydown-RIGHT', () => { this.select(1); });
@@ -557,7 +559,7 @@ const Game = ({ dispatch }) => {
             if (currentObj.data.values.isBackground) {
               currentObj.data.values.collider.destroy();
             } else {
-              // currentObj.setData("dialog", []);
+              currentObj.setData("dialog", []);
             }
           }
           this.physics.collide(o1, o2);
@@ -870,8 +872,12 @@ const Game = ({ dispatch }) => {
       }
 
       update() {
-        this.objects.children.each((o) => { o.setVelocityX(-this.player.body.velocity.x * (o.data.values.zFactor - 1)); });
-        this.objects.children.each((o) => { o.setVelocityY(-this.player.body.velocity.y * (o.data.values.zFactor - 1)); });
+        // console.log(this.player.body);
+        let notTouching = this.player.body.touching.none;
+        let velocityX = notTouching ? this.player.body.velocity.x : 0;
+        let velocityY = notTouching ? this.player.body.velocity.y : 0;
+        this.objects.children.each((o) => { o.setVelocityX(-velocityX * (o.data.values.zFactor - 1)); });
+        this.objects.children.each((o) => { o.setVelocityY(-velocityY * (o.data.values.zFactor - 1)); });
         if (this.gameDialog.inDialog || this.itemDialog.inDialog || this.linkDialog.inDialog || !this.player.body.blocked.none) {
           this.player.stopMovement();
         } else {
