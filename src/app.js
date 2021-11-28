@@ -19,7 +19,7 @@ const channels = require('./channels');
 const mongodb = require('./mongodb');
 
 const app = express(feathers());
-var history = require('connect-history-api-fallback');
+// var history = require('connect-history-api-fallback');
 
 
 // Load app configuration
@@ -34,7 +34,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 // app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
-app.use(history());
+// app.use(history());
 // Set up Plugins and providers
 app.configure(express.rest());
 app.configure(mongodb);

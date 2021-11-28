@@ -4,7 +4,7 @@ import feathers from '@feathersjs/feathers';
 import rest from '@feathersjs/rest-client';
 import App from '../components/App';
 import { renderBlob } from '../utils/canvasGIF';
-import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link, browserHistory } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { secureStorage } from '../utils/storage';
@@ -166,7 +166,7 @@ const Page = ({ dispatch }) => {
   return (
     <div className={"page__container" + (show ? " show" : "")}>
       <div style={{ "textAlign": "right" }}>
-        <button className="page__button-back" onClick={() => { navigate("/"); }}>
+        <button className="page__button-back" onClick={() => { navigate("/"); browserHistory.replace('/'); }}>
           <i class="fas fa-sign-out-alt"></i>
           回到LCL</button>
       </div>
