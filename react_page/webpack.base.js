@@ -18,7 +18,7 @@ module.exports = (production) => {
     ],
     output: {
       path: path.join(__dirname, '../public/'),
-      publicPath: '/static/',
+      publicPath: '/',
       filename: '[name].bundle.js'
     },
     module: {
@@ -83,7 +83,7 @@ module.exports = (production) => {
     //   contentBase: './build'
     // },
     plugins: [
-      production?new CleanWebpackPlugin():()=>{},
+      production ? new CleanWebpackPlugin() : () => { },
       new CopyWebpackPlugin([
         { from: 'src/assets/public_res', to: '../public' },
       ]),
@@ -116,5 +116,5 @@ module.exports = (production) => {
     watch: !production,
     target: "web",
     stats: "detailed",
-  }
-}
+  };
+};

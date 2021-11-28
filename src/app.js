@@ -30,11 +30,11 @@ app.use(helmet({
 }));
 app.use(cors());
 app.use(compress());
-app.use(express.json({limit: '10mb'}));
-app.use(express.urlencoded({ limit: '10mb',extended: true }));
-app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+// app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
-app.use(history())
+app.use(history());
 // Set up Plugins and providers
 app.configure(express.rest());
 app.configure(mongodb);
@@ -47,9 +47,9 @@ app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
 
-app.use('/static', express.static(app.get('public')));
-app.get('/*', function(req, res) {
-  res.sendFile('index.html', {root: app.get('public')});
+app.use('/', express.static(app.get('public')));
+app.get('/*', function (req, res) {
+  res.sendFile('index.html', { root: app.get('public') });
 });
 // Configure a middleware for 404s and the error handler
 // app.use(express.notFound());

@@ -9,7 +9,7 @@
   <link rel="apple-touch-icon" sizes="192x192" href="./apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="./regular-icon.png">
   <link rel="shortcut icon" href="./favicon.ico">
-  <link rel="manifest" href="/static/manifest.json">
+  <link rel="manifest" href="manifest.webmanifest">
 
 </head>
 
@@ -17,7 +17,16 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/static/service-worker.js');
+        navigator.serviceWorker.register('/service-worker.js');
+      });
+      window.addEventListener('beforeinstallprompt', (e) => {
+        // 防止 Chrome 67 及更早版本自动显示安装提示
+        e.preventDefault();
+        // 稍后再触发此事件
+        window.deferredPrompt = e;
+        // 更新 UI 以提醒用户可以将 App 安装到桌面
+
+
       });
     }
   </script>

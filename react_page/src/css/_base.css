@@ -1,6 +1,7 @@
 html {
   box-sizing: border-box;
   background-color: $color-scorpion;
+  font-size: 16px;
 }
 
 *,
@@ -42,10 +43,9 @@ textarea,
 button,
 select,
 a {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .app-container {
-
   margin: 0 auto;
   padding: 0;
 }

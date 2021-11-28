@@ -63,8 +63,8 @@ const Game = ({ dispatch }) => {
   const WINDOW_H = window.innerHeight || document.body.clientHeight;
   const WINDOW_CENTER_X = WINDOW_W / 2;
   const WINDOW_CENTER_Y = WINDOW_H / 2;
-  const PLAYER_TARGET_W = Math.min(WINDOW_W / 11, WINDOW_H / 11 / 44 * 37);
-  const PLAYER_TARGET_H = Math.min(WINDOW_W / 11, WINDOW_H / 11 / 44 * 37) / 37 * 44;
+  const PLAYER_TARGET_W = Math.min(WINDOW_W / 11, WINDOW_H / 13 / 44 * 37);
+  const PLAYER_TARGET_H = Math.min(WINDOW_W / 11, WINDOW_H / 13 / 44 * 37) / 37 * 44;
   // const PLAYER_TARGET_W = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37);
   // const PLAYER_TARGET_H = Math.min(WINDOW_W / 15, WINDOW_H / 15 / 44 * 37) / 37 * 44;
   const OBJECT_W = { XL: PLAYER_TARGET_H * 2.5, L: PLAYER_TARGET_H * 2, M: PLAYER_TARGET_H * 1.4, S: PLAYER_TARGET_H * 1, XS: PLAYER_TARGET_H * 0.7 };
@@ -81,9 +81,9 @@ const Game = ({ dispatch }) => {
   const GRID_SIZE = Math.max(WINDOW_H, WINDOW_W) / ZOOM_OUT_LEVEL;
   const timestamp = Date.parse(new Date());
   let mainScene;
-  const [showInfo, setShowInfo] = useState();
+  const [showInfo, setShowInfo] = useState(false);
   const ITEM_LIST = [{ name: "boxes", dialog: "哇！你捡到了一个箱子" }, { name: "fats", dialog: "哇！你捡到了一袋肥料" }, { name: "labels", dialog: "哇！你捡到了一张便签" }, { name: "telescopes", dialog: "哇！你捡到了一块镜片" }, { name: "batteries", dialog: "哇！你捡到了一块电池" },];
-
+  const deferredPrompt = window.deferredPrompt;
   useEffect(() => {
     document.title = "LCL";
     document.body.style.overflow = "hidden";
@@ -478,6 +478,7 @@ const Game = ({ dispatch }) => {
           ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
           duration: 3000,
         });
+
         this.camera.zoomOutAnim = this.tweens.create({
           targets: this.camera,
           props: { 'zoom': this.camera.zoomOutLevel },
@@ -491,7 +492,6 @@ const Game = ({ dispatch }) => {
           duration: 300,
         });
         this.camera.zoomIn = () => {
-          this.camera.zoomOutAnim.stop();
           this.camera.zoomOutAnim.stop();
           this.camera.zoomInAnim.play();
         };
@@ -854,12 +854,16 @@ const Game = ({ dispatch }) => {
         this.player.anims.play('standRight');
         this.camera.fadeIn();
         this.camera.initAnim.play();
-        this.camera.toggleZoom = () => {
-          console.log('toggle');
-          this.camera.zoom == ZOOM_OUT_LEVEL ?
-            this.camera.zoomIn()
-            : this.camera.zoomOut();
-        };
+
+        this.camera.initAnim.on('complete', () => {
+          this.camera.toggleZoom = () => {
+            console.log('toggle');
+            this.camera.zoom < 1 ?
+              this.camera.zoomIn()
+              : this.camera.zoomOut();
+          };
+        });
+
         this.camera.ignore(this.uis);
         this.staticCamera.ignore(this.gameObjects);
 
@@ -987,6 +991,17 @@ const Game = ({ dispatch }) => {
       </div>
       <div id="GAME_INVENTORY"></div>
       <div id="GAME_INFO" className={showInfo ? "show" : ""}>
+        <button className={"game__button-install" + (deferredPrompt ? " show" : "")} onClick={() => {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the A2HS prompt');
+            } else {
+              console.log('User dismissed the A2HS prompt');
+            }
+            deferredPrompt = null;
+          });
+        }}>安装到桌面</button>
         <ReactMarkdown>{ReadMe.toString()}</ReactMarkdown>
 
       </div>

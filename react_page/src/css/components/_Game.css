@@ -1,46 +1,53 @@
-#GAME_DIV{
+#GAME_DIV {
   overflow: hidden;
 }
-#GAME_MENU{
+#GAME_MENU {
   position: fixed;
-  right:15px;
-  top:15px;
+  right: 15px;
+  top: 15px;
   opacity: 0;
-  transform:translateY(20px);
-  transition:  1000ms;
+  transform: translateY(20px);
+  transition: 1000ms;
 }
-#GAME_MENU.show{
+#GAME_MENU.show {
   position: fixed;
-  transform:translateY(0);
-  right:15px;
-  top:15px;
+  transform: translateY(0);
+  right: 15px;
+  top: 15px;
   opacity: 1;
 }
-.game__button-menu{
+.game__button-menu {
   width: 10vw;
   max-width: 80px;
-  image-rendering:  pixelated;
-
+  image-rendering: pixelated;
 }
-.game__button-menu:active{
+.game__button-menu:active {
   transform: scale(0.8);
 }
-
-#GAME_INFO{
+.game__button-install {
+  opacity: 0;
+  position: absolute;
+  right: 1em;
+  font-size: 0.8rem;
+}
+.game__button-install.show {
+  opacity: 1;
+}
+#GAME_INFO {
   background-color: #00000010;
   padding: 20px 20px 50px 20px;
   margin: auto;
-  width: max(600px,70vw);
+  width: max(600px, 70vw);
   height: 100vh;
   position: fixed;
-  width:80vw;
-  max-width:400px;
+  width: 80vw;
+  max-width: 400px;
   opacity: 0;
   pointer-events: none;
   transition: 500ms;
   overflow: scroll;
 }
-#GAME_INFO.show{
-  pointer-events:initial;
+#GAME_INFO.show {
+  pointer-events: initial;
   opacity: 1;
 }

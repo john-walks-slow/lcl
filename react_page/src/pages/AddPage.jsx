@@ -5,8 +5,8 @@ import rest from '@feathersjs/rest-client';
 import App from '../components/App';
 import { renderBlob } from '../utils/canvasGIF';
 import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { secureStorage } from '../utils/storage';
 import { connect } from 'react-redux';
 import {
@@ -14,14 +14,14 @@ import {
 } from '../store/actions/actionCreators';
 
 const Page = ({ dispatch }) => {
-  const [name, setName] = useState("")
-  const [dialog, setDialog] = useState("")
-  const [link, setLink] = useState("")
-  const [size, setSize] = useState("M")
-  const [movement, setMovement] = useState("static")
-  const [zFactor, setZFactor] = useState(1)
-  const [submitted, setSubmitted] = useState(false)
-  const [errorData, setErrorData] = useState()
+  const [name, setName] = useState("");
+  const [dialog, setDialog] = useState("");
+  const [link, setLink] = useState("");
+  const [size, setSize] = useState("M");
+  const [movement, setMovement] = useState("static");
+  const [zFactor, setZFactor] = useState(1);
+  const [submitted, setSubmitted] = useState(false);
+  const [errorData, setErrorData] = useState();
   const [objectsService, setObjectsService] = useState();
   const [blobsService, setBlobsService] = useState();
   const [uploading, setUploading] = useState(false);
@@ -56,21 +56,21 @@ const Page = ({ dispatch }) => {
     rows,
     cellSize: 1,
     duration
-  }
+  };
   const FAT_CONSUMPTION_MAP = {
     "XL": 2,
     "L": 1,
     "M": 0,
     "S": 1,
     "XS": 1,
-  }
+  };
   const BATTERY_CONSUMPTION_MAP = {
     "static": 0,
     "float": 1,
     "flash": 2,
     "wander": 2,
     "bf": 1,
-  }
+  };
   const labelConsumption = name == "" ? 0 : 1;
   const boxConsumption = link == "" ? 0 : 1;
   const fatConsumption = FAT_CONSUMPTION_MAP[size];
@@ -83,7 +83,7 @@ const Page = ({ dispatch }) => {
 
   function blobToDataURL(blob, callback) {
     var a = new FileReader();
-    a.onload = function (e) { callback(e.target.result); }
+    a.onload = function (e) { callback(e.target.result); };
     a.readAsDataURL(blob);
   }
   const submit = (event) => {
@@ -94,9 +94,9 @@ const Page = ({ dispatch }) => {
       blobToDataURL(b, (uri) => {
         blobURI = uri;
         upload();
-      })
+      });
     });
-  }
+  };
 
   const upload = async () => {
     console.log({
@@ -130,14 +130,14 @@ const Page = ({ dispatch }) => {
       let currentPlayer = secureStorage.getItem('player');
       currentPlayer.palette = (getColor ?
         [...currentPlayer.palette, newRewardColor] : currentPlayer.palette)
-        .filter((c) => (usedColors.indexOf(c) == -1))
+        .filter((c) => (usedColors.indexOf(c) == -1));
 
       console.log(currentPlayer.palette);
-      currentPlayer.labels -= labelConsumption
-      currentPlayer.fats -= fatConsumption
-      currentPlayer.telescopes -= telescopeConsumption
-      currentPlayer.batteries -= batteryConsumption
-      currentPlayer.boxes -= boxConsumption
+      currentPlayer.labels -= labelConsumption;
+      currentPlayer.fats -= fatConsumption;
+      currentPlayer.telescopes -= telescopeConsumption;
+      currentPlayer.batteries -= batteryConsumption;
+      currentPlayer.boxes -= boxConsumption;
       console.log(currentPlayer);
       // setFeatures({player})
       dispatch(setStorage(currentPlayer));
@@ -147,9 +147,9 @@ const Page = ({ dispatch }) => {
       setErrorData(e);
       setSubmitted(true);
     }
-  }
+  };
   useEffect(() => {
-    document.title = "New Object"
+    document.title = "New Object";
     setShow(true);
     dispatch(newProject());
     document.body.style.overflow = 'auto';
@@ -178,7 +178,7 @@ const Page = ({ dispatch }) => {
             <span className="page__span-color" style={{ "backgroundColor": rewardColor }}></span>
             哇！找到了一瓶颜料</div>
             : ""}
-          <Link to="/add" onClick={() => { dispatch(newProject); setRewardColor(false); setSubmitted(false) }}>再创建一个</Link>
+          <Link to="/add" onClick={() => { dispatch(newProject); setRewardColor(false); setSubmitted(false); }}>再创建一个</Link>
 
 
         </div>
@@ -191,19 +191,19 @@ const Page = ({ dispatch }) => {
           <App dispatch={dispatch} color="#000000" animate="false" />
           <label className={"page__label"}>
             对话
-            <textarea type="text" value={dialog} onChange={(event) => { setDialog(event.target.value) }} placeholder="注:对话是由回车分割的" className="page__textarea dialog" />
+            <textarea type="text" value={dialog} onChange={(event) => { setDialog(event.target.value); }} placeholder="注:对话是由回车分割的" className="page__textarea dialog" />
           </label>
           <label className={"page__label"} disabled={labels <= 0}>
             名字 <sub>{labels <= 0 ? "改名字需要便签条" : ("便签条数量：" + labels + (labelConsumption == 0 ? "" : `(-1)`))}</sub>
-            <input type="text" value={name} disabled={labels <= 0} onChange={(event) => { setName(event.target.value) }} placeholder="？？？" className="page__input" />
+            <input type="text" value={name} disabled={labels <= 0} onChange={(event) => { setName(event.target.value); }} placeholder="？？？" className="page__input" />
           </label>
           <label className={"page__label"} disabled={boxes <= 0}>
-            链接 <sub>{boxes <= 0 ? "添加链接需要盒子" : ("盒子数量：" + boxes + (boxConsumption == 0 ? "" : `(-1)`))}</sub>
-            <input type="text" value={link} disabled={boxes <= 0} onChange={(event) => { setLink(event.target.value) }} placeholder="对象可以携带一个超链接" className="page__input link" />
+            链接 <sub>{boxes <= 0 ? "添加链接需要箱子" : ("箱子数量：" + boxes + (boxConsumption == 0 ? "" : `(-1)`))}</sub>
+            <input type="text" value={link} disabled={boxes <= 0} onChange={(event) => { setLink(event.target.value); }} placeholder="对象可以携带一个超链接" className="page__input link" />
           </label>
           <label className={"page__label"} disabled={fats <= 0}>
             体积 <sub>{fats <= 0 ? "改大小需要肥料" : ("肥料数量：" + fats + (size == "M" ? "" : `(-${fatConsumption})`))}</sub>
-            <select value={size} disabled={fats <= 0} onChange={(event) => { setSize(event.target.value) }} className="page__input" >
+            <select value={size} disabled={fats <= 0} onChange={(event) => { setSize(event.target.value); }} className="page__input" >
               <option value="XL">XL</option>
               <option value="L">L</option>
               <option value="M">M</option>
@@ -213,7 +213,7 @@ const Page = ({ dispatch }) => {
           </label>
           <label className={"page__label"} disabled={batteries <= 0}>
             运动 <sub>{batteries <= 0 ? "让物体动起来需要电池" : ("电池数量：" + batteries + (movement == "static" ? "" : `(-${batteryConsumption})`))}</sub>
-            <select value={movement} disabled={batteries <= 0} onChange={(event) => { setMovement(event.target.value) }} className="page__input" >
+            <select value={movement} disabled={batteries <= 0} onChange={(event) => { setMovement(event.target.value); }} className="page__input" >
               <option value="static">静止</option>
               <option value="float">漂浮</option>
               <option value="bf">来回走</option>
@@ -223,14 +223,14 @@ const Page = ({ dispatch }) => {
 
           <label className={"page__label"} disabled={telescopes <= 0}>
             深度 <sub>{telescopes <= 0 ? "设置深度需要镜片" : ("镜片数量：" + telescopes + (zFactor == 1 ? "" : `(-${telescopeConsumption})`))}</sub>
-            <input type="range" min="0.5" max="1.5" step="0.1" disabled={telescopes <= 0} value={2 - zFactor} onChange={(event) => { setZFactor(2 - event.target.value) }} placeholder="深度的范围是0.5 - 1.5（近大远小）" className="page__input" />
+            <input type="range" min="0.5" max="1.5" step="0.1" disabled={telescopes <= 0} value={2 - zFactor} onChange={(event) => { setZFactor(2 - event.target.value); }} placeholder="深度的范围是0.5 - 1.5（近大远小）" className="page__input" />
           </label>
 
           <input className="page__submit" disabled={error || uploading} type="submit" onClick={(e) => { submit(e); }} value={uploading ? "提交中..." : "提交"} />
         </form>}
     </div >
   );
-}
+};
 
 
 export default Page;
