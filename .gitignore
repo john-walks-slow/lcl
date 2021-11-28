@@ -110,4 +110,4 @@ $RECYCLE.BIN/
 data/*
 .history
 art
-./public
+/public
