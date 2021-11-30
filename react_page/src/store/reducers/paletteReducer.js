@@ -65,12 +65,12 @@ const createPaletteGrid = () => {
   //   'rgba(56, 53, 53, 1)'
   // ];
   let player = secureStorage.getItem('player');
-  let colorList = ["#000000", "#FEFEFE"]
+  let colorList = ["#222034", "#FEFEFE"];
   if (player && player.palette) {
     colorList = colorList.concat(player.palette);
   }
   return List(colorList).map(color => Map({ color, id: shortid.generate() }));
-}
+};
 
 
 const isColorSelected = palette => palette.get('position') !== -1;
@@ -87,7 +87,7 @@ const setPaletteFromStorage = (action) => (
     grid: List(action.palette).map(color => Map({ color, id: shortid.generate() })),
     position: 0
   })
-)
+);
 const getCellColor = ({ color }) => color || GRID_INITIAL_COLOR;
 
 const eyedropColor = (palette, action) => {

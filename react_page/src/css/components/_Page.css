@@ -3,11 +3,12 @@
   transition: 1200ms;
 
   @media screen and (max-width: 600px) {
-    margin: 15px;
+    padding: 15px;
   }
   @media screen and (min-width: 600px) {
-    margin: 4% auto;
+    padding: 4% 0;
     max-width: 500px;
+    margin: 0 auto;
   }
   padding-bottom: 60px;
   .page__button-back {

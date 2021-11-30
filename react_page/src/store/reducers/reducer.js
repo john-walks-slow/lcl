@@ -6,10 +6,11 @@ import activeFrameReducer from './activeFrameReducer';
 import drawingToolReducer from './drawingToolReducer';
 import * as types from '../actions/actionTypes';
 import { initStorage, getDataFromStorage, secureStorage } from '../../utils/storage';
+import { navigate, navigateWithoutHistory } from '../../utils/history';
 
 function setInitialState(state) {
   const cellSize = 1;
-  // const colorList = List(["#000000", "#FFFFFF"
+  // const colorList = List(["#222034", "#FFFFFF"
   // ]).map(color => Map({ color, id: shortid.generate() }));
   // const palette = Map({
   //   grid: colorList,
@@ -24,47 +25,64 @@ function setInitialState(state) {
       telescopes: 0,
       batteries: 0,
       boxes: 0,
-      ownItems:[]
-    }
-    secureStorage.setItem('player', player)
+      ownItems: []
+    };
+    secureStorage.setItem('player', player);
   }
   const labels = player.labels;
   const boxes = player.boxes;
   const telescopes = player.telescopes;
   const batteries = player.batteries;
+  const palette = player.palette;
   const fats = player.fats;
   const initialState = {
     cellSize,
     loading: false,
     notifications: List(),
     duration: 1,
+    pathname: window.location.pathname,
     player: {
       labels,
       boxes,
       telescopes,
       batteries,
-      fats
-    }
+      fats,
+      palette
+    },
+    // objects: {}
     // palette,
   };
-
   return state.merge(initialState);
 }
 
 function setDrawing(state, action) {
   return state.set('cellSize', action.cellSize);
 }
+function setNewObject(state, action) {
+  return state.set('newObject', action.newObject);
+}
+function setObjects(state, action) {
+  return state.set('objects', action.objects);
+}
+function setPath(state, action) {
+  console.log(action);
+  if (action.withoutHistory) {
+    navigateWithoutHistory(action.pathname);
+  }
+  else { navigate(action.pathname); }
+  return state.set('pathname', action.pathname);
+}
 function updateUsedColors(state) {
   let frameList = state.get('frames').get('list').toJSON();
   console.log(frameList);
-  let usedColors = [].concat(frameList.map(v => v.grid))[0].filter((value, index, self) => (self.indexOf(value) === index)).filter((value, index) => (value.length == 7))
+  let usedColors = [].concat(frameList.map(v => v.grid))[0].filter((value, index, self) => (self.indexOf(value) === index)).filter((value, index) => (value.length == 7));
   console.log(usedColors);
   return state.set('usedColors', usedColors);
 }
 function setStorage(state, action) {
-  const player = secureStorage.getItem('player')
+  const player = secureStorage.getItem('player');
   secureStorage.setItem('player',
-    { ...player, ...action.storage })
+    { ...player, ...action.storage });
   return state.merge({
     player: {
       ...player
@@ -146,6 +164,12 @@ function partialReducer(state, action) {
       return updateUsedColors(state);
     case types.UPDATE_USED_COLORS:
       return updateUsedColors(state);
+    case types.SET_PATH:
+      return setPath(state, action);
+    case types.SET_NEW_OBJECT:
+      return setNewObject(state, action);
+    case types.SET_OBJECT:
+      return setObjects(state, action);
     default:
   }
   return state;

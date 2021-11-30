@@ -34,7 +34,7 @@
   opacity: 1;
 }
 #GAME_INFO {
-  background-color: #00000010;
+  background-color: #22203410;
   padding: 20px 20px 50px 20px;
   margin: auto;
   width: max(600px, 70vw);
@@ -50,4 +50,38 @@
 #GAME_INFO.show {
   pointer-events: initial;
   opacity: 1;
+}
+#GAME_INVENTORY {
+  --width: min(70vw, 300px);
+  --height: calc(var(--width));
+  background-color: white;
+  padding: 20px 20px 50px 20px;
+  margin-top: calc((100vh - var(--height)) / 2);
+  margin-left: calc((100vw - var(--width)) / 2);
+  width: var(--width);
+  height: var(--height);
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+  transition: 800ms;
+  overflow: auto;
+  border: solid #222034 10px;
+  transform: translateY(30px);
+}
+#GAME_INVENTORY.show {
+  pointer-events: initial;
+  opacity: 1;
+  transform: translateY(0px);
+}
+#GAME_DIV {
+  opacity: 0;
+  position: fixed;
+  pointer-events: none;
+  transition: 400ms;
+}
+#GAME_DIV.show {
+  opacity: 1;
+  position: fixed;
+  pointer-events: initial;
+  transition: 400ms;
 }

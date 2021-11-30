@@ -201,6 +201,26 @@ export function changeHoveredCell(cell) {
     cell
   };
 }
+export function setNewObject(newObject) {
+  return {
+    type: types.SET_NEW_OBJECT,
+    newObject
+  };
+}
+
+export function setObjects(objects) {
+  return {
+    type: types.SET_OBJECTS,
+    objects
+  };
+}
+
+export function setPath(pathname, withoutHistory = false) {
+  return {
+    type: types.SET_PATH,
+    pathname, withoutHistory
+  };
+}
 
 export function undo() {
   return ActionCreators.undo();

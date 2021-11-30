@@ -10,12 +10,12 @@ describe('formatPixelColorOutput', () => {
     });
   });
   describe('When the chosen formatId is 0', () => {
-    it('should return color formatted as: #000000', () => {
+    it('should return color formatted as: #222034', () => {
       expect(formatPixelColorOutput('rgba(255,255,255,1)', 0)).toEqual(
         '#ffffff'
       );
       expect(formatPixelColorOutput('#ffffff', 0)).toEqual('#ffffff');
-      expect(formatPixelColorOutput('', 0)).toEqual('#000000');
+      expect(formatPixelColorOutput('', 0)).toEqual('#222034');
     });
   });
   describe('When the chosen formatId is 1', () => {

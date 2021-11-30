@@ -4,16 +4,15 @@ import feathers from '@feathersjs/feathers';
 import rest from '@feathersjs/rest-client';
 import App from '../components/App';
 import { renderBlob } from '../utils/canvasGIF';
-import { useParams, useNavigate, useLocation, Link, browserHistory } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { secureStorage } from '../utils/storage';
 import { connect } from 'react-redux';
 import {
-  newProject, setStorage, updateUsedColors
+  newProject, setStorage, updateUsedColors, setPath, setNewObject
 } from '../store/actions/actionCreators';
 
-const Page = ({ dispatch }) => {
+const Page = ({ dispatch, isShown }) => {
   const [name, setName] = useState("");
   const [dialog, setDialog] = useState("");
   const [link, setLink] = useState("");
@@ -44,8 +43,6 @@ const Page = ({ dispatch }) => {
   const grid = frames.getIn(['list', activeFrameIndex, 'grid']);
   const columns = frames.get('columns');
   const rows = frames.get('rows');
-  const navigate = useNavigate();
-  const location = useLocation();
   const cellSize = 1;
   const duration = useSelector(state => state.present.get('duration'));
   const options = {
@@ -120,11 +117,12 @@ const Page = ({ dispatch }) => {
         blobURI
       });
       console.log(`Data uploaded ${result}`);
+      // dispatch(setNewObject(result));
       setSubmitted(true);
       const getColor = Math.round(Math.random()) == 1;
       // let newRewardColor = Array(colorCount).map(i => ((Math.floor(Math.random() * 16777215).toString(16))));
       let newRewardColor = getColor ?
-        "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); })
+        "#222034".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); })
         : false;
       setRewardColor(newRewardColor);
       let currentPlayer = secureStorage.getItem('player');
@@ -154,7 +152,9 @@ const Page = ({ dispatch }) => {
     setShow(true);
     dispatch(newProject());
     dispatch(updateUsedColors());
-    document.body.style.overflow = 'auto';
+    setTimeout(() => {
+      document.body.style.overflow = 'auto';
+    }, 500);
     let app = feathers();
     // Connect to the same as the browser URL (only in the browser)
     let restClient = rest();
@@ -167,7 +167,7 @@ const Page = ({ dispatch }) => {
   return (
     <div className={"page__container" + (show ? " show" : "")}>
       <div style={{ "textAlign": "right" }}>
-        <button className="page__button-back" onClick={() => { navigate("/"); browserHistory.replace('/'); }}>
+        <button className="page__button-back" onClick={() => { dispatch(setPath("/")); }}>
           <i class="fas fa-sign-out-alt"></i>
           回到LCL</button>
       </div>
@@ -179,7 +179,7 @@ const Page = ({ dispatch }) => {
             <span className="page__span-color" style={{ "backgroundColor": rewardColor }}></span>
             哇！找到了一瓶颜料</div>
             : ""}
-          <Link to="/add" onClick={() => { dispatch(newProject); setRewardColor(false); setSubmitted(false); }}>再创建一个</Link>
+          <a onClick={() => { dispatch((newProject())); setRewardColor(false); setSubmitted(false); }}>再创建一个</a>
 
 
         </div>
@@ -189,7 +189,7 @@ const Page = ({ dispatch }) => {
           <h1>新对象</h1>
           <label>形象 <sub>画彩色的画会消耗颜料</sub>
           </label>
-          <App dispatch={dispatch} color="#000000" animate="false" />
+          <App dispatch={dispatch} color="#222034" animate="false" />
           <label className={"page__label"}>
             对话
             <textarea type="text" value={dialog} onChange={(event) => { setDialog(event.target.value); }} placeholder="注:对话是由回车分割的" className="page__textarea dialog" />

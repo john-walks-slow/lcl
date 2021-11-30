@@ -12,7 +12,7 @@ const getRgbaValues = color => {
 
 /*
  *  getRgbHexValues
- *  @param {string} The pixel color in the following format: #000000
+ *  @param {string} The pixel color in the following format: #222034
  *  @return {object} An object with r, g, b properties with its hex correspondent value
  */
 const getRgbHexValues = color => {
@@ -70,7 +70,7 @@ const parseHexToRgba = (colorCode, opacity) => {
 
 /*
  *  normalizeColor
- *  @param {string} The color value, it could be in the following formats:  '', rgba(0,0,0,1) or #000000
+ *  @param {string} The color value, it could be in the following formats:  '', rgba(0,0,0,1) or #222034
  *  @return {string} Returns just the hex value with 6 digits
  */
 const normalizeColor = colorCode => {
@@ -95,7 +95,7 @@ const normalizeColor = colorCode => {
  *  formatPixelColorOutput
  *  @param {string} The pixel color
  *  @param {number} formatId There are 3 format types
- *    0: #000000
+ *    0: #222034
  *    1: 0x000000
  *    2: rgba(0,0,0,1)
  *  @return {string} The pixel color formatted

@@ -1,12 +1,3 @@
-export default function randomString() {
-  return Math.random()
-    .toString(36)
-    .replace(/[^a-z]+/g, '')
-    .substr(0, 8);
-}
-
-
-
 function xmur3(str) {
   for (var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
     h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
@@ -18,7 +9,7 @@ function xmur3(str) {
   };
 }
 
-export function seededRandom(string) {
+module.exports = function seededRandom(string) {
   let seed = xmur3(string);
   let a = seed();
   let b = seed();
@@ -33,4 +24,4 @@ export function seededRandom(string) {
   t = t + d | 0;
   c = c + t | 0;
   return (t >>> 0) / 4294967296;
-}
+};
