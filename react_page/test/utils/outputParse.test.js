@@ -15,7 +15,7 @@ describe('generateFramesOutput', () => {
 
   describe('Color format', () => {
     describe('When the colorFormat is 0', () => {
-      it('should return the output with the color formatted like: #222034', () => {
+      it('should return the output with the color formatted like: #000000', () => {
         const options = {
           colorFormat: 0,
           reverseOdd: false,

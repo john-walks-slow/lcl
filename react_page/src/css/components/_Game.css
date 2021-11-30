@@ -3,17 +3,16 @@
 }
 #GAME_MENU {
   position: fixed;
-  right: 15px;
+  right: 25px;
   top: 15px;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateX(20px);
   transition: 1000ms;
 }
 #GAME_MENU.show {
   position: fixed;
   transform: translateY(0);
-  right: 15px;
-  top: 15px;
+
   opacity: 1;
 }
 .game__button-menu {
@@ -34,7 +33,7 @@
   opacity: 1;
 }
 #GAME_INFO {
-  background-color: #22203410;
+  background-color: #11102310;
   padding: 20px 20px 50px 20px;
   margin: auto;
   width: max(600px, 70vw);
@@ -65,7 +64,7 @@
   pointer-events: none;
   transition: 800ms;
   overflow: auto;
-  border: solid #222034 10px;
+  border: solid #111023 10px;
   transform: translateY(30px);
 }
 #GAME_INVENTORY.show {
@@ -84,4 +83,7 @@
   position: fixed;
   pointer-events: initial;
   transition: 400ms;
+}
+#PHASER_ROOT {
+  position: fixed;
 }

@@ -1,45 +1,14 @@
-import generateSceneConfigurations from "../game.config";
+import configureScene from "../game.config";
 
-generateSceneConfigurations;
 export default class Dialog extends Phaser.GameObjects.Container {
-  constructor(scene, configurations) {
+  constructor(scene) {
     super(scene);
-    Object.assign(this, configurations);
-    this.DIALOG_HEIGHT = this.WINDOW_H / 3.5;
-    this.TEXT_PADDING_W = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 15 : 25;
-    this.TEXT_PADDING_H = Math.min(this.WINDOW_H / 25);
-    this.PADDING_BETWEEN = 10;
-    this.DIALOG_PADDING_W = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 7 : 15;
-    this.DIALOG_PADDING_H = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_H / 16 : 25;
-    this.FONT_SIZE = Math.max(this.WINDOW_H / 30, this.WINDOW_W / 40);
-    this.FONT_SIZE_HEADER = this.FONT_SIZE * 1.2;
-    this.FONT_FAMILY = "pixel";
-    this.FONT_FAMILY_HEADER = "pixel";
     this.scene = scene;
     this.depth = 999;
-    this.dialogWindow = this.scene.add.sprite(this.WINDOW_CENTER_X, this.WINDOW_H - this.DIALOG_HEIGHT / 2 - this.DIALOG_PADDING_H, "dialog").setDisplaySize(this.WINDOW_W - this.DIALOG_PADDING_W * 2, this.DIALOG_HEIGHT);
-    this.dialogHeader = this.scene.add.text(this.DIALOG_PADDING_W + this.TEXT_PADDING_W, this.WINDOW_H - this.DIALOG_HEIGHT - this.DIALOG_PADDING_H + this.TEXT_PADDING_H, "",
-      {
-        color: 0xFFFFFF,
-        fontStyle: "bold",
-        // fixedWidth: this.WINDOW_W - this.DIALOG_PADDING_W - TEXT_PADDING*2,
-        // fixedHeight: this.DIALOG_HEIGHT - TEXT_PADDING*2,
-        fontFamily: this.FONT_FAMILY_HEADER,
-        fontSize: (this.FONT_SIZE_HEADER).toString() + "px",
-      });
-    this.dialogText = this.scene.add.text(this.DIALOG_PADDING_W + this.TEXT_PADDING_W, this.WINDOW_H - this.DIALOG_HEIGHT - this.DIALOG_PADDING_H + this.TEXT_PADDING_H + this.FONT_SIZE_HEADER + this.PADDING_BETWEEN, "",
-      {
-        color: 0xFFFFFF,
-        // fixedWidth: this.WINDOW_W - this.DIALOG_PADDING_W - TEXT_PADDING*2,
-        // fixedHeight: this.DIALOG_HEIGHT - TEXT_PADDING*2,
-        fontFamily: this.FONT_FAMILY,
-        fontSize: this.FONT_SIZE.toString() + "px",
-        wordWrap: { width: this.WINDOW_W - this.DIALOG_PADDING_W * 2 - this.TEXT_PADDING_W * 2 + 10, useAdvancedWrap: true }
-      });
-    this.add([this.dialogWindow, this.dialogText, this.dialogHeader]);
-
     this.setScrollFactor(0);
     this.setAlpha(0);
+    this.initializeComponents();
+    this.setDisplay();
     this.dialogIndex = 0;
     this.inDialog = false;
     this.dialogFadeIn = this.scene.tweens.create({
@@ -55,6 +24,75 @@ export default class Dialog extends Phaser.GameObjects.Container {
       duration: 500,
     });
     this.scene.add.existing(this);
+    // this.scene.uis.add(this);
+
+    // this.dialogFadeIn.play();
+
+  }
+  initializeComponents() {
+    this.dialogWindow = this.scene.add.sprite(0, 0, "dialog");
+    this.dialogHeader = this.scene.add.text(0, 0, "",
+      {
+        color: 0xFFFFFF,
+        fontStyle: "bold",
+        // fixedWidth: this.WINDOW_W - this.DIALOG_PADDING_W - TEXT_PADDING*2,
+        // fixedHeight: this.DIALOG_HEIGHT - TEXT_PADDING*2,
+        fontFamily: this.FONT_FAMILY_HEADER,
+      });
+    this.dialogText = this.scene.add.text(0, 0, "",
+      {
+        color: 0xFFFFFF,
+        // fixedWidth: this.WINDOW_W - this.DIALOG_PADDING_W - TEXT_PADDING * 2,
+        // fixedHeight: this.DIALOG_HEIGHT - TEXT_PADDING * 2,
+        fontFamily: this.FONT_FAMILY,
+      });
+    this.add([this.dialogWindow, this.dialogText, this.dialogHeader]);
+  }
+  setDisplayParams() {
+    let c = configureScene();
+    Object.assign(this, c);
+    // console.log(this.ZOOM_LEVEL);
+    // this.WINDOW_H /= this.ZOOM_LEVEL;
+    // this.WINDOW_W /= this.ZOOM_LEVEL;
+    this.DIALOG_HEIGHT = this.WINDOW_H / 3.5;
+    this.TEXT_PADDING_W = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 15 : 25;
+    this.TEXT_PADDING_H = Math.min(this.WINDOW_H / 25);
+    this.PADDING_BETWEEN = 10;
+    this.DIALOG_PADDING_W = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 7 : 15;
+    this.DIALOG_PADDING_H = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_H / 16 : 25;
+    this.FONT_SIZE = Math.max(this.WINDOW_H / 30, this.WINDOW_W / 40);
+    this.FONT_SIZE_HEADER = this.FONT_SIZE * 1.2;
+    this.FONT_FAMILY = "pixel";
+    this.FONT_FAMILY_HEADER = "pixel";
+    this.DIALOG_WIDTH = this.WINDOW_W - this.DIALOG_PADDING_W * 2;
+    this.DIALOG_X = this.WINDOW_CENTER_X;
+    this.DIALOG_Y = this.WINDOW_H - this.DIALOG_PADDING_H - this.DIALOG_HEIGHT / 2;
+    this.DIALOG_HEADER_X = this.DIALOG_PADDING_W + this.TEXT_PADDING_W;
+    this.DIALOG_HEADER_Y = this.WINDOW_H - this.DIALOG_HEIGHT - this.DIALOG_PADDING_H + this.TEXT_PADDING_H;
+    this.DIALOG_TEXT_X = this.DIALOG_PADDING_W + this.TEXT_PADDING_W;
+    this.DIALOG_TEXT_Y = this.WINDOW_H - this.DIALOG_HEIGHT - this.DIALOG_PADDING_H + this.TEXT_PADDING_H + this.FONT_SIZE_HEADER + this.PADDING_BETWEEN;
+  }
+  setDisplay() {
+    this.setDisplayParams();
+    this.dialogWindow.setDisplaySize(this.DIALOG_WIDTH, this.DIALOG_HEIGHT);
+    this.dialogWindow.setX(this.DIALOG_X);
+    this.dialogWindow.setY(this.DIALOG_Y);
+    this.dialogHeader.setX(this.DIALOG_HEADER_X);
+    this.dialogHeader.setY(this.DIALOG_HEADER_Y);
+
+    this.dialogHeader.setStyle({
+      color: 0xFFFFFF,
+      fontSize: `${this.FONT_SIZE_HEADER}px`,
+      fontFamily: this.FONT_FAMILY_HEADER,
+    });
+    this.dialogText.setX(this.DIALOG_TEXT_X);
+    this.dialogText.setY(this.DIALOG_TEXT_Y);
+    this.dialogText.setStyle({
+      color: 0xFFFFFF,
+      fontSize: `${this.FONT_SIZE}px`,
+      fontFamily: this.FONT_FAMILY,
+    });
+    this.dialogText.setWordWrapWidth(Math.max(this.WINDOW_W - this.DIALOG_PADDING_W * 2 - this.TEXT_PADDING_W * 2 + 10, this.FONT_SIZE), true);
   }
   proceedDialog() {
     if (this.inDialog) {

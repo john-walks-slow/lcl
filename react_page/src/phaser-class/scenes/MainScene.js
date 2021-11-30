@@ -2,7 +2,9 @@ import { secureStorage } from "../../utils/storage";
 import Dialog from "../components/Dialog";
 import ItemDialog from "../components/ItemDialog";
 import LinkDialog from "../components/LinkDialog";
+import GameCamera from "../components/GameCamera";
 import configureScene from "../game.config";
+
 let listener = false;
 
 function vectorAngle(x, y) {
@@ -14,7 +16,7 @@ function vectorAngle(x, y) {
 export default class MainScene extends Phaser.Scene {
   constructor(configurations, methods) {
     super({
-      key: 'MainScene', active: false
+      key: 'MainScene', active: false,
     });
     Object.assign(this, configurations, methods);
     this.configurations = configurations;
@@ -56,35 +58,36 @@ export default class MainScene extends Phaser.Scene {
     let resizePending = false;
     if (!listener) {
       listener = window.addEventListener('resize', () => {
-        if (!resizePending) {
-          setTimeout(() => {
-            this.configurations = configureScene();
-            Object.assign(this, this.configurations);
-            console.log(this);
-            resizePending = false;
-            // this.scene.restart({ objectList: this.objectList, gameObjectMap: this.gameObjectMap });
-          }, 200);
-        }
-        resizePending = true;
+        // setTimeout(() => {
+        this.configurations = configureScene();
+        Object.assign(this, this.configurations);
+        this.camera.setDisplay();
+        this.gameDialog.setDisplay();
+        this.linkDialog.setDisplay();
+        this.itemDialog.setDisplay();
+        // this.scene.restart({ objectList: this.objectList, gameObjectMap: this.gameObjectMap });
+        // }, 20);
       });
     }
 
   }
   create() {
-    this.setShowMenu(true);
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.camera = this.cameras.main;
-    this.staticCamera = this.cameras.add();
     this.gameObjects = this.add.layer();
     this.uis = this.add.layer();
+    this.camera = new GameCamera(this);
+    this.cameras.addExisting(this.camera);
+    this.camera.ignore(this.uis);
+    this.staticCamera = this.cameras.add();
+    this.staticCamera.ignore(this.gameObjects);
+    this.staticCamera.inputEnabled = false;
+    this.setShowMenu(true);
+    this.cursors = this.input.keyboard.createCursorKeys();
     // this.add.tileSprite(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y,WINDOW_W,WINDOW_H,'bg');
     // this.add.rectangle(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0xFFFFFF);
     this.player = this.physics.add.sprite(this.startPosX, this.startPosY, 'player')
-      .setDisplaySize(this.PLAYER_TARGET_W, this.PLAYER_TARGET_H)
-      .refreshBody();
-    this.player.setInteractive();
-    this.player.on('pointerover', () => { this.pointerOnPlayer = true; });
-    this.player.on('pointerout', () => { this.pointerOnPlayer = false; });
+      .setDisplaySize(this.PLAYER_TARGET_W, this.PLAYER_TARGET_H);
+    // .refreshBody();
+
     this.player.depth = 0.9;
     this.player.moveX = (x) => {
       this.player.setVelocityX(x);
@@ -108,44 +111,15 @@ export default class MainScene extends Phaser.Scene {
       this.player.moveX(0);
       this.player.moveY(0);
     };
-    this.gameObjects.add([this.player]);
 
-    this.camera.startFollow(this.player, false, 0.2, 0.2);
-    this.camera.setBackgroundColor(0xFFFFFF);
-    this.camera.setFollowOffset(0, -0);
-    this.camera.zoomOutLevel = this.ZOOM_OUT_LEVEL;
-    this.camera.setZoom(0.01);
-    this.camera.setAlpha(1);
-    this.camera.initAnim = this.tweens.create({
-      targets: this.camera,
-      props: { 'zoom': 1, 'alpha': 1 },
-      ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-      duration: 3000,
-    });
-    this.camera.zoomOutAnim = this.tweens.create({
-      targets: this.camera,
-      props: { 'zoom': this.camera.zoomOutLevel, 'alpha': 0.6 },
-      ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-      duration: 1000,
-    });
-    this.camera.zoomInAnim = this.tweens.create({
-      targets: this.camera,
-      props: { 'zoom': 1, 'alpha': 1 },
-      ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-      duration: 500,
-    });
-    this.camera.zoomIn = () => {
-      this.camera.zoomInAnim.play();
-    };
-    this.camera.zoomOut = () => {
-      this.camera.zoomOutAnim.play();
-    };
-    this.camera.toggleZoom = () => { };
-
+    // this.player.setInteractive();
+    // this.player.on('pointerover', () => { console.log('over'); this.pointerOnPlayer = true; });
+    // this.player.on('pointerout', () => { console.log('out'); this.pointerOnPlayer = false; });
+    this.camera.startFollow(this.player);
+    this.gameObjects.add(this.player);
     this.objects = this.physics.add.group({
       immovable: true
     });
-
     this.itemCollideHandler = (o1, o2) => {
       // console.log(this.player.body.velocity);
       // this.player.stopMovement();
@@ -194,7 +168,7 @@ export default class MainScene extends Phaser.Scene {
               this.linkDialog.showDialog(currentObj.getData('link'));
             }
           });
-        if (currentObj.data.values.isBackground) {
+        if (currentObj.data.values.isBackground || currentObj.data.values.isForeground) {
           currentObj.data.values.collider.destroy();
         } else {
           currentObj.setData("dialog", []);
@@ -303,13 +277,14 @@ export default class MainScene extends Phaser.Scene {
               // o.instance = this.physics.add.sprite(o.x,o.y,"object"+o.id);
               // console.log(this.objects);
               o.instance.depth = o.zFactor;
-              o.isBackground && (o.instance.alpha = o.zFactor / 1.5);
+              (o.isBackground || o.isForeground) && (o.instance.alpha = o.zFactor / 1.5);
               o.instance.setData("id", o._id);
               o.instance.setData("link", o.link);
               o.instance.setData("name", o.name.length > 0 ? o.name : '???');
               o.instance.setData("dialog", o.dialog);
               o.instance.setData("zFactor", o.zFactor);
               o.instance.setData("isBackground", o.isBackground);
+              o.instance.setData("isForeground", o.isForeground);
               o.instance.setDisplaySize(o.displayWidth, o.displayHeight);
               o.instance.body.onOverlap = true;
               if (o.isAnimate) {
@@ -366,23 +341,24 @@ export default class MainScene extends Phaser.Scene {
 
     // this.objects.updateObjects(false, [0, 0]);
     // this.previousZone = [0, 0];
-    this.gameDialog = new Dialog(this, this.configurations);
-    this.itemDialog = new ItemDialog(this, this.configurations);
-    this.linkDialog = new LinkDialog(this, this.configurations);
+    this.gameDialog = new Dialog(this);
+    this.itemDialog = new ItemDialog(this);
+    this.linkDialog = new LinkDialog(this);
     this.uis.add([this.gameDialog, this.itemDialog, this.linkDialog]);
 
     let reactMenu = document.getElementById('GAME_MENU');
     let gameInfo = document.getElementById('GAME_INFO');
     let gameInventory = document.getElementById('GAME_INVENTORY');
+    let gameButtons = document.getElementsByClassName('game__button-menu');
     this.reactComponents = [
-      reactMenu, gameInfo, gameInventory
+      reactMenu, gameInfo, gameInventory, ...gameButtons
     ];
     const handleInput = (e) => {
       // if the click is not on the root react div, we call stopPropagation()
-      let target = e.target;
-      console.log(target);
-      // if (target.className == "game__button-menu") {
-      e.stopPropagation();
+      if (e.target == e.currentTarget) {
+        // if (target.className == "game__button-menu") {
+        e.stopPropagation();
+      }
       // }
     };
     // TODO: Remove input listener after dettached
@@ -452,24 +428,13 @@ export default class MainScene extends Phaser.Scene {
       repeatDelay: 0
     });
     this.player.anims.play('standRight');
-    this.camera.fadeIn();
-    this.camera.initAnim.play();
 
-    this.camera.initAnim.on('complete', () => {
-      this.camera.toggleZoom = () => {
-        console.log('toggle');
-        this.camera.zoom < 1 ?
-          this.camera.zoomIn()
-          : this.camera.zoomOut();
-      };
-    });
 
-    this.camera.ignore(this.uis);
-    this.staticCamera.ignore(this.gameObjects);
 
   }
 
   update() {
+
     // console.log(this.player.body);
     let notTouching = this.player.body.touching.none;
     let velocityX = notTouching ? this.player.body.velocity.x : 0;
@@ -502,29 +467,29 @@ export default class MainScene extends Phaser.Scene {
         let mouseAngle = isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY]);
         if (this.cursors.left.isDown || this.cursors.right.isDown || this.cursors.up.isDown || this.cursors.down.isDown || isMouseMovement) {
           // camera.setZoom(1);
-          this.camera.zoom == this.camera.zoomOutLevel && this.camera.zoomInAnim.play();
+          this.camera.zoom == this.ZOOM_OUT_LEVEL && this.camera.zoomInAnim.play();
         }
         if ((this.cursors.left.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-          this.player.moveX(- this.MOVE_SPEED * 0.75);
-          this.player.moveY(- this.MOVE_SPEED * 0.75);
+          this.player.moveX(- this.OBLIQUE_MOVE_SPEED);
+          this.player.moveY(- this.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runLeft', true);
         }
         else if ((this.cursors.left.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-          this.player.moveX(- this.MOVE_SPEED * 0.75);
-          this.player.moveY(this.MOVE_SPEED * 0.75);
+          this.player.moveX(- this.OBLIQUE_MOVE_SPEED);
+          this.player.moveY(this.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runLeft', true);
         }
         else if ((this.cursors.right.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-          this.player.moveX(this.MOVE_SPEED * 0.75);
-          this.player.moveY(- this.MOVE_SPEED * 0.75);
+          this.player.moveX(this.OBLIQUE_MOVE_SPEED);
+          this.player.moveY(- this.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runRight', true);
         }
         else if ((this.cursors.right.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-          this.player.moveX(this.MOVE_SPEED * 0.75);
-          this.player.moveY(this.MOVE_SPEED * 0.75);
+          this.player.moveX(this.OBLIQUE_MOVE_SPEED);
+          this.player.moveY(this.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runRight', true);
         }

@@ -11,7 +11,7 @@ import batteryURL from '../../assets/game/batteries.png';
 import whiteURL from '../../assets/game/white.png';
 import { setObjects } from "../../store/actions/actionCreators";
 import { seededRandom } from "../../utils/random";
-
+import { secureStorage } from "../../utils/storage";
 export default class LoadingScene extends Phaser.Scene {
   constructor(configurations, methods) {
     super({
@@ -80,6 +80,8 @@ export default class LoadingScene extends Phaser.Scene {
       let previousDate = this.timestamp;
       let offset;
       let dateOffset = 0;
+      let player = secureStorage.getItem('player');
+
       this.objectList = this.objectList.sort((a, b) => b.birthday - a.birthday);
       this.objectList.forEach((o, i) => {
         if (this.timestamp - o.birthday < this.TIME_DELAY) { return; }
@@ -93,8 +95,9 @@ export default class LoadingScene extends Phaser.Scene {
         let distance = o.seed[1] * this.RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
         o.x = Math.cos(rad) * distance;
         o.y = Math.sin(rad) * distance;
-        o.isBackground = o.zFactor != 1;
-        (!o.isBackground) && (o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2);
+        o.isBackground = o.zFactor > 1;
+        o.isForeground = o.zFactor < 1;
+        o.zFactor == 1 && (o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2);
         // (o.zFactor > 1) && (o.zFactor =1.4);
         // (o.zFactor < 1) && (o.zFactor =0.6);
         o.ratio = o.rows / o.columns;
@@ -109,18 +112,20 @@ export default class LoadingScene extends Phaser.Scene {
         o.type = "object";
         this.gameObjectMap.pushNew(o.zone, o);
         if (o.item) {
-          let i = o.item;
-          i._id = o._id;
-          this.itemList.push(i);
-          let rad = i.seed[0] * (Math.PI / 180);
-          let sizeOffset = (this.PLAYER_TARGET_H + this.OBJECT_W.M) / 2;
-          let distance = i.seed[1] * this.RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
-          i.x = Math.cos(rad) * distance;
-          i.y = Math.sin(rad) * distance;
-          i.zone = [Math.ceil(i.x / this.GRID_SIZE), Math.ceil(i.y / this.GRID_SIZE)];
-          i.type = "item";
-          console.log(i);
-          this.gameObjectMap.pushNew(i.zone, i);
+          if (!player.ownItems.includes(o._id)) {
+            let i = o.item;
+            i._id = o._id;
+            this.itemList.push(i);
+            let rad = i.seed[0] * (Math.PI / 180);
+            let sizeOffset = (this.PLAYER_TARGET_H + this.OBJECT_W.M) / 2;
+            let distance = i.seed[1] * this.RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
+            i.x = Math.cos(rad) * distance;
+            i.y = Math.sin(rad) * distance;
+            i.zone = [Math.ceil(i.x / this.GRID_SIZE), Math.ceil(i.y / this.GRID_SIZE)];
+            i.type = "item";
+            console.log(i);
+            this.gameObjectMap.pushNew(i.zone, i);
+          }
         }
         switch (o.isAnimate) {
           case true:
@@ -162,7 +167,7 @@ export default class LoadingScene extends Phaser.Scene {
       });
       this.load.start();
     });
-    this.add.rectangle(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y, this.WINDOW_W, this.WINDOW_H, 0x222034);
+    this.add.rectangle(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y, this.WINDOW_W, this.WINDOW_H, 0x111023);
     this.label = this.add.text(this.WINDOW_W / 20, 80,
       new Date(this.timestamp).toString().split('GMT')[0] + "user@remote" + '\n Fetching object list...',
       { align: "left", color: "#FFFFFF", fontSize: 16, wordWrap: { width: this.WINDOW_W * 0.9, useAdvancedWrap: true } });

@@ -99,3 +99,7 @@ sub {
   bottom: 5px;
   color: gray;
 }
+.page__link {
+  text-decoration: underline;
+  color: grey !important;
+}

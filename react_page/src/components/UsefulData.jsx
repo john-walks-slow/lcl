@@ -12,7 +12,7 @@ const UsefulData = props => {
   const colorFormatOptions = [
     {
       value: 0,
-      description: '#222034',
+      description: '#000000',
       labelFor: 'c-format-hcss',
       id: 0
     },

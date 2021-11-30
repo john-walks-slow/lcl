@@ -1,48 +1,72 @@
+import configureScene from "../game.config";
 import Dialog from "./Dialog";
-
 export default class LinkDialog extends Dialog {
-  constructor(scene, configurations) {
+  constructor(scene) {
     super(scene);
-    Object.assign(this, configurations);
-    const width = Math.min(this.WINDOW_H / 1.5, this.WINDOW_W * 0.85);
-    const height = width * 0.6;
-    const padding = width / 8;
-    const paddingTop = width / 9;
     this.link = '';
-    this.buttonSelected = "#222034";
-    this.dialogWindow.setX(this.WINDOW_CENTER_X);
-    this.dialogWindow.setY(this.WINDOW_CENTER_Y);
-    this.dialogWindow.setDisplaySize(width, height);
-    this.dialogText.setText("它带着一个箱子，打开看看吗？");
-    this.dialogText.setX(this.WINDOW_CENTER_X - width / 2 + padding);
-    this.dialogText.setY(this.WINDOW_CENTER_Y - height / 2 + paddingTop);
-    this.dialogText.setWordWrapWidth(width - padding * 2.5, true);
-    this.selectedOption = 0;
-    this.dialogYes = this.scene.add.text(this.WINDOW_CENTER_X - width / 2 + padding, this.WINDOW_CENTER_Y + height / 2 - this.FONT_SIZE_HEADER - paddingTop, " 是 ",
-      {
-        color: 0xFFFFFF,
-        fontFamily: this.FONT_FAMILY,
-        fontSize: (this.FONT_SIZE_HEADER).toString() + "px",
-      }).setInteractive();
-    this.dialogYes.buttonId = "yes";
-    this.dialogNo = this.scene.add.text(this.WINDOW_CENTER_X + padding, this.WINDOW_CENTER_Y + height / 2 - this.FONT_SIZE_HEADER - paddingTop, " 否 ",
-      {
-        color: 0xFFFFFF,
-        fontFamily: this.FONT_FAMILY,
-        fontSize: (this.FONT_SIZE_HEADER).toString() + "px",
-      }).setInteractive();
-    this.dialogNo.buttonId = "no";
-    // this.dialogSelection = this.scene.add.rectangle(
-    //   this.WINDOW_CENTER_X - width/2+padding, this.WINDOW_CENTER_Y+height/2-this.FONT_SIZE_HEADER-paddingTop,
-    //   width/2,this.FONT_SIZE_HEADER,0x222034,0.3)
-    this.add([this.dialogYes, this.dialogNo]);
     this.select(1);
 
   }
+  initializeComponents() {
+    super.initializeComponents();
+    this.dialogText.setText("它带着一个箱子，打开看看吗？");
+    this.selectedOption = 0;
+    this.dialogYes = this.scene.add.text(0, 0, " 是 ",
+      {
+        color: 0xFFFFFF,
+        fontFamily: this.FONT_FAMILY,
+      }).setInteractive();
+    this.dialogYes.buttonId = "yes";
+    this.dialogNo = this.scene.add.text(0, 0, " 否 ",
+      {
+        color: 0xFFFFFF,
+        fontFamily: this.FONT_FAMILY,
+      }).setInteractive();
+    this.dialogNo.buttonId = "no";
+    // this.dialogSelection = this.scene.add.rectangle(
+    //   this.WINDOW_CENTER_X - this.WIDTH/2+this.PADDING, this.WINDOW_CENTER_Y+this.HEIGHT/2-this.FONT_SIZE_HEADER-this.PADDING_TOP,
+    //   this.WIDTH/2,this.FONT_SIZE_HEADER,0x000000,0.3)
+    this.add([this.dialogYes, this.dialogNo]);
+  }
+  setDisplay() {
+    super.setDisplay();
+    let c = configureScene();
+    Object.assign(this, c);
+    this.BUTTON_SELECTED_COLOR = "#000000";
+    this.WIDTH = Math.min(this.WINDOW_H / 1.5, this.WINDOW_W * 0.85);
+    this.HEIGHT = this.WIDTH * 0.6;
+    this.PADDING = this.WIDTH / 8;
+    this.PADDING_TOP = this.WIDTH / 9;
+    this.YES_X = this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING;
+    this.YES_Y = this.WINDOW_CENTER_Y + this.HEIGHT / 2 - this.FONT_SIZE_HEADER - this.PADDING_TOP;
+    this.NO_X = this.WINDOW_CENTER_X + this.PADDING;
+    this.NO_Y = this.WINDOW_CENTER_Y + this.HEIGHT / 2 - this.FONT_SIZE_HEADER - this.PADDING_TOP;
+    this.dialogWindow.setX(this.WINDOW_CENTER_X);
+    this.dialogWindow.setY(this.WINDOW_CENTER_Y);
+    this.dialogWindow.setDisplaySize(this.WIDTH, this.HEIGHT);
+    this.dialogText.setX(this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING);
+    this.dialogText.setY(this.WINDOW_CENTER_Y - this.HEIGHT / 2 + this.PADDING_TOP);
+    this.dialogText.setWordWrapWidth(Math.max(this.WIDTH - this.PADDING * 2.5, this.FONT_SIZE), true);
+    this.dialogYes.setX(this.YES_X);
+    this.dialogYes.setY(this.YES_Y);
+    this.dialogYes.setStyle({
+      color: 0xFFFFFF,
+      fontFamily: this.FONT_FAMILY,
+      fontSize: `${this.FONT_SIZE}px`,
+    });
+    this.dialogNo.setX(this.NO_X);
+    this.dialogNo.setY(this.NO_Y);
+    this.dialogNo.setStyle({
+      color: 0xFFFFFF,
+      fontFamily: this.FONT_FAMILY,
+      fontSize: `${this.FONT_SIZE}px`,
+    });
+    this.dialogNo.setX;
+  }
   select(i) {
     this.selectedOption = i;
-    [this.dialogYes, this.dialogNo][i].setBackgroundColor(this.buttonSelected).setColor("#FFFFFF");
-    [this.dialogYes, this.dialogNo][1 - i].setBackgroundColor("").setColor("#222034");
+    [this.dialogYes, this.dialogNo][i].setBackgroundColor(this.BUTTON_SELECTED_COLOR).setColor("#FFFFFF");
+    [this.dialogYes, this.dialogNo][1 - i].setBackgroundColor("").setColor("#000000");
   }
   confirm() {
     console.log(this.link);

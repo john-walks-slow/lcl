@@ -10,7 +10,7 @@ import { navigate, navigateWithoutHistory } from '../../utils/history';
 
 function setInitialState(state) {
   const cellSize = 1;
-  // const colorList = List(["#222034", "#FFFFFF"
+  // const colorList = List(["#000000", "#FFFFFF"
   // ]).map(color => Map({ color, id: shortid.generate() }));
   // const palette = Map({
   //   grid: colorList,
@@ -168,7 +168,7 @@ function partialReducer(state, action) {
       return setPath(state, action);
     case types.SET_NEW_OBJECT:
       return setNewObject(state, action);
-    case types.SET_OBJECT:
+    case types.SET_OBJECTS:
       return setObjects(state, action);
     default:
   }

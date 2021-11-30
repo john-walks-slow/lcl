@@ -32,11 +32,12 @@ const Game = ({ dispatch, isShown }) => {
   const deferredPrompt = window.deferredPrompt;
 
   useEffect(() => {
-    if (!isShown) {
+    if (!isShown && mainSceneRef) {
       setShowMenu(false);
       setShowInventory(false);
       setShowInfo(false);
       setShowGame(false);
+      mainSceneRef.input.keyboard.disableGlobalCapture();
       return;
     }
     if (isShown) {
@@ -47,6 +48,7 @@ const Game = ({ dispatch, isShown }) => {
       // if not initial run
       if (mainSceneRef) {
         setShowMenu(true);
+        mainSceneRef.input.keyboard.enableGlobalCapture();
         // mainSceneRef.scene.restart({ objectList: mainSceneRef.objectList, gameObjectMap: mainSceneRef.gameObjectMap });
       }
       // initialize
@@ -73,7 +75,8 @@ const Game = ({ dispatch, isShown }) => {
           },
           parent: "PHASER_ROOT",
           scene: [loadingScene, mainScene],
-          pixelArt: true
+          pixelArt: true,
+          antialias: false, roundPixels: false
         };
 
         var game = new Phaser.Game(config);
@@ -87,7 +90,7 @@ const Game = ({ dispatch, isShown }) => {
       <div id="GAME_MENU" className={showMenu ? "show" : ""} >
         <input className="game__button-menu" type="image" onClick={() => { dispatch(setPath('/add')); }} src={newBtnURL} />
         <input className="game__button-menu" type="image" onClick={() => { mainSceneRef.camera.toggleZoom(); }} src={mapBtnURL} />
-        <input className="game__button-menu" type="image" onClick={() => { setShowInventory(!showInventory); }} src={bagBtnURL} />
+        <input className="game__button-menu" type="image" onClick={() => { console.log('test'); setShowInventory(!showInventory); }} src={bagBtnURL} />
         <input className="game__button-menu" type="image" onClick={() => { setShowInfo(!showInfo); }} src={infoBtnURL} />
       </div>
 
