@@ -4,7 +4,7 @@
   "start_url": "/",
   "display": "fullscreen",
   "description": "空间化、离散、不断膨胀的留言板",
-  "background_color": "#111023",
+  "background_color": "#222020",
   "icons": [
     {
       "src": "windows11/SmallTile.scale-100.png",

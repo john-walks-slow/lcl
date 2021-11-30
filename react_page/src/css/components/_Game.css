@@ -33,7 +33,7 @@
   opacity: 1;
 }
 #GAME_INFO {
-  background-color: #11102310;
+  background-color: #22202010;
   padding: 20px 20px 50px 20px;
   margin: auto;
   width: max(600px, 70vw);
@@ -64,7 +64,7 @@
   pointer-events: none;
   transition: 800ms;
   overflow: auto;
-  border: solid #111023 10px;
+  border: solid #222020 10px;
   transform: translateY(30px);
 }
 #GAME_INVENTORY.show {
