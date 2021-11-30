@@ -30,9 +30,10 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
     };
   }
   hide() {
+    console.log('hide');
     this.scene.tweens.add({
       targets: this,
-      alpha: { to: 0 },
+      alpha: { from: this.alpha, to: 0 },
       // orignX: { from: 0, to: 60 },
       duration: 300
 
@@ -42,7 +43,7 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
   show() {
     this.scene.tweens.add({
       targets: this,
-      alpha: { to: 1 },
+      alpha: { from: this.alpha, to: 1 },
       // originY: { from: 60, to: 0 },
       duration: 300
 
