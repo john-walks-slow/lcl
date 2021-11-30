@@ -18,6 +18,8 @@ export default function configureScene() {
   c.OBLIQUE_MOVE_SPEED = (c.MOVE_SPEED * 0.75);
   c.GRID_SIZE = Math.max(c.WINDOW_H, c.WINDOW_W) / c.ZOOM_OUT_LEVEL;
   c.timestamp = Date.parse(new Date());
+  c.day = Math.floor(c.timestamp / (24 * 60 * 60 * 1000));
+  // c.time = timestamp % (24 * 60 * 60 * 1000) ;
   c.ITEM_LIST = [{ name: "boxes", dialog: "哇！你捡到了一个箱子" }, { name: "fats", dialog: "哇！你捡到了一袋肥料" }, { name: "labels", dialog: "哇！你捡到了一张便签" }, { name: "telescopes", dialog: "哇！你捡到了一块镜片" }, { name: "batteries", dialog: "哇！你捡到了一块电池" },];
   c.isMobile = (('ontouchstart' in window) ||
     (navigator.maxTouchPoints > 0) ||

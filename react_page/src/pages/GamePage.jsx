@@ -79,7 +79,7 @@ const Game = ({ dispatch, isShown }) => {
           parent: "PHASER_ROOT",
           scene: [loadingScene, mainScene],
           pixelArt: true,
-          antialias: false, roundPixels: false
+          antialias: true, roundPixels: true
         };
 
         var game = new Phaser.Game(config);

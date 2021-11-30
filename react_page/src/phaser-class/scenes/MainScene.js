@@ -5,6 +5,7 @@ import LinkDialog from "../components/LinkDialog";
 import GameCamera from "../components/GameCamera";
 import configureScene from "../game.config";
 import GamePad from "../components/GamePad";
+import { seededRandom } from "../../utils/random";
 let listener = false;
 
 function vectorAngle(x, y) {
@@ -120,7 +121,7 @@ export default class MainScene extends Phaser.Scene {
     this.camera.startFollow(this.player);
     this.gameObjects.add(this.player);
     this.objects = this.physics.add.group({
-      immovable: true
+      pushable: false
     });
     this.itemCollideHandler = (o1, o2) => {
       // console.log(this.player.body.velocity);
@@ -213,29 +214,30 @@ export default class MainScene extends Phaser.Scene {
         let collidedObjects = this.physics.overlapRect(o.x - o.displayWidth / 2, o.y - o.displayHeight / 2, o.displayWidth, o.displayHeight);
         if (collidedObjects.length > 0) {
           collidedObjects.forEach((c) => {
-            let cg = c.gameObject;
-            if (cg.data.values.id == o.data.values.id) {
-              return;
-            }
-            if (cg.data.values.isBackground) {
-              return;
-            }
-            // if (movedObjects.find((a) => (a[0] == o.id && a[1] == cg.id))) {
+            this.physics.collide(c, o);
+            // let cg = c.gameObject;
+            // if (cg.data.values.id == o.data.values.id) {
             //   return;
             // }
-            let xI = cg.x < o.x ? 1 : -1;
-            let yI = cg.y < o.y ? 1 : -1;
-            if (cg.x < o.x) {
-              cg.x -= (cg.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
-            } else {
-              o.x += (o.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
-            }
-            if (cg.y < o.y) {
-              cg.y -= (cg.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
-            } else {
-              o.y += (o.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
-            }
-            movedObjects.push([cg.id, o.id]);
+            // if (cg.data.values.isBackground) {
+            //   return;
+            // }
+            // // if (movedObjects.find((a) => (a[0] == o.id && a[1] == cg.id))) {
+            // //   return;
+            // // }
+            // let xI = cg.x < o.x ? 1 : -1;
+            // let yI = cg.y < o.y ? 1 : -1;
+            // if (cg.x < o.x) {
+            //   cg.x -= (cg.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
+            // } else {
+            //   o.x += (o.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
+            // }
+            // if (cg.y < o.y) {
+            //   cg.y -= (cg.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
+            // } else {
+            //   o.y += (o.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
+            // }
+            // movedObjects.push([cg.id, o.id]);
           });
         }
       }, 50);
@@ -339,6 +341,27 @@ export default class MainScene extends Phaser.Scene {
           }
         });
       });
+      // let seeds = [...Array(Object.keys(FILTER_LIST).length * 2)].map((o, i) => (Math.round(seededRandom(((i + 1) * currentZone[0] * this.day + currentZone[1]).toString()) * 10)) / 10);
+      // let RESULT_LIST = Object.assign({}, FILTER_LIST);
+      // this.filter = (x, y) => {
+      //   let result = "";
+      //   let i = 0;
+      //   for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
+      //     seeds[i] < probability && (
+      //       result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(x) / this.MOVE_SPEED / 20, 1)}${unit}) `);
+      //     i++;
+      //     RESULT_LIST[key] = false;
+      //   };
+      //   i = 0;
+      //   for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
+      //     if (!RESULT_LIST[key]) { continue; }
+      //     seeds[i] < probability && (
+      //       result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(y) / this.MOVE_SPEED / 20, 1)}${unit}) `);
+      //     i++;
+
+      //   };
+      //   return `${result}`;
+      // };
     };
 
     // this.objects.updateObjects(false, [0, 0]);
@@ -432,11 +455,43 @@ export default class MainScene extends Phaser.Scene {
     this.player.anims.play('standRight');
     this.gamepad = new GamePad(this);
     this.uis.add(this.gamepad);
+    this.filterUsed = seededRandom(this.day.toString());
+    console.log(this.day);
+    const FILTER_LIST = {
+      'brightness': { min: 1, max: 0.3, unit: '', probability: 0.3 },
+      'contrast': { min: 0.3, max: 1, unit: '', probability: 0.3 },
+      "hue-rotate": { min: 0, max: 360, unit: 'deg', probability: 0.3 },
+      'invert': { min: 0, max: 1, unit: '', probability: 0.3 },
+      'sepia': { min: 0, max: 1, unit: '', probability: 0.3 },
+    };
+    let seeds = [...Array(Object.keys(FILTER_LIST).length * 2)].map((o, i) => (Math.round(seededRandom(((i + 1) * this.day).toString()) * 10)) / 10);
+    let RESULT_LIST = Object.assign({}, FILTER_LIST);
+    this.filter = (x, y) => {
+      let result = "";
+      let i = 0;
+      for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
+        seeds[i] < probability && (
+          result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(x) / this.MOVE_SPEED / 5, 1)}${unit}) `);
+        i++;
+        RESULT_LIST[key] = false;
+      };
+      i = 0;
+      for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
+        if (!RESULT_LIST[key]) { continue; }
+        seeds[i] < probability && (
+          result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(y) / this.MOVE_SPEED / 5, 1)}${unit}) `);
+        i++;
+
+      };
+      return `${result}`;
+    };
+
+
+    // console.log(this.filter(1000, 1000));
   }
-
   update() {
-
-
+    this.game.canvas.style.filter = this.filter(this.player.x, this.player.y);
+    // console.log(this.filter(this.player.x, this.player.y));
     // console.log(this.player.body);
     let notTouching = this.player.body.touching.none;
     let velocityX = notTouching ? this.player.body.velocity.x : 0;
@@ -458,6 +513,7 @@ export default class MainScene extends Phaser.Scene {
         // console.log(currentZone,this.previousZone);
         if (!(this.previousZone && currentZone[0] == this.previousZone[0] && currentZone[1] == this.previousZone[1])) {
           this.objects.updateObjects(this.previousZone, currentZone);
+
           this.previousZone = currentZone;
         }
         let mousePosX;

@@ -12,10 +12,10 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
   }
   setDisplay() {
     let c = configureScene();
+    this.isMobile = c.isMobile;
     if (!c.isMobile) {
       this.alpha = 0;
       this.removeInteractive();
-
     } else {
       this.alpha = 1;
       this.setInteractive();
@@ -30,7 +30,9 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
     };
   }
   hide() {
-    console.log('hide');
+    if (!this.isMobile) {
+      return;
+    }
     this.scene.tweens.add({
       targets: this,
       alpha: { from: this.alpha, to: 0 },
@@ -41,6 +43,9 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
     this.removeInteractive();
   }
   show() {
+    if (!this.isMobile) {
+      return;
+    }
     this.scene.tweens.add({
       targets: this,
       alpha: { from: this.alpha, to: 1 },
