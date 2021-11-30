@@ -4,7 +4,7 @@ import ItemDialog from "../components/ItemDialog";
 import LinkDialog from "../components/LinkDialog";
 import GameCamera from "../components/GameCamera";
 import configureScene from "../game.config";
-
+import GamePad from "../components/GamePad";
 let listener = false;
 
 function vectorAngle(x, y) {
@@ -65,6 +65,7 @@ export default class MainScene extends Phaser.Scene {
         this.gameDialog.setDisplay();
         this.linkDialog.setDisplay();
         this.itemDialog.setDisplay();
+        this.gamepad.setDisplay();
         // this.scene.restart({ objectList: this.objectList, gameObjectMap: this.gameObjectMap });
         // }, 20);
       });
@@ -72,6 +73,7 @@ export default class MainScene extends Phaser.Scene {
 
   }
   create() {
+    // console.log(this.input.activePointer);
     this.gameObjects = this.add.layer();
     this.uis = this.add.layer();
     this.camera = new GameCamera(this);
@@ -428,12 +430,12 @@ export default class MainScene extends Phaser.Scene {
       repeatDelay: 0
     });
     this.player.anims.play('standRight');
-
-
-
+    this.gamepad = new GamePad(this);
+    this.uis.add(this.gamepad);
   }
 
   update() {
+
 
     // console.log(this.player.body);
     let notTouching = this.player.body.touching.none;
@@ -458,12 +460,24 @@ export default class MainScene extends Phaser.Scene {
           this.objects.updateObjects(this.previousZone, currentZone);
           this.previousZone = currentZone;
         }
-        let mousePosX = this.input.activePointer.x - this.WINDOW_CENTER_X;
-        let mousePosY = this.WINDOW_CENTER_Y - this.input.activePointer.y;
-        // if (this.input.activePointer.isDown && (Math.abs(mousePosX) <= PLAYER_TARGET_W * 0.5 || Math.abs(mousePosY) <= this.PLAYER_TARGET_H * 0.5)){
-        // 	camera.toggleZoom();
-        // };
-        let isMouseMovement = this.input.activePointer.isDown && !this.pointerOnPlayer;
+        let mousePosX;
+        let mousePosY;
+        let isMouseMovement;
+
+        if (this.isMobile) {
+          mousePosX = this.gamepad.padX;
+          mousePosY = this.gamepad.padY;
+          // if (this.input.activePointer.isDown && (Math.abs(mousePosX) <= PLAYER_TARGET_W * 0.5 || Math.abs(mousePosY) <= this.PLAYER_TARGET_H * 0.5)){
+          // 	camera.toggleZoom();
+          // };
+          isMouseMovement = mousePosX && mousePosY;
+        } else {
+
+          mousePosX = this.input.activePointer.x - this.WINDOW_CENTER_X;
+          mousePosY = this.WINDOW_CENTER_Y - this.input.activePointer.y;
+          isMouseMovement = this.input.activePointer.isDown && !this.pointerOnPlayer;
+        }
+
         let mouseAngle = isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY]);
         if (this.cursors.left.isDown || this.cursors.right.isDown || this.cursors.up.isDown || this.cursors.down.isDown || isMouseMovement) {
           // camera.setZoom(1);

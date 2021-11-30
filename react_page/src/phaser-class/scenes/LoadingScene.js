@@ -9,6 +9,7 @@ import labelURL from '../../assets/game/labels.png';
 import telescopeURL from '../../assets/game/telescopes.png';
 import batteryURL from '../../assets/game/batteries.png';
 import whiteURL from '../../assets/game/white.png';
+import gamepadURL from '../../assets/game/gamepad.png';
 import { setObjects } from "../../store/actions/actionCreators";
 import { seededRandom } from "../../utils/random";
 import { secureStorage } from "../../utils/storage";
@@ -42,6 +43,7 @@ export default class LoadingScene extends Phaser.Scene {
       this.load.image('telescopes', telescopeURL);
       this.load.image('batteries', batteryURL);
       this.load.spritesheet('player', whiteURL, { frameWidth: 37, frameHeight: 44 });
+      this.load.spritesheet('gamepad', gamepadURL, { frameWidth: 16, frameHeight: 16 });
       // [...Array(10000)].forEach(() => {
       //   objectList.push(createTestObject({
       //     "birthday": 1637818994985,

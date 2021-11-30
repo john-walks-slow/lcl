@@ -28,6 +28,7 @@ const Game = ({ dispatch, isShown }) => {
   const [showGame, setShowGame] = useState(true);
   const player = useSelector(state => state.present.get('player')).toJS();
   const newObject = useSelector(state => state.present.get('newObject'));
+
   // const objects = useSelector(state => state.present.get('objects'));
   const deferredPrompt = window.deferredPrompt;
 
@@ -37,6 +38,7 @@ const Game = ({ dispatch, isShown }) => {
       setShowInventory(false);
       setShowInfo(false);
       setShowGame(false);
+      mainSceneRef.scene.pause();
       mainSceneRef.input.keyboard.disableGlobalCapture();
       return;
     }
@@ -47,6 +49,7 @@ const Game = ({ dispatch, isShown }) => {
       document.body.style.backgroundColor = "black";
       // if not initial run
       if (mainSceneRef) {
+        mainSceneRef.scene.resume();
         setShowMenu(true);
         mainSceneRef.input.keyboard.enableGlobalCapture();
         // mainSceneRef.scene.restart({ objectList: mainSceneRef.objectList, gameObjectMap: mainSceneRef.gameObjectMap });

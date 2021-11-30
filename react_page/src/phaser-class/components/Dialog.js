@@ -98,7 +98,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
     if (this.inDialog) {
       this.dialogIndex++;
       if (this.dialogIndex > this.sentences.length - 1) {
-        this.dialogFadeOut.play().on("complete", () => { this.inDialog = false; });
+        this.dialogFadeOut.play().on("complete", () => { this.inDialog = false; this.scene.gamepad.show(); });
         // dialogWindow.off('pointerdown');
         this.scene.input.off('pointerdown');
         this.scene.input.keyboard.off('keydown-SPACE');
@@ -113,6 +113,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
   showDialog(dialog, name, callback) {
     this.dialogCallback = callback || false;
     this.inDialog = true;
+    this.scene.gamepad.hide();
     this.scene.camera.shake(100, 0.01);
     // dialogWindow.on('pointerdown', () => { this.proceedDialog() });
     this.scene.input.on('pointerdown', (e) => { this.proceedDialog(); });
