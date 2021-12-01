@@ -386,13 +386,10 @@ export default class MainScene extends Phaser.Scene {
       }
       // }
     };
-    // TODO: Remove input listener after dettached
     this.reactComponents.forEach((c) => {
       c.addEventListener('mousedown', handleInput);
       c.addEventListener('touchstart', handleInput);
     });
-
-    // TODO: Better collider for background / foreground
 
 
     this.anims.create({
