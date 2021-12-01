@@ -83,11 +83,11 @@ module.exports = (production) => {
     // devServer: {
     //   contentBase: './build'
     // },
-    externals: {
+    externals: production ? {
       phaser: 'Phaser',
       react: 'React',
-      'react-dom': 'ReactDOM'
-    },
+      'react-dom': 'ReactDOM',
+    } : {},
     plugins: [
       production ? new CleanWebpackPlugin() : new BundleAnalyzerPlugin(),
       new CopyWebpackPlugin([
@@ -97,7 +97,7 @@ module.exports = (production) => {
         clientsClaim: true,
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 50000000,
-        include: [/\.(ttf|png|html)$/],
+        include: [/\.(ttf|png|html|webmanifest|js|ico)$/],
       }),
       new HtmlWebpackPlugin({
         template: 'src/assets/index.html',
@@ -108,8 +108,12 @@ module.exports = (production) => {
         "process.browser": true
       }),
     ],
-    optimization: production ? {
-      minimizer: [
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+      },
+
+      minimizer: production ? [
         new TerserPlugin({
           terserOptions: {
             compress: {
@@ -117,8 +121,8 @@ module.exports = (production) => {
             },
           },
         }),
-      ],
-    } : {},
+      ] : [],
+    },
     watch: !production,
     target: "web",
     stats: "detailed",
