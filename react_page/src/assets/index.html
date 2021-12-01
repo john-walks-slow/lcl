@@ -16,7 +16,7 @@
   <!-- <script src="https://kit.fontawesome.com/beed21b8ba.js" crossorigin="anonymous"></script> -->
 </head>
 
-<body style="background-color: #222020;">
+<body style="background-color: #000000;">
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
@@ -24,7 +24,7 @@
       });
       window.addEventListener('beforeinstallprompt', (e) => {
         // 防止 Chrome 67 及更早版本自动显示安装提示
-        e.preventDefault();
+        // e.preventDefault();
         // 稍后再触发此事件
         window.deferredPrompt = e;
         // 更新 UI 以提醒用户可以将 App 安装到桌面
