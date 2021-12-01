@@ -27,6 +27,7 @@ export default class LinkDialog extends Dialog {
     //   this.WINDOW_CENTER_X - this.WIDTH/2+this.PADDING, this.WINDOW_CENTER_Y+this.HEIGHT/2-this.FONT_SIZE_HEADER-this.PADDING_TOP,
     //   this.WIDTH/2,this.FONT_SIZE_HEADER,0x000000,0.3)
     this.add([this.dialogYes, this.dialogNo]);
+    // this.showDialog('test');
   }
   setDisplay() {
     super.setDisplay();
@@ -68,19 +69,29 @@ export default class LinkDialog extends Dialog {
     [this.dialogYes, this.dialogNo][i].setBackgroundColor(this.BUTTON_SELECTED_COLOR).setColor("#FFFFFF");
     [this.dialogYes, this.dialogNo][1 - i].setBackgroundColor("").setColor("#000000");
   }
+  setHttp(link) {
+    if (link.search(/^http[s]?\:\/\//) == -1) {
+      link = 'http://' + link;
+    }
+    return link;
+  }
   confirm() {
     console.log(this.link);
-    if (this.link.length > 0 && this.selectedOption == 0) {
-      window.open(this.link);
-    }
     this.scene.input.keyboard.off('keydown-LEFT');
     this.scene.input.keyboard.off('keydown-RIGHT');
     this.scene.input.keyboard.off('keydown-SPACE');
-    this.scene.input.off('gameobjectdown');
+    this.scene.input.off('gameobjectover');
+    this.scene.input.off('gameobjectup');
+
+    if (this.selectedOption == 0) {
+      this.alpha = 0;
+      window.open(this.setHttp(this.link));
+    } else {
+      this.dialogFadeOut.play().on('complete', () => {
+      });
+    }
+    this.inDialog = false;
     this.select(1);
-    this.dialogFadeOut.play().on('complete', () => {
-      this.inDialog = false;
-    });
     this.link = "";
   }
 
@@ -88,10 +99,11 @@ export default class LinkDialog extends Dialog {
     console.log('show link');
     this.link = link;
     this.inDialog = true;
-    this.scene.input.on('gameobjectdown', (pointer, o, event) => {
-      console.log(o);
+    this.scene.input.on('gameobjectover', (pointer, o, event) => {
       if (o.buttonId == "yes") { this.select(0); }
       if (o.buttonId == "no") { this.select(1); }
+    });
+    this.scene.input.on('gameobjectup', (pointer, o, event) => {
       this.confirm();
     });
     this.scene.input.keyboard.on('keydown-LEFT', () => { this.select(0); });

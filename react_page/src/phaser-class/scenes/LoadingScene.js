@@ -84,6 +84,21 @@ export default class LoadingScene extends Phaser.Scene {
       let dateOffset = 0;
       let player = secureStorage.getItem('player');
 
+      this.objectList.push({
+        _id: "a",
+        birthday: this.timestamp - this.TIME_DELAY - 1,
+        seed: [0, 0],
+        size: "M",
+        link: "baidu.com",
+        zFactor: 1,
+        item: false,
+        row: 16,
+        columns: 16,
+        name: '',
+        dialog: [''],
+        isAnimate: false,
+        blobURI: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAOCAYAAAAmL5yKAAAAAXNSR0IArs4c6QAAAGdJREFUOE9jZKAQMFKon4G2BlRGsfxvX/YHryV4JSkyAKQZFj74XEE7F4BsJ9kLyM7GF73IXkLxAtRGvEmjMooFLA8zBG4AMZphJiMbAjYA5vT2ZX+ITpgwQxjJ0YzsErABpNiM7kQAaE0zur4HQgQAAAAASUVORK5CYII='
+      });
       this.objectList = this.objectList.sort((a, b) => b.birthday - a.birthday);
       this.objectList.forEach((o, i) => {
         if (this.timestamp - o.birthday < this.TIME_DELAY) { return; }

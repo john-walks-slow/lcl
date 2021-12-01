@@ -378,7 +378,7 @@ export default class MainScene extends Phaser.Scene {
     ];
     const handleInput = (e) => {
       // if the click is not on the root react div, we call stopPropagation()
-      if (e.target == e.currentTarget) {
+      if (e.target.tagName != "canvas") {
         // if (target.className == "game__button-menu") {
         e.stopPropagation();
       }
