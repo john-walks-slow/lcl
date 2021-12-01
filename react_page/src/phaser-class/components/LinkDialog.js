@@ -89,7 +89,9 @@ export default class LinkDialog extends Dialog {
     } else {
       this.dialogFadeOut.play().on('complete', () => {
       });
+
     }
+    this.scene.gamepad.show();
     this.inDialog = false;
     this.select(1);
     this.link = "";
@@ -97,6 +99,7 @@ export default class LinkDialog extends Dialog {
 
   showDialog(link) {
     console.log('show link');
+    this.scene.gamepad.hide();
     this.link = link;
     this.inDialog = true;
     this.scene.input.on('gameobjectover', (pointer, o, event) => {

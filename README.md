@@ -45,11 +45,13 @@
 - [x] :wrench: 在手机上不要拦截pwa提示
 - [x] :art: 调整黑色色值
 - [x] :art: 添加意识海中文
+- [x] :art: 调账素材颜色
 - [x] :bug: 点击位置偏移的bug
 - [x] :bug: 服务器生成Item失败的bug
 - [x] :wrench: 调整数值
 - [x] :wrench: 设置M以下不需要肥料
 - [x] :wrench: ui 事件优化
+- [x] :bug: link dialog 隐藏虚拟键盘
 - [x] :sparkles: 键盘快捷键 
 - [x] :sparkles: 更好的报错界面
 - [x] :wrench: 使用history api优化后退键
