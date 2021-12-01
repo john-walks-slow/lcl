@@ -214,29 +214,27 @@ export default class MainScene extends Phaser.Scene {
         let collidedObjects = this.physics.overlapRect(o.x - o.displayWidth / 2, o.y - o.displayHeight / 2, o.displayWidth, o.displayHeight);
         if (collidedObjects.length > 0) {
           collidedObjects.forEach((c) => {
-            this.physics.collide(c, o);
-            // let cg = c.gameObject;
-            // if (cg.data.values.id == o.data.values.id) {
+            // this.physics.collide(c, o);
+            let cg = c.gameObject;
+            if (cg.data.values.id == o.data.values.id) {
+              return;
+            }
+            if (cg.data.values.isBackground) {
+              return;
+            }
+            // if (movedObjects.find((a) => (a[0] == o.id && a[1] == cg.id))) {
             //   return;
             // }
-            // if (cg.data.values.isBackground) {
-            //   return;
-            // }
-            // // if (movedObjects.find((a) => (a[0] == o.id && a[1] == cg.id))) {
-            // //   return;
-            // // }
-            // let xI = cg.x < o.x ? 1 : -1;
-            // let yI = cg.y < o.y ? 1 : -1;
-            // if (cg.x < o.x) {
-            //   cg.x -= (cg.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
-            // } else {
-            //   o.x += (o.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
-            // }
-            // if (cg.y < o.y) {
-            //   cg.y -= (cg.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
-            // } else {
-            //   o.y += (o.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
-            // }
+            if (cg.x < o.x) {
+              cg.x -= (cg.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
+            } else {
+              o.x += (o.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
+            }
+            if (cg.y < o.y) {
+              cg.y -= (cg.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
+            } else {
+              o.y += (o.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
+            }
             // movedObjects.push([cg.id, o.id]);
           });
         }
@@ -487,14 +485,14 @@ export default class MainScene extends Phaser.Scene {
     // console.log(this.filter(1000, 1000));
   }
   update() {
-    this.game.canvas.style.filter = this.filter(this.player.x, this.player.y);
+    // this.game.canvas.style.filter = this.filter(this.player.x, this.player.y);
     // console.log(this.filter(this.player.x, this.player.y));
     // console.log(this.player.body);
     let notTouching = this.player.body.touching.none;
     let velocityX = notTouching ? this.player.body.velocity.x : 0;
     let velocityY = notTouching ? this.player.body.velocity.y : 0;
-    this.objects.children.each((o) => { o.setVelocityX(-velocityX * (o.data.values.zFactor - 1)); });
-    this.objects.children.each((o) => { o.setVelocityY(-velocityY * (o.data.values.zFactor - 1)); });
+    this.objects.children.each((o) => { o.setVelocityX(-velocityX * (o.data.values.zFactor - 1) * 0.75); });
+    this.objects.children.each((o) => { o.setVelocityY(-velocityY * (o.data.values.zFactor - 1) * 0.75); });
     if (this.gameDialog.inDialog || this.itemDialog.inDialog || this.linkDialog.inDialog || !this.player.body.blocked.none) {
       this.player.stopMovement();
     } else {

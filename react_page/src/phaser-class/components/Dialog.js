@@ -114,7 +114,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.dialogCallback = callback || false;
     this.inDialog = true;
     this.scene.gamepad.hide();
-    this.scene.camera.shake(100, 0.01);
+    // this.scene.camera.shake(100, 0.01);
     // dialogWindow.on('pointerdown', () => { this.proceedDialog() });
     this.scene.input.on('pointerdown', (e) => { this.proceedDialog(); });
     this.scene.input.keyboard.on('keydown-SPACE', () => { this.proceedDialog(); });

@@ -119,8 +119,10 @@ export default class LoadingScene extends Phaser.Scene {
             i._id = o._id;
             this.itemList.push(i);
             let rad = i.seed[0] * (Math.PI / 180);
-            let sizeOffset = (this.PLAYER_TARGET_H + this.OBJECT_W.M) / 2;
+            // let sizeOffset = (this.PLAYER_TARGET_H + this.OBJECT_W.M) / 2;
+            let minDistance = this.PLAYER_TARGET_H + this.OBJECT_W[o.size];
             let distance = i.seed[1] * this.RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
+            if (o.zFactor == 1 && distance < minDistance) { distance = minDistance; }
             i.x = Math.cos(rad) * distance;
             i.y = Math.sin(rad) * distance;
             i.zone = [Math.ceil(i.x / this.GRID_SIZE), Math.ceil(i.y / this.GRID_SIZE)];
@@ -169,7 +171,7 @@ export default class LoadingScene extends Phaser.Scene {
       });
       this.load.start();
     });
-    this.add.rectangle(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y, this.WINDOW_W, this.WINDOW_H, 0x222020);
+    this.add.rectangle(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y, this.WINDOW_W, this.WINDOW_H, 0x222034);
     this.label = this.add.text(this.WINDOW_W / 20, 80,
       new Date(this.timestamp).toString().split('GMT')[0] + "user@remote" + '\n Fetching object list...',
       { align: "left", color: "#FFFFFF", fontSize: 16, wordWrap: { width: this.WINDOW_W * 0.9, useAdvancedWrap: true } });

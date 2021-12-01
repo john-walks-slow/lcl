@@ -9,7 +9,7 @@ const schema = yup.object().shape({
   _id: yup.string().required(),
   name: yup.string().ensure(),
   dialog: yup.array().of(yup.string()).required(),
-  size: yup.string().matches(/(XL|L|M|S|XS)/).required(),
+  size: yup.string().matches(/(XXL|XL|L|M|S|XS)/).required(),
   movement: yup.string().matches(/(static|float|flash|wander|bf)/).required(),
   zFactor: yup.number().min(0.2).max(2).required(),
   link: yup.mixed().oneOf([yup.string().url().ensure(), yup.string().max(0).ensure()]),

@@ -76,10 +76,11 @@ const Game = ({ dispatch, isShown }) => {
               debug: false
             }
           },
+          // scale: { mode: Phaser.Scale.FIT, },
           parent: "PHASER_ROOT",
           scene: [loadingScene, mainScene],
           pixelArt: true,
-          antialias: true, roundPixels: true
+          antialias: true, roundPixels: false
         };
 
         var game = new Phaser.Game(config);

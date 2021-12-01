@@ -45,8 +45,10 @@
 - [x] :wrench: 在手机上不要拦截pwa提示
 - [x] :art: 调整黑色色值
 - [x] :art: 添加意识海中文
-- [x] :bug: 点击位置偏移的bug
-- [ ] :bug: 服务器生成Item失败的bug
+- [ ] :bug: 点击位置偏移的bug
+- [x] :bug: 服务器生成Item失败的bug
+- [x] :wrench: 调整数值
+- [x] :wrench: 设置M以下不需要肥料
 - [ ] :wrench: 选择窗 事件优化
 - [ ] :sparkles: 键盘快捷键 
 - [ ] :sparkles: 更好的报错界面

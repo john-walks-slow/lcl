@@ -52,11 +52,12 @@ const Page = ({ dispatch, isShown }) => {
     duration
   };
   const FAT_CONSUMPTION_MAP = {
+    "XXL": 3,
     "XL": 2,
     "L": 1,
     "M": 0,
-    "S": 1,
-    "XS": 1,
+    "S": 0,
+    "XS": 0,
   };
   const BATTERY_CONSUMPTION_MAP = {
     "static": 0,
@@ -193,16 +194,16 @@ const Page = ({ dispatch, isShown }) => {
             <textarea type="text" value={dialog} onChange={(event) => { setDialog(event.target.value); }} placeholder="注:对话是由回车分割的" className="page__textarea dialog" />
           </label>
           <label className={"page__label"} disabled={labels <= 0}>
-            名字 <sub>{labels <= 0 ? "改名字需要便签条" : ("便签条数量：" + labels + (labelConsumption == 0 ? "" : `(-1)`))}</sub>
+            名字 <sub>{("便签条数量：" + labels + (labelConsumption == 0 ? "" : `(-1)`))}</sub>
             <input type="text" value={name} disabled={labels <= 0} onChange={(event) => { setName(event.target.value); }} placeholder="？？？" className="page__input" />
           </label>
           <label className={"page__label"} disabled={boxes <= 0}>
-            链接 <sub>{boxes <= 0 ? "添加链接需要箱子" : ("箱子数量：" + boxes + (boxConsumption == 0 ? "" : `(-1)`))}</sub>
+            链接 <sub>{("箱子数量：" + boxes + (boxConsumption == 0 ? "" : `(-1)`))}</sub>
             <input type="text" value={link} disabled={boxes <= 0} onChange={(event) => { setLink(event.target.value); }} placeholder="对象可以携带一个超链接" className="page__input link" />
           </label>
           <label className={"page__label"} disabled={fats <= 0}>
-            体积 <sub>{fats <= 0 ? "改大小需要肥料" : ("肥料数量：" + fats + (size == "M" ? "" : `(-${fatConsumption})`))}</sub>
-            <select value={size} disabled={fats <= 0} onChange={(event) => { setSize(event.target.value); }} className="page__input" >
+            体积 <sub>{("肥料数量：" + fats + (fatConsumption == 0 ? "" : `(-${fatConsumption})`))}</sub>
+            <select value={size} onChange={(event) => { setSize(event.target.value); }} className="page__input" >
               <option value="XL">XL</option>
               <option value="L">L</option>
               <option value="M">M</option>
@@ -210,18 +211,18 @@ const Page = ({ dispatch, isShown }) => {
               <option value="XS">XS</option>
             </select>
           </label>
-          <label className={"page__label"} disabled={batteries <= 0}>
-            运动 <sub>{batteries <= 0 ? "让物体动起来需要电池" : ("电池数量：" + batteries + (movement == "static" ? "" : `(-${batteryConsumption})`))}</sub>
+          {/* <label className={"page__label"} disabled={batteries <= 0}>
+            运动 <sub>{ ("电池数量：" + batteries + (movement == "static" ? "" : `(-${batteryConsumption})`))}</sub>
             <select value={movement} disabled={batteries <= 0} onChange={(event) => { setMovement(event.target.value); }} className="page__input" >
               <option value="static">静止</option>
               <option value="float">漂浮</option>
               <option value="bf">来回走</option>
               <option value="flash">闪现</option>
               <option value="wander">游荡</option>
-            </select>        </label>
+            </select>        </label> */}
 
           <label className={"page__label"} disabled={telescopes <= 0}>
-            深度 <sub>{telescopes <= 0 ? "设置深度需要镜片" : ("镜片数量：" + telescopes + (zFactor == 1 ? "" : `(-${telescopeConsumption})`))}</sub>
+            深度 <sub>{("镜片数量：" + telescopes + (zFactor == 1 ? "" : `(-${telescopeConsumption})`))}</sub>
             <input type="range" min="0.5" max="1.5" step="0.1" disabled={telescopes <= 0} value={2 - zFactor} onChange={(event) => { setZFactor(2 - event.target.value); }} placeholder="深度的范围是0.5 - 1.5（近大远小）" className="page__input" />
           </label>
 
