@@ -34,10 +34,12 @@
 
 ### 链接
 
-- [网页地址1](https://lcl.yu-me.workers.dev) [网页地址2](https://lcl-web.herokuapp.com)
-- PC版（开发中）
+- [地址1](https://lcl.yu-me.workers.dev) [地址2](https://lcl-web.herokuapp.com)
 - 安卓版（开发中）
-- IOS 在Safari中点击 ```分享 - 添加到主屏幕``` 可以将本应用安装为 PWA。
+- PC版（开发中）
+- 网页应用版
+  - Chrome等浏览器会自动弹出安装提示。你也可以点击本页面顶部的 “安装到桌面” 按钮安装。
+  - IOS 在Safari中点击 ```分享 - 添加到主屏幕``` 可以将本应用安装到主屏。
 - [Github 仓库](https://github.com/john-walks-slow/lcl)
 
 ### TODO
@@ -58,6 +60,8 @@
 - [x] :books: 优化README
 - [x] :wrench: 提高服务器安全性
 - [x] :sparkles: 优化自动转屏逻辑
+- [x] :art: 调整响应式布局
+- [ ] :sparkles: 发言前检测用户是否阅读本文档
 - [ ] :art: 重做滤镜
 - [ ] :package: 安卓版开发
 - [ ] :package: 上架安卓市场

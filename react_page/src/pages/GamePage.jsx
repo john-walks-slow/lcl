@@ -59,6 +59,9 @@ const Game = ({ dispatch, isShown }) => {
     mainSceneHook(mainSceneRef);
   }, [showInventory, showInfo]);
   useEffect(() => {
+
+  });
+  useEffect(() => {
     if (!isShown && mainSceneRef) {
       setShowMenu(false);
       setShowInventory(false);

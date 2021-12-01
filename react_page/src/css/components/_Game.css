@@ -1,7 +1,7 @@
 #GAME_DIV {
   overflow: hidden;
   div {
-    filter: opacity(0.6) saturate(1.1) sepia(0) brightness(0.98) contrast(1.1);
+    filter: opacity(0.7) saturate(1.1) sepia(0) brightness(0.98) contrast(1.1);
   }
 }
 #GAME_MENU {
