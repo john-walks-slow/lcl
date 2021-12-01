@@ -39,7 +39,7 @@
 }
 #GAME_INFO {
   font-family: initial;
-  background-color: #00000020;
+  background-color: #ffffff;
   padding: 20px 20px 50px 20px;
   margin: auto;
   width: max(600px, 70vw);
@@ -57,6 +57,7 @@
   opacity: 1;
 }
 #GAME_INVENTORY {
+  font-weight: 800;
   --width: min(70vw, 300px);
   --height: calc(var(--width));
   background-color: white;

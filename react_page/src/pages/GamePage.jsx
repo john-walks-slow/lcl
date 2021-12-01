@@ -45,10 +45,10 @@ const Game = ({ dispatch, isShown }) => {
   function mainSceneHook(mainScene) {
     if (mainScene) {
       mainScene.input.keyboard.off("keydown-B");
-      mainScene.input.keyboard.off("keydown-QUESTION-MARK");
+      mainScene.input.keyboard.off("keydown-H");
       mainScene.input.keyboard.off("keydown-N");
       mainScene.input.keyboard.on("keydown-B", toggleShowInventory);
-      mainScene.input.keyboard.on("keydown-QUESTION-MARK", toggleShowInfo);
+      mainScene.input.keyboard.on("keydown-H", toggleShowInfo);
       mainScene.input.keyboard.on("keydown-N", navigateToAdd);
     }
   }
