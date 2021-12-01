@@ -2,6 +2,7 @@
   overflow: hidden;
 }
 #GAME_MENU {
+  pointer-events: none;
   position: fixed;
   right: 25px;
   top: 15px;
@@ -10,6 +11,7 @@
   transition: 1000ms;
 }
 #GAME_MENU.show {
+  pointer-events: initial;
   position: fixed;
   transform: translateY(0);
 
@@ -64,7 +66,7 @@
   pointer-events: none;
   transition: 800ms;
   overflow: auto;
-  border: solid #111111 10px;
+  border: solid #222222 10px;
   transform: translateY(30px);
 }
 #GAME_INVENTORY.show {
