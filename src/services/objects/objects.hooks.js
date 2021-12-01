@@ -18,6 +18,13 @@ const schema = yup.object().shape({
   rows: yup.number(),
   birthday: yup.date().required(),
   seed: yup.array().length(2).of(yup.number()).required(),
+  item: yup.mixed().oneOf([
+    yup.object().shape({
+      itemId: yup.number(),
+      seed: yup.array().length(2).of(yup.number()),
+    }),
+    yup.boolean()]
+  )
 });
 
 const trimDialog = (context) => {
@@ -52,12 +59,12 @@ const setSeed = async context => {
 const generateItem = async context => {
   context.data.item = false;
   // if (ownItems.includes(context.data._id)) { return; }
-  let itemId = Math.floor(seededRandom(context.data._id) * 20);
+  let itemId = Math.floor(Math.random() * 10);
   if (itemId > 4) { return context; }
-  let itemDegree = seededRandom(context.data.birthday.toString()) * 360;
-  let itemDistance = seededRandom((context.data.birthday % 100).toString());
+  let itemDegree = Math.random() * 360;
+  let itemDistance = Math.random();
   context.data.item = {
-    id: itemId,
+    itemId: itemId,
     seed: [itemDegree, itemDistance]
   };
   return context;
@@ -82,7 +89,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      setTimestamp('birthday'), setSeed, trimDialog, schemaCheck
+      setTimestamp('birthday'), setSeed, trimDialog, generateItem, schemaCheck
     ],
     update: [],
     patch: [],
