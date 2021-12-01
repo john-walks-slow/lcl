@@ -11,11 +11,11 @@ export default function configureScene() {
   c.OBJECT_W = { XXL: c.PLAYER_TARGET_H * 3, XL: c.PLAYER_TARGET_H * 2.5, L: c.PLAYER_TARGET_H * 2, M: c.PLAYER_TARGET_H * 1.5, S: c.PLAYER_TARGET_H * 1, XS: c.PLAYER_TARGET_H * 0.7 };
   c.TIME_DELAY = 60 * 60 * 1000;
   c.RANDOM_ZONE_W = c.OBJECT_W.L;
-  c.DAY_OFFSET = c.OBJECT_W.XL * 1.3;
+  c.DAY_OFFSET = c.OBJECT_W.XL;
   c.DENSITY_OFFSET = c.OBJECT_W.S;
   c.ACTIVITY_OFFSET = 1;
   c.MOVE_SPEED = (c.PLAYER_TARGET_W * 0.8);
-  c.OBLIQUE_MOVE_SPEED = (c.MOVE_SPEED * 0.75);
+  c.OBLIQUE_MOVE_SPEED = (c.MOVE_SPEED * 0.7);
   c.GRID_SIZE = Math.max(c.WINDOW_H, c.WINDOW_W) / c.ZOOM_OUT_LEVEL;
   c.timestamp = Date.parse(new Date());
   c.day = Math.floor(c.timestamp / (24 * 60 * 60 * 1000));
