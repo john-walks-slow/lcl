@@ -8,6 +8,8 @@ import GamePad from "../components/GamePad";
 import { seededRandom } from "../../utils/random";
 let listener = false;
 
+
+
 function vectorAngle(x, y) {
   let mX = Math.sqrt(x.reduce((acc, n) => acc + Math.pow(n, 2), 0));
   let mY = Math.sqrt(y.reduce((acc, n) => acc + Math.pow(n, 2), 0));
@@ -30,6 +32,7 @@ export default class MainScene extends Phaser.Scene {
     this.camera;
     this.gameDialog;
     this.pointerOnPlayer = false;
+
   }
 
   preload() {
@@ -79,7 +82,7 @@ export default class MainScene extends Phaser.Scene {
     this.gameObjects = this.add.layer();
     this.uis = this.add.layer();
     this.camera = new GameCamera(this);
-    this.cameras.addExisting(this.camera);
+    this.cameras.addExisting(this.camera, true);
     this.camera.ignore(this.uis);
     this.staticCamera = this.cameras.add();
     this.staticCamera.ignore(this.gameObjects);
@@ -483,9 +486,29 @@ export default class MainScene extends Phaser.Scene {
       return `${result}`;
     };
 
+    // this.grayscalePipeline = new Phaser.Renderer.WebGL.Pipelines.PostFXPipeline({
+    //   name: "grayscale",
+    //   game: this.game,
+    //   fragShader: `
+    // precision mediump float;
+    // uniform sampler2D uMainSampler;
+    // varying vec2 outTexCoord;
+    // void main(void) {
+    // vec4 color = texture2D(uMainSampler, outTexCoord);
+    // float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+    // gl_FragColor = vec4(vec3(gray), 1.0);
+    // }`});
+    // this.game.renderer.pipelines.add('grayscale', this.grayscalePipeline);
+    // this.camera.setPostPipeline(this.grayscalePipeline);
+
+    // this.Vignette = this.game.renderer.addPipeline('Vignette', new VignetteClass(this.game));
+    // this.applyPipeline();
+
     // this.game.canvas.style.filter = "opacity(0.7) saturate(1.1) sepia(0.2) brightness(0.98) contrast(1.1)";
     // console.log(this.filter(1000, 1000));
+
   }
+
   update() {
     // console.log(this.input.activePointer.x, this.input.activePointer.y);
     // console.log(this.gamepad.padX, this.gamepad.padY);

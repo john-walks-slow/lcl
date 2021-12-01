@@ -65,7 +65,7 @@ module.exports = (production) => {
       ]
     },
     resolve: {
-      extensions: ['.js', '.jsx'],
+      extensions: ['.js', '.jsx', '.json'],
 
       fallback: {
         "fs": false,

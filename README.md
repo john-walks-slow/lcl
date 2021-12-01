@@ -53,6 +53,7 @@
 - [x] :sparkles: 键盘快捷键 
 - [x] :sparkles: 更好的报错界面
 - [x] :wrench: 使用history api优化后退键
+- [x] :books: 优化README
 - [ ] :art: 重做滤镜
 - [ ] :package: 安卓版开发
 - [ ] :package: 上架安卓市场

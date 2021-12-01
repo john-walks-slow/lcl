@@ -12,6 +12,7 @@ import configureScene from '../phaser-class/game.config';
 import { setPath, setStorage } from '../store/actions/actionCreators';
 import MainScene from '../phaser-class/scenes/MainScene';
 import LoadingScene from '../phaser-class/scenes/LoadingScene';
+import emoji from 'emoji-dictionary/lib/index';
 
 // function createTestObject(object) {
 //   object._id = 3;
@@ -39,7 +40,7 @@ const Game = ({ dispatch, isShown }) => {
     setShowInfo(!showInfo);
   };
   function navigateToAdd() {
-    dispatch(setPath('/add'));
+    dispatch(setPath('/add', true));
   }
   function mainSceneHook(mainScene) {
     if (mainScene) {
@@ -114,6 +115,8 @@ const Game = ({ dispatch, isShown }) => {
       }
     }
   }, [isShown]);
+  console.log(emoji.getUnicode('wrench'));
+  const emojiSupport = text => { console.log(text); return text.replace(/:\w+:/gi, name => emoji.getUnicode(name)); };
   return (
     <div id="GAME_DIV" className={showGame ? "show" : ""}>
       <div id="PHASER_ROOT" ></div>
@@ -169,7 +172,7 @@ const Game = ({ dispatch, isShown }) => {
             deferredPrompt = null;
           });
         }}>安装到桌面</button>
-        <ReactMarkdown>{ReadMe.toString()}</ReactMarkdown>
+        <ReactMarkdown >{ReadMe.toString().replace(/:\w+:/gi, name => emoji.getUnicode(name))}</ReactMarkdown>
 
       </div>
 
