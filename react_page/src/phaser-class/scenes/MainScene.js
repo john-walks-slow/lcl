@@ -483,7 +483,7 @@ export default class MainScene extends Phaser.Scene {
       return `${result}`;
     };
 
-
+    // this.game.canvas.style.filter = "opacity(0.7) saturate(1.1) sepia(0.2) brightness(0.98) contrast(1.1)";
     // console.log(this.filter(1000, 1000));
   }
   update() {

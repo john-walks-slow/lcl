@@ -191,7 +191,7 @@ export default class LoadingScene extends Phaser.Scene {
       console.log(error);
     }
     ;
-    this.add.rectangle(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y, this.WINDOW_W, this.WINDOW_H, 0x000000);
+    this.add.rectangle(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y, this.WINDOW_W, this.WINDOW_H, 0x777777);
     this.label = this.add.text(this.WINDOW_W / 20, 80,
       new Date(this.timestamp).toString().split('GMT')[0] + "user@remote" + '\n Fetching object list...',
       { align: "left", color: "#FFFFFF", fontSize: 15, wordWrap: { width: this.WINDOW_W * 0.9, useAdvancedWrap: true } });
