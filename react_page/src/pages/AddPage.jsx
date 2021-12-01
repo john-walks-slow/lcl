@@ -166,7 +166,7 @@ const Page = ({ dispatch, isShown }) => {
   return (
     <div className={"page__container" + (show ? " show" : "")}>
       <div style={{ "textAlign": "right" }}>
-        <button className="page__button-back" onClick={() => { dispatch(setPath("/")); }}>
+        <button className="page__button-back" onClick={() => { dispatch(setPath("/", true)); }}>
           {/* <i class="fas fa-sign-out-alt"></i> */}
           ⏎ 回到LCL</button>
       </div>

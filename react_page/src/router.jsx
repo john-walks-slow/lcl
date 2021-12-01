@@ -10,6 +10,7 @@ import {
 import AddPage from './pages/AddPage';
 import GamePage from './pages/GamePage';
 import { useSelector } from 'react-redux';
+import { setPath } from './store/actions/actionCreators';
 
 
 export default function ({ dispatch }) {
@@ -23,7 +24,13 @@ export default function ({ dispatch }) {
   //   showAdd = pathname == '/add';
 
   // }, [pathname]);
-  useEffect(() => { window.onerror = (message) => { console.log(message); setError(message); }; }, []);
+  useEffect(() => {
+    // if (this.window.location != pathname) dispatch(setPath('/'));
+    window.onerror = (message) => { console.log(message); setError(message); };
+    // window.onpopstate = (e) => {
+    //   dispatch(setPath(window.location.pathname));
+    // };
+  }, []);
   return (
     // <div>
     //   <GamePage show-{location=='/'||location==''} dispatch={dispatch} />

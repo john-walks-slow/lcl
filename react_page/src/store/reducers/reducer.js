@@ -66,10 +66,12 @@ function setObjects(state, action) {
 }
 function setPath(state, action) {
   console.log(action);
-  if (action.withoutHistory) {
-    navigateWithoutHistory(action.pathname);
+  if (action.pathname != window.location.pathname) {
+    if (action.withoutHistory) {
+      navigateWithoutHistory(action.pathname);
+    }
+    else { navigate(action.pathname); }
   }
-  else { navigate(action.pathname); }
   return state.set('pathname', action.pathname);
 }
 function updateUsedColors(state) {
