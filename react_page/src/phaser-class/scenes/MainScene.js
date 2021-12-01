@@ -86,6 +86,7 @@ export default class MainScene extends Phaser.Scene {
     this.staticCamera.inputEnabled = false;
     this.setShowMenu(true);
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.mainSceneHook(this);
     // this.add.tileSprite(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y,WINDOW_W,WINDOW_H,'bg');
     // this.add.rectangle(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0xFFFFFF);
     this.player = this.physics.add.sprite(this.startPosX, this.startPosY, 'player')

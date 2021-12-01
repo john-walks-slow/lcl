@@ -1,6 +1,6 @@
 // import Phaser from 'jquery';
 import Phaser from 'phaser';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useSelector } from 'react-redux';
 import ReadMe from '../../../README.md';
@@ -31,7 +31,29 @@ const Game = ({ dispatch, isShown }) => {
 
   // const objects = useSelector(state => state.present.get('objects'));
   const deferredPrompt = window.deferredPrompt;
-
+  function toggleShowInventory() {
+    console.log(showInventory);
+    setShowInventory(!showInventory);
+  };
+  function toggleShowInfo() {
+    setShowInfo(!showInfo);
+  };
+  function navigateToAdd() {
+    dispatch(setPath('/add'));
+  }
+  function mainSceneHook(mainScene) {
+    if (mainScene) {
+      mainScene.input.keyboard.off("keydown-B");
+      mainScene.input.keyboard.off("keydown-QUESTION-MARK");
+      mainScene.input.keyboard.off("keydown-N");
+      mainScene.input.keyboard.on("keydown-B", toggleShowInventory);
+      mainScene.input.keyboard.on("keydown-QUESTION-MARK", toggleShowInfo);
+      mainScene.input.keyboard.on("keydown-N", navigateToAdd);
+    }
+  }
+  useEffect(() => {
+    mainSceneHook(mainSceneRef);
+  }, [showInventory, showInfo]);
   useEffect(() => {
     if (!isShown && mainSceneRef) {
       setShowMenu(false);
@@ -61,7 +83,11 @@ const Game = ({ dispatch, isShown }) => {
           game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H);
         });
         let configurations = configureScene();
-        let methods = { setShowInfo, setShowInventory, setShowMenu, setStorage, dispatch };
+        // let toggleShowInfoRef = useRef(toggleShowInfo).current;
+        // let toggleShowInventoryRef = useRef(toggleShowInventory).current;
+        let methods = {
+          setShowInfo, setShowInventory, setShowMenu, setStorage, dispatch, mainSceneHook
+        };
         var loadingScene = new LoadingScene(configurations, methods);
         var mainScene = new MainScene(configurations, methods);
         setMainScene(mainScene);
@@ -92,10 +118,10 @@ const Game = ({ dispatch, isShown }) => {
     <div id="GAME_DIV" className={showGame ? "show" : ""}>
       <div id="PHASER_ROOT" ></div>
       <div id="GAME_MENU" className={showMenu ? "show" : ""} >
-        <input className="game__button-menu" type="image" onClick={() => { dispatch(setPath('/add')); }} src={newBtnURL} />
+        <input className="game__button-menu" type="image" onClick={() => { navigateToAdd(); }} src={newBtnURL} />
         <input className="game__button-menu" type="image" onClick={() => { mainSceneRef.camera.toggleZoom(); }} src={mapBtnURL} />
-        <input className="game__button-menu" type="image" onClick={() => { console.log('test'); setShowInventory(!showInventory); }} src={bagBtnURL} />
-        <input className="game__button-menu" type="image" onClick={() => { setShowInfo(!showInfo); }} src={infoBtnURL} />
+        <input className="game__button-menu" type="image" onClick={() => { toggleShowInventory(); }} src={bagBtnURL} />
+        <input className="game__button-menu" type="image" onClick={() => { toggleShowInfo(); }} src={infoBtnURL} />
       </div>
 
 
