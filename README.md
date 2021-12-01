@@ -49,7 +49,7 @@
 - [x] :bug: 服务器生成Item失败的bug
 - [x] :wrench: 调整数值
 - [x] :wrench: 设置M以下不需要肥料
-- [ ] :wrench: 选择窗 事件优化
+- [x] :wrench: ui 事件优化
 - [ ] :sparkles: 键盘快捷键 
 - [ ] :sparkles: 更好的报错界面
 - [ ] :art: 重做滤镜

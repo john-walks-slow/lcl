@@ -62,6 +62,7 @@ export default class MainScene extends Phaser.Scene {
         // setTimeout(() => {
         this.configurations = configureScene();
         Object.assign(this, this.configurations);
+        console.log(this.WINDOW_W, this.WINDOW_H);
         this.camera.setDisplay();
         this.gameDialog.setDisplay();
         this.linkDialog.setDisplay();
@@ -485,6 +486,9 @@ export default class MainScene extends Phaser.Scene {
     // console.log(this.filter(1000, 1000));
   }
   update() {
+    // console.log(this.input.activePointer.x, this.input.activePointer.y);
+    // console.log(this.gamepad.padX, this.gamepad.padY);
+
     // this.game.canvas.style.filter = this.filter(this.player.x, this.player.y);
     // console.log(this.filter(this.player.x, this.player.y));
     // console.log(this.player.body);
@@ -518,6 +522,7 @@ export default class MainScene extends Phaser.Scene {
         if (this.isMobile) {
           mousePosX = this.gamepad.padX;
           mousePosY = this.gamepad.padY;
+          // console.log(mousePosX, mousePosY);
           // if (this.input.activePointer.isDown && (Math.abs(mousePosX) <= PLAYER_TARGET_W * 0.5 || Math.abs(mousePosY) <= this.PLAYER_TARGET_H * 0.5)){
           // 	camera.toggleZoom();
           // };
