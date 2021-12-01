@@ -7,7 +7,7 @@ const colors = {
   silver: '#bbb',
   mineShaft: '#313131',
   doveGray: '#707070',
-  tundora: '#4b4949',
+  tundora: '#222222',
   lotus: '#803c3c',
   buccaneer: '#733939',
   cowboy: '#552a2a',
@@ -178,7 +178,7 @@ Button.propTypes = {
 Button.defaultProps = {
   variant: 'default',
   size: 'normal',
-  onClick: () => {}
+  onClick: () => { }
 };
 
 export default Button;

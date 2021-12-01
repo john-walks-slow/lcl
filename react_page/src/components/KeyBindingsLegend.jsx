@@ -32,22 +32,22 @@ const ShortcutList = style.div`
       content: " ";
       clear: both;
     }
-    &:after {    
+    &:after {
       clear: both;
     }
     padding: 0;
     `;
 
-const ShortcutOption = style.div`    
+const ShortcutOption = style.div`
     padding: 1.4em 0;
     `;
 
 const KeyContainer = style.span`
     padding: 0.1em 0.5em;
-    background-color: #4b4949;
+    background-color: #222222;
     border: 3px solid #313131;
     color: #e0e0e0;
-    @media only screen and (max-width: 600px) {      
+    @media only screen and (max-width: 600px) {
       font-size: 0.8em;
     }
 `;

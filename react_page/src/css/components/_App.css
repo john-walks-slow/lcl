@@ -3,8 +3,8 @@
   .app__central-container {
     lost-utility: clearfix;
   }
-  .app__main{
-max-width: 500px;
+  .app__main {
+    max-width: 500px;
   }
   .app__main,
   .app__central-container {
@@ -96,7 +96,7 @@ max-width: 500px;
       display: inline-block;
       button {
         font-size: 0.9em;
-        padding: 5  px;
+        padding: 5 px;
         text-align: center;
         color: $color-mineShaft;
         width: 100%;
@@ -128,22 +128,32 @@ max-width: 500px;
     margin-left: auto;
     margin-right: 0;
   }
-  .john_tools{
+  .john_tools {
     width: 30%;
     display: inline-block;
-    vertical-align:top;
+    vertical-align: top;
   }
-  .john_canvas{
+  .john_canvas {
     width: 70%;
     display: inline-block;
   }
-  .palette-grid{
+  .palette-grid {
     display: inline-block;
-
   }
-  .john_output{
+  .john_output {
     width: 95%;
-    margin:auto;
+    margin: auto;
   }
-
+}
+.error__div {
+  opacity: 0;
+  display: none;
+  position: fixed;
+  background-color: black;
+  width: 100vw;
+  height: 100vh;
+}
+.error__div.show {
+  opacity: 1;
+  display: block;
 }

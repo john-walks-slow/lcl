@@ -51,7 +51,7 @@
 - [x] :wrench: 设置M以下不需要肥料
 - [x] :wrench: ui 事件优化
 - [x] :sparkles: 键盘快捷键 
-- [ ] :sparkles: 更好的报错界面
+- [x] :sparkles: 更好的报错界面
 - [ ] :art: 重做滤镜
 - [ ] :package: 安卓版开发
 - [ ] :package: 上架安卓市场

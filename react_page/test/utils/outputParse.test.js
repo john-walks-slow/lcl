@@ -1,7 +1,7 @@
 import { List, Map } from 'immutable';
 import generateFramesOutput from '../../src/utils/outputParse';
 
-const gridMock = ['#111111', '#222222', '#222222', '#111111'];
+const gridMock = ['#222222', '#222222', '#222222', '#222222'];
 const generateFrames = grid =>
   List([
     Map({
@@ -27,7 +27,7 @@ describe('generateFramesOutput', () => {
             columns,
             options
           })
-        ).toEqual(`frame0 = {\n #111111, #222222,\n #222222, #111111\n};`);
+        ).toEqual(`frame0 = {\n #222222, #222222,\n #222222, #222222\n};`);
       });
     });
     describe('When the colorFormat is 1', () => {
@@ -43,7 +43,7 @@ describe('generateFramesOutput', () => {
             columns,
             options
           })
-        ).toEqual(`frame0 = {\n 0x111111, 0x222222,\n 0x222222, 0x111111\n};`);
+        ).toEqual(`frame0 = {\n 0x222222, 0x222222,\n 0x222222, 0x222222\n};`);
       });
     });
     describe('When the colorFormat is 2', () => {
@@ -79,7 +79,7 @@ describe('generateFramesOutput', () => {
             columns,
             options
           })
-        ).toEqual(`frame0 = {\n #222222, #111111,\n #222222, #111111\n};`);
+        ).toEqual(`frame0 = {\n #222222, #222222,\n #222222, #222222\n};`);
       });
     });
     describe('When the reverseEven is true', () => {
@@ -95,7 +95,7 @@ describe('generateFramesOutput', () => {
             columns,
             options
           })
-        ).toEqual(`frame0 = {\n #111111, #222222,\n #111111, #222222\n};`);
+        ).toEqual(`frame0 = {\n #222222, #222222,\n #222222, #222222\n};`);
       });
     });
   });
