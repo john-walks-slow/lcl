@@ -38,6 +38,9 @@ const Game = ({ dispatch, isShown }) => {
   };
   function toggleShowInfo() {
     setShowInfo(!showInfo);
+    if (mainSceneRef && mainSceneRef.gamepad) {
+      !showInfo ? mainSceneRef.gamepad.hide() : mainSceneRef.gamepad.show();
+    }
   };
   function navigateToAdd() {
     dispatch(setPath('/add', true));
@@ -130,33 +133,33 @@ const Game = ({ dispatch, isShown }) => {
 
       <div id="GAME_INVENTORY" className={showInventory ? "show" : ""}>
         {player ? (<div>
-          <div>
+          <div >
             <span>
               便签条:{player.labels}
             </span>
           </div>
-          <div>
+          <div >
             <span>
               箱子:{player.boxes}
             </span>
           </div>
-          <div>
+          <div >
             <span>
               肥料:{player.fats}
             </span>
           </div>
-          <div>
+          <div >
             <span>
               电池:{player.batteries}
             </span>
           </div>
-          <div>
+          <div >
             <span>
               镜片:{player.telescopes}
             </span>
           </div>
-          <div>
-            颜料:{player.palette.map(color => <span className="page__span-color" style={{ "backgroundColor": color }}></span>)}
+          <div >
+            颜料:{player.palette.map(color => <span key={color} className="page__span-color" style={{ "backgroundColor": color }}></span>)}
           </div>
         </div>) : ""}
       </div>
