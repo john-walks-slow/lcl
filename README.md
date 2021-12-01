@@ -54,6 +54,7 @@
 - [x] :sparkles: 更好的报错界面
 - [x] :wrench: 使用history api优化后退键
 - [x] :books: 优化README
+- [x] :wrench: 提高服务器安全性
 - [ ] :art: 重做滤镜
 - [ ] :package: 安卓版开发
 - [ ] :package: 上架安卓市场

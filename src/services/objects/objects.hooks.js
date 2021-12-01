@@ -1,4 +1,6 @@
-yup = require('yup');
+const yup = require('yup');
+const { disallow } = require('feathers-hooks-common');
+
 const {
   v1: uuidv1,
   v4: uuidv4,
@@ -91,9 +93,9 @@ module.exports = {
     create: [
       setTimestamp('birthday'), setSeed, trimDialog, generateItem, schemaCheck
     ],
-    update: [],
-    patch: [],
-    remove: []
+    update: [disallow('external'),],
+    patch: [disallow('external'),],
+    remove: [disallow('external'),]
   },
 
   after: {
