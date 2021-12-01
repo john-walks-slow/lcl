@@ -1,8 +1,5 @@
 {
-  "name": "pixel-art-react",
-  "version": "3.10.0",
-  "description": "Draw and animate Pixel Art, then export the results to CSS or download them, powered by React",
-  "author": "Javier Valencia Romero",
+  "name": "lcl-frontend",
   "scripts": {
     "lint": "eslint **/*.{js,jsx}",
     "csslint": "stylelint src/**/*.{css,js,jsx}",
@@ -20,18 +17,6 @@
     "build": "webpack --config webpack.production.config.js"
   },
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jvalen/pixel-art-react"
-  },
-  "keywords": [
-    "pixel",
-    "art",
-    "drawing",
-    "react",
-    "redux",
-    "express"
-  ],
   "license": "MIT",
   "jest": {
     "setupFiles": [
