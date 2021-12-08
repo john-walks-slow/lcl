@@ -44,12 +44,6 @@
 
 ### TODO
 
-- [x] :wrench: 在手机上不要拦截pwa提示
-- [x] :art: 调整黑色色值
-- [x] :art: 添加意识海中文
-- [x] :art: 调账素材颜色
-- [x] :bug: 点击位置偏移的bug
-- [x] :bug: 服务器生成Item失败的bug
 - [x] :wrench: 调整数值
 - [x] :wrench: 设置M以下不需要肥料
 - [x] :wrench: ui 事件优化
@@ -63,6 +57,7 @@
 - [x] :art: 调整响应式布局
 - [ ] :sparkles: 发言前检测用户是否阅读本文档
 - [ ] :art: 重做滤镜
+- [ ] :sparkles: Generative Music
 - [ ] :package: 安卓版开发
 - [ ] :package: 上架安卓市场
 - [ ] :package: PC版开发
