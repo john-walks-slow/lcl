@@ -115,7 +115,7 @@ export default class LoadingScene extends Phaser.Scene {
           o.y = Math.sin(rad) * distance;
           o.isBackground = o.zFactor > 1;
           o.isForeground = o.zFactor < 1;
-          // o.zFactor == 1 && (o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2);
+          o.zFactor == 1 && (o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2);
           // (o.zFactor > 1) && (o.zFactor =1.4);
           // (o.zFactor < 1) && (o.zFactor =0.6);
           o.ratio = o.rows / o.columns;
@@ -126,6 +126,9 @@ export default class LoadingScene extends Phaser.Scene {
             o.displayWidth = this.OBJECT_W[o.size] / o.zFactor / o.ratio;
             o.displayHeight = this.OBJECT_W[o.size] / o.zFactor;
           }
+          o.displayWidth = Math.round(o.displayWidth/o.columns )*o.columns;
+                    o.displayHeight =Math.round(  o.displayHeight/o.rows )*o.rows;
+
           o.zone = [Math.ceil(o.x / this.GRID_SIZE), Math.ceil(o.y / this.GRID_SIZE)];
           o.type = "object";
           this.gameObjectMap.pushNew(o.zone, o);
