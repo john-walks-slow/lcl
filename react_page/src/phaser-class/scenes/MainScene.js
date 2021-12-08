@@ -96,7 +96,7 @@ export default class MainScene extends Phaser.Scene {
       .setDisplaySize(this.PLAYER_TARGET_W, this.PLAYER_TARGET_H);
     // .refreshBody();
 
-    this.player.depth = 1.1;
+    this.player.depth = 0.9;
     this.player.moveX = (x) => {
       this.player.setVelocityX(x);
     };
@@ -297,10 +297,10 @@ export default class MainScene extends Phaser.Scene {
               if (o.isAnimate) {
                 o.instance.anims.play('spritesheet' + o._id);
               }
-              if (o.dialog.length > 0) {
+              // if (o.dialog.length > 0) {
                 let collider = this.physics.add.collider(this.player, o.instance, this.objectCollideHandler);
                 o.instance.setData("collider", collider);
-              }
+             //  }
               o.instance.refreshBody();
               this.gameObjects.add(o.instance);
               break;
