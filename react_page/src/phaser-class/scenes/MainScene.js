@@ -96,7 +96,7 @@ export default class MainScene extends Phaser.Scene {
       .setDisplaySize(this.PLAYER_TARGET_W, this.PLAYER_TARGET_H);
     // .refreshBody();
 
-    this.player.depth = 0.9;
+    this.player.depth = 1.1;
     this.player.moveX = (x) => {
       this.player.setVelocityX(x);
     };
