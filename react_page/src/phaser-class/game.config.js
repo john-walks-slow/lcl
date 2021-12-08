@@ -8,7 +8,7 @@ export default function configureScene() {
   c.PLAYER_TARGET_H = 440;
   c.ZOOM_LEVEL = (Math.max(Math.min(c.WINDOW_W / 15, c.WINDOW_H / 15 / 44 * 37),) / c.PLAYER_TARGET_W);
   c.ZOOM_OUT_LEVEL = (0.3 * c.ZOOM_LEVEL);
-  c.OBJECT_W = { XXL: c.PLAYER_TARGET_H * 3, XL: c.PLAYER_TARGET_H * 2, L: c.PLAYER_TARGET_H * 1.5, M: c.PLAYER_TARGET_W * 1.2, S: c.PLAYER_TARGET_W * 0.9, XS: c.PLAYER_TARGET_W * 0.6 };
+  c.OBJECT_W = { XXL: c.PLAYER_TARGET_H * 3, XL: c.PLAYER_TARGET_H * 2, L: c.PLAYER_TARGET_H * 1.5, M: c.PLAYER_TARGET_H*1.1, S: c.PLAYER_TARGET_W, XS: c.PLAYER_TARGET_W * 0.7 };
   c.TIME_DELAY = 60 * 60 * 1000;
   c.RANDOM_ZONE_W = c.OBJECT_W.L;
   c.DAY_OFFSET = c.OBJECT_W.L;
