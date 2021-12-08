@@ -8,13 +8,13 @@ export default function configureScene() {
   c.PLAYER_TARGET_H = 440;
   c.ZOOM_LEVEL = (Math.max(Math.min(c.WINDOW_W / 15, c.WINDOW_H / 15 / 44 * 37),) / c.PLAYER_TARGET_W);
   c.ZOOM_OUT_LEVEL = (0.3 * c.ZOOM_LEVEL);
-  c.OBJECT_W = { XXL: c.PLAYER_TARGET_H * 3, XL: c.PLAYER_TARGET_H * 2, L: c.PLAYER_TARGET_H * 1.5, M: c.PLAYER_TARGET_H*1.1, S: c.PLAYER_TARGET_W, XS: c.PLAYER_TARGET_W * 0.7 };
+  c.OBJECT_W = { XXL: c.PLAYER_TARGET_H * 4.5, XL: c.PLAYER_TARGET_H * 3.5, L: c.PLAYER_TARGET_H * 2.5, M: c.PLAYER_TARGET_H*1.5, S: c.PLAYER_TARGET_H, XS: c.PLAYER_TARGET_H * 0.7 };
   c.TIME_DELAY = 60 * 60 * 1000;
   c.RANDOM_ZONE_W = c.OBJECT_W.L;
   c.DAY_OFFSET = c.OBJECT_W.L;
   c.DENSITY_OFFSET = c.OBJECT_W.XL;
   c.ACTIVITY_OFFSET = 1;
-  c.MOVE_SPEED = (c.PLAYER_TARGET_W * 2);
+  c.MOVE_SPEED = (c.PLAYER_TARGET_W * 1.3);
   c.OBLIQUE_MOVE_SPEED = Math.round(c.MOVE_SPEED * 0.7);
   c.GRID_SIZE = Math.max(c.WINDOW_H, c.WINDOW_W) / c.ZOOM_OUT_LEVEL;
   c.timestamp = Date.parse(new Date());
