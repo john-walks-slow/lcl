@@ -115,7 +115,7 @@ export default class LoadingScene extends Phaser.Scene {
           o.y = Math.sin(rad) * distance;
           o.isBackground = o.zFactor > 1;
           o.isForeground = o.zFactor < 1;
-          o.zFactor == 1 && (o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2);
+          // o.zFactor == 1 && (o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2);
           // (o.zFactor > 1) && (o.zFactor =1.4);
           // (o.zFactor < 1) && (o.zFactor =0.6);
           o.ratio = o.rows / o.columns;

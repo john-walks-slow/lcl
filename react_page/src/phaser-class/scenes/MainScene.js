@@ -519,8 +519,8 @@ export default class MainScene extends Phaser.Scene {
     let notTouching = this.player.body.touching.none;
     let velocityX = notTouching ? this.player.body.velocity.x : 0;
     let velocityY = notTouching ? this.player.body.velocity.y : 0;
-    this.objects.children.each((o) => { o.setVelocityX(-velocityX * (o.data.values.zFactor - 1) * 0.75); });
-    this.objects.children.each((o) => { o.setVelocityY(-velocityY * (o.data.values.zFactor - 1) * 0.75); });
+    this.objects.children.each((o) => { o.setVelocityX(-velocityX * (o.data.values.zFactor - 1)); });
+    this.objects.children.each((o) => { o.setVelocityY(-velocityY * (o.data.values.zFactor - 1)); });
     if (this.gameDialog.inDialog || this.itemDialog.inDialog || this.linkDialog.inDialog || !this.player.body.blocked.none) {
       this.player.stopMovement();
     } else {
