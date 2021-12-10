@@ -1,5 +1,5 @@
-import configurations from "./configurations";
 import * as Tone from 'tone';
+import configurations from "./configurations";
 
 export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
   constructor(scene) {

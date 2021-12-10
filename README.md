@@ -69,7 +69,7 @@
 - [x] :sparkles: Generative Music
 - [x] :fire: 重构ObjectData
 - [x] :fire: 重构Configurations
-- [ ] :fire: 重构GenerativeMusic
+- [x] :fire: 重构GenerativeMusic
 - [ ] :sparkles: 优化Generative Music
 - [ ] :sparkles: 发言前检测用户是否阅读本文档
 - [ ] :art: 重做滤镜
