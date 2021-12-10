@@ -13,7 +13,7 @@ const Page = ({ dispatch, isShown }) => {
   const [name, setName] = useState("");
   const [dialog, setDialog] = useState("");
   const [link, setLink] = useState("");
-  const [size, setSize] = useState("M");
+  const [size, setSize] = useState("S");
   const [movement, setMovement] = useState("static");
   const [zFactor, setZFactor] = useState(1);
   const [submitted, setSubmitted] = useState(false);
@@ -70,10 +70,10 @@ const Page = ({ dispatch, isShown }) => {
   const boxConsumption = link == "" ? 0 : 1;
   const fatConsumption = FAT_CONSUMPTION_MAP[size];
   const batteryConsumption = BATTERY_CONSUMPTION_MAP[movement];
-  const telescopeConsumption = Math.ceil(Math.abs(zFactor - 1) / 0.2);
+  const telescopeConsumption = Math.floor(Math.abs(zFactor - 1) / 0.3);
   const regex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
   const error =
-    isEmpty || labels < labelConsumption || batteries < batteryConsumption || fats < fatConsumption || (link !== "" && !link.match(regex));
+    isEmpty || labels < labelConsumption || batteries < batteryConsumption || fats < fatConsumption || telescopes < telescopeConsumption || (link !== "" && !link.match(regex));
   var blobURI = null;
 
   function blobToDataURL(blob, callback) {
@@ -222,8 +222,8 @@ const Page = ({ dispatch, isShown }) => {
             </select>        </label> */}
 
           <label className={"page__label"} disabled={telescopes <= 0}>
-            深度 <sub>{("镜片数量：" + telescopes + (zFactor == 1 ? "" : `(-${telescopeConsumption})`))}</sub>
-            <input type="range" min="0.5" max="1.5" step="0.1" disabled={telescopes <= 0} value={2 - zFactor} onChange={(event) => { setZFactor(2 - event.target.value); }} placeholder="深度的范围是0.5 - 1.5（近大远小）" className="page__input" />
+            深度 <sub>{("镜片数量：" + telescopes + (telescopeConsumption == 0 ? "" : `(-${telescopeConsumption})`))}</sub>
+            <input type="range" min="0.5" max="1.5" step="0.1" value={2 - zFactor} onChange={(event) => { setZFactor(2 - event.target.value); }} placeholder="深度的范围是0.5 - 1.5（近大远小）" className="page__input" />
           </label>
 
           <input className="page__submit" disabled={error || uploading} type="submit" onClick={(e) => { submit(e); }} value={uploading ? "提交中..." : "提交"} />

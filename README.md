@@ -55,27 +55,30 @@
 
 ### TODO
 
-- [x] :wrench: 调整数值
-- [x] :wrench: 设置M以下不需要肥料
-- [x] :wrench: ui 事件优化
-- [x] :bug: link dialog 隐藏虚拟键盘
-- [x] :sparkles: 键盘快捷键 
-- [x] :sparkles: 更好的报错界面
-- [x] :wrench: 使用history api优化后退键
-- [x] :books: 优化README
-- [x] :wrench: 提高服务器安全性
-- [x] :sparkles: 优化自动转屏逻辑
-- [x] :art: 调整响应式布局
-- [x] :sparkles: Generative Music
-- [x] :fire: 重构ObjectData
-- [x] :fire: 重构Configurations
-- [x] :fire: 重构GenerativeMusic
-- [ ] :sparkles: 优化Generative Music
-- [ ] :sparkles: 发言前检测用户是否阅读本文档
+
 - [ ] :art: 重做滤镜
 - [ ] :package: 安卓版开发
 - [ ] :package: 上架安卓市场
 - [ ] :package: PC版开发
+- [ ] :sparkles: 道具生成率降低，道具大小减少
+- [ ] :sparkles: 发言前检测用户是否阅读本文档
+- [ ] :sparkles: 优化Generative Music
+- [x] :art: 调整响应式布局
+- [x] :books: 优化README
+- [x] :bug: link dialog 隐藏虚拟键盘
+- [x] :fire: 重构Configurations
+- [x] :fire: 重构GenerativeMusic
+- [x] :fire: 重构ObjectData
+- [x] :sparkles: 更好的报错界面
+- [x] :sparkles: 键盘快捷键 
+- [x] :sparkles: 降低道具重要性，深度-2~2不消耗镜片
+- [x] :sparkles: 优化自动转屏逻辑
+- [x] :sparkles: Generative Music
+- [x] :wrench: 调整数值
+- [x] :wrench: 设置M以下不需要肥料
+- [x] :wrench: 使用history api优化后退键
+- [x] :wrench: 提高服务器安全性
+- [x] :wrench: ui 事件优化
 
 ### Changelog
 - 0.7: 新增道具功能 新增超链接功能 新增PWA支持 优化缓存机制 重做加载界面 优化数值 
