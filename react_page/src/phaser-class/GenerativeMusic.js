@@ -297,5 +297,27 @@ class GenerativeMusic {
         break;
     }
   }
+  startBgm() {
+    const start = () => {
+      // setup();
+      // this.objectGroup.initSound();
+      // set this context as the global Context
+      Tone.start();
+      Tone.getTransport().bpm.value = 35;
+      Tone.getTransport().start();
+      // setInterval(this.updateSound.bind(this), 300);
+      document.removeEventListener('click', start);
+      document.removeEventListener('touchend', start);
+      document.removeEventListener('keydown', start);
+    };
+    if (Tone.context.state == "running") {
+      // if (true) {
+      start();
+    } else {
+      let clickListener = document.addEventListener('click', start);
+      let touchListener = document.addEventListener('touchend', start);
+      let keyListener = document.addEventListener('keydown', start);
+    }
+  }
 }
 export default new GenerativeMusic();

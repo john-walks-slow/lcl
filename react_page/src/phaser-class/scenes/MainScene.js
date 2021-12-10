@@ -10,6 +10,7 @@ import ItemDialog from "../components/ItemDialog";
 import LinkDialog from "../components/LinkDialog";
 import configurations from "../configurations";
 import ObjectGroup from "../ObjectGroup";
+import generativeMusic from "../GenerativeMusic";
 
 let listener = false;
 
@@ -360,7 +361,7 @@ export default class MainScene extends Phaser.Scene {
     // import Tone from 'Tone';
     // import * as teoria from 'teoria';
 
-    this.bgm();
+    generativeMusic.startBgm();
   }
   updateSound() {
     this.objectGroup.children.each((o) => {
@@ -495,31 +496,5 @@ export default class MainScene extends Phaser.Scene {
 
       }
     }
-  }
-  bgm() {
-    const start = () => {
-      // setup();
-      // this.objectGroup.initSound();
-      // set this context as the global Context
-      Tone.start();
-      Tone.getTransport().bpm.value = 35;
-      Tone.getTransport().start();
-      // setInterval(this.updateSound.bind(this), 300);
-      document.removeEventListener('click', start);
-      document.removeEventListener('touchend', start);
-      document.removeEventListener('keydown', start);
-    };
-    if (Tone.context.state === "running") {
-      // if (true) {
-      start();
-    } else {
-      let clickListener = document.addEventListener('click', start);
-      let touchListener = document.addEventListener('touchend', start);
-      let keyListener = document.addEventListener('keydown', start);
-    }
-    // document.querySelector('button')
-    //   .addEventListener('click', async () => {
-    //     await Tone.start();
-    //   });;
   }
 }

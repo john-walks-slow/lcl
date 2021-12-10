@@ -57,10 +57,10 @@
 
 
 - [ ] :art: 重做滤镜
+- [ ] :fire: 重构ui
 - [ ] :package: 安卓版开发
 - [ ] :package: 上架安卓市场
 - [ ] :package: PC版开发
-- [ ] :sparkles: 道具生成率降低，道具大小减少
 - [ ] :sparkles: 发言前检测用户是否阅读本文档
 - [ ] :sparkles: 优化Generative Music
 - [x] :art: 调整响应式布局
@@ -69,6 +69,7 @@
 - [x] :fire: 重构Configurations
 - [x] :fire: 重构GenerativeMusic
 - [x] :fire: 重构ObjectData
+- [x] :sparkles: 道具生成率降低，道具大小减少
 - [x] :sparkles: 更好的报错界面
 - [x] :sparkles: 键盘快捷键 
 - [x] :sparkles: 降低道具重要性，深度-2~2不消耗镜片
