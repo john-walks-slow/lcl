@@ -50,6 +50,8 @@
 和声对象
 根据同一节奏奏响和弦的不同音
 和声重复若干次后会变化
+- 生成和声
+- 每个和声对象根据和声节奏弹奏和音
 
 ### TODO
 
@@ -64,9 +66,11 @@
 - [x] :wrench: 提高服务器安全性
 - [x] :sparkles: 优化自动转屏逻辑
 - [x] :art: 调整响应式布局
+- [x] :sparkles: Generative Music
+- [ ] :fire: 重构ObjectData GenerativeMusic
+- [ ] :sparkles: 优化Generative Music
 - [ ] :sparkles: 发言前检测用户是否阅读本文档
 - [ ] :art: 重做滤镜
-- [ ] :sparkles: Generative Music
 - [ ] :package: 安卓版开发
 - [ ] :package: 上架安卓市场
 - [ ] :package: PC版开发

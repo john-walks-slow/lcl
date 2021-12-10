@@ -43,8 +43,8 @@ export default class MainScene extends Phaser.Scene {
   }
   init(data) {
     console.log('init');
-    this.objectList = data.objectList;
-    this.gameObjectMap = data.gameObjectMap;
+    this.objectData = data.objectData;
+    console.log(this.objectData);
     // if (data.newObject) {
     //   let o = data.newObject;
     //   switch (o.isAnimate) {
@@ -61,7 +61,7 @@ export default class MainScene extends Phaser.Scene {
     //       // this.load.image("object" + o._id, 'assets/objects/' + o._id + '.png')
     //       break;
     //   }
-    //   this.objectList.unshift(o);
+    //   this.objectData.list.unshift(o);
     // }
     let resizePending = false;
     if (!listener) {
@@ -75,7 +75,7 @@ export default class MainScene extends Phaser.Scene {
         this.linkDialog.setDisplay();
         this.itemDialog.setDisplay();
         this.gamepad.setDisplay();
-        // this.scene.restart({ objectList: this.objectList, gameObjectMap: this.gameObjectMap });
+        // this.scene.restart({ list: this.objectData.list, map: this.objectData.map });
         // }, 20);
       });
     }
@@ -256,7 +256,7 @@ export default class MainScene extends Phaser.Scene {
     let ownItems = secureStorage.getItem('player').ownItems;
 
     this.previousZone = null;
-    this.objectList.forEach(o => {
+    this.objectData.list.forEach(o => {
       o.isAnimate ? this.anims.create({
         key: 'spritesheet' + o._id,
         frames: 'object' + o._id,
@@ -267,14 +267,14 @@ export default class MainScene extends Phaser.Scene {
       }) : false;
     });
     this.objectGroup.initSound = () => {
-      let createZones = this.gameObjectMap.getZone(this.player);
+      let createZones = this.objectData.map.getZone(this.player);
       // console.log({ prev: previousZones, cur: currentZones });
       // console.log({ create: createZones, destroy: destroyZones });
       createZones.forEach((zone) => {
-        // console.log(this.gameObjectMap);
-        if (!this.gameObjectMap[zone[0]]) { return; }
-        if (!this.gameObjectMap[zone[0]][[zone[1]]]) { return; }
-        let os = this.gameObjectMap[zone[0]][zone[1]];
+        // console.log(this.objectData.map);
+        if (!this.objectData.map[zone[0]]) { return; }
+        if (!this.objectData.map[zone[0]][[zone[1]]]) { return; }
+        let os = this.objectData.map[zone[0]][zone[1]];
         os.forEach((o) => {
           switch (o.type) {
             case "object":
@@ -289,17 +289,17 @@ export default class MainScene extends Phaser.Scene {
       });
     };
     this.objectGroup.updateObjects = (previousZone, currentZone) => {
-      let previousZones = this.gameObjectMap.getNearBy(previousZone);
-      let currentZones = this.gameObjectMap.getNearBy(currentZone);
+      let previousZones = this.objectData.map.getNearBy(previousZone);
+      let currentZones = this.objectData.map.getNearBy(currentZone);
       let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()));
       let destroyZones = previousZones.filter(x => !currentZones.toString().includes(x.toString()));
       // console.log({ prev: previousZones, cur: currentZones });
       // console.log({ create: createZones, destroy: destroyZones });
       createZones.forEach((zone) => {
-        // console.log(this.gameObjectMap);
-        if (!this.gameObjectMap[zone[0]]) { return; }
-        if (!this.gameObjectMap[zone[0]][[zone[1]]]) { return; }
-        let os = this.gameObjectMap[zone[0]][zone[1]];
+        // console.log(this.objectData.map);
+        if (!this.objectData.map[zone[0]]) { return; }
+        if (!this.objectData.map[zone[0]][[zone[1]]]) { return; }
+        let os = this.objectData.map[zone[0]][zone[1]];
         os.forEach((o) => {
           switch (o.type) {
             case "object":
@@ -350,9 +350,9 @@ export default class MainScene extends Phaser.Scene {
         });
       });
       destroyZones.forEach((zone) => {
-        if (!this.gameObjectMap[zone[0]]) { return; }
-        if (!this.gameObjectMap[zone[0]][[zone[1]]]) { return; }
-        let os = this.gameObjectMap[zone[0]][zone[1]];
+        if (!this.objectData.map[zone[0]]) { return; }
+        if (!this.objectData.map[zone[0]][[zone[1]]]) { return; }
+        let os = this.objectData.map[zone[0]][zone[1]];
         os.forEach((o) => {
           switch (o.type) {
             case "object":
@@ -587,7 +587,7 @@ export default class MainScene extends Phaser.Scene {
       // )
 
       if (true) {
-        let currentZone = this.gameObjectMap.getZone(this.player);
+        let currentZone = this.objectData.map.getZone(this.player);
         // console.log(currentZone,this.previousZone);
         if (!(this.previousZone && currentZone[0] == this.previousZone[0] && currentZone[1] == this.previousZone[1])) {
           this.objectGroup.updateObjects(this.previousZone, currentZone);

@@ -16,6 +16,7 @@ import { range } from '../../utils/utils';
 import { customIntRandom, customWRandom, seededRandom, seededRandomKept } from "../../utils/random";
 import MS from 'teoria';
 import * as Tone from 'tone';
+import ObjectData from "../ObjectData";
 export default class LoadingScene extends Phaser.Scene {
   constructor(configurations, methods) {
     super({
@@ -35,9 +36,7 @@ export default class LoadingScene extends Phaser.Scene {
     try {
       app.service('objects').find({ paginate: false }).then((data) => {
         this.dispatch(setObjects(data));
-        this.objectList = data;
-        this.itemList = [];
-        this.gameObjectMap = [];
+        let objectList = data;
         this.load.image('bg', bgURL);
         this.load.image('dialog', dialogURL);
         this.load.image('boxes', boxURL);
@@ -48,7 +47,7 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.spritesheet('player', whiteURL, { frameWidth: 37, frameHeight: 44 });
         this.load.spritesheet('gamepad', gamepadURL, { frameWidth: 16, frameHeight: 16 });
         // [...Array(10000)].forEach(() => {
-        //   objectList.push(createTestObject({
+        //   list.push(createTestObject({
         //     "birthday": 1637818994985,
         //     "movement": "static",
         //     "size": "L",
@@ -126,7 +125,7 @@ export default class LoadingScene extends Phaser.Scene {
             //   currentPos = currentPos - (currentPos + 1).mod(8) - 1;
             // }
           };
-          console.log(this.chordSequence);
+          console.log(`chordSequence: ${this.chordSequence}`);
           let rootPadSynth = new Tone.PolySynth(
             Tone.Synth,
             {
@@ -197,35 +196,13 @@ export default class LoadingScene extends Phaser.Scene {
           //   currentPos += chordLength;
           // }
         })();
-        this.gameObjectMap.getZone = (player, gridSize = this.GRID_SIZE) => {
-          return [Math.ceil(player.x / gridSize), Math.ceil(player.y / gridSize)];
-        };
-        this.gameObjectMap.getNearBy = (zone, scope = 1) => {
-          if (!zone) { return []; }
-          let results = [];
-          range(-scope, scope).forEach((v1) => {
-            range(-scope, scope).forEach((v2) => {
-              results.push([zone[0] + v1, zone[1] + v2]);
-            });
-          });
-          return results;
-        };
-        this.gameObjectMap.pushNew = (zone, o) => {
-          if (!this.gameObjectMap[zone[0]]) {
-            this.gameObjectMap[zone[0]] = [];
-          }
-          if (!this.gameObjectMap[zone[0]][zone[1]]) {
-            this.gameObjectMap[zone[0]][zone[1]] = [];
-          }
-          this.gameObjectMap[zone[0]][zone[1]].push(o);
-        };
 
+        let objectData = new ObjectData(objectList);
         let previousDate = this.timestamp;
         let offset;
         let dateOffset = 0;
-        let player = secureStorage.getItem('player');
-        this.objectList = this.objectList.sort((a, b) => b.birthday - a.birthday).slice(0, 50);
-        this.objectList.forEach((o, i) => {
+        let playerData = secureStorage.getItem('player');
+        objectData.list.forEach((o, i) => {
           const setupObject = (() => {
             if (this.timestamp - o.birthday < this.TIME_DELAY) { return; }
             dateOffset += Math.min(14, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) * this.DAY_OFFSET;
@@ -257,10 +234,10 @@ export default class LoadingScene extends Phaser.Scene {
             o.zone = [Math.ceil(o.x / this.GRID_SIZE), Math.ceil(o.y / this.GRID_SIZE)];
             o.type = "object";
             if (o.item) {
-              if (!player.ownItems.includes(o._id)) {
+              if (!playerData.ownItems.includes(o._id)) {
                 let i = o.item;
                 i._id = o._id;
-                this.itemList.push(i);
+                objectData.itemList.push(i);
                 let rad = i.seed[0] * (Math.PI / 180);
                 // let sizeOffset = (this.PLAYER_TARGET_H + this.OBJECT_W.M) / 2;
                 let minDistance = this.PLAYER_TARGET_H + this.OBJECT_W[o.size];
@@ -270,8 +247,7 @@ export default class LoadingScene extends Phaser.Scene {
                 i.y = Math.sin(rad) * distance;
                 i.zone = [Math.ceil(i.x / this.GRID_SIZE), Math.ceil(i.y / this.GRID_SIZE)];
                 i.type = "item";
-                console.log(i);
-                this.gameObjectMap.pushNew(i.zone, i);
+                objectData.map.pushNew(i.zone, i);
               }
             }
             switch (o.isAnimate) {
@@ -288,8 +264,7 @@ export default class LoadingScene extends Phaser.Scene {
                 // this.load.image("object" + o._id, 'assets/objects/' + o._id + '.png')
                 break;
             }
-          })();
-
+          });
           const setupSound = (() => {
             o.random = seededRandomKept(o._id.toString());
             o.wRandom = customWRandom(o.random);
@@ -350,11 +325,9 @@ export default class LoadingScene extends Phaser.Scene {
                 o.max = o.min + o.intRandom(5, 7);
                 // o.min = scale.getNote(o.min);
                 // o.max = scale.getNote(o.max);
-                console.log(o.min, o.max, range(o.min, o.max));
                 o.range = range(o.min, o.max)
                   .map((i) => (
                     scale.getNote(i)));
-                console.log(o._id, o.range);
                 o.startDelay = 0;
                 o.loop = new Tone.Sequence((time, note) => {
                   if (!note) { return; }
@@ -443,20 +416,21 @@ export default class LoadingScene extends Phaser.Scene {
                 // code
                 break;
             }
-          })();
-
-          this.gameObjectMap.pushNew(o.zone, o);
-
+          });
+          setupObject();
+          setupSound();
+          objectData.map.pushNew(o.zone, o);
         });
         // DENSITY_OFFSET = Math.min(OBJECT_W.L, DENSITY_OFFSET);
         this.load.on("complete", () => {
           this.label.text += `\nStarting ...`;
 
 
-          console.log(this.objectList);
-          console.log(this.gameObjectMap);
+          console.log(objectData);
           // setTimeout(() => {
-          this.scene.start("MainScene", { "objectList": this.objectList, "gameObjectMap": this.gameObjectMap });
+          this.scene.start("MainScene", {
+            "objectData": objectData
+          });
           console.log("mainscene start");
           this.scene.stop("LoadingScene");
           // }, 300);

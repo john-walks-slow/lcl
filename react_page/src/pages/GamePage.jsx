@@ -121,8 +121,6 @@ const Game = ({ dispatch, isShown }) => {
       }
     }
   }, [isShown]);
-  console.log(emoji.getUnicode('wrench'));
-  const emojiSupport = text => { console.log(text); return text.replace(/:\w+:/gi, name => emoji.getUnicode(name)); };
   return (
     <div id="GAME_DIV" className={showGame ? "show" : ""}>
       <div id="PHASER_ROOT" ></div>
