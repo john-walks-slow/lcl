@@ -124,7 +124,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.dialogIndex = 0;
     if (name != "") { this.dialogHeader.setText(name); }
     else {
-      this.dialogHeader.setText('');
+      this.dialogHeader.setText('???');
     }
     this.dialogText.setText(this.sentences[this.dialogIndex]);
     console.log(this.sentences);

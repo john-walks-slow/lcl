@@ -3,6 +3,7 @@ import Dialog from "./Dialog";
 export default class ItemDialog extends Dialog {
   constructor(scene) {
     super(scene);
+    this.dialogHeader.alpha = 0;
   }
   setDisplay() {
     super.setDisplay();

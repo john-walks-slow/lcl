@@ -1,0 +1,6 @@
+class GenerativeMusic {
+  constructor() {
+    super();
+
+  }
+}

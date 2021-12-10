@@ -5,7 +5,7 @@ export default class LinkDialog extends Dialog {
     super(scene);
     this.link = '';
     this.select(1);
-
+    this.dialogHeader.alpha = 0;
   }
   initializeComponents() {
     super.initializeComponents();

@@ -1,11 +1,15 @@
+import MS from 'teoria';
+import * as Tone from 'tone';
+import { range } from '../../utils/utils';
+import { customIntRandom, customWRandom, seededRandom, seededRandomKept } from "../../utils/random";
 import { secureStorage } from "../../utils/storage";
 import Dialog from "../components/Dialog";
+import GameCamera from "../components/GameCamera";
+import GamePad from "../components/GamePad";
 import ItemDialog from "../components/ItemDialog";
 import LinkDialog from "../components/LinkDialog";
-import GameCamera from "../components/GameCamera";
 import configureScene from "../game.config";
-import GamePad from "../components/GamePad";
-import { seededRandom } from "../../utils/random";
+
 let listener = false;
 
 
@@ -25,7 +29,7 @@ export default class MainScene extends Phaser.Scene {
     this.configurations = configurations;
     console.log(this);
     this.player;
-    this.objects;
+    this.objectGroup;
     this.cursors;
     this.startPosX = 0;
     this.startPosY = 0;
@@ -79,13 +83,13 @@ export default class MainScene extends Phaser.Scene {
   }
   create() {
     // console.log(this.input.activePointer);
-    this.gameObjects = this.add.layer();
-    this.uis = this.add.layer();
+    this.gameObjectsLayer = this.add.layer();
+    this.uiLayer = this.add.layer();
     this.camera = new GameCamera(this);
     this.cameras.addExisting(this.camera, true);
-    this.camera.ignore(this.uis);
+    this.camera.ignore(this.uiLayer);
     this.staticCamera = this.cameras.add();
-    this.staticCamera.ignore(this.gameObjects);
+    this.staticCamera.ignore(this.gameObjectsLayer);
     this.staticCamera.inputEnabled = false;
     this.setShowMenu(true);
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -124,8 +128,8 @@ export default class MainScene extends Phaser.Scene {
     // this.player.on('pointerover', () => { console.log('over'); this.pointerOnPlayer = true; });
     // this.player.on('pointerout', () => { console.log('out'); this.pointerOnPlayer = false; });
     this.camera.startFollow(this.player);
-    this.gameObjects.add(this.player);
-    this.objects = this.physics.add.group({
+    this.gameObjectsLayer.add(this.player);
+    this.objectGroup = this.physics.add.group({
       pushable: false
     });
     this.itemCollideHandler = (o1, o2) => {
@@ -140,19 +144,19 @@ export default class MainScene extends Phaser.Scene {
         currentObj = o1;
       }
       console.log(currentObj);
-      let dialog = this.ITEM_LIST[currentObj.getData('itemId')].dialog;
+      let dialog = this.ITEM_LIST[currentObj.itemId].dialog;
       let player = secureStorage.getItem('player');
       if (
-        !player.ownItems.includes(currentObj.getData('id'))
+        !player.ownItems.includes(currentObj._id)
       ) {
         this.itemDialog.showDialog([dialog]);
-        player[this.ITEM_LIST[currentObj.getData('itemId')].name]++;
-        player.ownItems.push(currentObj.getData('id'));
+        player[this.ITEM_LIST[currentObj.itemId].name]++;
+        player.ownItems.push(currentObj._id);
         this.dispatch(this.setStorage(player));
       }
       currentObj.fadeOut.play();
       // currentObj.destroy();
-      // currentObj.data.values.collider.destroy();
+      // currentObj.collider.destroy();
       // currentObj.alpha=0;
 
     };
@@ -169,19 +173,19 @@ export default class MainScene extends Phaser.Scene {
       else {
         currentObj = o1;
       }
-      if (currentObj.data.values.dialog.length > 0) {
-        this.gameDialog.showDialog(currentObj.data.values.dialog, currentObj.data.values.name,
+      if (currentObj.oData.dialog.length > 0) {
+        this.gameDialog.showDialog(currentObj.oData.dialog, currentObj.oData.name,
           () => {
-            if (currentObj.getData('link').length > 0) {
-              this.linkDialog.showDialog(currentObj.getData('link'));
+            if (currentObj.oData.link.length > 0) {
+              this.linkDialog.showDialog(currentObj.oData.link);
             }
           });
-        if (currentObj.data.values.isBackground || currentObj.data.values.isForeground) {
-          currentObj.data.values.collider.destroy();
+        if (currentObj.oData.isBackground || currentObj.oData.isForeground) {
+          currentObj.collider.destroy();
         } else {
-          currentObj.setData("dialog", []);
+          currentObj.oData.dialog = [];
         }
-      }
+      };
       this.physics.collide(o1, o2);
       // let xOverlap = this.player.displayWidth / 2 + currentObj.displayWidth / 2 - Math.abs(this.player.x - currentObj.x);
       // let yOverlap = this.player.displayHeight / 2 + currentObj.displayHeight / 2 - Math.abs(this.player.y - currentObj.y);
@@ -208,23 +212,24 @@ export default class MainScene extends Phaser.Scene {
     };
 
     let movedObjects = [];
-    this.objects.createCallback = (o) => {
+    this.objectGroup.createCallback = (o) => {
       setTimeout(() => {
         // console.log(o.body.touching);
         // if (o.body.overlapX != 0 || o.body.overlapY != 0) {
         //   o.x -= o.body.overlapX / 2;
         //   o.y -= o.body.overlapY / 2;
         // }
-        if (o.data.values.isBackground) { return; }
-        let collidedObjects = this.physics.overlapRect(o.x - o.displayWidth / 2, o.y - o.displayHeight / 2, o.displayWidth, o.displayHeight);
+        if (o.oData.isBackground) { return; }
+        let collidedObjects = this.physics.overlapRect(o.x - o.displayWidth / 2, o.y - o.displayHeight / 2, o.displayWidth, o.displayHeight).filter(o => o.oData);
         if (collidedObjects.length > 0) {
           collidedObjects.forEach((c) => {
             // this.physics.collide(c, o);
             let cg = c.gameObject;
-            if (cg.data.values.id == o.data.values.id) {
+            console.log(cg, o);
+            if (cg.oData._id == o.oData._id) {
               return;
             }
-            if (cg.data.values.isBackground) {
+            if (cg.oData.isBackground) {
               return;
             }
             // if (movedObjects.find((a) => (a[0] == o.id && a[1] == cg.id))) {
@@ -245,7 +250,7 @@ export default class MainScene extends Phaser.Scene {
         }
       }, 50);
     };
-    this.items = this.physics.add.group({
+    this.itemGroup = this.physics.add.group({
       immovable: true
     });
     let ownItems = secureStorage.getItem('player').ownItems;
@@ -261,7 +266,29 @@ export default class MainScene extends Phaser.Scene {
         repeatDelay: 0
       }) : false;
     });
-    this.objects.updateObjects = (previousZone, currentZone) => {
+    this.objectGroup.initSound = () => {
+      let createZones = this.gameObjectMap.getZone(this.player);
+      // console.log({ prev: previousZones, cur: currentZones });
+      // console.log({ create: createZones, destroy: destroyZones });
+      createZones.forEach((zone) => {
+        // console.log(this.gameObjectMap);
+        if (!this.gameObjectMap[zone[0]]) { return; }
+        if (!this.gameObjectMap[zone[0]][[zone[1]]]) { return; }
+        let os = this.gameObjectMap[zone[0]][zone[1]];
+        os.forEach((o) => {
+          switch (o.type) {
+            case "object":
+              console.log(o);
+              // this.physics.overlapRect(o.x-o.displayWidth/2, o.y-o.displayHeight/2, o.displayWidth, o.displayHeight,true,true);
+              if (o.loop) {
+                o.loop.start(o.startDelay + Tone.now());
+              }
+              break;
+          }
+        });
+      });
+    };
+    this.objectGroup.updateObjects = (previousZone, currentZone) => {
       let previousZones = this.gameObjectMap.getNearBy(previousZone);
       let currentZones = this.gameObjectMap.getNearBy(currentZone);
       let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()));
@@ -277,35 +304,32 @@ export default class MainScene extends Phaser.Scene {
           switch (o.type) {
             case "object":
               // this.physics.overlapRect(o.x-o.displayWidth/2, o.y-o.displayHeight/2, o.displayWidth, o.displayHeight,true,true);
-              o.instance = this.objects.create(o.x, o.y, "object" + o._id);
+              o.instance = this.objectGroup.create(o.x, o.y, "object" + o._id);
               // o.instance.on('addedtoscene',()=>{
               //   console.log(collidedObjects);
               // })
               // o.instance = this.physics.add.sprite(o.x,o.y,"object"+o.id);
-              // console.log(this.objects);
+              // console.log(this.objectGroup);
               o.instance.depth = o.zFactor;
               (o.isBackground || o.isForeground) && (o.instance.alpha = o.zFactor / 1.5);
-              o.instance.setData("id", o._id);
-              o.instance.setData("link", o.link);
-              o.instance.setData("name", o.name.length > 0 ? o.name : '???');
-              o.instance.setData("dialog", o.dialog);
-              o.instance.setData("zFactor", o.zFactor);
-              o.instance.setData("isBackground", o.isBackground);
-              o.instance.setData("isForeground", o.isForeground);
+              o.instance.oData = o;
               o.instance.setDisplaySize(o.displayWidth, o.displayHeight);
               o.instance.body.onOverlap = true;
               if (o.isAnimate) {
                 o.instance.anims.play('spritesheet' + o._id);
               }
               // if (o.dialog.length > 0) {
-                let collider = this.physics.add.collider(this.player, o.instance, this.objectCollideHandler);
-                o.instance.setData("collider", collider);
-             //  }
+              let collider = this.physics.add.collider(this.player, o.instance, this.objectCollideHandler);
+              o.instance.collider = collider;
+              //  }
               o.instance.refreshBody();
-              this.gameObjects.add(o.instance);
+              this.gameObjectsLayer.add(o.instance);
+              if (o.loop) {
+                o.loop.start(o.startDelay + Tone.now());
+              }
               break;
             case "item":
-              o.instance = this.items.create(o.x, o.y, this.ITEM_LIST[o.itemId].name).setDisplaySize(this.OBJECT_W.S, this.OBJECT_W.S);
+              o.instance = this.itemGroup.create(o.x, o.y, this.ITEM_LIST[o.itemId].name).setDisplaySize(this.OBJECT_W.S, this.OBJECT_W.S);
               o.instance.fadeOut = this.tweens.create({
                 targets: o.instance,
                 duration: 600,
@@ -314,11 +338,11 @@ export default class MainScene extends Phaser.Scene {
               });
               o.instance.alpha = 1;
               o.instance.depth = 1;
-              o.instance.setData('id', o._id);
-              let collider = this.physics.add.collider(this.player, o.instance, this.itemCollideHandler);
-              o.instance.setData('collider', collider);
-              o.instance.setData('itemId', o.itemId);
-              this.gameObjects.add(o.instance);
+              o.instance._id = o._id;
+              let itemCollider = this.physics.add.collider(this.player, o.instance, this.itemCollideHandler);
+              o.instance.collider = itemCollider;
+              o.instance.itemId = o.itemId;
+              this.gameObjectsLayer.add(o.instance);
               break;
             default:
               break;
@@ -332,11 +356,14 @@ export default class MainScene extends Phaser.Scene {
         os.forEach((o) => {
           switch (o.type) {
             case "object":
-              this.objects.remove(o.instance, true, true);
+              this.objectGroup.remove(o.instance, true, true);
+              if (o.loop) {
+                o.loop.stop();
+              }
               break;
             case "item":
               if (o.instance.active) {
-                this.items.remove(o.instance, true, true);
+                this.itemGroup.remove(o.instance, true, true);
               }
               break;
             default:
@@ -367,12 +394,12 @@ export default class MainScene extends Phaser.Scene {
       // };
     };
 
-    // this.objects.updateObjects(false, [0, 0]);
+    // this.objectGroup.updateObjects(false, [0, 0]);
     // this.previousZone = [0, 0];
     this.gameDialog = new Dialog(this);
     this.itemDialog = new ItemDialog(this);
     this.linkDialog = new LinkDialog(this);
-    this.uis.add([this.gameDialog, this.itemDialog, this.linkDialog]);
+    this.uiLayer.add([this.gameDialog, this.itemDialog, this.linkDialog]);
 
     let reactMenu = document.getElementById('GAME_MENU');
     let gameInfo = document.getElementById('GAME_INFO');
@@ -454,7 +481,7 @@ export default class MainScene extends Phaser.Scene {
     });
     this.player.anims.play('standRight');
     this.gamepad = new GamePad(this);
-    this.uis.add(this.gamepad);
+    this.uiLayer.add(this.gamepad);
     this.filterUsed = seededRandom(this.day.toString());
     console.log(this.day);
     const FILTER_LIST = {
@@ -507,20 +534,48 @@ export default class MainScene extends Phaser.Scene {
     // this.game.canvas.style.filter = "opacity(0.7) saturate(1.1) sepia(0.2) brightness(0.98) contrast(1.1)";
     // console.log(this.filter(1000, 1000));
 
-  }
+    // import Tone from 'Tone';
+    // import * as teoria from 'teoria';
 
+    this.bgm();
+  }
+  updateSound() {
+    this.objectGroup.children.each((o) => {
+      if (!o.oData.synth) { return; }
+      // let width = Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180;
+      // let distance = Phaser.Math.Distance.BetweenPoints(o, this.player);
+      // console.log('width:' + width);
+      // console.log('distance:' + distance);
+      // o.oData.synth.set({
+      //   volume: 0,
+      //   width: width
+      // });
+      let positionX = o.x - this.player.x;
+      let positionY = this.player.y - o.y;
+      o.oData.panner.set({
+        positionX,
+        positionY
+      });
+      o.oData.panner.distance = (positionX ** 2 + positionY ** 2) ** 0.5;
+      o.oData.panner.audible = o.oData.panner.distance < o.oData.panner.maxDistance;
+    });
+  }
   update() {
+    this.updateSound();
     // console.log(this.input.activePointer.x, this.input.activePointer.y);
     // console.log(this.gamepad.padX, this.gamepad.padY);
 
     // this.game.canvas.style.filter = this.filter(this.player.x, this.player.y);
     // console.log(this.filter(this.player.x, this.player.y));
     // console.log(this.player.body);
+
     let notTouching = this.player.body.touching.none;
     let velocityX = notTouching ? this.player.body.velocity.x : 0;
     let velocityY = notTouching ? this.player.body.velocity.y : 0;
-    this.objects.children.each((o) => { o.setVelocityX(-velocityX * (o.data.values.zFactor - 1)); });
-    this.objects.children.each((o) => { o.setVelocityY(-velocityY * (o.data.values.zFactor - 1)); });
+    this.objectGroup.children.each((o) => {
+      o.setVelocityX(-velocityX * (o.oData.zFactor - 1));
+      o.setVelocityY(-velocityY * (o.oData.zFactor - 1));
+    });
     if (this.gameDialog.inDialog || this.itemDialog.inDialog || this.linkDialog.inDialog || !this.player.body.blocked.none) {
       this.player.stopMovement();
     } else {
@@ -535,7 +590,7 @@ export default class MainScene extends Phaser.Scene {
         let currentZone = this.gameObjectMap.getZone(this.player);
         // console.log(currentZone,this.previousZone);
         if (!(this.previousZone && currentZone[0] == this.previousZone[0] && currentZone[1] == this.previousZone[1])) {
-          this.objects.updateObjects(this.previousZone, currentZone);
+          this.objectGroup.updateObjects(this.previousZone, currentZone);
 
           this.previousZone = currentZone;
         }
@@ -618,5 +673,32 @@ export default class MainScene extends Phaser.Scene {
       }
     }
   }
+  bgm() {
 
+
+    const start = () => {
+      // setup();
+      // this.objectGroup.initSound();
+      // set this context as the global Context
+      Tone.start();
+      Tone.getTransport().bpm.value = 35;
+      Tone.getTransport().start();
+      // setInterval(this.updateSound.bind(this), 300);
+      document.removeEventListener('click', start);
+      document.removeEventListener('touchend', start);
+      document.removeEventListener('keydown', start);
+    };
+    if (Tone.context.state === "running") {
+      // if (true) {
+      start();
+    } else {
+      let clickListener = document.addEventListener('click', start);
+      let touchListener = document.addEventListener('touchend', start);
+      let keyListener = document.addEventListener('keydown', start);
+    }
+    // document.querySelector('button')
+    //   .addEventListener('click', async () => {
+    //     await Tone.start();
+    //   });;
+  }
 }
