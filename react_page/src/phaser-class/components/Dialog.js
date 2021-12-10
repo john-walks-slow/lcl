@@ -1,4 +1,4 @@
-import configureScene from "../game.config";
+import configurations from "../configurations";
 
 export default class Dialog extends Phaser.GameObjects.Container {
   constructor(scene) {
@@ -49,7 +49,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.add([this.dialogWindow, this.dialogText, this.dialogHeader]);
   }
   setDisplayParams() {
-    let c = configureScene();
+    let c = configurations;
     Object.assign(this, c);
     // console.log(this.ZOOM_LEVEL);
     // this.WINDOW_H /= this.ZOOM_LEVEL;

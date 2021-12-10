@@ -8,7 +8,7 @@ import newBtnURL from '../assets/game/new.png';
 import mapBtnURL from '../assets/game/map.png';
 import bagBtnURL from '../assets/game/bag.png';
 import infoBtnURL from '../assets/game/info.png';
-import configureScene from '../phaser-class/game.config';
+import configurations from '../phaser-class/configurations';
 import { setPath, setStorage } from '../store/actions/actionCreators';
 import MainScene from '../phaser-class/scenes/MainScene';
 import LoadingScene from '../phaser-class/scenes/LoadingScene';
@@ -86,17 +86,15 @@ const Game = ({ dispatch, isShown }) => {
       // initialize
       else {
         window.addEventListener('resize', () => {
-          let configurations = configureScene();
           game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H);
         });
-        let configurations = configureScene();
         // let toggleShowInfoRef = useRef(toggleShowInfo).current;
         // let toggleShowInventoryRef = useRef(toggleShowInventory).current;
         let methods = {
           setShowInfo, setShowInventory, setShowMenu, setStorage, dispatch, mainSceneHook
         };
-        var loadingScene = new LoadingScene(configurations, methods);
-        var mainScene = new MainScene(configurations, methods);
+        var loadingScene = new LoadingScene(methods);
+        var mainScene = new MainScene(methods);
         setMainScene(mainScene);
         var config = {
           type: Phaser.AUTO,

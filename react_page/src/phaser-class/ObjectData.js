@@ -1,10 +1,10 @@
 import { range } from "../utils/utils";
-import configureScene from "./game.config";
+import configurations from "./configurations";
 export default class ObjectData {
   constructor(list) {
     this.map = [];
     this.itemList = [];
-    this.GRID_SIZE = configureScene().GRID_SIZE;
+    this.GRID_SIZE = configurations.GRID_SIZE;
     this.list = list.sort((a, b) => b.birthday - a.birthday).slice(0, 50);
 
     this.map.getZone = (player, gridSize = this.GRID_SIZE) => {

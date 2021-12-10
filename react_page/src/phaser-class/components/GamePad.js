@@ -1,4 +1,3 @@
-import configureScene from "../game.config";
 
 export default class GamePad extends Phaser.GameObjects.Sprite {
   constructor(scene) {

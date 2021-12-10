@@ -67,7 +67,9 @@
 - [x] :sparkles: 优化自动转屏逻辑
 - [x] :art: 调整响应式布局
 - [x] :sparkles: Generative Music
-- [ ] :fire: 重构ObjectData GenerativeMusic
+- [x] :fire: 重构ObjectData
+- [x] :fire: 重构Configurations
+- [ ] :fire: 重构GenerativeMusic
 - [ ] :sparkles: 优化Generative Music
 - [ ] :sparkles: 发言前检测用户是否阅读本文档
 - [ ] :art: 重做滤镜

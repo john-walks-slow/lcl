@@ -1,4 +1,4 @@
-import configureScene from "../game.config";
+import configurations from "../configurations";
 import Dialog from "./Dialog";
 export default class LinkDialog extends Dialog {
   constructor(scene) {
@@ -31,7 +31,7 @@ export default class LinkDialog extends Dialog {
   }
   setDisplay() {
     super.setDisplay();
-    let c = configureScene();
+    let c = configurations;
     Object.assign(this, c);
     this.BUTTON_SELECTED_COLOR = "#000000";
     this.WIDTH = Math.min(this.WINDOW_H / 1.5, this.WINDOW_W * 0.85);

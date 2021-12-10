@@ -1,4 +1,4 @@
-import configureScene from "../game.config";
+import configurations from "../configurations";
 import feathers from "@feathersjs/feathers";
 import rest from "@feathersjs/rest-client";
 import bgURL from '../../assets/game/bg.png';
@@ -18,11 +18,11 @@ import MS from 'teoria';
 import * as Tone from 'tone';
 import ObjectData from "../ObjectData";
 export default class LoadingScene extends Phaser.Scene {
-  constructor(configurations, methods) {
+  constructor(methods) {
     super({
       key: 'LoadingScene',
     });
-    Object.assign(this, configurations);
+    this.configurations = configurations;
     this.dispatch = methods.dispatch;
   }
   preload() { }
@@ -198,21 +198,21 @@ export default class LoadingScene extends Phaser.Scene {
         })();
 
         let objectData = new ObjectData(objectList);
-        let previousDate = this.timestamp;
+        let previousDate = configurations.TIMESTAMP;
         let offset;
         let dateOffset = 0;
         let playerData = secureStorage.getItem('player');
         objectData.list.forEach((o, i) => {
           const setupObject = (() => {
-            if (this.timestamp - o.birthday < this.TIME_DELAY) { return; }
-            dateOffset += Math.min(14, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) * this.DAY_OFFSET;
+            if (configurations.TIMESTAMP - o.birthday < configurations.TIME_DELAY) { return; }
+            dateOffset += Math.min(14, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) * configurations.DAY_OFFSET;
             previousDate = o.birthday;
-            offset = (this.DENSITY_OFFSET * (i ** 0.5));
+            offset = (configurations.DENSITY_OFFSET * (i ** 0.5));
             // console.log({ dateOffset, offset });
             // console.log(Math.min(1, (previousDate - o.birthday) / (30 * 24 * 60 * 60)));
             let rad = o.seed[0] * (Math.PI / 180);
-            let sizeOffset = (this.PLAYER_TARGET_H + this.OBJECT_W[o.size] / o.zFactor) / 2;
-            let distance = o.seed[1] * this.RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
+            let sizeOffset = (configurations.PLAYER_TARGET_H + configurations.OBJECT_W[o.size] / o.zFactor) / 2;
+            let distance = o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
             o.x = Math.cos(rad) * distance;
             o.y = Math.sin(rad) * distance;
             o.isBackground = o.zFactor > 1;
@@ -222,16 +222,16 @@ export default class LoadingScene extends Phaser.Scene {
             // (o.zFactor < 1) && (o.zFactor =0.6);
             o.ratio = o.rows / o.columns;
             if (o.ratio < 1) {
-              o.displayWidth = this.OBJECT_W[o.size] / o.zFactor;
-              o.displayHeight = this.OBJECT_W[o.size] / o.zFactor * o.ratio;
+              o.displayWidth = configurations.OBJECT_W[o.size] / o.zFactor;
+              o.displayHeight = configurations.OBJECT_W[o.size] / o.zFactor * o.ratio;
             } else {
-              o.displayWidth = this.OBJECT_W[o.size] / o.zFactor / o.ratio;
-              o.displayHeight = this.OBJECT_W[o.size] / o.zFactor;
+              o.displayWidth = configurations.OBJECT_W[o.size] / o.zFactor / o.ratio;
+              o.displayHeight = configurations.OBJECT_W[o.size] / o.zFactor;
             }
             o.displayWidth = Math.round(o.displayWidth / o.columns) * o.columns;
             o.displayHeight = Math.round(o.displayHeight / o.rows) * o.rows;
 
-            o.zone = [Math.ceil(o.x / this.GRID_SIZE), Math.ceil(o.y / this.GRID_SIZE)];
+            o.zone = [Math.ceil(o.x / configurations.GRID_SIZE), Math.ceil(o.y / configurations.GRID_SIZE)];
             o.type = "object";
             if (o.item) {
               if (!playerData.ownItems.includes(o._id)) {
@@ -239,13 +239,13 @@ export default class LoadingScene extends Phaser.Scene {
                 i._id = o._id;
                 objectData.itemList.push(i);
                 let rad = i.seed[0] * (Math.PI / 180);
-                // let sizeOffset = (this.PLAYER_TARGET_H + this.OBJECT_W.M) / 2;
-                let minDistance = this.PLAYER_TARGET_H + this.OBJECT_W[o.size];
-                let distance = i.seed[1] * this.RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
+                // let sizeOffset = (configurations.PLAYER_TARGET_H + configurations.OBJECT_W.M) / 2;
+                let minDistance = configurations.PLAYER_TARGET_H + configurations.OBJECT_W[o.size];
+                let distance = i.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset + sizeOffset;
                 if (o.zFactor == 1 && distance < minDistance) { distance = minDistance; }
                 i.x = Math.cos(rad) * distance;
                 i.y = Math.sin(rad) * distance;
-                i.zone = [Math.ceil(i.x / this.GRID_SIZE), Math.ceil(i.y / this.GRID_SIZE)];
+                i.zone = [Math.ceil(i.x / configurations.GRID_SIZE), Math.ceil(i.y / configurations.GRID_SIZE)];
                 i.type = "item";
                 objectData.map.pushNew(i.zone, i);
               }
@@ -317,7 +317,7 @@ export default class LoadingScene extends Phaser.Scene {
                   }
                 );
                 o.panner = new Tone.Panner3D({
-                  rolloffFactor: 1, refDistance: this.PLAYER_TARGET_H * 6, maxDistance: this.PLAYER_TARGET_H * 200,
+                  rolloffFactor: 1, refDistance: configurations.PLAYER_TARGET_H * 6, maxDistance: configurations.PLAYER_TARGET_H * 200,
                   positionZ: (1 - o.zFactor) * 100, distanceModel: "exponential"
                 });
                 o.synth.chain(o.panner, Tone.getDestination());
@@ -373,7 +373,7 @@ export default class LoadingScene extends Phaser.Scene {
                   }
                 );
                 o.panner = new Tone.Panner3D({
-                  rolloffFactor: 1.2, refDistance: this.PLAYER_TARGET_H * 2, maxDistance: this.PLAYER_TARGET_H * 10,
+                  rolloffFactor: 1.2, refDistance: configurations.PLAYER_TARGET_H * 2, maxDistance: configurations.PLAYER_TARGET_H * 10,
                   positionZ: (1 - o.zFactor) * 100, distanceModel: "exponential"
                 });
                 o.synth.chain(o.panner, Tone.getDestination());
@@ -451,10 +451,10 @@ export default class LoadingScene extends Phaser.Scene {
       console.log(error);
     }
     ;
-    this.add.rectangle(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y, this.WINDOW_W, this.WINDOW_H, 0x000000);
-    this.label = this.add.text(this.WINDOW_W / 20, 80,
-      new Date(this.timestamp).toString().split('GMT')[0] + "user@remote" + '\n Fetching object list...',
-      { align: "left", color: "#FFFFFF", fontSize: 16 * this.WINDOW_H / 750, wordWrap: { width: this.WINDOW_W * 0.9, useAdvancedWrap: true } });
+    this.add.rectangle(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y, configurations.WINDOW_W, configurations.WINDOW_H, 0x000000);
+    this.label = this.add.text(configurations.WINDOW_W / 20, 80,
+      new Date(configurations.TIMESTAMP).toString().split('GMT')[0] + "user@remote" + '\n Fetching object list...',
+      { align: "left", color: "#FFFFFF", fontSize: 16 * configurations.WINDOW_H / 750, wordWrap: { width: configurations.WINDOW_W * 0.9, useAdvancedWrap: true } });
   }
   update() {
 

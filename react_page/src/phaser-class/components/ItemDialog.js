@@ -1,4 +1,3 @@
-import configureScene from "../game.config";
 import Dialog from "./Dialog";
 export default class ItemDialog extends Dialog {
   constructor(scene) {

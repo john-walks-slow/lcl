@@ -8,7 +8,8 @@ import GameCamera from "../components/GameCamera";
 import GamePad from "../components/GamePad";
 import ItemDialog from "../components/ItemDialog";
 import LinkDialog from "../components/LinkDialog";
-import configureScene from "../game.config";
+import configurations from "../configurations";
+import ObjectGroup from "../ObjectGroup";
 
 let listener = false;
 
@@ -21,30 +22,18 @@ function vectorAngle(x, y) {
 };
 
 export default class MainScene extends Phaser.Scene {
-  constructor(configurations, methods) {
+  constructor(methods) {
     super({
       key: 'MainScene', active: false,
     });
-    Object.assign(this, configurations, methods);
-    this.configurations = configurations;
-    console.log(this);
-    this.player;
-    this.objectGroup;
-    this.cursors;
-    this.startPosX = 0;
-    this.startPosY = 0;
-    this.camera;
-    this.gameDialog;
-    this.pointerOnPlayer = false;
 
+    Object.assign(this, methods);
   }
-
   preload() {
   }
   init(data) {
     console.log('init');
     this.objectData = data.objectData;
-    console.log(this.objectData);
     // if (data.newObject) {
     //   let o = data.newObject;
     //   switch (o.isAnimate) {
@@ -63,26 +52,27 @@ export default class MainScene extends Phaser.Scene {
     //   }
     //   this.objectData.list.unshift(o);
     // }
-    let resizePending = false;
     if (!listener) {
       listener = window.addEventListener('resize', () => {
-        // setTimeout(() => {
-        this.configurations = configureScene();
-        Object.assign(this, this.configurations);
-        console.log(this.WINDOW_W, this.WINDOW_H);
+        configurations.updateConfigurations();
         this.camera.setDisplay();
         this.gameDialog.setDisplay();
         this.linkDialog.setDisplay();
         this.itemDialog.setDisplay();
         this.gamepad.setDisplay();
-        // this.scene.restart({ list: this.objectData.list, map: this.objectData.map });
-        // }, 20);
       });
     }
 
   }
   create() {
     // console.log(this.input.activePointer);
+    console.log(this);
+    this.startPosX = 0;
+    this.startPosY = 0;
+    this.camera;
+    this.gameDialog;
+    this.pointerOnPlayer = false;
+    this.objectGroup = new ObjectGroup(this);
     this.gameObjectsLayer = this.add.layer();
     this.uiLayer = this.add.layer();
     this.camera = new GameCamera(this);
@@ -94,10 +84,10 @@ export default class MainScene extends Phaser.Scene {
     this.setShowMenu(true);
     this.cursors = this.input.keyboard.createCursorKeys();
     this.mainSceneHook(this);
-    // this.add.tileSprite(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y,WINDOW_W,WINDOW_H,'bg');
-    // this.add.rectangle(this.WINDOW_CENTER_X, this.WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0xFFFFFF);
+    // this.add.tileSprite(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y,WINDOW_W,WINDOW_H,'bg');
+    // this.add.rectangle(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0xFFFFFF);
     this.player = this.physics.add.sprite(this.startPosX, this.startPosY, 'player')
-      .setDisplaySize(this.PLAYER_TARGET_W, this.PLAYER_TARGET_H);
+      .setDisplaySize(configurations.PLAYER_TARGET_W, configurations.PLAYER_TARGET_H);
     // .refreshBody();
 
     this.player.depth = 0.9;
@@ -129,9 +119,7 @@ export default class MainScene extends Phaser.Scene {
     // this.player.on('pointerout', () => { console.log('out'); this.pointerOnPlayer = false; });
     this.camera.startFollow(this.player);
     this.gameObjectsLayer.add(this.player);
-    this.objectGroup = this.physics.add.group({
-      pushable: false
-    });
+
     this.itemCollideHandler = (o1, o2) => {
       // console.log(this.player.body.velocity);
       // this.player.stopMovement();
@@ -144,13 +132,13 @@ export default class MainScene extends Phaser.Scene {
         currentObj = o1;
       }
       console.log(currentObj);
-      let dialog = this.ITEM_LIST[currentObj.itemId].dialog;
+      let dialog = configurations.ITEM_LIST[currentObj.itemId].dialog;
       let player = secureStorage.getItem('player');
       if (
         !player.ownItems.includes(currentObj._id)
       ) {
         this.itemDialog.showDialog([dialog]);
-        player[this.ITEM_LIST[currentObj.itemId].name]++;
+        player[configurations.ITEM_LIST[currentObj.itemId].name]++;
         player.ownItems.push(currentObj._id);
         this.dispatch(this.setStorage(player));
       }
@@ -212,44 +200,7 @@ export default class MainScene extends Phaser.Scene {
     };
 
     let movedObjects = [];
-    this.objectGroup.createCallback = (o) => {
-      setTimeout(() => {
-        // console.log(o.body.touching);
-        // if (o.body.overlapX != 0 || o.body.overlapY != 0) {
-        //   o.x -= o.body.overlapX / 2;
-        //   o.y -= o.body.overlapY / 2;
-        // }
-        if (o.oData.isBackground) { return; }
-        let collidedObjects = this.physics.overlapRect(o.x - o.displayWidth / 2, o.y - o.displayHeight / 2, o.displayWidth, o.displayHeight).filter(o => o.oData);
-        if (collidedObjects.length > 0) {
-          collidedObjects.forEach((c) => {
-            // this.physics.collide(c, o);
-            let cg = c.gameObject;
-            console.log(cg, o);
-            if (cg.oData._id == o.oData._id) {
-              return;
-            }
-            if (cg.oData.isBackground) {
-              return;
-            }
-            // if (movedObjects.find((a) => (a[0] == o.id && a[1] == cg.id))) {
-            //   return;
-            // }
-            if (cg.x < o.x) {
-              cg.x -= (cg.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
-            } else {
-              o.x += (o.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
-            }
-            if (cg.y < o.y) {
-              cg.y -= (cg.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
-            } else {
-              o.y += (o.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
-            }
-            // movedObjects.push([cg.id, o.id]);
-          });
-        }
-      }, 50);
-    };
+
     this.itemGroup = this.physics.add.group({
       immovable: true
     });
@@ -266,133 +217,6 @@ export default class MainScene extends Phaser.Scene {
         repeatDelay: 0
       }) : false;
     });
-    this.objectGroup.initSound = () => {
-      let createZones = this.objectData.map.getZone(this.player);
-      // console.log({ prev: previousZones, cur: currentZones });
-      // console.log({ create: createZones, destroy: destroyZones });
-      createZones.forEach((zone) => {
-        // console.log(this.objectData.map);
-        if (!this.objectData.map[zone[0]]) { return; }
-        if (!this.objectData.map[zone[0]][[zone[1]]]) { return; }
-        let os = this.objectData.map[zone[0]][zone[1]];
-        os.forEach((o) => {
-          switch (o.type) {
-            case "object":
-              console.log(o);
-              // this.physics.overlapRect(o.x-o.displayWidth/2, o.y-o.displayHeight/2, o.displayWidth, o.displayHeight,true,true);
-              if (o.loop) {
-                o.loop.start(o.startDelay + Tone.now());
-              }
-              break;
-          }
-        });
-      });
-    };
-    this.objectGroup.updateObjects = (previousZone, currentZone) => {
-      let previousZones = this.objectData.map.getNearBy(previousZone);
-      let currentZones = this.objectData.map.getNearBy(currentZone);
-      let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()));
-      let destroyZones = previousZones.filter(x => !currentZones.toString().includes(x.toString()));
-      // console.log({ prev: previousZones, cur: currentZones });
-      // console.log({ create: createZones, destroy: destroyZones });
-      createZones.forEach((zone) => {
-        // console.log(this.objectData.map);
-        if (!this.objectData.map[zone[0]]) { return; }
-        if (!this.objectData.map[zone[0]][[zone[1]]]) { return; }
-        let os = this.objectData.map[zone[0]][zone[1]];
-        os.forEach((o) => {
-          switch (o.type) {
-            case "object":
-              // this.physics.overlapRect(o.x-o.displayWidth/2, o.y-o.displayHeight/2, o.displayWidth, o.displayHeight,true,true);
-              o.instance = this.objectGroup.create(o.x, o.y, "object" + o._id);
-              // o.instance.on('addedtoscene',()=>{
-              //   console.log(collidedObjects);
-              // })
-              // o.instance = this.physics.add.sprite(o.x,o.y,"object"+o.id);
-              // console.log(this.objectGroup);
-              o.instance.depth = o.zFactor;
-              (o.isBackground || o.isForeground) && (o.instance.alpha = o.zFactor / 1.5);
-              o.instance.oData = o;
-              o.instance.setDisplaySize(o.displayWidth, o.displayHeight);
-              o.instance.body.onOverlap = true;
-              if (o.isAnimate) {
-                o.instance.anims.play('spritesheet' + o._id);
-              }
-              // if (o.dialog.length > 0) {
-              let collider = this.physics.add.collider(this.player, o.instance, this.objectCollideHandler);
-              o.instance.collider = collider;
-              //  }
-              o.instance.refreshBody();
-              this.gameObjectsLayer.add(o.instance);
-              if (o.loop) {
-                o.loop.start(o.startDelay + Tone.now());
-              }
-              break;
-            case "item":
-              o.instance = this.itemGroup.create(o.x, o.y, this.ITEM_LIST[o.itemId].name).setDisplaySize(this.OBJECT_W.S, this.OBJECT_W.S);
-              o.instance.fadeOut = this.tweens.create({
-                targets: o.instance,
-                duration: 600,
-                props: { alpha: 0 },
-                onComplete: () => { o.instance.destroy(); }
-              });
-              o.instance.alpha = 1;
-              o.instance.depth = 1;
-              o.instance._id = o._id;
-              let itemCollider = this.physics.add.collider(this.player, o.instance, this.itemCollideHandler);
-              o.instance.collider = itemCollider;
-              o.instance.itemId = o.itemId;
-              this.gameObjectsLayer.add(o.instance);
-              break;
-            default:
-              break;
-          }
-        });
-      });
-      destroyZones.forEach((zone) => {
-        if (!this.objectData.map[zone[0]]) { return; }
-        if (!this.objectData.map[zone[0]][[zone[1]]]) { return; }
-        let os = this.objectData.map[zone[0]][zone[1]];
-        os.forEach((o) => {
-          switch (o.type) {
-            case "object":
-              this.objectGroup.remove(o.instance, true, true);
-              if (o.loop) {
-                o.loop.stop();
-              }
-              break;
-            case "item":
-              if (o.instance.active) {
-                this.itemGroup.remove(o.instance, true, true);
-              }
-              break;
-            default:
-              break;
-          }
-        });
-      });
-      // let seeds = [...Array(Object.keys(FILTER_LIST).length * 2)].map((o, i) => (Math.round(seededRandom(((i + 1) * currentZone[0] * this.day + currentZone[1]).toString()) * 10)) / 10);
-      // let RESULT_LIST = Object.assign({}, FILTER_LIST);
-      // this.filter = (x, y) => {
-      //   let result = "";
-      //   let i = 0;
-      //   for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
-      //     seeds[i] < probability && (
-      //       result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(x) / this.MOVE_SPEED / 20, 1)}${unit}) `);
-      //     i++;
-      //     RESULT_LIST[key] = false;
-      //   };
-      //   i = 0;
-      //   for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
-      //     if (!RESULT_LIST[key]) { continue; }
-      //     seeds[i] < probability && (
-      //       result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(y) / this.MOVE_SPEED / 20, 1)}${unit}) `);
-      //     i++;
-
-      //   };
-      //   return `${result}`;
-      // };
-    };
 
     // this.objectGroup.updateObjects(false, [0, 0]);
     // this.previousZone = [0, 0];
@@ -457,7 +281,6 @@ export default class MainScene extends Phaser.Scene {
       repeat: -1,
       repeatDelay: 0
     });
-
     this.anims.create({
       key: 'standRight',
       frames: [{ key: 'player', frame: 7 }],
@@ -482,8 +305,8 @@ export default class MainScene extends Phaser.Scene {
     this.player.anims.play('standRight');
     this.gamepad = new GamePad(this);
     this.uiLayer.add(this.gamepad);
-    this.filterUsed = seededRandom(this.day.toString());
-    console.log(this.day);
+    this.filterUsed = seededRandom(configurations.DAY.toString());
+    console.log(configurations.DAY);
     const FILTER_LIST = {
       'brightness': { min: 1, max: 0.3, unit: '', probability: 0.3 },
       'contrast': { min: 0.3, max: 1, unit: '', probability: 0.3 },
@@ -491,14 +314,14 @@ export default class MainScene extends Phaser.Scene {
       'invert': { min: 0, max: 1, unit: '', probability: 0.3 },
       'sepia': { min: 0, max: 1, unit: '', probability: 0.3 },
     };
-    let seeds = [...Array(Object.keys(FILTER_LIST).length * 2)].map((o, i) => (Math.round(seededRandom(((i + 1) * this.day).toString()) * 10)) / 10);
+    let seeds = [...Array(Object.keys(FILTER_LIST).length * 2)].map((o, i) => (Math.round(seededRandom(((i + 1) * configurations.DAY).toString()) * 10)) / 10);
     let RESULT_LIST = Object.assign({}, FILTER_LIST);
     this.filter = (x, y) => {
       let result = "";
       let i = 0;
       for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
         seeds[i] < probability && (
-          result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(x) / this.MOVE_SPEED / 5, 1)}${unit}) `);
+          result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(x) / configurations.MOVE_SPEED / 5, 1)}${unit}) `);
         i++;
         RESULT_LIST[key] = false;
       };
@@ -506,7 +329,7 @@ export default class MainScene extends Phaser.Scene {
       for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
         if (!RESULT_LIST[key]) { continue; }
         seeds[i] < probability && (
-          result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(y) / this.MOVE_SPEED / 5, 1)}${unit}) `);
+          result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(y) / configurations.MOVE_SPEED / 5, 1)}${unit}) `);
         i++;
 
       };
@@ -528,7 +351,7 @@ export default class MainScene extends Phaser.Scene {
     // this.game.renderer.pipelines.add('grayscale', this.grayscalePipeline);
     // this.camera.setPostPipeline(this.grayscalePipeline);
 
-    // this.Vignette = this.game.renderer.addPipeline('Vignette', new VignetteClass(this.game));
+    // configurations.Vignette = this.game.renderer.addPipeline('Vignette', new VignetteClass(this.game));
     // this.applyPipeline();
 
     // this.game.canvas.style.filter = "opacity(0.7) saturate(1.1) sepia(0.2) brightness(0.98) contrast(1.1)";
@@ -598,58 +421,58 @@ export default class MainScene extends Phaser.Scene {
         let mousePosY;
         let isMouseMovement;
 
-        if (this.isMobile) {
+        if (configurations.IS_MOBILE) {
           mousePosX = this.gamepad.padX;
           mousePosY = this.gamepad.padY;
           // console.log(mousePosX, mousePosY);
-          // if (this.input.activePointer.isDown && (Math.abs(mousePosX) <= PLAYER_TARGET_W * 0.5 || Math.abs(mousePosY) <= this.PLAYER_TARGET_H * 0.5)){
+          // if (this.input.activePointer.isDown && (Math.abs(mousePosX) <= PLAYER_TARGET_W * 0.5 || Math.abs(mousePosY) <= configurations.PLAYER_TARGET_H * 0.5)){
           // 	camera.toggleZoom();
           // };
           isMouseMovement = mousePosX && mousePosY;
         } else {
 
-          mousePosX = this.input.activePointer.x - this.WINDOW_CENTER_X;
-          mousePosY = this.WINDOW_CENTER_Y - this.input.activePointer.y;
+          mousePosX = this.input.activePointer.x - configurations.WINDOW_CENTER_X;
+          mousePosY = configurations.WINDOW_CENTER_Y - this.input.activePointer.y;
           isMouseMovement = this.input.activePointer.isDown && !this.pointerOnPlayer;
         }
 
         let mouseAngle = isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY]);
         if (this.cursors.left.isDown || this.cursors.right.isDown || this.cursors.up.isDown || this.cursors.down.isDown || isMouseMovement) {
           // camera.setZoom(1);
-          this.camera.zoom == this.ZOOM_OUT_LEVEL && this.camera.zoomInAnim.play();
+          this.camera.zoom == configurations.ZOOM_OUT_LEVEL && this.camera.zoomInAnim.play();
         }
         if ((this.cursors.left.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-          this.player.moveX(- this.OBLIQUE_MOVE_SPEED);
-          this.player.moveY(- this.OBLIQUE_MOVE_SPEED);
+          this.player.moveX(- configurations.OBLIQUE_MOVE_SPEED);
+          this.player.moveY(- configurations.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runLeft', true);
         }
         else if ((this.cursors.left.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-          this.player.moveX(- this.OBLIQUE_MOVE_SPEED);
-          this.player.moveY(this.OBLIQUE_MOVE_SPEED);
+          this.player.moveX(- configurations.OBLIQUE_MOVE_SPEED);
+          this.player.moveY(configurations.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runLeft', true);
         }
         else if ((this.cursors.right.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-          this.player.moveX(this.OBLIQUE_MOVE_SPEED);
-          this.player.moveY(- this.OBLIQUE_MOVE_SPEED);
+          this.player.moveX(configurations.OBLIQUE_MOVE_SPEED);
+          this.player.moveY(- configurations.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runRight', true);
         }
         else if ((this.cursors.right.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-          this.player.moveX(this.OBLIQUE_MOVE_SPEED);
-          this.player.moveY(this.OBLIQUE_MOVE_SPEED);
+          this.player.moveX(configurations.OBLIQUE_MOVE_SPEED);
+          this.player.moveY(configurations.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runRight', true);
         }
         else if ((this.cursors.left.isDown) || (isMouseMovement && mousePosX < 0 && mouseAngle >= Math.PI * 0.375 && mouseAngle <= Math.PI * 0.625)) {
-          this.player.moveX(- this.MOVE_SPEED);
+          this.player.moveX(- configurations.MOVE_SPEED);
           this.player.moveY(0);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runLeft', true);
         }
         else if ((this.cursors.right.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.375 && mouseAngle <= Math.PI * 0.625)) {
-          this.player.moveX(this.MOVE_SPEED);
+          this.player.moveX(configurations.MOVE_SPEED);
           this.player.moveY(0);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runRight', true);
@@ -657,14 +480,14 @@ export default class MainScene extends Phaser.Scene {
 
         else if ((this.cursors.down.isDown) || (isMouseMovement && mouseAngle >= Math.PI * 0.875)) {
           this.player.moveX(0);
-          this.player.moveY(this.MOVE_SPEED);
+          this.player.moveY(configurations.MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runDown', true);
         }
 
         else if ((this.cursors.up.isDown) || (isMouseMovement && mouseAngle <= Math.PI * 0.125)) {
           this.player.moveX(0);
-          this.player.moveY(- this.MOVE_SPEED);
+          this.player.moveY(- configurations.MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runUp', true);
         }
@@ -674,8 +497,6 @@ export default class MainScene extends Phaser.Scene {
     }
   }
   bgm() {
-
-
     const start = () => {
       // setup();
       // this.objectGroup.initSound();

@@ -1,10 +1,9 @@
-import configureScene from "../game.config";
+import configurations from "../configurations";
 
 export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
   constructor(scene) {
     super(0, 0, scene.game.config.width, scene.game.config.height);
     this.scene = scene;
-    this.configurations = configureScene();
     this.setBackgroundColor(0xFFFFFF);
     // this.setFollowOffset(0, 100);
     this.setAlpha(1);
@@ -15,25 +14,24 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     this.scene.input.keyboard.on('keydown-M', () => { this.toggleZoom(); });
   }
   setDisplay() {
-    this.configurations = configureScene();
-    this.setZoom(this.configurations.ZOOM_LEVEL);
+    this.setZoom(configurations.ZOOM_LEVEL);
     this.initAnim = this.scene.tweens.create({
       targets: this,
-      props: { 'zoom': this.configurations.ZOOM_LEVEL, 'alpha': 1 },
+      props: { 'zoom': configurations.ZOOM_LEVEL, 'alpha': 1 },
       ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 3000,
       completeDelay: 0
     });
     this.zoomInAnim = this.scene.tweens.create({
       targets: this,
-      props: { 'zoom': this.configurations.ZOOM_LEVEL, 'alpha': 1 },
+      props: { 'zoom': configurations.ZOOM_LEVEL, 'alpha': 1 },
       ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 500,
       completeDelay: 0
     });
     this.zoomOutAnim = this.scene.tweens.create({
       targets: this,
-      props: { 'zoom': this.configurations.ZOOM_OUT_LEVEL, 'alpha': 0.6 },
+      props: { 'zoom': configurations.ZOOM_OUT_LEVEL, 'alpha': 0.6 },
       ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 1000,
     });
@@ -48,7 +46,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     // this.zoomInAnim.stop(0);
     // this.zoomOutAnim.stop(0);
     // this.initAnim.stop(0);
-    this.zoom == this.configurations.ZOOM_LEVEL && this.zoomOut();
-    this.zoom == this.configurations.ZOOM_OUT_LEVEL && this.zoomIn();
+    this.zoom == configurations.ZOOM_LEVEL && this.zoomOut();
+    this.zoom == configurations.ZOOM_OUT_LEVEL && this.zoomIn();
   };
 }
