@@ -223,7 +223,7 @@ const Page = ({ dispatch, isShown }) => {
 
           <label className={"page__label"} disabled={telescopes <= 0}>
             深度 <sub>{("镜片数量：" + telescopes + (telescopeConsumption == 0 ? "" : `(-${telescopeConsumption})`))}</sub>
-            <input type="range" min="0.5" max="1.5" step="0.1" value={2 - zFactor} onChange={(event) => { setZFactor(2 - event.target.value); }} placeholder="深度的范围是0.5 - 1.5（近大远小）" className="page__input" />
+            <input type="range" min="0.4" max="1.6" step="0.2" value={2 - zFactor} onChange={(event) => { setZFactor(2 - event.target.value); }} placeholder="深度的范围是0.5 - 1.5（近大远小）" className="page__input" />
           </label>
 
           <input className="page__submit" disabled={error || uploading} type="submit" onClick={(e) => { submit(e); }} value={uploading ? "提交中..." : "提交"} />
