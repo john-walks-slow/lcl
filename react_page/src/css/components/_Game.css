@@ -22,7 +22,7 @@
   image-rendering: pixelated;
   margin: 0;
   border: none;
-  background: #eeeeee;
+  background: transparent;
   font-weight: 100;
 }
 #GAME_MENU.hide .game__button-menu {
@@ -32,7 +32,7 @@
   image-rendering: pixelated;
   margin: 0;
   border: none;
-  background: #eeeeee;
+  background: transparent;
 }
 .game__button-menu:active {
   transform: scale(0.8);
@@ -43,11 +43,22 @@
 .game__button-hide:active {
   transform: scale(0.8);
 }
-.game__button-install {
-  opacity: 0;
+.game__button-close-info {
   position: absolute;
   right: 1em;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+}
+.game__button-install {
+  opacity: 0;
+  position: relative;
+  font-size: 0.7em;
+  bottom: -4px;
+  background: transparent;
+  border-radius: 3px;
+  border: solid 1px grey;
 }
 .game__button-install.show {
   opacity: 1;
@@ -57,22 +68,21 @@
   background-color: #ffffff;
   padding: 20px 20px 50px 20px;
   margin: auto;
-  width: max(600px, 70vw);
+  width: min(550px, 100vw);
   height: 100vh;
   position: fixed;
-  width: 80vw;
-  max-width: 400px;
   opacity: 0;
   pointer-events: none;
   transition: 500ms;
   overflow: scroll;
+  z-index: 999;
 }
 #GAME_INFO.show {
   pointer-events: initial;
   opacity: 1;
 }
 #GAME_INVENTORY {
-  background-color: #eeeeee50;
+  background-color: #eeeeee;
   padding: 20px 20px 50px 20px;
   right: 15px;
   top: 40px;
@@ -105,5 +115,7 @@
   transition: 400ms;
 }
 #PHASER_ROOT {
+  width: 100vw;
+  height: 100vh;
   position: fixed;
 }
