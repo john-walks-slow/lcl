@@ -13,6 +13,7 @@ import { setPath, setStorage } from '../store/actions/actionCreators';
 import MainScene from '../phaser-class/scenes/MainScene';
 import LoadingScene from '../phaser-class/scenes/LoadingScene';
 import emoji from 'emoji-dictionary/lib/index';
+import { secureStorage } from "../utils/storage";
 
 // function createTestObject(object) {
 //   object._id = 3;
@@ -29,7 +30,6 @@ const Game = ({ dispatch, isShown }) => {
   const [showGame, setShowGame] = useState(true);
   const player = useSelector(state => state.present.get('player')).toJS();
   const newObject = useSelector(state => state.present.get('newObject'));
-
   // const objects = useSelector(state => state.present.get('objects'));
   const deferredPrompt = window.deferredPrompt;
   function toggleShowInventory() {
@@ -38,12 +38,19 @@ const Game = ({ dispatch, isShown }) => {
   };
   function toggleShowInfo() {
     setShowInfo(!showInfo);
+    if (!showInfo) {
+      secureStorage.setItem('haveReadInfo', "true");
+    }
     if (mainSceneRef && mainSceneRef.gamepad) {
       !showInfo ? mainSceneRef.gamepad.hide() : mainSceneRef.gamepad.show();
     }
   };
   function navigateToAdd() {
-    dispatch(setPath('/add', true));
+    if (secureStorage.getItem('haveReadInfo')) {
+      dispatch(setPath('/add', true));
+    } else {
+      alert('请看看帮助');
+    }
   }
   function mainSceneHook(mainScene) {
     if (mainScene) {
@@ -60,7 +67,7 @@ const Game = ({ dispatch, isShown }) => {
   }, [showInventory, showInfo]);
   useEffect(() => {
 
-  });
+  }, []);
   useEffect(() => {
     if (!isShown && mainSceneRef) {
       setShowMenu(false);
@@ -86,6 +93,7 @@ const Game = ({ dispatch, isShown }) => {
       // initialize
       else {
         window.addEventListener('resize', () => {
+          configurations.updateConfigurations();
           game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H);
         });
         // let toggleShowInfoRef = useRef(toggleShowInfo).current;
@@ -97,7 +105,7 @@ const Game = ({ dispatch, isShown }) => {
         var mainScene = new MainScene(methods);
         setMainScene(mainScene);
         var config = {
-          type: Phaser.AUTO,
+          type: Phaser.CANVAS,
           width: configurations.WINDOW_W,
           height: configurations.WINDOW_H,
           physics: {
@@ -110,8 +118,12 @@ const Game = ({ dispatch, isShown }) => {
           // scale: { mode: Phaser.Scale.FIT, },
           parent: "PHASER_ROOT",
           scene: [loadingScene, mainScene],
-          pixelArt: true,
-          antialias: false, roundPixels: false
+          canvasStyle: null,
+          fps: undefined,
+          disableContextMenu: true,
+          render: {
+            antialias: false, roundPixels: false
+          }
         };
 
         var game = new Phaser.Game(config);

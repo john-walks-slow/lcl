@@ -58,11 +58,19 @@
 
 - [ ] :art: 重做滤镜
 - [ ] :fire: 重构ui
+- [ ] :sparkles: ui可以隐藏
+- [ ] :art: 重做ui
 - [ ] :package: 安卓版开发
 - [ ] :package: 上架安卓市场
 - [ ] :package: PC版开发
+- [x] :sparkles: 重写渲染算法（pixel perfect）
 - [ ] :sparkles: 发言前检测用户是否阅读本文档
-- [ ] :sparkles: 优化Generative Music
+- [ ] :musical_note: 调整音量
+- [ ] :musical_note: 试试音色
+- [ ] :musical_note: 性能优化
+- [ ] :musical_note: 试试算法
+- [ ] :bug: resize问题
+- [ ] :art: 重做颜色
 - [x] :art: 调整响应式布局
 - [x] :books: 优化README
 - [x] :bug: link dialog 隐藏虚拟键盘

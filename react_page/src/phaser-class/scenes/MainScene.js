@@ -92,6 +92,9 @@ export default class MainScene extends Phaser.Scene {
     // .refreshBody();
 
     this.player.depth = 0.9;
+    this.player.move = (x, y) => {
+      this.player.setVelocity(x, y);
+    };
     this.player.moveX = (x) => {
       this.player.setVelocityX(x);
     };
@@ -111,14 +114,13 @@ export default class MainScene extends Phaser.Scene {
       if (this.player.anims.getName() == "runDown") {
         this.player.anims.play('standDown', true);
       }
-      this.player.moveX(0);
-      this.player.moveY(0);
+      this.player.move(0, 0);
     };
 
     // this.player.setInteractive();
     // this.player.on('pointerover', () => { console.log('over'); this.pointerOnPlayer = true; });
     // this.player.on('pointerout', () => { console.log('out'); this.pointerOnPlayer = false; });
-    this.camera.startFollow(this.player);
+    this.camera.startFollow(this.player, false);
     this.gameObjectsLayer.add(this.player);
 
     this.itemCollideHandler = (o1, o2) => {
@@ -360,6 +362,7 @@ export default class MainScene extends Phaser.Scene {
 
     // import Tone from 'Tone';
     // import * as teoria from 'teoria';
+    this.game.canvas.style.imageRendering = "auto";
 
     generativeMusic.startBgm();
   }
@@ -392,13 +395,12 @@ export default class MainScene extends Phaser.Scene {
     // this.game.canvas.style.filter = this.filter(this.player.x, this.player.y);
     // console.log(this.filter(this.player.x, this.player.y));
     // console.log(this.player.body);
-
     let notTouching = this.player.body.touching.none;
     let velocityX = notTouching ? this.player.body.velocity.x : 0;
     let velocityY = notTouching ? this.player.body.velocity.y : 0;
     this.objectGroup.children.each((o) => {
-      o.setVelocityX(-velocityX * (o.oData.zFactor - 1));
-      o.setVelocityY(-velocityY * (o.oData.zFactor - 1));
+      o.setVelocityX((-velocityX * (o.oData.zFactor - 1)));
+      o.setVelocityY((-velocityY * (o.oData.zFactor - 1)));
     });
     if (this.gameDialog.inDialog || this.itemDialog.inDialog || this.linkDialog.inDialog || !this.player.body.blocked.none) {
       this.player.stopMovement();
@@ -443,52 +445,44 @@ export default class MainScene extends Phaser.Scene {
           this.camera.zoom == configurations.ZOOM_OUT_LEVEL && this.camera.zoomInAnim.play();
         }
         if ((this.cursors.left.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-          this.player.moveX(- configurations.OBLIQUE_MOVE_SPEED);
-          this.player.moveY(- configurations.OBLIQUE_MOVE_SPEED);
+          this.player.move(- configurations.OBLIQUE_MOVE_SPEED, - configurations.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runLeft', true);
         }
         else if ((this.cursors.left.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-          this.player.moveX(- configurations.OBLIQUE_MOVE_SPEED);
-          this.player.moveY(configurations.OBLIQUE_MOVE_SPEED);
+          this.player.move(- configurations.OBLIQUE_MOVE_SPEED, configurations.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runLeft', true);
         }
         else if ((this.cursors.right.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-          this.player.moveX(configurations.OBLIQUE_MOVE_SPEED);
-          this.player.moveY(- configurations.OBLIQUE_MOVE_SPEED);
+          this.player.move(configurations.OBLIQUE_MOVE_SPEED, - configurations.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runRight', true);
         }
         else if ((this.cursors.right.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-          this.player.moveX(configurations.OBLIQUE_MOVE_SPEED);
-          this.player.moveY(configurations.OBLIQUE_MOVE_SPEED);
+          this.player.move(configurations.OBLIQUE_MOVE_SPEED, configurations.OBLIQUE_MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runRight', true);
         }
         else if ((this.cursors.left.isDown) || (isMouseMovement && mousePosX < 0 && mouseAngle >= Math.PI * 0.375 && mouseAngle <= Math.PI * 0.625)) {
-          this.player.moveX(- configurations.MOVE_SPEED);
-          this.player.moveY(0);
+          this.player.move(- configurations.MOVE_SPEED, 0);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runLeft', true);
         }
         else if ((this.cursors.right.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.375 && mouseAngle <= Math.PI * 0.625)) {
-          this.player.moveX(configurations.MOVE_SPEED);
-          this.player.moveY(0);
+          this.player.move(configurations.MOVE_SPEED, 0);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runRight', true);
         }
 
         else if ((this.cursors.down.isDown) || (isMouseMovement && mouseAngle >= Math.PI * 0.875)) {
-          this.player.moveX(0);
-          this.player.moveY(configurations.MOVE_SPEED);
+          this.player.move(0, configurations.MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runDown', true);
         }
 
         else if ((this.cursors.up.isDown) || (isMouseMovement && mouseAngle <= Math.PI * 0.125)) {
-          this.player.moveX(0);
-          this.player.moveY(- configurations.MOVE_SPEED);
+          this.player.move(0, - configurations.MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runUp', true);
         }

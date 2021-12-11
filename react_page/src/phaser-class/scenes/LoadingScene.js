@@ -40,7 +40,7 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.image('labels', labelURL);
         this.load.image('telescopes', telescopeURL);
         this.load.image('batteries', batteryURL);
-        this.load.spritesheet('player', whiteURL, { frameWidth: 37, frameHeight: 44 });
+        this.load.spritesheet('player', whiteURL, { frameWidth: 40, frameHeight: 46 });
         this.load.spritesheet('gamepad', gamepadURL, { frameWidth: 16, frameHeight: 16 });
         // [...Array(10000)].forEach(() => {
         //   list.push(createTestObject({
