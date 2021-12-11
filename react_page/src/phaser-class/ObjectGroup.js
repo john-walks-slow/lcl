@@ -39,6 +39,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
         }, 50);
       },
     });
+    this.scene = scene;
   }
   updateObjects(previousZone, currentZone) {
     let previousZones = this.scene.objectData.map.getNearBy(previousZone);

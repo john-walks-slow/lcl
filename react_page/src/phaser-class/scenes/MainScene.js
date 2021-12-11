@@ -25,7 +25,8 @@ function vectorAngle(x, y) {
 export default class MainScene extends Phaser.Scene {
   constructor(methods) {
     super({
-      key: 'MainScene', active: false,
+      key: 'MainScene', active: false
+
     });
 
     Object.assign(this, methods);
@@ -55,19 +56,21 @@ export default class MainScene extends Phaser.Scene {
     // }
     if (!listener) {
       listener = window.addEventListener('resize', () => {
-        configurations.updateConfigurations();
-        this.camera.setDisplay();
-        this.gameDialog.setDisplay();
-        this.linkDialog.setDisplay();
-        this.itemDialog.setDisplay();
-        this.gamepad.setDisplay();
+        this.setDisplay();
       });
     }
 
   }
+  setDisplay() {
+    configurations.updateConfigurations();
+    // this.camera.setDisplay();
+    this.gameDialog.setDisplay();
+    this.linkDialog.setDisplay();
+    this.itemDialog.setDisplay();
+    this.gamepad.setDisplay();
+  }
   create() {
     // console.log(this.input.activePointer);
-    console.log(this);
     this.startPosX = 0;
     this.startPosY = 0;
     this.camera;
@@ -76,8 +79,9 @@ export default class MainScene extends Phaser.Scene {
     this.objectGroup = new ObjectGroup(this);
     this.gameObjectsLayer = this.add.layer();
     this.uiLayer = this.add.layer();
+    this.cameras.remove(this.cameras.main);
     this.camera = new GameCamera(this);
-    this.cameras.addExisting(this.camera, true);
+    this.cameras.addExisting(this.camera, false);
     this.camera.ignore(this.uiLayer);
     this.staticCamera = this.cameras.add();
     this.staticCamera.ignore(this.gameObjectsLayer);
@@ -134,7 +138,6 @@ export default class MainScene extends Phaser.Scene {
       else {
         currentObj = o1;
       }
-      console.log(currentObj);
       let dialog = configurations.ITEM_LIST[currentObj.itemId].dialog;
       let player = secureStorage.getItem('player');
       if (
@@ -145,6 +148,7 @@ export default class MainScene extends Phaser.Scene {
         player.ownItems.push(currentObj._id);
         this.dispatch(this.setStorage(player));
       }
+      console.log(currentObj);
       currentObj.fadeOut.play();
       // currentObj.destroy();
       // currentObj.collider.destroy();
@@ -364,9 +368,11 @@ export default class MainScene extends Phaser.Scene {
     // import * as teoria from 'teoria';
     this.game.canvas.style.imageRendering = "auto";
 
-    generativeMusic.startBgm();
     this.setupKeyboard();
     this.setShowMenu(true);
+    // this.setDisplay();
+    generativeMusic.startBgm();
+
   }
   setupKeyboard() {
     this.input.keyboard.on("keydown-B", () => { this.toggleShowInventory(); });
@@ -451,7 +457,7 @@ export default class MainScene extends Phaser.Scene {
         let mouseAngle = isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY]);
         if (this.cursors.left.isDown || this.cursors.right.isDown || this.cursors.up.isDown || this.cursors.down.isDown || isMouseMovement) {
           // camera.setZoom(1);
-          this.camera.zoom == configurations.ZOOM_OUT_LEVEL && this.camera.zoomInAnim.play();
+          this.camera.zoom == configurations.ZOOM_OUT_LEVEL && this.camera.zoomIn();
         }
         if ((this.cursors.left.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
           this.player.move(- configurations.OBLIQUE_MOVE_SPEED, - configurations.OBLIQUE_MOVE_SPEED);
@@ -500,9 +506,10 @@ export default class MainScene extends Phaser.Scene {
       }
     }
   }
+
   resume() {
     super.resume();
-
+    this.setDisplay();
     mainSceneRef.input.keyboard.enableGlobalCapture();
 
   }

@@ -9,10 +9,15 @@ export default class ItemDialog extends Dialog {
     this.WIDTH = Math.min(this.WINDOW_H / 1.5, this.WINDOW_W * 0.85);
     this.HEIGHT = this.WIDTH * 0.4;
     this.PADDING = this.WIDTH / 8;
-    this.PADDING_TOP = this.WIDTH / 9;
+    this.PADDING_TOP = this.WIDTH / 13;
     this.dialogWindow.setX(this.WINDOW_CENTER_X);
     this.dialogWindow.setY(this.WINDOW_CENTER_Y);
     this.dialogWindow.setDisplaySize(this.WIDTH, this.HEIGHT);
+    this.dialogText.setStyle({
+      color: 0xFFFFFF,
+      fontSize: `${this.FONT_SIZE}px`,
+      fontFamily: this.FONT_FAMILY,
+    });
     this.dialogText.setX(this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING);
     this.dialogText.setY(this.WINDOW_CENTER_Y - this.HEIGHT / 2 + this.PADDING_TOP);
     this.dialogText.wordWrap = { width: Math.max(this.WIDTH - this.PADDING * 2.5, this.FONT_SIZE), useAdvancedWrap: true };

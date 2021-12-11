@@ -45,6 +45,11 @@ export default class LinkDialog extends Dialog {
     this.dialogWindow.setDisplaySize(this.WIDTH, this.HEIGHT);
     this.dialogText.setX(this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING);
     this.dialogText.setY(this.WINDOW_CENTER_Y - this.HEIGHT / 2 + this.PADDING_TOP);
+    this.dialogText.setStyle({
+      color: 0xFFFFFF,
+      fontSize: `${this.FONT_SIZE}px`,
+      fontFamily: this.FONT_FAMILY,
+    });
     this.dialogText.setWordWrapWidth(Math.max(this.WIDTH - this.PADDING * 2.5, this.FONT_SIZE), true);
     this.dialogYes.setX(this.YES_X);
     this.dialogYes.setY(this.YES_Y);

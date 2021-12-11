@@ -1,41 +1,46 @@
 class Configurations {
   constructor() {
+    // this.ZOOM_LEVEL = 1;
+    this.PLAYER_TARGET_W = 40;
+    this.PLAYER_TARGET_H = 46;
+    // this.ZOOM_LEVEL = Math.min(Math.min(this.WINDOW_W / 15, this.WINDOW_H / 15) / this.PLAYER_TARGET_H, 1);
+    this.CANVAS_SCALE = 0.6;
+    this.ZOOM_LEVEL = 1;
+    // this.ZOOM_LEVEL = (this.WINDOW_W < 600 || this.WINDOW_W < 600) ? 0.6 : 1;
+    this.ZOOM_OUT_LEVEL = (0.35 * this.ZOOM_LEVEL);
+    // this.ZOOM_LEVEL = (Math.max(Math.min(this.WINDOW_W / 18, this.WINDOW_H / 15 / 46 * 40),) / this.PLAYER_TARGET_W);
+    this.OBJECT_W = { XXL: this.PLAYER_TARGET_H * 4.5, XL: this.PLAYER_TARGET_H * 3, L: this.PLAYER_TARGET_H * 2, M: this.PLAYER_TARGET_H * 1.5, S: this.PLAYER_TARGET_H, XS: this.PLAYER_TARGET_H * 0.7 };
+    this.TIME_DELAY = 60 * 60 * 1000;
+    this.RANDOM_ZONE_W = this.OBJECT_W.L;
+    this.DAY_OFFSET = this.OBJECT_W.L;
+    this.DENSITY_OFFSET = this.OBJECT_W.L;
+    this.ACTIVITY_OFFSET = 1;
+    this.MOVE_SPEED = (this.DENSITY_OFFSET * 0.4);
+    this.OBLIQUE_MOVE_SPEED = (this.MOVE_SPEED * 0.74);
+    this.ITEM_LIST = [{ name: "boxes", dialog: "哇！你捡到了一个箱子" }, { name: "fats", dialog: "哇！你捡到了一袋肥料" }, { name: "labels", dialog: "哇！你捡到了一张便签" }, { name: "telescopes", dialog: "哇！你捡到了一块镜片" }, { name: "batteries", dialog: "哇！你捡到了一块电池" },];
+
     this.updateConfigurations();
+    this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL / 2;
+    // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL;
+
+    // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL;
   }
   updateConfigurations() {
-    Object.assign(this, this.getConfigurations());
-  }
-  getConfigurations() {
-    let c = {};
-    c.WINDOW_W = (window.innerWidth || document.body.clientWidth);
-    c.WINDOW_H = (window.innerHeight || document.body.clientHeight);
-    c.WINDOW_CENTER_X = c.WINDOW_W / 2;
-    c.WINDOW_CENTER_Y = c.WINDOW_H / 2;
-    // c.ZOOM_LEVEL = 1;
-    c.PLAYER_TARGET_W = 40;
-    c.PLAYER_TARGET_H = 46;
-    c.ZOOM_LEVEL = Math.min(Math.min(c.WINDOW_W / 15, c.WINDOW_H / 15) / c.PLAYER_TARGET_H, 1);
-    // c.ZOOM_LEVEL = (c.WINDOW_W < 600 || c.WINDOW_W < 600) ? 0.6 : 1;
-    c.ZOOM_OUT_LEVEL = (0.2 * c.ZOOM_LEVEL);
-    // c.ZOOM_LEVEL = (Math.max(Math.min(c.WINDOW_W / 18, c.WINDOW_H / 15 / 46 * 40),) / c.PLAYER_TARGET_W);
-    c.OBJECT_W = { XXL: c.PLAYER_TARGET_H * 4.5, XL: c.PLAYER_TARGET_H * 3, L: c.PLAYER_TARGET_H * 2, M: c.PLAYER_TARGET_H * 1.5, S: c.PLAYER_TARGET_H, XS: c.PLAYER_TARGET_H * 0.7 };
-    c.TIME_DELAY = 60 * 60 * 1000;
-    c.RANDOM_ZONE_W = c.OBJECT_W.L;
-    c.DAY_OFFSET = c.OBJECT_W.XL;
-    c.DENSITY_OFFSET = c.OBJECT_W.L;
-    c.ACTIVITY_OFFSET = 1;
-    c.MOVE_SPEED = (c.DENSITY_OFFSET * 0.4);
-    c.OBLIQUE_MOVE_SPEED = (c.MOVE_SPEED * 0.74);
-    c.GRID_SIZE = Math.max(c.WINDOW_H, c.WINDOW_W) / c.ZOOM_OUT_LEVEL;
-    // c.GRID_SIZE = Math.max(c.WINDOW_H, c.WINDOW_W) / c.ZOOM_OUT_LEVEL;
-    c.TIMESTAMP = Date.parse(new Date());
-    c.DAY = Math.floor(c.TIMESTAMP / (24 * 60 * 60 * 1000));
-    // c.time = timestamp % (24 * 60 * 60 * 1000) ;
-    c.ITEM_LIST = [{ name: "boxes", dialog: "哇！你捡到了一个箱子" }, { name: "fats", dialog: "哇！你捡到了一袋肥料" }, { name: "labels", dialog: "哇！你捡到了一张便签" }, { name: "telescopes", dialog: "哇！你捡到了一块镜片" }, { name: "batteries", dialog: "哇！你捡到了一块电池" },];
-    c.IS_MOBILE = (('ontouchstart' in window) ||
+
+    // Actually the size of the canvas,not the window
+    this.RAW_WINDOW_W = (window.innerWidth || document.body.clientWidth);
+    this.RAW_WINDOW_H = (window.innerHeight || document.body.clientHeight);
+    this.SCALE = Math.min(Math.min(this.RAW_WINDOW_W / 15, this.RAW_WINDOW_H / 15) / this.PLAYER_TARGET_H, 1);
+    this.WINDOW_W = this.RAW_WINDOW_W / this.SCALE;
+    this.WINDOW_H = this.RAW_WINDOW_H / this.SCALE;
+    this.WINDOW_CENTER_X = this.WINDOW_W / 2;
+    this.WINDOW_CENTER_Y = this.WINDOW_H / 2;
+    this.TIMESTAMP = Date.parse(new Date());
+    this.DAY = Math.floor(this.TIMESTAMP / (24 * 60 * 60 * 1000));
+    // this.time = timestamp % (24 * 60 * 60 * 1000) ;
+    this.IS_MOBILE = (('ontouchstart' in window) ||
       (navigator.maxTouchPoints > 0) ||
-      (navigator.msMaxTouchPoints > 0)) && c.WINDOW_W > c.WINDOW_H;
-    return c;
+      (navigator.msMaxTouchPoints > 0)) && this.WINDOW_W > this.WINDOW_H;
   }
 }
 export default new Configurations();

@@ -67,8 +67,8 @@ export default class ObjectData {
       o.displayWidth = configurations.OBJECT_W[o.size] / o.zFactor / o.ratio;
       o.displayHeight = configurations.OBJECT_W[o.size] / o.zFactor;
     }
-    o.displayWidth = Math.ceil(o.displayWidth / o.columns) * o.columns;
-    o.displayHeight = Math.ceil(o.displayHeight / o.rows) * o.rows;
+    o.displayWidth = Math.max(Math.round(o.displayWidth / o.columns), 1) * o.columns;
+    o.displayHeight = Math.max(Math.round(o.displayHeight / o.rows), 1) * o.rows;
 
     o.zone = [Math.ceil(o.x / configurations.GRID_SIZE), Math.ceil(o.y / configurations.GRID_SIZE)];
     o.type = "object";
