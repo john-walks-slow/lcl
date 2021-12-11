@@ -9,6 +9,7 @@ import gamepadURL from '../../assets/game/gamepad.png';
 import labelURL from '../../assets/game/labels.png';
 import telescopeURL from '../../assets/game/telescopes.png';
 import whiteURL from '../../assets/game/white.png';
+import moreURL from '../../assets/game/more.png';
 import { setObjects } from "../../store/actions/actionCreators";
 import configurations from "../configurations";
 import generativeMusic from "../GenerativeMusic";
@@ -40,6 +41,7 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.image('labels', labelURL);
         this.load.image('telescopes', telescopeURL);
         this.load.image('batteries', batteryURL);
+        this.load.image('more', moreURL);
         this.load.spritesheet('player', whiteURL, { frameWidth: 40, frameHeight: 46 });
         this.load.spritesheet('gamepad', gamepadURL, { frameWidth: 16, frameHeight: 16 });
         // [...Array(10000)].forEach(() => {

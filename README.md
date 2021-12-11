@@ -56,33 +56,32 @@
 ### TODO
 
 
-- [ ] :art: 重做滤镜
-- [ ] :fire: 重构ui
-- [ ] :sparkles: ui可以隐藏
-- [ ] :art: 重做ui
 - [ ] :package: 安卓版开发
 - [ ] :package: 上架安卓市场
 - [ ] :package: PC版开发
-- [x] :sparkles: 重写渲染算法（pixel perfect）
-- [ ] :sparkles: 发言前检测用户是否阅读本文档
 - [ ] :musical_note: 调整音量
 - [ ] :musical_note: 试试音色
 - [ ] :musical_note: 性能优化
 - [ ] :musical_note: 试试算法
 - [ ] :bug: resize问题
-- [ ] :art: 重做颜色
+- [x] :art: 重做滤镜
+- [x] :sparkles: ui可以隐藏
+- [x] :art: 重做ui
 - [x] :art: 调整响应式布局
 - [x] :books: 优化README
 - [x] :bug: link dialog 隐藏虚拟键盘
 - [x] :fire: 重构Configurations
 - [x] :fire: 重构GenerativeMusic
 - [x] :fire: 重构ObjectData
+- [x] :fire: 重构ObjectGroup
+- [x] :sparkles: Generative Music
+- [x] :sparkles: 重写渲染算法（pixel perfect）
+- [x] :sparkles: 发言前检测用户是否阅读本文档
 - [x] :sparkles: 道具生成率降低，道具大小减少
 - [x] :sparkles: 更好的报错界面
 - [x] :sparkles: 键盘快捷键 
 - [x] :sparkles: 降低道具重要性，深度-2~2不消耗镜片
 - [x] :sparkles: 优化自动转屏逻辑
-- [x] :sparkles: Generative Music
 - [x] :wrench: 调整数值
 - [x] :wrench: 设置M以下不需要肥料
 - [x] :wrench: 使用history api优化后退键

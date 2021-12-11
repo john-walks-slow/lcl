@@ -19,7 +19,8 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
       this.alpha = 1;
       this.setInteractive();
     }
-    const WIDTH = configurations.WINDOW_W / 6;
+    let WIDTH = (configurations.WINDOW_W / 6);
+    WIDTH = WIDTH - WIDTH % 16;
     const PADDING = configurations.WINDOW_W / 12;
     this.setDisplaySize(WIDTH, WIDTH);
     this.setX(PADDING + WIDTH / 2);

@@ -9,9 +9,8 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     this.setAlpha(1);
     this.setDisplay();
     this.fadeIn();
-    this.setZoom(0.01);
+    this.setZoom(configurations.ZOOM_OUT_LEVEL);
     this.initAnim.play();
-    this.scene.input.keyboard.on('keydown-M', () => { this.toggleZoom(); });
   }
   setDisplay() {
     this.setZoom(configurations.ZOOM_LEVEL);
@@ -19,7 +18,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
       targets: this,
       props: { 'zoom': configurations.ZOOM_LEVEL, 'alpha': 1 },
       ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-      duration: 3000,
+      duration: 1000,
       completeDelay: 0
     });
     this.zoomInAnim = this.scene.tweens.create({
@@ -38,15 +37,19 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
   }
   zoomIn() {
     this.zoomInAnim.play();
+    this.scene.setZoomed(false);
   };
   zoomOut() {
     this.zoomOutAnim.play();
+    this.scene.setZoomed(true);
   };
   toggleZoom() {
     // this.zoomInAnim.stop(0);
     // this.zoomOutAnim.stop(0);
     // this.initAnim.stop(0);
-    this.zoom == configurations.ZOOM_LEVEL && this.zoomOut();
-    this.zoom == configurations.ZOOM_OUT_LEVEL && this.zoomIn();
+    // let result = "unchanged";
+    this.zoom == configurations.ZOOM_LEVEL && (this.zoomOut());
+    this.zoom == configurations.ZOOM_OUT_LEVEL && (this.zoomIn());
+    // return result;
   };
 }

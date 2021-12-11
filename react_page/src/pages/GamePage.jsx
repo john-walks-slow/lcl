@@ -8,6 +8,7 @@ import newBtnURL from '../assets/game/new.png';
 import mapBtnURL from '../assets/game/map.png';
 import bagBtnURL from '../assets/game/bag.png';
 import infoBtnURL from '../assets/game/info.png';
+import moreBtnURL from '../assets/game/more.png';
 import configurations from '../phaser-class/configurations';
 import { setPath, setStorage } from '../store/actions/actionCreators';
 import MainScene from '../phaser-class/scenes/MainScene';
@@ -27,7 +28,9 @@ const Game = ({ dispatch, isShown }) => {
   const [showInfo, setShowInfo] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [hideMenu, setHideMenu] = useState(false);
   const [showGame, setShowGame] = useState(true);
+  const [zoomed, setZoomed] = useState(false);
   const player = useSelector(state => state.present.get('player')).toJS();
   const newObject = useSelector(state => state.present.get('newObject'));
   // const objects = useSelector(state => state.present.get('objects'));
@@ -35,6 +38,9 @@ const Game = ({ dispatch, isShown }) => {
   function toggleShowInventory() {
     console.log(showInventory);
     setShowInventory(!showInventory);
+  };
+  function toggleHideMenu() {
+    setHideMenu(!hideMenu);
   };
   function toggleShowInfo() {
     setShowInfo(!showInfo);
@@ -52,21 +58,16 @@ const Game = ({ dispatch, isShown }) => {
       alert('请看看帮助');
     }
   }
-  function mainSceneHook(mainScene) {
-    if (mainScene) {
-      mainScene.input.keyboard.off("keydown-B");
-      mainScene.input.keyboard.off("keydown-H");
-      mainScene.input.keyboard.off("keydown-N");
-      mainScene.input.keyboard.on("keydown-B", toggleShowInventory);
-      mainScene.input.keyboard.on("keydown-H", toggleShowInfo);
-      mainScene.input.keyboard.on("keydown-N", navigateToAdd);
-    }
+
+  function updateUIMethod(mainScene) {
+    mainScene.toggleShowInventory = toggleShowInventory;
+    mainScene.toggleHideMenu = toggleHideMenu;
+    mainScene.toggleShowInfo = toggleShowInfo;
   }
   useEffect(() => {
-    mainSceneHook(mainSceneRef);
-  }, [showInventory, showInfo]);
+    mainSceneRef && updateUIMethod(mainSceneRef);
+  }, [showInventory, showInfo, hideMenu]);
   useEffect(() => {
-
   }, []);
   useEffect(() => {
     if (!isShown && mainSceneRef) {
@@ -75,7 +76,6 @@ const Game = ({ dispatch, isShown }) => {
       setShowInfo(false);
       setShowGame(false);
       mainSceneRef.scene.pause();
-      mainSceneRef.input.keyboard.disableGlobalCapture();
       return;
     }
     if (isShown) {
@@ -85,9 +85,8 @@ const Game = ({ dispatch, isShown }) => {
       document.body.style.backgroundColor = "black";
       // if not initial run
       if (mainSceneRef) {
-        mainSceneRef.scene.resume();
         setShowMenu(true);
-        mainSceneRef.input.keyboard.enableGlobalCapture();
+        mainSceneRef.scene.resume();
         // mainSceneRef.scene.restart({ objectList: mainSceneRef.objectList, gameObjectMap: mainSceneRef.gameObjectMap });
       }
       // initialize
@@ -99,7 +98,7 @@ const Game = ({ dispatch, isShown }) => {
         // let toggleShowInfoRef = useRef(toggleShowInfo).current;
         // let toggleShowInventoryRef = useRef(toggleShowInventory).current;
         let methods = {
-          setShowInfo, setShowInventory, setShowMenu, setStorage, dispatch, mainSceneHook
+          setShowMenu, toggleShowInfo, toggleShowInventory, toggleHideMenu, setStorage, dispatch, updateUIMethod, setZoomed, navigateToAdd
         };
         var loadingScene = new LoadingScene(methods);
         var mainScene = new MainScene(methods);
@@ -134,11 +133,18 @@ const Game = ({ dispatch, isShown }) => {
   return (
     <div id="GAME_DIV" className={showGame ? "show" : ""}>
       <div id="PHASER_ROOT" ></div>
-      <div id="GAME_MENU" className={showMenu ? "show" : ""} >
-        <input className="game__button-menu" type="image" onClick={() => { navigateToAdd(); }} src={newBtnURL} />
-        <input className="game__button-menu" type="image" onClick={() => { mainSceneRef.camera.toggleZoom(); }} src={mapBtnURL} />
-        <input className="game__button-menu" type="image" onClick={() => { toggleShowInventory(); }} src={bagBtnURL} />
-        <input className="game__button-menu" type="image" onClick={() => { toggleShowInfo(); }} src={infoBtnURL} />
+      <div id="GAME_MENU" className={(showMenu ? "show" : "") + (hideMenu ? " hide" : "")} >
+        <div className="">
+          {/* <input className="game__button-menu" type="image" onClick={() => { navigateToAdd(); }} src={newBtnURL} /> */}
+          {/* <input className="game__button-menu" type="image" onClick={() => { mainSceneRef.camera.toggleZoom(); }} src={mapBtnURL} /> */}
+          {/* <input className="game__button-menu" type="image" onClick={() => { toggleShowInventory(); }} src={bagBtnURL} /> */}
+          {/* <input className="game__button-menu" type="image" onClick={() => { toggleShowInfo(); }} src={infoBtnURL} /> */}
+          <button className="game__button-menu" onClick={() => { navigateToAdd(); }}  >N̲ew</button>
+          <button className={"game__button-menu" + (zoomed ? " selected" : "")} onClick={() => { mainSceneRef && mainSceneRef.camera.toggleZoom(); }}  >M̲ap</button>
+          <button className={"game__button-menu" + (showInventory ? " selected" : "")} onClick={() => { toggleShowInventory(); }}  >B̲ag</button>
+          <button className={"game__button-menu" + (showInfo ? " selected" : "")} onClick={() => { toggleShowInfo(); }}  >H̲elp</button>
+          <button className="game__button-hide" onClick={() => { toggleHideMenu(); }}  >Hi̲de</button>
+        </div>
       </div>
 
 

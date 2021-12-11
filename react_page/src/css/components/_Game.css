@@ -6,25 +6,41 @@
 #GAME_MENU {
   pointer-events: none;
   position: fixed;
-  right: 25px;
-  top: 15px;
   opacity: 0;
-  transform: translateX(20px);
-  transition: 1000ms;
+  transition: 300ms;
+  top: 15px;
+  right: 15px;
+  z-index: 99;
 }
 #GAME_MENU.show {
   pointer-events: initial;
   position: fixed;
-  transform: translateY(0);
-
+  transition: 1000ms;
   opacity: 1;
 }
 .game__button-menu {
-  width: 5vw;
-  min-width: 35px;
   image-rendering: pixelated;
+  margin: 0;
+  border: none;
+  background: #eeeeee;
+  font-weight: 100;
+}
+#GAME_MENU.hide .game__button-menu {
+  opacity: 0;
+}
+.game__button-hide {
+  image-rendering: pixelated;
+  margin: 0;
+  border: none;
+  background: #eeeeee;
 }
 .game__button-menu:active {
+  transform: scale(0.8);
+}
+.game__button-menu.selected {
+  font-weight: 600;
+}
+.game__button-hide:active {
   transform: scale(0.8);
 }
 .game__button-install {
@@ -56,27 +72,25 @@
   opacity: 1;
 }
 #GAME_INVENTORY {
-  font-weight: 800;
-  --width: min(70vw, 300px);
-  --height: calc(var(--width));
-  background-color: white;
+  background-color: #eeeeee50;
   padding: 20px 20px 50px 20px;
-  margin-top: calc((100vh - var(--height)) / 2);
-  margin-left: calc((100vw - var(--width)) / 2);
-  width: var(--width);
-  height: var(--height);
+  right: 15px;
+  top: 40px;
+  width: 196px;
   position: fixed;
   opacity: 0;
   pointer-events: none;
-  transition: 800ms;
+  transition: 400ms;
   overflow: auto;
-  border: solid #222222 10px;
-  transform: translateY(30px);
+  padding: 3px;
+  border-radius: 4px;
+  transform: translateX(10px);
+  font-size: 1em;
 }
 #GAME_INVENTORY.show {
   pointer-events: initial;
   opacity: 1;
-  transform: translateY(0px);
+  transform: translateX(0px);
 }
 #GAME_DIV {
   opacity: 0;

@@ -82,9 +82,9 @@ export default class MainScene extends Phaser.Scene {
     this.staticCamera = this.cameras.add();
     this.staticCamera.ignore(this.gameObjectsLayer);
     this.staticCamera.inputEnabled = false;
-    this.setShowMenu(true);
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.mainSceneHook(this);
+    this.updateUIMethod(this);
+    console.log(this);
     // this.add.tileSprite(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y,WINDOW_W,WINDOW_H,'bg');
     // this.add.rectangle(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0xFFFFFF);
     this.player = this.physics.add.sprite(this.startPosX, this.startPosY, 'player')
@@ -365,6 +365,15 @@ export default class MainScene extends Phaser.Scene {
     this.game.canvas.style.imageRendering = "auto";
 
     generativeMusic.startBgm();
+    this.setupKeyboard();
+    this.setShowMenu(true);
+  }
+  setupKeyboard() {
+    this.input.keyboard.on("keydown-B", () => { this.toggleShowInventory(); });
+    this.input.keyboard.on("keydown-H", () => { this.toggleShowInfo(); });
+    this.input.keyboard.on("keydown-I", () => { this.toggleHideMenu(); });
+    this.input.keyboard.on("keydown-N", () => { this.navigateToAdd(); });
+    this.input.keyboard.on("keydown-M", () => { this.camera.toggleZoom(); });
   }
   updateSound() {
     this.objectGroup.children.each((o) => {
@@ -490,5 +499,21 @@ export default class MainScene extends Phaser.Scene {
 
       }
     }
+  }
+  resume() {
+    super.resume();
+
+    mainSceneRef.input.keyboard.enableGlobalCapture();
+
+  }
+  pause() {
+    super.pause();
+    mainSceneRef.input.keyboard.disableGlobalCapture();
+
+    // mainScene.input.keyboard.off("keydown-B");
+    // mainScene.input.keyboard.off("keydown-H");
+    // mainScene.input.keyboard.off("keydown-N");
+    // mainScene.input.keyboard.off("keydown-I");
+    // mainScene.input.keyboard.off("keydown-M");
   }
 }
