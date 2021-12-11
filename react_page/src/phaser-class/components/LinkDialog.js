@@ -1,4 +1,3 @@
-import configurations from "../configurations";
 import Dialog from "./Dialog";
 export default class LinkDialog extends Dialog {
   constructor(scene) {
@@ -30,9 +29,8 @@ export default class LinkDialog extends Dialog {
     // this.showDialog('test');
   }
   setDisplay() {
-    super.setDisplay();
-    let c = configurations;
-    Object.assign(this, c);
+    // super.setDisplay();
+    this.setDisplayParams();
     this.BUTTON_SELECTED_COLOR = "#000000";
     this.WIDTH = Math.min(this.WINDOW_H / 1.5, this.WINDOW_W * 0.85);
     this.HEIGHT = this.WIDTH * 0.6;

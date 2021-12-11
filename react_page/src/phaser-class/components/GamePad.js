@@ -1,3 +1,4 @@
+import configurations from "../configurations";
 
 export default class GamePad extends Phaser.GameObjects.Sprite {
   constructor(scene) {
@@ -10,21 +11,21 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
     scene.input.on('pointerup', () => { this.padX = false; this.padY = false; });
   }
   setDisplay() {
-    this.isMobile = this.scene.isMobile;
-    if (!this.scene.isMobile) {
+    this.IS_MOBILE = configurations.IS_MOBILE;
+    if (!this.IS_MOBILE) {
       this.alpha = 0;
       this.removeInteractive();
     } else {
       this.alpha = 1;
       this.setInteractive();
     }
-    const WIDTH = this.scene.WINDOW_W / 6;
-    const PADDING = this.scene.WINDOW_W / 12;
+    const WIDTH = configurations.WINDOW_W / 6;
+    const PADDING = configurations.WINDOW_W / 12;
     this.setDisplaySize(WIDTH, WIDTH);
     this.setX(PADDING + WIDTH / 2);
-    this.setY(this.scene.WINDOW_H - PADDING - WIDTH / 2);
+    this.setY(configurations.WINDOW_H - PADDING - WIDTH / 2);
     let centerX = PADDING + WIDTH / 2;
-    let centerY = this.scene.WINDOW_H - (PADDING + WIDTH / 2);
+    let centerY = configurations.WINDOW_H - (PADDING + WIDTH / 2);
     let onInput = (pointer) => {
       this.padX = pointer.x - centerX;
       this.padY = centerY - pointer.y;
@@ -35,7 +36,7 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
     this.on('pointerdown', onInput);
   }
   hide() {
-    if (!this.isMobile) {
+    if (!this.IS_MOBILE) {
       return;
     }
     this.scene.tweens.add({
@@ -48,7 +49,7 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
     this.removeInteractive();
   }
   show() {
-    if (!this.isMobile) {
+    if (!this.IS_MOBILE) {
       return;
     }
     this.scene.tweens.add({

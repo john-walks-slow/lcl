@@ -88,7 +88,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
               props: { alpha: 0 },
               onComplete: () => { o.instance.destroy(); }
             });
-            o.instance.alpha = 1;
+            o.instance.alpha = 0.5;
             o.instance.depth = 1;
             o.instance._id = o._id;
             let itemCollider = this.scene.physics.add.collider(this.scene.player, o.instance, this.scene.itemCollideHandler);
@@ -114,7 +114,9 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
             }
             break;
           case "item":
-            if (o.instance.active) {
+            // TODO: TypeError: Cannot read properties of undefined (reading 'active')
+            // console.log(o.instance);
+            if (o.instance) {
               this.scene.itemGroup.remove(o.instance, true, true);
             }
             break;

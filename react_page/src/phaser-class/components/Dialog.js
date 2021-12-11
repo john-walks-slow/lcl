@@ -4,11 +4,11 @@ export default class Dialog extends Phaser.GameObjects.Container {
   constructor(scene) {
     super(scene);
     this.scene = scene;
+    this.initializeComponents();
+    this.setDisplay();
     this.depth = 999;
     this.setScrollFactor(0);
     this.setAlpha(0);
-    this.initializeComponents();
-    this.setDisplay();
     this.dialogIndex = 0;
     this.inDialog = false;
     this.dialogFadeIn = this.scene.tweens.create({
@@ -24,10 +24,6 @@ export default class Dialog extends Phaser.GameObjects.Container {
       duration: 500,
     });
     this.scene.add.existing(this);
-    // this.scene.uis.add(this);
-
-    // this.dialogFadeIn.play();
-
   }
   initializeComponents() {
     this.dialogWindow = this.scene.add.sprite(0, 0, "dialog");
@@ -49,11 +45,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.add([this.dialogWindow, this.dialogText, this.dialogHeader]);
   }
   setDisplayParams() {
-    let c = configurations;
-    Object.assign(this, c);
-    // console.log(this.ZOOM_LEVEL);
-    // this.WINDOW_H /= this.ZOOM_LEVEL;
-    // this.WINDOW_W /= this.ZOOM_LEVEL;
+    Object.assign(this, configurations);
     this.DIALOG_HEIGHT = this.WINDOW_H / 3.5;
     this.TEXT_PADDING_W = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 15 : 25;
     this.TEXT_PADDING_H = Math.min(this.WINDOW_H / 25);
@@ -79,7 +71,6 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.dialogWindow.setY(this.DIALOG_Y);
     this.dialogHeader.setX(this.DIALOG_HEADER_X);
     this.dialogHeader.setY(this.DIALOG_HEADER_Y);
-
     this.dialogHeader.setStyle({
       color: 0xFFFFFF,
       fontSize: `${this.FONT_SIZE_HEADER}px`,
