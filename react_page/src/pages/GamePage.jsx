@@ -93,7 +93,9 @@ const Game = ({ dispatch, isShown }) => {
       else {
         window.addEventListener('resize', () => {
           configurations.updateConfigurations();
+          console.log(configurations.WINDOW_W, configurations.WINDOW_H);
           game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H);
+          game.scale.setZoom(configurations.SCALE);
         });
         // let toggleShowInfoRef = useRef(toggleShowInfo).current;
         // let toggleShowInventoryRef = useRef(toggleShowInventory).current;
@@ -107,6 +109,10 @@ const Game = ({ dispatch, isShown }) => {
           type: Phaser.CANVAS,
           width: configurations.WINDOW_W,
           height: configurations.WINDOW_H,
+          scale: {
+            zoom: configurations.SCALE
+          },
+          // zoom: configurations.ZOOM,
           physics: {
             default: 'arcade',
             arcade: {
@@ -127,6 +133,8 @@ const Game = ({ dispatch, isShown }) => {
 
         var game = new Phaser.Game(config);
         setGame(game);
+        // game.scale.autoRound = true;
+        // game.scale.setMaxZoom();
       }
     }
   }, [isShown]);
@@ -192,6 +200,7 @@ const Game = ({ dispatch, isShown }) => {
             deferredPrompt = null;
           });
         }}>安装到桌面</button>
+        <button className="game__button-close-info" onClick={() => { toggleShowInfo(); }}>×</button>
         <ReactMarkdown >{ReadMe.toString().replace(/:\w+:/gi, name => emoji.getUnicode(name))}</ReactMarkdown>
 
       </div>
