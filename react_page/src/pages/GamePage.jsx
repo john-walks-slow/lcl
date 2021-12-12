@@ -75,7 +75,7 @@ const Game = ({ dispatch, isShown }) => {
       setShowInventory(false);
       setShowInfo(false);
       setShowGame(false);
-      mainSceneRef.scene.pause();
+      mainSceneRef.pause();
       return;
     }
     if (isShown) {
@@ -86,7 +86,7 @@ const Game = ({ dispatch, isShown }) => {
       // if not initial run
       if (mainSceneRef) {
         setShowMenu(true);
-        mainSceneRef.scene.resume();
+        mainSceneRef.resume();
         // mainSceneRef.scene.restart({ objectList: mainSceneRef.objectList, gameObjectMap: mainSceneRef.gameObjectMap });
       }
       // initialize
