@@ -69,7 +69,7 @@
 - [ ] :package: PC版开发
 
 ### Changelog 
-##### [详细版：https://github.com/john-walks-slow/lcl/history](https://github.com/john-walks-slow/lcl/history.md)
+##### [详细版：https://github.com/john-walks-slow/lcl/blob/master/history.md](https://github.com/john-walks-slow/lcl/blob/master/history.md)
 - 0.8: 初步完成程序化音乐 重做ui 设置M以下及一级深度不消耗道具 离线可用 重构代码 解决很多bug
 - 0.7: 新增道具功能 新增超链接功能 新增PWA支持 优化缓存机制 重做加载界面 优化数值 
 - 0.6: 迁移到MongoDB 基本功能可用
