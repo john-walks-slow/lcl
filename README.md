@@ -55,15 +55,11 @@
 
 ### TODO
 
-
-- [ ] :package: 安卓版开发
-- [ ] :package: 上架安卓市场
-- [ ] :package: PC版开发
-- [ ] :musical_note: 调整音量
-- [ ] :musical_note: 试试音色
-- [ ] :musical_note: 性能优化
-- [ ] :musical_note: 试试算法
-- [ ] :bug: resize问题
+- [x] :bug: 检查player scheme
+- [x] :bug: 新对象卡启动
+- [x] :bug: 输入事件捕获异常
+- [x] :bug: resize时更新camera viewport
+- [x] :bug: 背景/前景pushable
 - [x] :art: 重做滤镜
 - [x] :sparkles: ui可以隐藏
 - [x] :art: 重做ui
@@ -88,6 +84,14 @@
 - [x] :wrench: 提高服务器安全性
 - [x] :wrench: ui 事件优化
 
+### Plans
+
+- [ ] :package: 安卓版开发
+- [ ] :package: PC版开发
+- [ ] :musical_note: 试试音色
+- [ ] :musical_note: 调整音量
+- [ ] :musical_note: 性能优化
+- [ ] :musical_note: 试试算法
 ### Changelog
 - 0.7: 新增道具功能 新增超链接功能 新增PWA支持 优化缓存机制 重做加载界面 优化数值 
 - 0.6: 迁移到MongoDB 基本功能可用
