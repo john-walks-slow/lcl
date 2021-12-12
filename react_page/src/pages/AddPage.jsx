@@ -178,7 +178,7 @@ const Page = ({ dispatch, isShown }) => {
             <span className="page__span-color" style={{ "backgroundColor": rewardColor }}></span>
             哇！找到了一瓶颜料</div>
             : ""}
-          <a className="page__link" href="" onClick={() => { dispatch((newProject())); setRewardColor(false); setSubmitted(false); }}>再创建一个</a>
+          <a className="page__link" onClick={() => { dispatch((newProject())); setRewardColor(false); setSubmitted(false); }}>再创建一个</a>
 
 
         </div>

@@ -9,7 +9,6 @@ import { initStorage, getDataFromStorage, secureStorage } from '../../utils/stor
 import { navigate, navigateWithoutHistory } from '../../utils/history';
 
 function setInitialState(state) {
-  const t0 = window.performance.now();
   const cellSize = 1;
   // const colorList = List(["#000000", "#FFFFFF"
   // ]).map(color => Map({ color, id: shortid.generate() }));
@@ -52,8 +51,6 @@ function setInitialState(state) {
     // objects: {}
     // palette,
   };
-  const t1 = window.performance.now();
-  console.log("initState函数执行了" + (t1 - t0) + "毫秒.");
   return state.merge(initialState);
 }
 

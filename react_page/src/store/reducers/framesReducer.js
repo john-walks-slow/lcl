@@ -181,7 +181,7 @@ const setFrames = (frames, action) => {
 const changeHoveredCell = (frames, cell) =>
   frames.merge({ hoveredIndex: cell });
 
-export default function(frames = initFrames(), action) {
+export default function (frames = initFrames(), action) {
   switch (action.type) {
     case types.SET_INITIAL_STATE:
     case types.NEW_PROJECT:

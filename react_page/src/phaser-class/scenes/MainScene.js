@@ -173,13 +173,13 @@ export default class MainScene extends Phaser.Scene {
               this.linkDialog.showDialog(currentObj.oData.link);
             }
           });
-        if (currentObj.oData.isBackground || currentObj.oData.isForeground) {
-          currentObj.collider.destroy();
-        } else {
-          currentObj.oData.dialog = [];
-        }
       };
       this.physics.collide(o1, o2);
+      if (currentObj.oData.isBackground || currentObj.oData.isForeground) {
+        currentObj.collider.destroy();
+      } else {
+        currentObj.oData.dialog = [];
+      }
       // let xOverlap = this.player.displayWidth / 2 + currentObj.displayWidth / 2 - Math.abs(this.player.x - currentObj.x);
       // let yOverlap = this.player.displayHeight / 2 + currentObj.displayHeight / 2 - Math.abs(this.player.y - currentObj.y);
       // // console.log(xOverlap, yOverlap);
