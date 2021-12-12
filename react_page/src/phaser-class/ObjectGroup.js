@@ -82,14 +82,14 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
             }
             break;
           case "item":
-            o.instance = this.scene.itemGroup.create(o.x, o.y, configurations.ITEM_LIST[o.itemId].name).setDisplaySize(configurations.OBJECT_W.XS, configurations.OBJECT_W.XS);
+            o.instance = this.scene.itemGroup.create(o.x, o.y, configurations.ITEM_LIST[o.itemId].name).setDisplaySize(34, 34);
             o.instance.fadeOut = this.scene.tweens.create({
               targets: o.instance,
               duration: 600,
               props: { alpha: 0 },
               onComplete: () => { o.instance.destroy(); }
             });
-            o.instance.alpha = 0.5;
+            o.instance.alpha = 1;
             o.instance.depth = 1;
             o.instance._id = o._id;
             let itemCollider = this.scene.physics.add.collider(this.scene.player, o.instance, this.scene.itemCollideHandler);
