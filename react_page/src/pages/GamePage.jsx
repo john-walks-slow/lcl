@@ -55,7 +55,7 @@ const Game = ({ dispatch, isShown }) => {
     if (secureStorage.getItem('haveReadInfo')) {
       dispatch(setPath('/add', true));
     } else {
-      alert('请看看帮助');
+      alert('请看看帮助中的发言规则');
     }
   }
 
