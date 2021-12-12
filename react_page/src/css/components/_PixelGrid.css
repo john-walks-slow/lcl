@@ -6,6 +6,7 @@
   touch-action: none;
 
   div {
+    float: left;
     border: 0.1px solid grey;
     margin: -0.4px;
   }
