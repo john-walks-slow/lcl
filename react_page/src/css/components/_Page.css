@@ -1,7 +1,7 @@
 .page__container {
   opacity: 0;
   transition: 1200ms;
-
+  z-index: 99999;
   @media screen and (max-width: 600px) {
     padding: 15px;
   }

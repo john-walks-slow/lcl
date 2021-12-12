@@ -38,8 +38,8 @@ export default function ({ dispatch }) {
     // </div>
     <div>
       <div className={"error__div" + (error ? " show" : "")}>{"对不起！出错了。错误代码：" + error} </div>
-      <GamePage isShown={showGame} dispatch={dispatch} />
       {showAdd ? <AddPage isShown={showAdd} dispatch={dispatch} /> : ""}
+      <GamePage isShown={showGame} dispatch={dispatch} />
     </div>
   );
 };

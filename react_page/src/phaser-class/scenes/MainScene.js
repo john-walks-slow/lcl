@@ -508,14 +508,14 @@ export default class MainScene extends Phaser.Scene {
   }
 
   resume() {
-    super.resume();
+    this.scene.resume(this);
     this.setDisplay();
-    mainSceneRef.input.keyboard.enableGlobalCapture();
+    this.input.keyboard.enableGlobalCapture();
 
   }
   pause() {
-    super.pause();
-    mainSceneRef.input.keyboard.disableGlobalCapture();
+    this.scene.pause(this);
+    this.input.keyboard.disableGlobalCapture();
 
     // mainScene.input.keyboard.off("keydown-B");
     // mainScene.input.keyboard.off("keydown-H");
