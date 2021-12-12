@@ -2,19 +2,12 @@ import configurations from "../configurations";
 
 export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
   constructor(scene) {
-    super(0, 0, scene.game.config.width, scene.game.config.height);
+    super(0, 0, configurations.WINDOW_W, configurations.WINDOW_H);
     this.scene = scene;
     this.setBackgroundColor(0xFFFFFF);
     // this.setFollowOffset(0, 100);
     this.setAlpha(1);
     // this.setRoundPixels(false);
-    this.setDisplay();
-    this.fadeIn();
-    this.setZoom(configurations.ZOOM_OUT_LEVEL);
-    this.initAnim.play();
-  }
-  setDisplay() {
-    // this.setZoom(configurations.ZOOM_LEVEL);
     this.initAnim = this.scene.tweens.create({
       targets: this,
       props: { 'zoom': configurations.ZOOM_LEVEL, 'alpha': 1 },
@@ -35,6 +28,14 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
       ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 1000,
     });
+    this.setDisplay();
+    this.fadeIn();
+    this.setZoom(configurations.ZOOM_OUT_LEVEL);
+    this.initAnim.play();
+  }
+  setDisplay() {
+    // this.setZoom(configurations.ZOOM_LEVEL);
+    this.setSize(configurations.WINDOW_W, configurations.WINDOW_H);
   }
   zoomIn() {
     this.zoomInAnim.play();

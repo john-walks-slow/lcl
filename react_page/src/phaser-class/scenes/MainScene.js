@@ -54,22 +54,20 @@ export default class MainScene extends Phaser.Scene {
     //   }
     //   this.objectData.list.unshift(o);
     // }
-    if (!listener) {
-      listener = window.addEventListener('resize', () => {
-        this.setDisplay();
-      });
-    }
-
+    window.addEventListener('resize', () => {
+      this.setDisplay();
+    });
   }
   setDisplay() {
     configurations.updateConfigurations();
-    // this.camera.setDisplay();
+    this.camera.setDisplay();
     this.gameDialog.setDisplay();
     this.linkDialog.setDisplay();
     this.itemDialog.setDisplay();
     this.gamepad.setDisplay();
   }
   create() {
+    console.log('create');
     // console.log(this.input.activePointer);
     this.startPosX = 0;
     this.startPosY = 0;
@@ -372,7 +370,11 @@ export default class MainScene extends Phaser.Scene {
     this.setShowMenu(true);
     // this.setDisplay();
     generativeMusic.startBgm();
-
+    // setTimeout(() => {
+    //   this.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H);
+    //   this.scale.setZoom(configurations.SCALE);
+    //   console.log('resize');
+    // }, 3000);
   }
   setupKeyboard() {
     this.input.keyboard.on("keydown-B", () => { this.toggleShowInventory(); });

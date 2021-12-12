@@ -110,7 +110,8 @@ const Game = ({ dispatch, isShown }) => {
           width: configurations.WINDOW_W,
           height: configurations.WINDOW_H,
           scale: {
-            zoom: configurations.SCALE
+            zoom: configurations.SCALE,
+            // autoCenter: Phaser.Scale.CENTER_BOTH
           },
           // zoom: configurations.ZOOM,
           physics: {
