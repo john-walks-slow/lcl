@@ -203,7 +203,7 @@ const changeFrameInterval = updateInterval(
   (previousInterval, { interval }) => interval
 );
 
-export default function(frames, action) {
+export default function (frames, action) {
   switch (action.type) {
     case types.APPLY_PENCIL:
       return applyPencil(frames, action);

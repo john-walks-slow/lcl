@@ -148,11 +148,11 @@ const Game = ({ dispatch, isShown }) => {
           {/* <input className="game__button-menu" type="image" onClick={() => { mainSceneRef.camera.toggleZoom(); }} src={mapBtnURL} /> */}
           {/* <input className="game__button-menu" type="image" onClick={() => { toggleShowInventory(); }} src={bagBtnURL} /> */}
           {/* <input className="game__button-menu" type="image" onClick={() => { toggleShowInfo(); }} src={infoBtnURL} /> */}
-          <button className="game__button-menu" onClick={() => { navigateToAdd(); }}  >N̲ew</button>
-          <button className={"game__button-menu" + (zoomed ? " selected" : "")} onClick={() => { mainSceneRef && mainSceneRef.camera.toggleZoom(); }}  >M̲ap</button>
-          <button className={"game__button-menu" + (showInventory ? " selected" : "")} onClick={() => { toggleShowInventory(); }}  >B̲ag</button>
-          <button className={"game__button-menu" + (showInfo ? " selected" : "")} onClick={() => { toggleShowInfo(); }}  >H̲elp</button>
-          <button className="game__button-hide" onClick={() => { toggleHideMenu(); }}  >Hi̲de</button>
+          <button className="game__button-menu" onClick={() => { navigateToAdd(); }}  ><u>N</u>ew</button>
+          <button className={"game__button-menu" + (zoomed ? " selected" : "")} onClick={() => { mainSceneRef && mainSceneRef.camera.toggleZoom(); }}  ><u>M</u>ap</button>
+          <button className={"game__button-menu" + (showInventory ? " selected" : "")} onClick={() => { toggleShowInventory(); }}  ><u>B</u>ag</button>
+          <button className={"game__button-menu" + (showInfo ? " selected" : "")} onClick={() => { toggleShowInfo(); }}  ><u>H</u>elp</button>
+          <button className="game__button-hide" onClick={() => { toggleHideMenu(); }}  >H<u>i</u>de</button>
         </div>
       </div>
 

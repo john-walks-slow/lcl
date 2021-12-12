@@ -232,7 +232,7 @@ class GenerativeMusic {
     switch (o.sound) {
       case 'pad':
         o.synth = new Tone.PolySynth(Tone.Synth, {
-          oscillator: { type: 'sine', volume: -40 },
+          oscillator: { type: 'sine', volume: -50 },
           envelope: { release: '4n', attack: '16n', sustain: 1 },
           maxPolyphony: 64
         });

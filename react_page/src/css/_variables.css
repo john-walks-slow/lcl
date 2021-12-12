@@ -1,11 +1,12 @@
-$font-pixel: "pixel", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-$font-icons: "WebFontIcons";
-$font-monospace: "monospace";
+$font-pixel: 'pixel', 'pixelChinese', 'Helvetica Neue Light', 'Helvetica Neue',
+  'Helvetica', 'Arial', sans-serif;
+$font-icons: 'WebFontIcons';
+$font-monospace: 'monospace';
 
 $max-width-container: 12em;
 
 $color-scorpion: #ffffff;
-$color-boulder: #757575;
+$color-boulder: #afafaf;
 $color-dustyGray: #969696;
 $color-silver: #bbb;
 $color-brandyRose: #b17e7e;

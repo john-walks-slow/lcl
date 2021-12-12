@@ -4,6 +4,13 @@
   .frames-handler__add {
     height: 66px;
     float: left;
+    background: black;
+    border: none;
+    border-radius: 7px;
+    color: white;
+  }
+  .frames-handler__add:active {
+    transform: scale(0.9);
   }
 
   .frame-handler__list {

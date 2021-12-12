@@ -11,7 +11,14 @@
   font-weight: normal;
   font-style: normal;
 } */
-
+@font-face {
+  font-family: 'pixel';
+  src: url('fonts/files/slkscr.ttf');
+}
+@font-face {
+  font-family: 'pixelChinese';
+  src: url('fonts/files/mplus_hzk_12.ttf');
+}
 @font-face {
   font-family: 'WebFontIcons';
   src: url('fonts/files/webfont-icons.eot?v=4.5.0');

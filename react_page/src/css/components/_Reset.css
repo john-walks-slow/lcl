@@ -1,7 +1,15 @@
 .reset {
   font-size: 0.7em;
   width: 100%;
+  margin-top: 2px;
   position: relative;
-  bottom: 6px;
+  bottom: 2px;
   display: inline-block;
+  background: white;
+  color: black;
+  border: grey solid 1px;
+  transform: scale(1);
+}
+.reset:active {
+  transform: scale(0.8);
 }

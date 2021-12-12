@@ -54,8 +54,8 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.DIALOG_PADDING_H = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_H / 16 : 25;
     this.FONT_SIZE = Math.max(this.WINDOW_H / 35, this.WINDOW_W / 45);
     this.FONT_SIZE_HEADER = this.FONT_SIZE * 1.2;
-    this.FONT_FAMILY = "pixel";
-    this.FONT_FAMILY_HEADER = "pixel";
+    this.FONT_FAMILY = "pixelChinese";
+    this.FONT_FAMILY_HEADER = "pixelChinese";
     this.DIALOG_WIDTH = this.WINDOW_W - this.DIALOG_PADDING_W * 2;
     this.DIALOG_X = this.WINDOW_CENTER_X;
     this.DIALOG_Y = this.WINDOW_H - this.DIALOG_PADDING_H - this.DIALOG_HEIGHT / 2;
