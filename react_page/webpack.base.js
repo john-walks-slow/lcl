@@ -4,20 +4,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 
 const path = require('path');
 
-
-module.exports = (production) => {
+module.exports = production => {
   return {
-    mode: production ? "production" : "development",
+    mode: production ? 'production' : 'development',
     devtool: production ? false : 'cheap-module-source-map',
-    entry: [
-      'babel-polyfill',
-      './src/index.jsx',
-      './src/libs.js'
-    ],
+    entry: ['babel-polyfill', './src/index.jsx', './src/libs.js'],
     output: {
       path: path.join(__dirname, '../public/'),
       publicPath: '/',
@@ -32,9 +28,7 @@ module.exports = (production) => {
         {
           test: /\.jsx?$/,
           exclude: /node_modules/,
-          use: [
-            'babel-loader'
-          ]
+          use: ['babel-loader']
         },
         {
           test: /\.css$/i,
@@ -43,8 +37,8 @@ module.exports = (production) => {
             {
               loader: 'css-loader',
               options: {
-                importLoaders: 1,
-              },
+                importLoaders: 1
+              }
             },
             'postcss-loader'
           ]
@@ -69,38 +63,40 @@ module.exports = (production) => {
       extensions: ['.js', '.jsx', '.json'],
 
       fallback: {
-        "fs": false,
-        "tls": false,
-        "net": false,
-        "path": false,
-        "zlib": false,
-        "http": false,
-        "https": false,
-        "crypto": false,
-        "assert": require.resolve("assert/"),
-        "stream": require.resolve("stream-browserify"),
+        fs: false,
+        tls: false,
+        net: false,
+        path: false,
+        zlib: false,
+        http: false,
+        https: false,
+        crypto: false,
+        assert: require.resolve('assert/'),
+        stream: require.resolve('stream-browserify')
       }
     },
     // devServer: {
     //   contentBase: './build'
     // },
-    externals: production ? {
-      phaser: 'Phaser',
-      react: 'React',
-      'react-dom': 'ReactDOM',
-      'tone': 'Tone',
-      'lodash': '_',
-    } : {
-      // phaser: 'Phaser',
-      // react: 'React',
-      // 'react-dom': 'ReactDOM',
-      // 'tone': 'Tone',
-      // 'lodash': '_',
-    },
+    externals: production
+      ? {
+          phaser: 'Phaser',
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          tone: 'Tone',
+          lodash: '_'
+        }
+      : {
+          // phaser: 'Phaser',
+          // react: 'React',
+          // 'react-dom': 'ReactDOM',
+          // 'tone': 'Tone',
+          // 'lodash': '_',
+        },
     plugins: [
       production ? new CleanWebpackPlugin() : new BundleAnalyzerPlugin(),
       new CopyWebpackPlugin([
-        { from: 'src/assets/public_res', to: '../public' },
+        { from: 'src/assets/public_res', to: '../public' }
       ]),
       new WorkboxPlugin.GenerateSW({
         clientsClaim: true,
@@ -108,11 +104,11 @@ module.exports = (production) => {
         maximumFileSizeToCacheInBytes: 50000000,
         include: [/\.(ttf|png|webmanifest|ico|html)$/],
         additionalManifestEntries: [
-          "https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js",
-          "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js",
-          "https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js",
-          "https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js",
-          "https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js",
+          'https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js',
+          'https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js',
+          'https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js',
+          'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js',
+          'https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js'
         ],
         runtimeCaching: [
           {
@@ -122,44 +118,48 @@ module.exports = (production) => {
             handler: 'NetworkFirst',
             options: {
               // Use a custom cache name.
-              cacheName: 'app',
+              cacheName: 'app'
               // Only cache 10 images.
-            },
+            }
           },
           {
             urlPattern: /objects$/,
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'object',
-            },
-          }],
+              cacheName: 'object'
+            }
+          }
+        ]
       }),
       new HtmlWebpackPlugin({
         template: 'src/assets/index.html',
         inject: true
       }),
       new webpack.DefinePlugin({
-        "process.env": JSON.stringify(process.env),
-        "process.browser": true
-      }),
+        'process.env': JSON.stringify(process.env),
+        'process.browser': true
+      })
     ],
     optimization: {
       splitChunks: {
-        chunks: 'all',
+        chunks: 'all'
       },
 
-      minimizer: production ? [
-        new TerserPlugin({
-          terserOptions: {
-            compress: {
-              drop_console: true,
-            },
-          },
-        }),
-      ] : [],
+      minimizer: production
+        ? [
+            new TerserPlugin({
+              terserOptions: {
+                compress: {
+                  drop_console: true
+                }
+              }
+            })
+          ]
+        : []
     },
+    // watch: false,
     watch: !production,
-    target: "web",
-    stats: "detailed",
+    target: 'web',
+    stats: 'detailed'
   };
 };

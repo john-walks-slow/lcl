@@ -1,38 +1,40 @@
 import MS from 'teoria';
 import * as Tone from 'tone';
 import { range } from '../../utils/utils';
-import { customIntRandom, customWRandom, seededRandom, seededRandomKept } from "../../utils/random";
-import { secureStorage } from "../../utils/storage";
-import Dialog from "../components/Dialog";
-import GameCamera from "../components/GameCamera";
-import GamePad from "../components/GamePad";
-import ItemDialog from "../components/ItemDialog";
-import LinkDialog from "../components/LinkDialog";
-import configurations from "../configurations";
-import ObjectGroup from "../ObjectGroup";
-import generativeMusic from "../GenerativeMusic";
+import {
+  customIntRandom,
+  customWRandom,
+  seededRandom,
+  seededRandomKept
+} from '../../utils/random';
+import { secureStorage } from '../../utils/storage';
+import Dialog from '../components/Dialog';
+import GameCamera from '../components/GameCamera';
+import GamePad from '../components/GamePad';
+import ItemDialog from '../components/ItemDialog';
+import LinkDialog from '../components/LinkDialog';
+import configurations from '../configurations';
+import ObjectGroup from '../ObjectGroup';
+import generativeMusic from '../GenerativeMusic';
 
 let listener = false;
-
-
 
 function vectorAngle(x, y) {
   let mX = Math.sqrt(x.reduce((acc, n) => acc + Math.pow(n, 2), 0));
   let mY = Math.sqrt(y.reduce((acc, n) => acc + Math.pow(n, 2), 0));
   return Math.acos(x.reduce((acc, n, i) => acc + n * y[i], 0) / (mX * mY));
-};
+}
 
 export default class MainScene extends Phaser.Scene {
   constructor(methods) {
     super({
-      key: 'MainScene', active: false
-
+      key: 'MainScene',
+      active: false
     });
 
     Object.assign(this, methods);
   }
-  preload() {
-  }
+  preload() {}
   init(data) {
     console.log('init');
     this.objectData = data.objectData;
@@ -89,58 +91,65 @@ export default class MainScene extends Phaser.Scene {
     console.log(this);
     // this.add.tileSprite(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y,WINDOW_W,WINDOW_H,'bg');
     // this.add.rectangle(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0xFFFFFF);
-    this.player = this.physics.add.sprite(this.startPosX, this.startPosY, 'player')
-      .setDisplaySize(configurations.PLAYER_TARGET_W, configurations.PLAYER_TARGET_H);
+    this.player = this.physics.add
+      .sprite(this.startPosX, this.startPosY, 'player')
+      .setDisplaySize(
+        configurations.PLAYER_TARGET_W,
+        configurations.PLAYER_TARGET_H
+      );
     // .refreshBody();
 
     this.player.depth = 0.9;
     this.player.move = (x, y) => {
       this.player.setVelocity(x, y);
     };
-    this.player.moveX = (x) => {
+    this.player.moveX = x => {
       this.player.setVelocityX(x);
     };
-    this.player.moveY = (y) => {
+    this.player.moveY = y => {
       this.player.setVelocityY(y);
     };
     this.player.stopMovement = () => {
-      if (this.player.anims.getName() == "runLeft") {
+      if (this.player.anims.getName() == 'runLeft') {
         this.player.anims.play('standLeft', true);
       }
-      if (this.player.anims.getName() == "runRight") {
+      if (this.player.anims.getName() == 'runRight') {
         this.player.anims.play('standRight', true);
       }
-      if (this.player.anims.getName() == "runUp") {
+      if (this.player.anims.getName() == 'runUp') {
         this.player.anims.play('standUp', true);
       }
-      if (this.player.anims.getName() == "runDown") {
+      if (this.player.anims.getName() == 'runDown') {
         this.player.anims.play('standDown', true);
       }
       this.player.move(0, 0);
     };
 
     this.player.setInteractive();
-    this.player.on('pointerover', () => { this.pointerOnPlayer = true; });
-    this.player.on('pointerout', () => { this.pointerOnPlayer = false; });
+    this.player.on('pointerover', () => {
+      this.pointerOnPlayer = true;
+    });
+    this.player.on('pointerout', () => {
+      this.pointerOnPlayer = false;
+    });
     this.camera.startFollow(this.player, false);
     this.gameObjectsLayer.add(this.player);
 
     this.itemCollideHandler = (o1, o2) => {
       // console.log(this.player.body.velocity);
       // this.player.stopMovement();
-      if (this.gameDialog.inDialog || this.itemDialog.inDialog) { return; }
-      let currentObj;
-      if (o1.texture.key == "player") {
-        currentObj = o2;
+      if (this.gameDialog.inDialog || this.itemDialog.inDialog) {
+        return;
       }
-      else {
+      let currentObj;
+      if (o1.texture.key == 'player') {
+        currentObj = o2;
+      } else {
         currentObj = o1;
       }
       let dialog = configurations.ITEM_LIST[currentObj.itemId].dialog;
       let player = secureStorage.getItem('player');
-      if (
-        !player.ownItems.includes(currentObj._id)
-      ) {
+      if (!player.ownItems.includes(currentObj._id)) {
         this.itemDialog.showDialog([dialog]);
         player[configurations.ITEM_LIST[currentObj.itemId].name]++;
         player.ownItems.push(currentObj._id);
@@ -151,29 +160,32 @@ export default class MainScene extends Phaser.Scene {
       // currentObj.destroy();
       // currentObj.collider.destroy();
       // currentObj.alpha=0;
-
     };
     this.objectCollideHandler = (o1, o2) => {
       // console.log(this.player.body.velocity);
       // this.player.stopMovement();
       // console.log(this.player.body);
 
-      if (this.gameDialog.inDialog || this.itemDialog.inDialog) { return; }
-      let currentObj;
-      if (o1.texture.key == "player") {
-        currentObj = o2;
+      if (this.gameDialog.inDialog || this.itemDialog.inDialog) {
+        return;
       }
-      else {
+      let currentObj;
+      if (o1.texture.key == 'player') {
+        currentObj = o2;
+      } else {
         currentObj = o1;
       }
       if (currentObj.oData.dialog.length > 0) {
-        this.gameDialog.showDialog(currentObj.oData.dialog, currentObj.oData.name,
+        this.gameDialog.showDialog(
+          currentObj.oData.dialog,
+          currentObj.oData.name,
           () => {
             if (currentObj.oData.link.length > 0) {
               this.linkDialog.showDialog(currentObj.oData.link);
             }
-          });
-      };
+          }
+        );
+      }
       this.physics.collide(o1, o2);
       if (currentObj.oData.isBackground || currentObj.oData.isForeground) {
         currentObj.collider.destroy();
@@ -213,14 +225,16 @@ export default class MainScene extends Phaser.Scene {
 
     this.previousZone = null;
     this.objectData.list.forEach(o => {
-      o.isAnimate ? this.anims.create({
-        key: 'spritesheet' + o._id,
-        frames: 'object' + o._id,
-        frameRate: 2,
-        delay: Math.random() * 1000,
-        repeat: -1,
-        repeatDelay: 0
-      }) : false;
+      o.isAnimate
+        ? this.anims.create({
+            key: 'spritesheet' + o._id,
+            frames: 'object' + o._id,
+            frameRate: 2,
+            delay: Math.random() * 1000,
+            repeat: -1,
+            repeatDelay: 0
+          })
+        : false;
     });
 
     // this.objectGroup.updateObjects(false, [0, 0]);
@@ -234,22 +248,19 @@ export default class MainScene extends Phaser.Scene {
     let gameInfo = document.getElementById('GAME_INFO');
     let gameInventory = document.getElementById('GAME_INVENTORY');
     let gameButtons = document.getElementsByClassName('game__button-menu');
-    this.reactComponents = [
-      reactMenu, gameInfo, gameInventory, ...gameButtons
-    ];
-    const handleInput = (e) => {
+    this.reactComponents = [reactMenu, gameInfo, gameInventory, ...gameButtons];
+    const handleInput = e => {
       // if the click is not on the root react div, we call stopPropagation()
-      if (e.target.tagName != "canvas") {
+      if (e.target.tagName != 'canvas') {
         // if (target.className == "game__button-menu") {
         e.stopPropagation();
       }
       // }
     };
-    this.reactComponents.forEach((c) => {
+    this.reactComponents.forEach(c => {
       c.addEventListener('mousedown', handleInput);
       c.addEventListener('touchstart', handleInput);
     });
-
 
     this.anims.create({
       key: 'runLeft',
@@ -313,31 +324,51 @@ export default class MainScene extends Phaser.Scene {
     this.filterUsed = seededRandom(configurations.DAY.toString());
     console.log(configurations.DAY);
     const FILTER_LIST = {
-      'brightness': { min: 1, max: 0.3, unit: '', probability: 0.3 },
-      'contrast': { min: 0.3, max: 1, unit: '', probability: 0.3 },
-      "hue-rotate": { min: 0, max: 360, unit: 'deg', probability: 0.3 },
-      'invert': { min: 0, max: 1, unit: '', probability: 0.3 },
-      'sepia': { min: 0, max: 1, unit: '', probability: 0.3 },
+      brightness: { min: 1, max: 0.3, unit: '', probability: 0.3 },
+      contrast: { min: 0.3, max: 1, unit: '', probability: 0.3 },
+      'hue-rotate': { min: 0, max: 360, unit: 'deg', probability: 0.3 },
+      invert: { min: 0, max: 1, unit: '', probability: 0.3 },
+      sepia: { min: 0, max: 1, unit: '', probability: 0.3 }
     };
-    let seeds = [...Array(Object.keys(FILTER_LIST).length * 2)].map((o, i) => (Math.round(seededRandom(((i + 1) * configurations.DAY).toString()) * 10)) / 10);
+    let seeds = [...Array(Object.keys(FILTER_LIST).length * 2)].map(
+      (o, i) =>
+        Math.round(
+          seededRandom(((i + 1) * configurations.DAY).toString()) * 10
+        ) / 10
+    );
     let RESULT_LIST = Object.assign({}, FILTER_LIST);
     this.filter = (x, y) => {
-      let result = "";
+      let result = '';
       let i = 0;
-      for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
-        seeds[i] < probability && (
-          result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(x) / configurations.MOVE_SPEED / 5, 1)}${unit}) `);
+      for (const [key, { min, max, unit, probability }] of Object.entries(
+        FILTER_LIST
+      )) {
+        seeds[i] < probability &&
+          (result += `${key}(${min +
+            (max - min) *
+              Math.min(
+                (seeds[i] * Math.abs(x)) / configurations.MOVE_SPEED / 5,
+                1
+              )}${unit}) `);
         i++;
         RESULT_LIST[key] = false;
-      };
+      }
       i = 0;
-      for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
-        if (!RESULT_LIST[key]) { continue; }
-        seeds[i] < probability && (
-          result += `${key}(${min + (max - min) * Math.min(seeds[i] * Math.abs(y) / configurations.MOVE_SPEED / 5, 1)}${unit}) `);
+      for (const [key, { min, max, unit, probability }] of Object.entries(
+        FILTER_LIST
+      )) {
+        if (!RESULT_LIST[key]) {
+          continue;
+        }
+        seeds[i] < probability &&
+          (result += `${key}(${min +
+            (max - min) *
+              Math.min(
+                (seeds[i] * Math.abs(y)) / configurations.MOVE_SPEED / 5,
+                1
+              )}${unit}) `);
         i++;
-
-      };
+      }
       return `${result}`;
     };
 
@@ -364,11 +395,11 @@ export default class MainScene extends Phaser.Scene {
 
     // import Tone from 'Tone';
     // import * as teoria from 'teoria';
-    this.game.canvas.style.imageRendering = "auto";
+    this.game.canvas.style.imageRendering = 'auto';
 
     this.setupKeyboard();
     this.setShowMenu(true);
-    // generativeMusic.startBgm();
+    generativeMusic.startBgm();
 
     // this.setDisplay();
     // this.gameDialog.showDialog('testtest', 'test');
@@ -381,14 +412,24 @@ export default class MainScene extends Phaser.Scene {
     // }, 3000);
   }
   setupKeyboard() {
-    this.input.keyboard.on("keydown-B", () => { this.toggleShowInventory(); });
-    this.input.keyboard.on("keydown-H", () => { this.toggleShowInfo(); });
-    this.input.keyboard.on("keydown-I", () => { this.toggleHideMenu(); });
-    this.input.keyboard.on("keydown-N", () => { this.navigateToAdd(); });
-    this.input.keyboard.on("keydown-M", () => { this.camera.toggleZoom(); });
+    this.input.keyboard.on('keydown-B', () => {
+      this.toggleShowInventory();
+    });
+    this.input.keyboard.on('keydown-H', () => {
+      this.toggleShowInfo();
+    });
+    this.input.keyboard.on('keydown-I', () => {
+      this.toggleHideMenu();
+    });
+    this.input.keyboard.on('keydown-N', () => {
+      this.navigateToAdd();
+    });
+    this.input.keyboard.on('keydown-M', () => {
+      this.camera.toggleZoom();
+    });
   }
   update() {
-    // generativeMusic.updateSound(this);
+    generativeMusic.updateSound(this);
 
     // console.log(this.input.activePointer.x, this.input.activePointer.y);
     // console.log(this.gamepad.padX, this.gamepad.padY);
@@ -399,11 +440,16 @@ export default class MainScene extends Phaser.Scene {
     let notTouching = this.player.body.touching.none;
     let velocityX = notTouching ? this.player.body.velocity.x : 0;
     let velocityY = notTouching ? this.player.body.velocity.y : 0;
-    this.objectGroup.children.each((o) => {
-      o.setVelocityX((-velocityX * (o.oData.zFactor - 1)));
-      o.setVelocityY((-velocityY * (o.oData.zFactor - 1)));
+    this.objectGroup.children.each(o => {
+      o.setVelocityX(-velocityX * (o.oData.zFactor - 1));
+      o.setVelocityY(-velocityY * (o.oData.zFactor - 1));
     });
-    if (this.gameDialog.inDialog || this.itemDialog.inDialog || this.linkDialog.inDialog || !this.player.body.blocked.none) {
+    if (
+      this.gameDialog.inDialog ||
+      this.itemDialog.inDialog ||
+      this.linkDialog.inDialog ||
+      !this.player.body.blocked.none
+    ) {
       this.player.stopMovement();
     } else {
       // if (
@@ -416,7 +462,13 @@ export default class MainScene extends Phaser.Scene {
       if (true) {
         let currentZone = this.objectData.map.getZone(this.player);
         // console.log(currentZone,this.previousZone);
-        if (!(this.previousZone && currentZone[0] == this.previousZone[0] && currentZone[1] == this.previousZone[1])) {
+        if (
+          !(
+            this.previousZone &&
+            currentZone[0] == this.previousZone[0] &&
+            currentZone[1] == this.previousZone[1]
+          )
+        ) {
           this.objectGroup.updateObjects(this.previousZone, currentZone);
 
           this.previousZone = currentZone;
@@ -434,61 +486,116 @@ export default class MainScene extends Phaser.Scene {
           // };
           isMouseMovement = mousePosX && mousePosY;
         } else {
-
-          mousePosX = this.input.activePointer.x - configurations.WINDOW_CENTER_X;
-          mousePosY = configurations.WINDOW_CENTER_Y - this.input.activePointer.y;
-          isMouseMovement = this.input.activePointer.isDown && !this.pointerOnPlayer;
+          mousePosX =
+            this.input.activePointer.x - configurations.WINDOW_CENTER_X;
+          mousePosY =
+            configurations.WINDOW_CENTER_Y - this.input.activePointer.y;
+          isMouseMovement =
+            this.input.activePointer.isDown && !this.pointerOnPlayer;
         }
 
-        let mouseAngle = isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY]);
-        if (this.cursors.left.isDown || this.cursors.right.isDown || this.cursors.up.isDown || this.cursors.down.isDown || isMouseMovement) {
+        let mouseAngle =
+          isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY]);
+        if (
+          this.cursors.left.isDown ||
+          this.cursors.right.isDown ||
+          this.cursors.up.isDown ||
+          this.cursors.down.isDown ||
+          isMouseMovement
+        ) {
           // camera.setZoom(1);
-          this.camera.zoom == configurations.ZOOM_OUT_LEVEL && this.camera.zoomIn();
+          this.camera.zoom == configurations.ZOOM_OUT_LEVEL &&
+            this.camera.zoomIn();
         }
-        if ((this.cursors.left.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-          this.player.move(- configurations.OBLIQUE_MOVE_SPEED, - configurations.OBLIQUE_MOVE_SPEED);
+        if (
+          (this.cursors.left.isDown && this.cursors.up.isDown) ||
+          (isMouseMovement &&
+            mousePosX <= 0 &&
+            mouseAngle >= Math.PI * 0.125 &&
+            mouseAngle <= Math.PI * 0.375)
+        ) {
+          this.player.move(
+            -configurations.OBLIQUE_MOVE_SPEED,
+            -configurations.OBLIQUE_MOVE_SPEED
+          );
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runLeft', true);
-        }
-        else if ((this.cursors.left.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX <= 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-          this.player.move(- configurations.OBLIQUE_MOVE_SPEED, configurations.OBLIQUE_MOVE_SPEED);
+        } else if (
+          (this.cursors.left.isDown && this.cursors.down.isDown) ||
+          (isMouseMovement &&
+            mousePosX <= 0 &&
+            mouseAngle >= Math.PI * 0.625 &&
+            mouseAngle <= Math.PI * 0.875)
+        ) {
+          this.player.move(
+            -configurations.OBLIQUE_MOVE_SPEED,
+            configurations.OBLIQUE_MOVE_SPEED
+          );
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runLeft', true);
-        }
-        else if ((this.cursors.right.isDown && this.cursors.up.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.125 && mouseAngle <= Math.PI * 0.375)) {
-          this.player.move(configurations.OBLIQUE_MOVE_SPEED, - configurations.OBLIQUE_MOVE_SPEED);
+        } else if (
+          (this.cursors.right.isDown && this.cursors.up.isDown) ||
+          (isMouseMovement &&
+            mousePosX > 0 &&
+            mouseAngle >= Math.PI * 0.125 &&
+            mouseAngle <= Math.PI * 0.375)
+        ) {
+          this.player.move(
+            configurations.OBLIQUE_MOVE_SPEED,
+            -configurations.OBLIQUE_MOVE_SPEED
+          );
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runRight', true);
-        }
-        else if ((this.cursors.right.isDown && this.cursors.down.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.625 && mouseAngle <= Math.PI * 0.875)) {
-          this.player.move(configurations.OBLIQUE_MOVE_SPEED, configurations.OBLIQUE_MOVE_SPEED);
+        } else if (
+          (this.cursors.right.isDown && this.cursors.down.isDown) ||
+          (isMouseMovement &&
+            mousePosX > 0 &&
+            mouseAngle >= Math.PI * 0.625 &&
+            mouseAngle <= Math.PI * 0.875)
+        ) {
+          this.player.move(
+            configurations.OBLIQUE_MOVE_SPEED,
+            configurations.OBLIQUE_MOVE_SPEED
+          );
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runRight', true);
-        }
-        else if ((this.cursors.left.isDown) || (isMouseMovement && mousePosX < 0 && mouseAngle >= Math.PI * 0.375 && mouseAngle <= Math.PI * 0.625)) {
-          this.player.move(- configurations.MOVE_SPEED, 0);
+        } else if (
+          this.cursors.left.isDown ||
+          (isMouseMovement &&
+            mousePosX < 0 &&
+            mouseAngle >= Math.PI * 0.375 &&
+            mouseAngle <= Math.PI * 0.625)
+        ) {
+          this.player.move(-configurations.MOVE_SPEED, 0);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runLeft', true);
-        }
-        else if ((this.cursors.right.isDown) || (isMouseMovement && mousePosX > 0 && mouseAngle >= Math.PI * 0.375 && mouseAngle <= Math.PI * 0.625)) {
+        } else if (
+          this.cursors.right.isDown ||
+          (isMouseMovement &&
+            mousePosX > 0 &&
+            mouseAngle >= Math.PI * 0.375 &&
+            mouseAngle <= Math.PI * 0.625)
+        ) {
           this.player.move(configurations.MOVE_SPEED, 0);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runRight', true);
-        }
-
-        else if ((this.cursors.down.isDown) || (isMouseMovement && mouseAngle >= Math.PI * 0.875)) {
+        } else if (
+          this.cursors.down.isDown ||
+          (isMouseMovement && mouseAngle >= Math.PI * 0.875)
+        ) {
           this.player.move(0, configurations.MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runDown', true);
-        }
-
-        else if ((this.cursors.up.isDown) || (isMouseMovement && mouseAngle <= Math.PI * 0.125)) {
-          this.player.move(0, - configurations.MOVE_SPEED);
+        } else if (
+          this.cursors.up.isDown ||
+          (isMouseMovement && mouseAngle <= Math.PI * 0.125)
+        ) {
+          this.player.move(0, -configurations.MOVE_SPEED);
           this.gameDialog.dialogRetrigger = true;
           this.player.anims.play('runUp', true);
+        } else {
+          this.player.stopMovement();
         }
-        else { this.player.stopMovement(); }
-
       }
     }
   }
@@ -497,7 +604,6 @@ export default class MainScene extends Phaser.Scene {
     this.scene.resume(this);
     this.setDisplay();
     this.input.keyboard.enableGlobalCapture();
-
   }
   pause() {
     this.scene.pause(this);
