@@ -55,6 +55,8 @@
 
 ### TODO
 
+- [x] :bug: link dialog 按钮失效
+- [x] :bug: item dialog 窗口位置
 - [x] :bug: 检查player scheme
 - [x] :bug: 新对象卡启动
 - [x] :bug: 输入事件捕获异常

@@ -83,7 +83,7 @@ export default class MainScene extends Phaser.Scene {
     this.camera.ignore(this.uiLayer);
     this.staticCamera = this.cameras.add();
     this.staticCamera.ignore(this.gameObjectsLayer);
-    this.staticCamera.inputEnabled = false;
+    // this.staticCamera.inputEnabled = false;
     this.cursors = this.input.keyboard.createCursorKeys();
     this.updateUIMethod(this);
     console.log(this);
@@ -119,9 +119,9 @@ export default class MainScene extends Phaser.Scene {
       this.player.move(0, 0);
     };
 
-    // this.player.setInteractive();
-    // this.player.on('pointerover', () => { console.log('over'); this.pointerOnPlayer = true; });
-    // this.player.on('pointerout', () => { console.log('out'); this.pointerOnPlayer = false; });
+    this.player.setInteractive();
+    this.player.on('pointerover', () => { this.pointerOnPlayer = true; });
+    this.player.on('pointerout', () => { this.pointerOnPlayer = false; });
     this.camera.startFollow(this.player, false);
     this.gameObjectsLayer.add(this.player);
 

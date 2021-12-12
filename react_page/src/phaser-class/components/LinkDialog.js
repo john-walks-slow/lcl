@@ -54,14 +54,12 @@ export default class LinkDialog extends Dialog {
     this.dialogYes.setX(this.YES_X);
     this.dialogYes.setY(this.YES_Y);
     this.dialogYes.setStyle({
-      color: 0xFFFFFF,
       fontFamily: this.FONT_FAMILY,
       fontSize: `${this.FONT_SIZE}px`,
     });
     this.dialogNo.setX(this.NO_X);
     this.dialogNo.setY(this.NO_Y);
     this.dialogNo.setStyle({
-      color: 0xFFFFFF,
       fontFamily: this.FONT_FAMILY,
       fontSize: `${this.FONT_SIZE}px`,
     });
@@ -106,6 +104,7 @@ export default class LinkDialog extends Dialog {
     this.link = link;
     this.inDialog = true;
     this.scene.input.on('gameobjectover', (pointer, o, event) => {
+      console.log(o);
       if (o.buttonId == "yes") { this.select(0); }
       if (o.buttonId == "no") { this.select(1); }
     });
