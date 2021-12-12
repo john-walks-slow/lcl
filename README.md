@@ -60,6 +60,7 @@
 - [x] :bug: 输入事件捕获异常
 - [x] :bug: resize时更新camera viewport
 - [x] :bug: 背景/前景pushable
+- [x] :bug: 再创建一个时页面重复刷新
 - [x] :art: 重做滤镜
 - [x] :sparkles: ui可以隐藏
 - [x] :art: 重做ui

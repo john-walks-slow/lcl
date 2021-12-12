@@ -39,7 +39,6 @@ export const secureStorage = new SecureStorage(localStorage, {
   }
 });
 
-
 function saveDataToStorage(storage, data) {
   try {
     storage.setItem(STORAGE_KEY, JSON.stringify(data));
