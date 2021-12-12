@@ -1,7 +1,7 @@
 # LCL / 意识海
 ## 空间化、离散、不断膨胀的留言板
 
->0.75: 重构代码，大量细节优化，触屏增加虚拟手柄
+>0.8: 解决了很多bug
 ### 简介
 
 这里是LCL，你可以在这个空间里留下会说话的像素物体，探索其他人创造的物体。
@@ -53,48 +53,21 @@
 - 生成和声
 - 每个和声对象根据和声节奏弹奏和音
 
-### TODO
+### 待办事项
 
-- [x] :bug: link dialog 按钮失效
-- [x] :bug: item dialog 窗口位置
-- [x] :bug: 检查player scheme
-- [x] :bug: 新对象卡启动
-- [x] :bug: 输入事件捕获异常
-- [x] :bug: resize时更新camera viewport
-- [x] :bug: 背景/前景pushable
-- [x] :bug: 再创建一个时页面重复刷新
-- [x] :art: 重做滤镜
-- [x] :sparkles: ui可以隐藏
-- [x] :art: 重做ui
-- [x] :art: 调整响应式布局
-- [x] :books: 优化README
-- [x] :bug: link dialog 隐藏虚拟键盘
-- [x] :fire: 重构Configurations
-- [x] :fire: 重构GenerativeMusic
-- [x] :fire: 重构ObjectData
-- [x] :fire: 重构ObjectGroup
-- [x] :sparkles: Generative Music
-- [x] :sparkles: 重写渲染算法（pixel perfect）
-- [x] :sparkles: 发言前检测用户是否阅读本文档
-- [x] :sparkles: 道具生成率降低，道具大小减少
-- [x] :sparkles: 更好的报错界面
-- [x] :sparkles: 键盘快捷键 
-- [x] :sparkles: 降低道具重要性，深度-2~2不消耗镜片
-- [x] :sparkles: 优化自动转屏逻辑
-- [x] :wrench: 调整数值
-- [x] :wrench: 设置M以下不需要肥料
-- [x] :wrench: 使用history api优化后退键
-- [x] :wrench: 提高服务器安全性
-- [x] :wrench: ui 事件优化
-
-### Plans
-
+##### 当前版本
 - [ ] :package: 安卓版开发
-- [ ] :package: PC版开发
-- [ ] :musical_note: 试试音色
-- [ ] :musical_note: 调整音量
+- [ ] :musical_note: 试试不同音色
+- [ ] :musical_note: 调整混音
 - [ ] :musical_note: 性能优化
-- [ ] :musical_note: 试试算法
+- [ ] :musical_note: 试试不同算法
+- [ ] :sparkles: 恒定的坐标系统
+
+##### 今后
+- [ ] :package: PC版开发
+
 ### Changelog
+##### 详细版：https://github.com/john-walks-slow/lcl/history.md
+- 0.8: 初步完成程序化音乐 解决很多bug 重做ui 设置M以下及一级深度不消耗道具 离线可用 重构代码
 - 0.7: 新增道具功能 新增超链接功能 新增PWA支持 优化缓存机制 重做加载界面 优化数值 
 - 0.6: 迁移到MongoDB 基本功能可用
