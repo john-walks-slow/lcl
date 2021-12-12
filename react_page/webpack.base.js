@@ -16,6 +16,7 @@ module.exports = (production) => {
     entry: [
       'babel-polyfill',
       './src/index.jsx',
+      './src/libs.js'
     ],
     output: {
       path: path.join(__dirname, '../public/'),
@@ -87,7 +88,15 @@ module.exports = (production) => {
       phaser: 'Phaser',
       react: 'React',
       'react-dom': 'ReactDOM',
-    } : {},
+      'tone': 'Tone',
+      'lodash': '_',
+    } : {
+      // phaser: 'Phaser',
+      // react: 'React',
+      // 'react-dom': 'ReactDOM',
+      // 'tone': 'Tone',
+      // 'lodash': '_',
+    },
     plugins: [
       production ? new CleanWebpackPlugin() : new BundleAnalyzerPlugin(),
       new CopyWebpackPlugin([
@@ -97,7 +106,33 @@ module.exports = (production) => {
         clientsClaim: true,
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 50000000,
-        include: [/\.(ttf|png|html|webmanifest|js|ico)$/],
+        include: [/\.(ttf|png|webmanifest|ico|html)$/],
+        additionalManifestEntries: [
+          "https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js",
+          "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js",
+          "https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js",
+          "https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js",
+          "https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js",
+        ],
+        runtimeCaching: [
+          {
+            // Match any request that ends with .png, .jpg, .jpeg or .svg.
+            urlPattern: /\.(?:js)$/,
+            // Apply a cache-first strategy.
+            handler: 'NetworkFirst',
+            options: {
+              // Use a custom cache name.
+              cacheName: 'app',
+              // Only cache 10 images.
+            },
+          },
+          {
+            urlPattern: /objects$/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'object',
+            },
+          }],
       }),
       new HtmlWebpackPlugin({
         template: 'src/assets/index.html',
