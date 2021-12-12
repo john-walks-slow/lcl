@@ -9,6 +9,7 @@ import { initStorage, getDataFromStorage, secureStorage } from '../../utils/stor
 import { navigate, navigateWithoutHistory } from '../../utils/history';
 
 function setInitialState(state) {
+  const t0 = window.performance.now();
   const cellSize = 1;
   // const colorList = List(["#000000", "#FFFFFF"
   // ]).map(color => Map({ color, id: shortid.generate() }));
@@ -17,18 +18,17 @@ function setInitialState(state) {
   //   position: 0
   // });
   let player = secureStorage.getItem('player');
-  if (!player) {
-    player = {
-      palette: [],
-      labels: 0,
-      fats: 0,
-      telescopes: 0,
-      batteries: 0,
-      boxes: 0,
-      ownItems: []
-    };
-    secureStorage.setItem('player', player);
-  }
+  let playerDefault = {
+    palette: [],
+    labels: 0,
+    fats: 0,
+    telescopes: 0,
+    batteries: 0,
+    boxes: 0,
+    ownItems: []
+  };
+  player = Object.assign(playerDefault, player);
+  secureStorage.setItem('player', player);
   const labels = player.labels;
   const boxes = player.boxes;
   const telescopes = player.telescopes;
@@ -52,6 +52,8 @@ function setInitialState(state) {
     // objects: {}
     // palette,
   };
+  const t1 = window.performance.now();
+  console.log("initState函数执行了" + (t1 - t0) + "毫秒.");
   return state.merge(initialState);
 }
 

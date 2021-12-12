@@ -7,8 +7,7 @@ export default class ObjectData {
   constructor(list) {
     this.map = [];
     this.itemList = [];
-    this.list = list.sort((a, b) => b.birthday - a.birthday).slice(0, 50);
-
+    this.list = list.sort((a, b) => b.birthday - a.birthday).filter((o) => (configurations.TIMESTAMP - o.birthday > configurations.TIME_DELAY));
     this.map.getZone = (player, gridSize = configurations.GRID_SIZE) => {
       return [Math.ceil(player.x / gridSize), Math.ceil(player.y / gridSize)];
     };
@@ -37,7 +36,7 @@ export default class ObjectData {
     this.playerData = secureStorage.getItem('player');
   }
   setupObject(o, i) {
-    if (configurations.TIMESTAMP - o.birthday < configurations.TIME_DELAY) { return; }
+    // if (configurations.TIMESTAMP - o.birthday < configurations.TIME_DELAY) { return; }
     this.dateOffset += Math.min(14, (this.previousDate - o.birthday) / 24 / 60 / 60 / 1000) * configurations.DAY_OFFSET;
     this.previousDate = o.birthday;
     this.offset = (configurations.DENSITY_OFFSET * (i ** 0.5));
