@@ -31,7 +31,8 @@ export default class LoadingScene extends Phaser.Scene {
     // Configure an AJAX library (see below) with that client
     app.configure(restClient.fetch(window.fetch));
     try {
-      app.service('objects').find({ paginate: false }).then((data) => {
+
+      const setup = (data) => {
         this.dispatch(setObjects(data));
         let objectList = data;
         this.load.image('bg', bgURL);
@@ -104,7 +105,14 @@ export default class LoadingScene extends Phaser.Scene {
           this.label.text += `\n- Fetching ${key} ..`;
         });
         this.load.start();
-      });
+      };
+      if (configurations.DEV_MODE) {
+        // setup();
+      } else {
+
+      }
+      app.service('objects').find({ paginate: false }).then(setup);
+
     } catch (error) {
       console.log(error);
     }

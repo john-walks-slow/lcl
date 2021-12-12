@@ -368,8 +368,9 @@ export default class MainScene extends Phaser.Scene {
 
     this.setupKeyboard();
     this.setShowMenu(true);
+    // generativeMusic.startBgm();
+
     // this.setDisplay();
-    generativeMusic.startBgm();
     // this.gameDialog.showDialog('testtest', 'test');
     // this.itemDialog.showDialog(['哇！你捡到了一个箱子'], 'test');
     // this.linkDialog.showDialog();
@@ -386,30 +387,9 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard.on("keydown-N", () => { this.navigateToAdd(); });
     this.input.keyboard.on("keydown-M", () => { this.camera.toggleZoom(); });
   }
-  updateSound() {
-    this.objectGroup.children.each((o) => {
-      if (!o.oData.synth) { return; }
-      // let width = Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180;
-      // let distance = Phaser.Math.Distance.BetweenPoints(o, this.player);
-      // console.log('width:' + width);
-      // console.log('distance:' + distance);
-      // o.oData.synth.set({
-      //   volume: 0,
-      //   width: width
-      // });
-      let positionX = o.x - this.player.x;
-      let positionY = this.player.y - o.y;
-      o.oData.panner.set({
-        positionX,
-        positionY
-      });
-      o.oData.panner.distance = (positionX ** 2 + positionY ** 2) ** 0.5;
-      o.oData.panner.audible = o.oData.panner.distance < o.oData.panner.maxDistance;
-    });
-
-  }
   update() {
-    this.updateSound();
+    // generativeMusic.updateSound(this);
+
     // console.log(this.input.activePointer.x, this.input.activePointer.y);
     // console.log(this.gamepad.padX, this.gamepad.padY);
 

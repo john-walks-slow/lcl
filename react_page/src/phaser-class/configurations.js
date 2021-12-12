@@ -1,6 +1,10 @@
+
 class Configurations {
   constructor() {
     // this.ZOOM_LEVEL = 1;
+    // this.DEV_MODE = true;
+    this.DEV_MODE = false;
+
     this.PLAYER_TARGET_W = 40;
     this.PLAYER_TARGET_H = 46;
     // this.ZOOM_LEVEL = Math.min(Math.min(this.WINDOW_W / 15, this.WINDOW_H / 15) / this.PLAYER_TARGET_H, 1);
@@ -36,7 +40,7 @@ class Configurations {
     this.WINDOW_CENTER_X = this.WINDOW_W / 2;
     this.WINDOW_CENTER_Y = this.WINDOW_H / 2;
     this.TIMESTAMP = Date.parse(new Date());
-    this.DAY = Math.floor(this.TIMESTAMP / (24 * 60 * 60 * 1000));
+    this.DAY = this.DEV_MODE ? Math.random() * 100 : Math.floor(this.TIMESTAMP / (24 * 60 * 60 * 1000));
     // this.time = timestamp % (24 * 60 * 60 * 1000) ;
     this.IS_MOBILE = (('ontouchstart' in window) ||
       (navigator.maxTouchPoints > 0) ||

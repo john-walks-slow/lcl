@@ -8,7 +8,15 @@ class GenerativeMusic {
     this.N4_LENGTH = Tone.Time("4n").toSeconds();
     this.scale = MS.scale('C5', 'major');
     this.chordLoopLength = 32;
-    this.melodyLoopLength = 2;
+    this.melodyLoopLength = 4;
+    this.melodyLoopLength = 48;
+    this.melodyIntervalRandomRange = 1;
+    this.chordRythm;
+    this.melodyRythm;
+    this.melodyMinSight = 2 * configurations.PLAYER_TARGET_H;
+    this.melodySight = 60 * configurations.PLAYER_TARGET_H;
+    this.chordMinSight = 3 * configurations.PLAYER_TARGET_H;
+    this.chordSight = 30 * configurations.PLAYER_TARGET_H;
     MS.Scale.prototype.getNote = function (i) {
       let degree = i.mod(this.notes().length);
       let octave = (i - degree) / this.notes().length + 5;
@@ -25,7 +33,7 @@ class GenerativeMusic {
     // Tone.setContext(context);
     const generateChord = (() => {
       let day = {};
-      day._id = "asdasssisdasdasw";
+      day._id = configurations.DAY.toString();;
       day.random = seededRandomKept(day._id.toString());
       day.wRandom = customWRandom(day.random);
       day.intRandom = customIntRandom(day.random);
@@ -37,7 +45,7 @@ class GenerativeMusic {
         D: 1,
         S: 2,
       };
-      const CHORDS_LIST = [{ 1: 0.4, 3: 0.2, 6: 0.2 }, { 5: 0.4, 3: 0.2, 5: 0.2 }, { 4: 0.4, 2: 0.2, 6: 0.2 }];
+      const CHORDS_LIST = [{ 1: 0.6, 3: 0.2, 6: 0.2 }, { 5: 0.6, 3: 0.2, 5: 0.2 }, { 4: 0.6, 2: 0.2, 6: 0.2 }];
       let chords = [];
       let currentPos = 0;
       let currentType = false;
@@ -76,20 +84,16 @@ class GenerativeMusic {
       let rootPadSynth = new Tone.PolySynth(
         Tone.Synth,
         {
-          oscillator: { type: "sine", volume: -60 },
-          envelope: { release: "4n", attack: "4n" },
+          oscillator: { type: "sine", volume: -40 },
+          envelope: { release: "4n", attack: "8n" },
           maxPolyphony: 64
         }
       );
       rootPadSynth.chain(Tone.getDestination());
       // new Tone.Sequence((time, note) => {
       //   if (!note) { return; }
-      //   console.log(`R: ${scale.getNote(note - 14).scientific()}`);
-      //   rootPadSynth.set({
-      //     oscillator: { type: "sine", volume: -60 },
-      //     envelope: { release: "4n", attack: "4n" },
-      //   });
-      //   rootPadSynth.triggerAttackRelease(scale.getNote(note - 14).scientific(), "2n.", time, 1);
+      //   console.log(`R: ${this.scale.getNote(note - 14).scientific()}`);
+      //   rootPadSynth.triggerAttackRelease(this.scale.getNote(note - 7).scientific(), "2n.", time, 1);
       // }, this.chordSequence).start();
       // while (currentPos < 16) {
       //   let chordLength = day.wRandom({
@@ -145,64 +149,93 @@ class GenerativeMusic {
     });
     generateChord();
   }
+  updateSound(scene) {
+    scene.objectGroup.children.each((o) => {
+      if (!o.oData.synth) { return; }
+      // let width = Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180;
+      // let distance = Phaser.Math.Distance.BetweenPoints(o, this.player);
+      // console.log('width:' + width);
+      // console.log('distance:' + distance);
+      // o.oData.synth.set({
+      //   volume: 0,
+      //   width: width
+      // });
+      let positionX = o.x - scene.player.x;
+      let positionY = scene.player.y - o.y;
+      o.oData.panner.set({
+        positionX,
+        positionY
+      });
+      o.oData.panner.distance = (positionX ** 2 + positionY ** 2);
+      o.oData.panner.audible = o.oData.panner.distance < o.oData.panner.maxDistance ** 2;
+    });
+  }
   setupSound(o) {
     o.random = seededRandomKept(o._id.toString());
     o.wRandom = customWRandom(o.random);
     o.intRandom = customIntRandom(o.random);
-    switch (o.size) {
-      case 'XXL':
-        o.sound = 'pad';
-        o.tone = -6;
-        o.reverb = 0.65;
-        o.delay = 0;
-        break;
-      case 'XL':
-        o.sound = 'pad';
-        o.tone = -4;
-        o.reverb = 0.5;
-        o.delay = 0;
-        break;
-      case 'L':
-        o.sound = 'pad';
-        o.tone = -2;
-        o.reverb = 0.35;
-        o.delay = 0;
-        break;
-      case 'M':
-        o.sound = 'piano';
-        o.tone = 1;
-        o.reverb = 0.1;
-        o.delay = 0.1;
-        break;
-      case 'S':
-        o.sound = 'bell';
-        o.tone = 3;
-        o.reverb = 0.15;
-        o.delay = 0.25;
-        break;
-      case 'XS':
-        o.sound = 'bell';
-        o.tone = 5;
-        o.reverb = 0.2;
-        o.delay = 0.4;
-        break;
+    // switch (o.size) {
+    //   case 'XXL':
+    //     o.sound = 'pad';
+    //     o.tone = -6;
+    //     o.reverb = 0.65;
+    //     o.delay = 0;
+    //     break;
+    //   case 'XL':
+    //     o.sound = 'pad';
+    //     o.tone = -4;
+    //     o.reverb = 0.5;
+    //     o.delay = 0;
+    //     break;
+    //   case 'L':
+    //     o.sound = 'pad';
+    //     o.tone = -2;
+    //     o.reverb = 0.35;
+    //     o.delay = 0;
+    //     break;
+    //   case 'M':
+    //     o.sound = 'piano';
+    //     o.tone = 1;
+    //     o.reverb = 0.1;
+    //     o.delay = 0.1;
+    //     break;
+    //   case 'S':
+    //     o.sound = 'bell';
+    //     o.tone = 3;
+    //     o.reverb = 0.15;
+    //     o.delay = 0.25;
+    //     break;
+    //   case 'XS':
+    //     o.sound = 'bell';
+    //     o.tone = 5;
+    //     o.reverb = 0.2;
+    //     o.delay = 0.4;
+    //     break;
+    // }
+    if (o.isForeground) {
+
     }
+    if (o.isBackground) {
+      o.sound = 'pad';
+    }
+
     switch (o.sound) {
       case 'pad':
         o.synth = new Tone.PolySynth(
           Tone.Synth,
           {
-            oscillator: { type: "sine", volume: -46 },
-            envelope: { release: "4n", attack: "4n" }, maxPolyphony: 64
+            oscillator: { type: "sine", volume: -40 },
+            envelope: { release: "4n", attack: "16n", sustain: 1 }, maxPolyphony: 64
           }
         );
         o.panner = new Tone.Panner3D({
-          rolloffFactor: 1, refDistance: configurations.PLAYER_TARGET_H * 6, maxDistance: configurations.PLAYER_TARGET_H * 200,
-          positionZ: (1 - o.zFactor) * 100, distanceModel: "exponential"
+          rolloffFactor: 1, refDistance: this.chordMinSight, maxDistance: this.chordSight,
+          // positionZ: (o.zFactor - 1) * 100,
+          distanceModel: "linear"
         });
         o.synth.chain(o.panner, Tone.getDestination());
-        o.min = o.intRandom(-1 * this.scale.notes().length - 5, 0);
-        o.max = o.min + o.intRandom(5, 7);
+        o.min = o.intRandom(-2 * this.scale.notes().length - 5, -5);
+        o.max = o.min + o.intRandom(4, 6);
         // o.min = scale.getNote(o.min);
         // o.max = scale.getNote(o.max);
         o.range = range(o.min, o.max)
@@ -229,13 +262,13 @@ class GenerativeMusic {
           // o.previousNote = possibleNotes[0];
           o.previousNote = possibleNotes[o.intRandom(0, possibleNotes.length - 1)];
 
-
-          console.log(`H: ${o.previousNote.scientific()}`);
-          // o.synth.set({
-          //   width: Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180
-          // });
-          o.synth.triggerAttackRelease(o.previousNote.scientific(), "2n.", time);
-
+          if (o.panner.audible) {
+            console.log(`H: ${o.previousNote.scientific()} ${o.dialog}`);
+            // o.synth.set({
+            //   width: Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180
+            // });
+            o.synth.triggerAttackRelease(o.previousNote.scientific(), "2n.", time);
+          }
         }, this.chordSequence);
         break;
       default:
@@ -253,8 +286,9 @@ class GenerativeMusic {
           }
         );
         o.panner = new Tone.Panner3D({
-          rolloffFactor: 1.2, refDistance: configurations.PLAYER_TARGET_H * 2, maxDistance: configurations.PLAYER_TARGET_H * 10,
-          positionZ: (1 - o.zFactor) * 100, distanceModel: "exponential"
+          rolloffFactor: 1, refDistance: this.melodyMinSight, maxDistance: this.melodySight,
+          // positionZ: (o.zFactor - 1) * 100,
+          distanceModel: "linear"
         });
         o.synth.chain(o.panner, Tone.getDestination());
         o.noteIndex = o.intRandom(-5, 10);

@@ -43,8 +43,8 @@ export default class ObjectData {
     // console.log({ dateOffset, offset });
     // console.log(Math.min(1, (previousDate - o.birthday) / (30 * 24 * 60 * 60)));
     let rad = o.seed[0] * (Math.PI / 180);
-    o.isBackground = o.zFactor > 1;
-    o.isForeground = o.zFactor < 1;
+    o.isBackground = o.zFactor < 1;
+    o.isForeground = o.zFactor > 1;
     o.zFactor == 1 && (o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2);
     let zFactorOffset;
     zFactorOffset = (o.zFactor || 1) ** 0.5;
