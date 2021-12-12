@@ -18,10 +18,10 @@ class GenerativeMusic {
     this.chordRythm;
     this.melodyRythm;
     this.melodyMinSight = 2 * configurations.PLAYER_TARGET_H;
-    // this.melodySight = 60 * configurations.PLAYER_TARGET_H;
+    this.melodySight = 15 * configurations.PLAYER_TARGET_H;
     this.chordMinSight = 3 * configurations.PLAYER_TARGET_H;
-    // this.chordSight = 30 * configurations.PLAYER_TARGET_H;
-    MS.Scale.prototype.getNote = function(i) {
+    this.chordSight = 30 * configurations.PLAYER_TARGET_H;
+    MS.Scale.prototype.getNote = function (i) {
       let degree = i.mod(this.notes().length);
       let octave = (i - degree) / this.notes().length + 5;
       // console.log(degree);
