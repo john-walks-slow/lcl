@@ -370,6 +370,9 @@ export default class MainScene extends Phaser.Scene {
     this.setShowMenu(true);
     // this.setDisplay();
     generativeMusic.startBgm();
+    // this.gameDialog.showDialog('testtest', 'test');
+    // this.itemDialog.showDialog(['哇！你捡到了一个箱子'], 'test');
+    // this.linkDialog.showDialog();
     // setTimeout(() => {
     //   this.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H);
     //   this.scale.setZoom(configurations.SCALE);
@@ -403,6 +406,7 @@ export default class MainScene extends Phaser.Scene {
       o.oData.panner.distance = (positionX ** 2 + positionY ** 2) ** 0.5;
       o.oData.panner.audible = o.oData.panner.distance < o.oData.panner.maxDistance;
     });
+
   }
   update() {
     this.updateSound();

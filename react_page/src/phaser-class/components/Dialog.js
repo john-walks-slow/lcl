@@ -47,7 +47,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
   setDisplayParams() {
     Object.assign(this, configurations);
     this.DIALOG_HEIGHT = this.WINDOW_H / 3.5;
-    this.TEXT_PADDING_W = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 15 : 25;
+    this.TEXT_PADDING_W = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 15 : 50;
     this.TEXT_PADDING_H = Math.min(this.WINDOW_H / 25);
     this.PADDING_BETWEEN = 10;
     this.DIALOG_PADDING_W = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 7 : 15;

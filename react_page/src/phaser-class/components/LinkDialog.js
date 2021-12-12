@@ -33,9 +33,9 @@ export default class LinkDialog extends Dialog {
     this.setDisplayParams();
     this.BUTTON_SELECTED_COLOR = "#000000";
     this.WIDTH = Math.min(this.WINDOW_H / 1.5, this.WINDOW_W * 0.85);
-    this.HEIGHT = this.WIDTH * 0.6;
-    this.PADDING = this.WIDTH / 8;
-    this.PADDING_TOP = this.WIDTH / 9;
+    this.HEIGHT = this.FONT_SIZE * 7;
+    this.PADDING = this.HEIGHT / 4;
+    this.PADDING_TOP = this.HEIGHT / 5;
     this.YES_X = this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING;
     this.YES_Y = this.WINDOW_CENTER_Y + this.HEIGHT / 2 - this.FONT_SIZE_HEADER - this.PADDING_TOP;
     this.NO_X = this.WINDOW_CENTER_X + this.PADDING;
@@ -63,7 +63,6 @@ export default class LinkDialog extends Dialog {
       fontFamily: this.FONT_FAMILY,
       fontSize: `${this.FONT_SIZE}px`,
     });
-    this.dialogNo.setX;
   }
   select(i) {
     this.selectedOption = i;
