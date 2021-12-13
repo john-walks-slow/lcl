@@ -64,7 +64,6 @@ function setObjects(state, action) {
   return state.set('objects', action.objects);
 }
 function setPath(state, action) {
-  console.log(action);
   if (action.pathname != window.location.pathname) {
     if (action.withoutHistory) {
       navigateWithoutHistory(action.pathname);
@@ -75,9 +74,7 @@ function setPath(state, action) {
 }
 function updateUsedColors(state) {
   let frameList = state.get('frames').get('list').toJSON();
-  console.log(frameList);
   let usedColors = [].concat(frameList.map(v => v.grid))[0].filter((value, index, self) => (self.indexOf(value) === index)).filter((value, index) => (value.length == 7));
-  console.log(usedColors);
   return state.set('usedColors', usedColors);
 }
 function setStorage(state, action) {

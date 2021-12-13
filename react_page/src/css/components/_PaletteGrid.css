@@ -1,4 +1,10 @@
 .palette-grid {
   lost-utility: clearfix;
+  vertical-align: middle;
   text-align: center;
+  display: inline-block;
+  left: 160px;
+  width: 70px;
+  bottom: 151px;
+  width: calc(100% - 148px);
 }

@@ -4,9 +4,9 @@ class Configurations {
     // this.ZOOM_LEVEL = 1;
     // this.DEV_MODE = true;
     this.DEV_MODE = false;
-
-    this.PLAYER_TARGET_W = 40;
-    this.PLAYER_TARGET_H = 46;
+    this.RESOLUTION = 5;
+    this.PLAYER_TARGET_W = 40 * this.RESOLUTION;
+    this.PLAYER_TARGET_H = 46 * this.RESOLUTION;
     // this.ZOOM_LEVEL = Math.min(Math.min(this.WINDOW_W / 15, this.WINDOW_H / 15) / this.PLAYER_TARGET_H, 1);
     this.CANVAS_SCALE = 0.6;
     this.ZOOM_LEVEL = 1;
@@ -34,7 +34,7 @@ class Configurations {
     // Actually the size of the canvas,not the window
     this.RAW_WINDOW_W = (window.innerWidth || document.body.clientWidth);
     this.RAW_WINDOW_H = (window.innerHeight || document.body.clientHeight);
-    this.SCALE = Math.min(Math.min(this.RAW_WINDOW_W / 15, this.RAW_WINDOW_H / 15) / this.PLAYER_TARGET_H, 1);
+    this.SCALE = Math.min(Math.min(this.RAW_WINDOW_W / 15, this.RAW_WINDOW_H / 23) / this.PLAYER_TARGET_H, 1);
     this.WINDOW_W = this.RAW_WINDOW_W / this.SCALE;
     this.WINDOW_H = this.RAW_WINDOW_H / this.SCALE;
     this.WINDOW_CENTER_X = this.WINDOW_W / 2;

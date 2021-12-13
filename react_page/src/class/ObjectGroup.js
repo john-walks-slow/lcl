@@ -82,7 +82,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
             }
             break;
           case "item":
-            o.instance = this.scene.itemGroup.create(o.x, o.y, configurations.ITEM_LIST[o.itemId].name).setDisplaySize(34, 34);
+            o.instance = this.scene.itemGroup.create(o.x, o.y, configurations.ITEM_LIST[o.itemId].name).setDisplaySize(o.displayWidth, o.displayWidth);
             o.instance.fadeOut = this.scene.tweens.create({
               targets: o.instance,
               duration: 600,

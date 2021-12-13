@@ -18,6 +18,7 @@ const Preview = props => {
         height: cellSize,
         width: cellSize,
         position: 'absolute',
+        transform: 'scale(1.001)',
         top: '-5px',
         left: '-5px'
       }

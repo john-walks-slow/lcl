@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Picker = ({ type, value, action, min = 1, max = 0 }) => {
+const Picker = ({ type, value, action, min = 4, max = 64 }) => {
   const pickerType = `picker__${type}`;
   return (
     <div className="picker">

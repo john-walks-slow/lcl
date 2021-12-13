@@ -65,7 +65,19 @@ const createPaletteGrid = () => {
   //   'rgba(56, 53, 53, 1)'
   // ];
   let player = secureStorage.getItem('player');
-  let colorList = ["#000000", "#FEFEFE"];
+  // Default color
+  let colorList = [
+    "#000000",
+    "#ffffff",
+    "#ffff00",
+    "#ff0000",
+    "#00ff00",
+    "#0000ff",
+    "#646432",
+    "#a0a06e",
+    "#bcbc8a",
+    "#e6e6b4",
+  ];
   if (player && player.palette) {
     colorList = colorList.concat(player.palette);
   }

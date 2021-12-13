@@ -12,16 +12,25 @@ const Dimensions = props => {
   const changeDimensions = (gridProperty, behaviour) => {
     props.actions.changeDimensions(gridProperty, behaviour);
   };
+  const changeBothDimensions = (behaviour) => {
+    props.actions.changeBothDimensions(behaviour);
+  };
 
   const { columns, rows } = props;
 
   return (
     <div className="dimensions">
-      <PickerWrapper>
+      {/* <PickerWrapper>
         <Picker type="columns" value={columns} action={changeDimensions} />
       </PickerWrapper>
       <PickerWrapper>
         <Picker type="rows" value={rows} action={changeDimensions} />
+      </PickerWrapper> */}
+      <PickerWrapper>
+        <Picker type="columns" value={rows} action={
+          (type, amount) => {
+            changeBothDimensions(amount);
+          }} />
       </PickerWrapper>
     </div>
   );

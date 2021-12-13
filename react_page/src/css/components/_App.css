@@ -90,16 +90,20 @@
   }
 
   .app__tools-wrapper {
-    margin-top: 10px;
-
+    position: relative;
+    right: 7px;
+    margin-top: 0px;
+    display: inline-block;
     > div {
       display: inline-block;
       button {
-        font-size: 0.9em;
+        position: relative;
+        font-size: 17px;
+        vertical-align: middle;
+
         padding: 5 px;
         text-align: center;
         color: $color-mineShaft;
-        width: 100%;
         border: none;
         background-color: transparent;
 
@@ -129,12 +133,16 @@
     margin-right: 0;
   }
   .john_tools {
-    width: 30%;
+    width: 100%;
     display: inline-block;
     vertical-align: top;
+    margin: 10px 0;
+  }
+  .app__mobile--group {
+    width: 100vw;
   }
   .john_canvas {
-    width: 70%;
+    width: 100%;
     display: inline-block;
   }
   .palette-grid {

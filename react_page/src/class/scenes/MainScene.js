@@ -410,6 +410,25 @@ export default class MainScene extends Phaser.Scene {
     //   this.scale.setZoom(configurations.SCALE);
     //   console.log('resize');
     // }, 3000);
+    // let particles = this.add.particles('boxes');
+    // this.gameObjectsLayer.add(particles);
+    // particles.depth = 999999;
+    // let emitter = particles.createEmitter();
+    // // emitter.setBlendMode(Phaser.BlendModes.ADD);
+    // emitter.setQuantity(1);
+    // emitter.setFrequency(500);
+    // emitter.setSpeedY(100);
+    // emitter.setGravity(0, 100);
+    // emitter.setEmitZone(
+    //   new Phaser.GameObjects.Particles.Zones.RandomZone(
+    //     new Phaser.Geom.Rectangle(0, 0, configurations.WINDOW_W, configurations.WINDOW_H / 10)
+    //   )
+    // );
+    // emitter.gravity = 0;
+    // emitter.width = configurations.WINDOW_W * 1.5;
+    // emitter.minRotation = 0;
+    // emitter.maxRotation = 40;
+    // emitter.start();
   }
   setupKeyboard() {
     this.input.keyboard.on('keydown-B', () => {

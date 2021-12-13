@@ -13,6 +13,7 @@ import Root from '../components/Root';
 import {
   SHOW_SPINNER,
   CHANGE_DIMENSIONS,
+  CHANGE_BOTH_DIMENSIONS,
   NEW_PROJECT,
   SET_DRAWING,
   SET_CELL_SIZE,
@@ -33,7 +34,7 @@ const ENV = process.env.NODE_ENV || 'development';
 // if (ENV === 'development') {
 //   configData = JSON.parse(fs.readFileSync('config.json', 'utf8')).dev;
 // } else {
-  configData = process.env;
+configData = process.env;
 // }
 
 app.set('views', `${__dirname}/../views`);
@@ -59,6 +60,7 @@ function renderHome(req, res) {
     undoable(reducer, {
       filter: includeAction([
         CHANGE_DIMENSIONS,
+        CHANGE_BOTH_DIMENSIONS,
         SET_DRAWING,
         SET_CELL_SIZE,
         SET_RESET_GRID,
@@ -85,7 +87,7 @@ function renderHome(req, res) {
 }
 
 function renderCookies(req, res) {
-  res.render('cookies.pug', { });
+  res.render('cookies.pug', {});
 }
 
 /**
@@ -93,7 +95,7 @@ function renderCookies(req, res) {
  */
 app.get('/', renderHome);
 app.get('/cookies', renderCookies);
-app.use(function(req, res) {
+app.use(function (req, res) {
   res.status(404).render('404.pug', {
   });
 });

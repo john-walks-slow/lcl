@@ -22,23 +22,24 @@ const PreviewBox = props => {
   return (
     <div className="preview-box">
       <button
-            type="button"
-            className={animate ? 'pause' : 'play'}
-            onClick={(e) => {setAnimate(!animate);console.log(e);}}
-            aria-label="Animation control"
-          />
+        type="button"
+        className={animate ? 'pause' : 'play'}
+        onClick={(e) => { setAnimate(!animate); console.log(e); }}
+        aria-label="Animation control"
+      />
       <div className="preview-box__container">
         <Preview
           frames={frameList}
           columns={columns}
           rows={rows}
-          cellSize={Math.min(150/rows,Math.min((window.innerWidth || document.body.clientWidth)*0.8,450)/columns)}
+          cellSize={Math.ceil(Math.min(150 / rows, Math.min((window.innerWidth || document.body.clientWidth) * 0.8, 450) / columns))}
+          // cellSize={5}
           duration={duration}
           activeFrameIndex={activeFrameIndex}
           animate={animate}
           animationName="wip-animation"
         />
-          <div data-tooltip={animTooltip}>
+        <div data-tooltip={animTooltip}>
 
         </div>
       </div>

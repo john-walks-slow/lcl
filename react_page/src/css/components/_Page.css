@@ -7,7 +7,7 @@
   }
   @media screen and (min-width: 600px) {
     padding: 4% 0;
-    max-width: 500px;
+    max-width: min(500px, 100vh);
     margin: 0 auto;
   }
   padding-bottom: 60px;
@@ -74,6 +74,7 @@
         box-shadow: none;
         text-align: center;
         font-size: 0.95em;
+        padding: 0 5px;
         border-radius: 6px;
         background-color: rgb(247, 247, 247);
         color: black;
@@ -112,4 +113,14 @@ sub {
 .page__link {
   text-decoration: underline;
   color: grey !important;
+}
+.dimension_group {
+  margin-top: 5px;
+  display: inline-block;
+  width: 133px;
+}
+.tools_group {
+  display: inline-block;
+  width: 100vw;
+  margin: 10px -5px;
 }

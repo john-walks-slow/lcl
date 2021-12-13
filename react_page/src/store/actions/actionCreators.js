@@ -15,6 +15,12 @@ export function changeDimensions(gridProperty, increment) {
     increment
   };
 }
+export function changeBothDimensions(increment) {
+  return {
+    type: types.CHANGE_BOTH_DIMENSIONS,
+    increment
+  };
+}
 
 export function updateGridBoundaries(gridElement) {
   return {

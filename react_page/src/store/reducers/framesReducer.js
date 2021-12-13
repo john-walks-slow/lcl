@@ -73,8 +73,9 @@ const getFrame = (frames, frameId) => {
 
 const initFrames = (action = {}) => {
   const options = action.options || {};
-  const columns = parseInt(options.columns, 10) || 16;
-  const rows = parseInt(options.rows, 10) || 16;
+  // Default canvas size
+  const columns = parseInt(options.columns, 10) || 20;
+  const rows = parseInt(options.rows, 10) || 20;
   const list = resetIntervals(List([create(columns * rows)]));
   const hoveredIndex = undefined;
   return Map({
@@ -165,7 +166,12 @@ const changeDimensions = (frames, { gridProperty, increment }) => {
     [gridProperty]: frames.get(gridProperty) + increment
   });
 };
-
+const changeBothDimensions = (frames, { increment }) => {
+  let f;
+  f = changeDimensions(frames, { gridProperty: 'columns', increment });
+  f = changeDimensions(f, { gridProperty: 'rows', increment });
+  return f;
+};
 const setFrames = (frames, action) => {
   const { columns, rows, hoveredIndex } = action;
   const frameList = action.frames;
@@ -181,7 +187,7 @@ const setFrames = (frames, action) => {
 const changeHoveredCell = (frames, cell) =>
   frames.merge({ hoveredIndex: cell });
 
-export default function (frames = initFrames(), action) {
+export default function (frames = initFrames({}), action) {
   switch (action.type) {
     case types.SET_INITIAL_STATE:
     case types.NEW_PROJECT:
@@ -200,6 +206,8 @@ export default function (frames = initFrames(), action) {
       return duplicateFrame(frames, action);
     case types.CHANGE_DIMENSIONS:
       return changeDimensions(frames, action);
+    case types.CHANGE_BOTH_DIMENSIONS:
+      return changeBothDimensions(frames, action);
     case types.CHANGE_HOVERED_CELL:
       return changeHoveredCell(frames, action.cell);
     default:

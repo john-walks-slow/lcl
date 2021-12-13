@@ -4,6 +4,7 @@ import { fromJS } from 'immutable';
 import reducer from './reducers/reducer';
 import {
   CHANGE_DIMENSIONS,
+  CHANGE_BOTH_DIMENSIONS,
   APPLY_PENCIL,
   APPLY_ERASER,
   APPLY_BUCKET,
@@ -20,6 +21,8 @@ import {
 const createIncludedActions = () =>
   includeAction([
     CHANGE_DIMENSIONS,
+    CHANGE_BOTH_DIMENSIONS,
+
     APPLY_PENCIL,
     APPLY_ERASER,
     APPLY_BUCKET,
@@ -55,7 +58,7 @@ const configureStore = devMode => {
         debug: false,
         ignoreInitialState: true
       })
-);
+    );
   }
 
   return store;

@@ -83,6 +83,8 @@ export default class ObjectData {
         if (o.zFactor == 1 && distance < minDistance) { distance = minDistance; }
         i.x = Math.cos(rad) * distance;
         i.y = Math.sin(rad) * distance;
+        i.displayWidth = configurations.OBJECT_W.XS;
+        i.displayWidth = Math.max(Math.round(i.displayWidth / 17), 1) * 17;
         i.zone = [Math.ceil(i.x / configurations.GRID_SIZE), Math.ceil(i.y / configurations.GRID_SIZE)];
         i.type = "item";
         this.map.pushNew(i.zone, i);

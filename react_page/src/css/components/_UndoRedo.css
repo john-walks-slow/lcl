@@ -1,16 +1,14 @@
 .undo-redo {
   lost-utility: clearfix;
+  display: inline-block;
+  vertical-align: middle;
 
   button {
     background: transparent;
-    border:none;
+    border: none;
     cursor: pointer;
-    lost-column: 1/2 0 0.5em;
-    font-size: 0.9em;
-    width:auto;
-    margin-right: 0px !important;
-    margin-bottom: 16px;
-    margin-top: 15px;
+    font-size: 17px;
+    width: auto;
   }
 
   .undo-redo__icon--undo {
@@ -18,17 +16,15 @@
     display: block;
     background: transparent;
   }
-  .undo-redo__icon--undo:active{
-   transform:scale(1.3)
-
+  .undo-redo__icon--undo:active {
+    transform: scale(1.3);
   }
   .undo-redo__icon--redo {
     @mixin icon redo;
     background: transparent;
     display: block;
   }
-  .undo-redo__icon--redo:active{
-    transform:scale(1.3)
-
-   }
+  .undo-redo__icon--redo:active {
+    transform: scale(1.3);
+  }
 }
