@@ -52,7 +52,10 @@
 
 ##### 当前版本
 - [x] :fire: 字体加载超级慢，更换字体
-- [x] :art: 更新ui
+- [x] :art: 更新Add Page ui
+- [x] :bug: 创建game前更新屏幕坐标
+- [x] :bug: Add Page改变屏幕大小导致坐标偏移
+- [ ] :bug: 程序化音乐start time 报错
 - [ ] :package: 安卓版开发（！）
 - [ ] :sparkles: 恒定的坐标系统
 - [ ] :sparkles: 重新考虑颜料（免费送？购买？）

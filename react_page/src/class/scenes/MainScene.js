@@ -34,7 +34,7 @@ export default class MainScene extends Phaser.Scene {
 
     Object.assign(this, methods);
   }
-  preload() {}
+  preload() { }
   init(data) {
     console.log('init');
     this.objectData = data.objectData;
@@ -227,13 +227,13 @@ export default class MainScene extends Phaser.Scene {
     this.objectData.list.forEach(o => {
       o.isAnimate
         ? this.anims.create({
-            key: 'spritesheet' + o._id,
-            frames: 'object' + o._id,
-            frameRate: 2,
-            delay: Math.random() * 1000,
-            repeat: -1,
-            repeatDelay: 0
-          })
+          key: 'spritesheet' + o._id,
+          frames: 'object' + o._id,
+          frameRate: 2,
+          delay: Math.random() * 1000,
+          repeat: -1,
+          repeatDelay: 0
+        })
         : false;
     });
 
@@ -346,10 +346,10 @@ export default class MainScene extends Phaser.Scene {
         seeds[i] < probability &&
           (result += `${key}(${min +
             (max - min) *
-              Math.min(
-                (seeds[i] * Math.abs(x)) / configurations.MOVE_SPEED / 5,
-                1
-              )}${unit}) `);
+            Math.min(
+              (seeds[i] * Math.abs(x)) / configurations.MOVE_SPEED / 5,
+              1
+            )}${unit}) `);
         i++;
         RESULT_LIST[key] = false;
       }
@@ -363,10 +363,10 @@ export default class MainScene extends Phaser.Scene {
         seeds[i] < probability &&
           (result += `${key}(${min +
             (max - min) *
-              Math.min(
-                (seeds[i] * Math.abs(y)) / configurations.MOVE_SPEED / 5,
-                1
-              )}${unit}) `);
+            Math.min(
+              (seeds[i] * Math.abs(y)) / configurations.MOVE_SPEED / 5,
+              1
+            )}${unit}) `);
         i++;
       }
       return `${result}`;
@@ -602,6 +602,8 @@ export default class MainScene extends Phaser.Scene {
 
   resume() {
     this.scene.resume(this);
+    this.game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H);
+    this.game.scale.setZoom(configurations.SCALE);
     this.setDisplay();
     this.input.keyboard.enableGlobalCapture();
   }

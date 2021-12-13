@@ -75,6 +75,7 @@ const Game = ({ dispatch, isShown }) => {
       setShowInventory(false);
       setShowInfo(false);
       setShowGame(false);
+      console.log('pause');
       mainSceneRef.pause();
       return;
     }
@@ -86,11 +87,14 @@ const Game = ({ dispatch, isShown }) => {
       // if not initial run
       if (mainSceneRef) {
         setShowMenu(true);
+        console.log('resume');
         mainSceneRef.resume();
         // mainSceneRef.scene.restart({ objectList: mainSceneRef.objectList, gameObjectMap: mainSceneRef.gameObjectMap });
       }
       // initialize
       else {
+        console.log('initial run');
+        configurations.updateConfigurations();
         window.addEventListener('resize', () => {
           configurations.updateConfigurations();
           console.log(configurations.WINDOW_W, configurations.WINDOW_H);
