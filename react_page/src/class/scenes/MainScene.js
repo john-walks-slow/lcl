@@ -395,8 +395,6 @@ export default class MainScene extends Phaser.Scene {
 
     // import Tone from 'Tone';
     // import * as teoria from 'teoria';
-    this.game.canvas.style.imageRendering = 'auto';
-
     this.setupKeyboard();
     this.setShowMenu(true);
     generativeMusic.startBgm();

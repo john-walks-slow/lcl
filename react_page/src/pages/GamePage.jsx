@@ -128,7 +128,6 @@ const Game = ({ dispatch, isShown }) => {
           // scale: { mode: Phaser.Scale.FIT, },
           parent: "PHASER_ROOT",
           scene: [loadingScene, mainScene],
-          canvasStyle: null,
           fps: undefined,
           disableContextMenu: true,
           render: {
@@ -137,6 +136,8 @@ const Game = ({ dispatch, isShown }) => {
         };
 
         var game = new Phaser.Game(config);
+        game.canvas.style.imageRendering = 'auto';
+
         setGame(game);
         // game.scale.autoRound = true;
         // game.scale.setMaxZoom();
