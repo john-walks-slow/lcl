@@ -9,10 +9,10 @@ import mapBtnURL from '../assets/game/map.png';
 import bagBtnURL from '../assets/game/bag.png';
 import infoBtnURL from '../assets/game/info.png';
 import moreBtnURL from '../assets/game/more.png';
-import configurations from '../phaser-class/configurations';
+import configurations from '../class/configurations';
 import { setPath, setStorage } from '../store/actions/actionCreators';
-import MainScene from '../phaser-class/scenes/MainScene';
-import LoadingScene from '../phaser-class/scenes/LoadingScene';
+import MainScene from '../class/scenes/MainScene';
+import LoadingScene from '../class/scenes/LoadingScene';
 import emoji from 'emoji-dictionary/lib/index';
 import { secureStorage } from "../utils/storage";
 

@@ -14,6 +14,7 @@ import { setObjects } from "../../store/actions/actionCreators";
 import configurations from "../configurations";
 import generativeMusic from "../GenerativeMusic";
 import ObjectData from "../ObjectData";
+import { objectService } from "../feathers-service";
 export default class LoadingScene extends Phaser.Scene {
   constructor(methods) {
     super({
@@ -25,11 +26,7 @@ export default class LoadingScene extends Phaser.Scene {
   preload() { }
 
   create() {
-    var app = feathers();
-    // Connect to a different URL
-    var restClient = rest();
-    // Configure an AJAX library (see below) with that client
-    app.configure(restClient.fetch(window.fetch));
+
     try {
 
       const setup = (data) => {
@@ -106,17 +103,11 @@ export default class LoadingScene extends Phaser.Scene {
         });
         this.load.start();
       };
-      if (configurations.DEV_MODE) {
-        // setup();
-      } else {
-
-      }
-      app.service('objects').find({ paginate: false }).then(setup);
+      objectService.find({ paginate: false }).then(setup);
 
     } catch (error) {
       console.log(error);
-    }
-    ;
+    };
     this.add.rectangle(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y, configurations.WINDOW_W, configurations.WINDOW_H, 0x000000);
     this.label = this.add.text(configurations.WINDOW_W / 20, 80,
       new Date(configurations.TIMESTAMP).toString().split('GMT')[0] + "user@remote" + '\n Fetching object list...',

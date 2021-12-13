@@ -2,6 +2,7 @@ import feathers from '@feathersjs/feathers';
 import rest from '@feathersjs/rest-client';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { objectService } from "../class/feathers-service";
 import App from '../components/App';
 import {
   newProject, setPath, setStorage, updateUsedColors
@@ -103,7 +104,7 @@ const Page = ({ dispatch, isShown }) => {
       link
     });
     try {
-      let result = await objectsService.create({
+      let result = await objectService.create({
         name,
         dialog,
         size,
@@ -154,13 +155,7 @@ const Page = ({ dispatch, isShown }) => {
     // setTimeout(() => {
     document.body.style.overflow = 'auto';
     // }, 500);
-    let app = feathers();
-    // Connect to the same as the browser URL (only in the browser)
-    let restClient = rest();
-    app.configure(restClient.fetch(window.fetch));
     // Connect to the `http://feathers-api.com/messages` service
-    setObjectsService(app.service('objects'));
-    setBlobsService(app.service('blobs'));
   }
     , []);
   return (

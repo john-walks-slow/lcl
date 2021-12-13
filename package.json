@@ -22,7 +22,7 @@
     "start": "node src/",
     "http-server": "http-server ./public",
     "dev": "cd react_page && webpack --config webpack.config.js",
-    "build": "cd react_page && npm ci --include=dev && webpack --config webpack.production.config.js && npm prune --production",
+    "build": "cd react_page && npm ci --include=dev && npm run build",
     "clearDB": "rm data/objects.db",
     "test": "npm run lint && npm run mocha",
     "lint": "eslint src/. test/. --config .eslintrc.json --fix",
@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "axios": "^0.24.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "mocha": "^8.4.0",
     "nodemon": "^2.0.15",
