@@ -9,12 +9,13 @@
     "test:watch": "npm run test -- --watch",
     "validate": "npm run lint && npm run csslint && npm run prettier -- --list-different && npm run test",
     "development": "webpack-dev-server --hot",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.production.config.js",
-    "build-app": "cross-env NODE_ENV=app webpack --config webpack.production.config.js",
+    "build": "cross-env NODE_ENV=production BUILD_PLATFORM=web webpack --config webpack.config.js",
+    "build-app": "cross-env NODE_ENV=production BUILD_PLATFORM=app webpack --config webpack.config.js",
     "server": "node ./src/server/loader",
     "server-debug": "node --inspect ./src/server/loader",
     "start": "webpack",
-    "dev": "webpack --config webpack.config.js"
+    "dev": "cross-env NODE_ENV=development BUILD_PLATFORM=web webpack --config webpack.config.js",
+    "dev-app": "cross-env NODE_ENV=development BUILD_PLATFORM=app webpack --config webpack.config.js"
   },
   "main": "index.js",
   "license": "MIT",

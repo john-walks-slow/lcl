@@ -21,7 +21,7 @@
   "scripts": {
     "start": "node src/",
     "http-server": "http-server ./public",
-    "dev": "cd react_page && webpack --config webpack.config.js",
+    "dev": "concurrently \"cd react_page && npm run dev\" \"npm run start\"",
     "build": "cd react_page && npm ci --include=dev && npm run build",
     "clearDB": "rm data/objects.db",
     "test": "npm run lint && npm run mocha",
@@ -37,6 +37,7 @@
     "@feathersjs/socketio": "^4.5.11",
     "@feathersjs/transport-commons": "^4.5.11",
     "compression": "^1.7.4",
+    "concurrently": "^6.4.0",
     "connect-history-api-fallback": "^1.6.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
