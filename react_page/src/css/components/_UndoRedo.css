@@ -16,11 +16,19 @@
   .undo-redo__icon--undo {
     @mixin icon undo;
     display: block;
+    background: transparent;
   }
+  .undo-redo__icon--undo:active{
+   transform:scale(1.3)
 
+  }
   .undo-redo__icon--redo {
     @mixin icon redo;
-
+    background: transparent;
     display: block;
   }
+  .undo-redo__icon--redo:active{
+    transform:scale(1.3)
+
+   }
 }

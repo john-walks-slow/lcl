@@ -49,6 +49,7 @@
     font-family: $font-pixel;
     font-size: 16px;
     border: 1px solid grey;
+    border-top: none;
     border-radius: 0px;
     flex: 1;
 
@@ -64,7 +65,7 @@
     }
 
     button:active {
-      background-color: grey;
+      background: rgb(206, 206, 206);
     }
 
     .button-add {

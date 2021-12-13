@@ -1,15 +1,16 @@
 .reset {
-  font-size: 0.7em;
+  font-size: 0.6em;
   width: 100%;
   margin-top: 2px;
   position: relative;
-  bottom: 2px;
+  padding: 3px;
+  margin: 0;
   display: inline-block;
   background: white;
   color: black;
   border: grey solid 1px;
-  transform: scale(1);
+  border-top: none;
 }
 .reset:active {
-  transform: scale(0.8);
+  background: rgb(206, 206, 206);
 }
