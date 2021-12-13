@@ -61,7 +61,7 @@ const setSeed = async context => {
 const generateItem = async context => {
   context.data.item = false;
   // if (ownItems.includes(context.data._id)) { return; }
-  let itemId = Math.floor(Math.random() * 15);
+  let itemId = Math.floor(Math.random() * 25);
   if (itemId > 4) { return context; }
   let itemDegree = Math.random() * 360;
   let itemDistance = Math.random();
