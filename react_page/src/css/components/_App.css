@@ -1,5 +1,7 @@
 #app {
   background: #131313;
+  width: 100vw;
+  min-height: 100vh;
   .app__main-container,
   .app__central-container {
     lost-utility: clearfix;

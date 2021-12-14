@@ -151,9 +151,9 @@ const createPalette = () =>
     grid: createPaletteGrid(),
     position: 0
   });
-const setPaletteFromStorage = (action) => (
+const setPaletteFromStorage = ({ storage: { palette = [] } }) => (
   Map({
-    grid: List(action.palette).map(color => Map({ color, id: shortid.generate() })),
+    grid: List([...INITIAL_PALETTE, ...palette]).map(color => Map({ color, id: shortid.generate() })),
     position: 0
   })
 );
@@ -220,7 +220,7 @@ export default function paletteReducer(palette = createPalette(), action) {
     case types.SET_DRAWING:
       return setPalette(palette, action);
     case types.SET_STORAGE:
-      return setPaletteFromStorage(palette, action);
+      return setPaletteFromStorage(action);
     default:
       return palette;
   }

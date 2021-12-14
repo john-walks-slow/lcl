@@ -105,6 +105,7 @@ const Page = ({ dispatch, isShown }) => {
       link
     });
     let currentPlayer = secureStorage.getItem('player');
+    console.log(currentPlayer);
     dispatch(setStorage(currentPlayer));
     if (currentPlayer
       && currentPlayer.labels >= labelConsumption
@@ -169,7 +170,7 @@ const Page = ({ dispatch, isShown }) => {
   };
   useEffect(() => {
     document.body.style.backgroundColor = "white";
-    document.title = "New Object";
+    document.title = "白洞 / 创建";
     setShow(true);
     dispatch(newProject());
     dispatch(updateUsedColors());

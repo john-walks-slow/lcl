@@ -82,7 +82,7 @@ const Game = ({ dispatch, isShown }) => {
     }
     if (isShown) {
       setShowGame(true);
-      document.title = "lcl";
+      document.title = "白洞 / LCL";
       document.body.style.overflow = "hidden";
       document.body.style.backgroundColor = "#131313";
       // if not initial run
