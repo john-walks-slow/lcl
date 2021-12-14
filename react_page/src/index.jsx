@@ -8,11 +8,14 @@ import { Provider } from 'react-redux';
 
 const devMode = process.env.NODE_ENV === 'development';
 const store = configureStore(devMode);
+try {
+  render(
+    <Provider store={store}>
+      <Router dispatch={store.dispatch} />
+    </Provider>
 
-render(
-  <Provider store={store}>
-    <Router dispatch={store.dispatch} />
-  </Provider>
-
-  , document.getElementById('app')
-);
+    , document.getElementById('app')
+  );
+} catch (error) {
+  alert(error);
+}

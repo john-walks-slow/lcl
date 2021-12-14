@@ -72,7 +72,7 @@ const Page = ({ dispatch, isShown }) => {
   const boxConsumption = link == "" ? 0 : 1;
   const fatConsumption = FAT_CONSUMPTION_MAP[size];
   const batteryConsumption = BATTERY_CONSUMPTION_MAP[movement];
-  const telescopeConsumption = Math.floor(Math.abs(zFactor - 1) / 0.3);
+  const telescopeConsumption = Math.floor(Math.abs(zFactor - 1) / 0.25);
   const regex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
   const error =
     isEmpty || labels < labelConsumption || batteries < batteryConsumption || fats < fatConsumption || telescopes < telescopeConsumption || (link !== "" && !link.match(regex));
@@ -104,6 +104,20 @@ const Page = ({ dispatch, isShown }) => {
       zFactor,
       link
     });
+    let currentPlayer = secureStorage.getItem('player');
+    dispatch(setStorage(currentPlayer));
+    if (currentPlayer
+      && currentPlayer.labels >= labelConsumption
+      && currentPlayer.fats >= fatConsumption
+      && currentPlayer.telescopes >= telescopeConsumption
+      && currentPlayer.batteries >= batteryConsumption
+      && currentPlayer.boxes >= boxConsumption) {
+      console.log('ok');
+    } else {
+      setErrorData('道具数量不足！');
+      setUploading(false);
+      return;
+    }
     try {
       let result = await objectService.create({
         name,
@@ -128,14 +142,15 @@ const Page = ({ dispatch, isShown }) => {
       setZFactor(1);
       const getColor = Math.round(Math.random()) == 1;
       // let newRewardColor = Array(colorCount).map(i => ((Math.floor(Math.random() * 16777215).toString(16))));
-      let newRewardColor = getColor ? REWARD_PALETTE[Math.floor(Math.random(REWARD_PALETTE.length))] : false;
+      let newRewardColor = getColor ? REWARD_PALETTE[Math.floor(Math.random() * REWARD_PALETTE.length)] : false;
+      if (currentPlayer.palette.indexOf(newRewardColor) > -1) {
+        newRewardColor = false;
+      }
       setRewardColor(newRewardColor);
       let currentPlayer = secureStorage.getItem('player');
       currentPlayer.palette = (getColor ?
         [...currentPlayer.palette, newRewardColor] : currentPlayer.palette)
         .filter((c) => (usedColors.indexOf(c) == -1));
-
-      console.log(currentPlayer.palette);
       currentPlayer.labels -= labelConsumption;
       currentPlayer.fats -= fatConsumption;
       currentPlayer.telescopes -= telescopeConsumption;
@@ -170,19 +185,27 @@ const Page = ({ dispatch, isShown }) => {
           {/* <i class="fas fa-sign-out-alt"></i> */}
           ⏎ 回到白洞</button>
       </div>
-      {submitted ?
-        <div className={"page__submitted" + (submitted ? " show" : "")}>
+      {(submitted || errorData) ?
+        <div className={"page__submitted" + " show"}>
           {errorData ? ("哎呀！出了一点问题。" + errorData.toString()) : "创建成功了！一小时之后，它会出现在世界里"}
           <br />
           {rewardColor ? <div className="page__div-color" style={{ "backgroundColor": rewardColor + "10" }}>
             <span className="page__span-color" style={{ "backgroundColor": rewardColor }}></span>
             哇！找到了一瓶颜料</div>
             : ""}
-          <a className="page__link" onClick={() => {
-            dispatch((newProject()));
-            setRewardColor(false);
-            setSubmitted(false);
-          }}>再创建一个</a>
+          {!errorData ?
+            (<a className="page__link" onClick={() => {
+              dispatch((newProject()));
+              setRewardColor(false);
+              setErrorData(false);
+              setSubmitted(false);
+            }}>再创建一个</a>) :
+            (
+              <a className="page__link" onClick={() => {
+                setRewardColor(false);
+                setErrorData(false);
+                setSubmitted(false);
+              }}>返回</a>)}
 
 
         </div>
@@ -227,7 +250,7 @@ const Page = ({ dispatch, isShown }) => {
 
           <label className={"page__label"} disabled={telescopes <= 0}>
             深度 <sub>{("镜片数量：" + telescopes + (telescopeConsumption == 0 ? "" : `(-${telescopeConsumption})`))}</sub>
-            <input type="range" min="0.4" max="1.6" step="0.2" value={2 - zFactor} onChange={(event) => { setZFactor(2 - event.target.value); }} placeholder="深度的范围是0.5 - 1.5（近大远小）" className="page__input" />
+            <input type="range" min="0.4" max="1.6" step="0.1" value={2 - zFactor} onChange={(event) => { setZFactor(2 - event.target.value); }} placeholder="深度的范围是0.5 - 1.5（近大远小）" className="page__input" />
           </label>
 
           <input className="page__submit" disabled={error || uploading} type="submit" onClick={(e) => { submit(e); }} value={uploading ? "提交中..." : "提交"} />

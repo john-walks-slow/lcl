@@ -25,6 +25,7 @@
     display: none;
     opacity: 0;
     transition: all 300ms;
+    color: white;
   }
   .page__submitted.show {
     display: block;
@@ -45,7 +46,7 @@
       border-radius: 20px;
       color: #131313;
       text-align: center;
-      padding: 5px;
+      padding: 9px;
       margin-top: 10px;
     }
     .page__label {
@@ -61,7 +62,21 @@
         display: block;
         border-radius: 6px;
       }
-
+      input[type="range"] {
+        -webkit-appearance: none;
+        background-color: rgb(83, 83, 83);
+        width: 100%;
+        height: 10px;
+        margin-bottom: 25px;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        background-color: yellow;
+        border-radius: 5px;
+        -webkit-appearance: none;
+        opacity: 0.5;
+        width: 10px;
+        height: 26px;
+      }
       input:disabled {
         background-color: lightgray;
       }

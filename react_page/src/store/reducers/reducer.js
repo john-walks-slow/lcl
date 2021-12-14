@@ -7,7 +7,15 @@ import drawingToolReducer from './drawingToolReducer';
 import * as types from '../actions/actionTypes';
 import { initStorage, getDataFromStorage, secureStorage } from '../../utils/storage';
 import { navigate, navigateWithoutHistory } from '../../utils/history';
-
+let playerDefault = {
+  palette: [],
+  labels: 0,
+  fats: 0,
+  telescopes: 0,
+  batteries: 0,
+  boxes: 0,
+  ownItems: []
+};
 function setInitialState(state) {
   const cellSize = 1;
   // const colorList = List(["#131313", "#FFFFFF"
@@ -17,15 +25,7 @@ function setInitialState(state) {
   //   position: 0
   // });
   let player = secureStorage.getItem('player');
-  let playerDefault = {
-    palette: [],
-    labels: 0,
-    fats: 0,
-    telescopes: 0,
-    batteries: 0,
-    boxes: 0,
-    ownItems: []
-  };
+
   player = Object.assign(playerDefault, player);
   secureStorage.setItem('player', player);
   const labels = player.labels;
@@ -78,7 +78,7 @@ function updateUsedColors(state) {
   return state.set('usedColors', usedColors);
 }
 function setStorage(state, action) {
-  const player = secureStorage.getItem('player');
+  const player = secureStorage.getItem('player') || playerDefault;
   let result = { ...player, ...action.storage };
   secureStorage.setItem('player',
     result);

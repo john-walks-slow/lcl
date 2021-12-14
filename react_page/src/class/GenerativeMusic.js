@@ -28,7 +28,7 @@ class GenerativeMusic {
       return MS.note(this.notes()[degree].name() + octave.toString());
     };
     const initTone = () => {
-      const context = new Tone.Context({ latencyHint: 'playback' });
+      const context = new Tone.Context({ latencyHint: 700 });
       Tone.setContext(context);
     };
     initTone();
@@ -350,18 +350,32 @@ class GenerativeMusic {
         break;
     }
   }
+  startLoop(o) {
+    try {
+      o.loop.start(o.startDelay + Tone.now());
+
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
   startBgm() {
     const start = () => {
       // setup();
       // this.objectGroup.initSound();
       // set this context as the global Context
-      Tone.start();
-      Tone.getTransport().bpm.value = 35;
-      Tone.getTransport().start();
-      // setInterval(this.updateSound.bind(this), 300);
-      document.removeEventListener('click', start);
-      document.removeEventListener('touchend', start);
-      document.removeEventListener('keydown', start);
+      try {
+        Tone.start();
+        Tone.getTransport().bpm.value = 35;
+        Tone.getTransport().start();
+        // setInterval(this.updateSound.bind(this), 300);
+        document.removeEventListener('click', start);
+        document.removeEventListener('touchend', start);
+        document.removeEventListener('keydown', start);
+      } catch (error) {
+        console.log(error);
+      }
+
     };
     if (Tone.context.state == 'running') {
       // if (true) {

@@ -4,6 +4,7 @@
   .frames-handler__add {
     height: 66px;
     float: left;
+    font-size: 2em;
     background: #131313;
     border: none;
     border-radius: 7px;

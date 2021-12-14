@@ -113,8 +113,7 @@
         }
 
         &.selected {
-          color: $color-silver;
-          background-color: $color-mineShaft;
+          color: yellow;
 
           & > div {
             background-color: $color-mineShaft;

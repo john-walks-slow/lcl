@@ -55,6 +55,12 @@ const drawHandlersProvider = rootComponent => ({
           if (rootComponent.state.dragging) props.cellAction(actionProps);
         }
       },
+      onMouseUp(id, ev) {
+        const { props } = gridComponent;
+        if (props.drawingTool == 'PENCIL' || props.drawingTool == 'ERASER' || props.drawingTool == 'BUCKET' || props.drawingTool == 'MOVE') {
+          props.endDrag();
+        }
+      },
       onTouchMove(ev) {
         ev.preventDefault();
         const { props } = gridComponent;

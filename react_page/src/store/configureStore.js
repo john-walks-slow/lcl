@@ -15,19 +15,16 @@ import {
   SET_DRAWING,
   SET_CELL_SIZE,
   SET_RESET_GRID,
-  SET_INITIAL_STATE
+  SET_INITIAL_STATE,
+  END_DRAG
 } from './actions/actionTypes';
 
 const createIncludedActions = () =>
   includeAction([
     CHANGE_DIMENSIONS,
     CHANGE_BOTH_DIMENSIONS,
-
-    APPLY_PENCIL,
-    APPLY_ERASER,
-    APPLY_BUCKET,
+    END_DRAG,
     APPLY_EYEDROPPER,
-    MOVE_DRAWING,
     SET_DRAWING,
     SET_CELL_SIZE,
     SET_RESET_GRID,

@@ -1,5 +1,6 @@
 import * as Tone from 'tone';
 import configurations from "./configurations";
+import GenerativeMusic from "./GenerativeMusic";
 
 export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
@@ -78,7 +79,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
             o.instance.refreshBody();
             this.scene.gameObjectsLayer.add(o.instance);
             if (o.loop) {
-              o.loop.start(o.startDelay + Tone.now());
+              GenerativeMusic.startLoop(o);
             }
             break;
           case "item":

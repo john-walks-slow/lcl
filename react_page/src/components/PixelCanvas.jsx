@@ -4,7 +4,8 @@ import {
   cellAction,
   updateGridBoundaries,
   moveDrawing,
-  changeHoveredCell
+  changeHoveredCell,
+  endDrag
 } from '../store/actions/actionCreators';
 import GridWrapper from './GridWrapper';
 import throttle from '../utils/throttle';
@@ -89,6 +90,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(updateGridBoundaries(gridElement));
   }, 500),
   applyMove: moveDiff => dispatch(moveDrawing(moveDiff)),
+  endDrag: () => dispatch(endDrag()),
   hoveredCell: cellPosition => dispatch(changeHoveredCell(cellPosition))
 });
 

@@ -1,6 +1,6 @@
 .frame {
   border: 1px solid $color-mineShaft;
-  background-color: $color-silver;
+  background-color: #ddd;
   color: white;
   width: 70px;
   height: 60px;

@@ -213,6 +213,8 @@ export default function (frames, action) {
       return applyBucket(frames, action);
     case types.MOVE_DRAWING:
       return applyMove(frames, action);
+    case types.END_DRAG:
+      return frames;
     case types.SET_RESET_GRID:
       return resetGrid(frames);
     case types.CHANGE_FRAME_INTERVAL:
