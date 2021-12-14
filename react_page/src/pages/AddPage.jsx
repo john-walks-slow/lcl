@@ -163,7 +163,7 @@ const Page = ({ dispatch, isShown }) => {
       <div style={{ "textAlign": "right" }}>
         <button className="page__button-back" onClick={() => { dispatch(setPath("/", true)); }}>
           {/* <i class="fas fa-sign-out-alt"></i> */}
-          ⏎ 回到LCL</button>
+          ⏎ 回到白洞</button>
       </div>
       {submitted ?
         <div className={"page__submitted" + (submitted ? " show" : "")}>
@@ -180,7 +180,7 @@ const Page = ({ dispatch, isShown }) => {
         :
         <form className={"page__form" + (submitted ? " hide" : "")}>
 
-          <h1>新对象</h1>
+          <h1>新东西</h1>
           <label className={"page__label"}>形象 <sub>画彩色的画会消耗颜料</sub>
           </label>
           <App dispatch={dispatch} color="#000000" animate="false" />
@@ -194,7 +194,7 @@ const Page = ({ dispatch, isShown }) => {
           </label>
           <label className={"page__label"} disabled={boxes <= 0}>
             链接 <sub>{("箱子数量：" + boxes + (boxConsumption == 0 ? "" : `(-1)`))}</sub>
-            <input type="text" value={link} disabled={boxes <= 0} onChange={(event) => { setLink(event.target.value); }} placeholder="对象可以携带一个超链接" className="page__input link" />
+            <input type="text" value={link} disabled={boxes <= 0} onChange={(event) => { setLink(event.target.value); }} placeholder="它可以携带一个网址" className="page__input link" />
           </label>
           <label className={"page__label"} disabled={fats <= 0}>
             体积 <sub>{("肥料数量：" + fats + (fatConsumption == 0 ? "" : `(-${fatConsumption})`))}</sub>

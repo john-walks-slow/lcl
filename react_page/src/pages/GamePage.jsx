@@ -55,7 +55,7 @@ const Game = ({ dispatch, isShown }) => {
     if (secureStorage.getItem('haveReadInfo')) {
       dispatch(setPath('/add', true));
     } else {
-      alert('请看看帮助中的发言规则');
+      alert('请看看帮助中的“规则”');
     }
   }
 
@@ -81,7 +81,7 @@ const Game = ({ dispatch, isShown }) => {
     }
     if (isShown) {
       setShowGame(true);
-      document.title = "LCL";
+      document.title = "lcl";
       document.body.style.overflow = "hidden";
       document.body.style.backgroundColor = "black";
       // if not initial run

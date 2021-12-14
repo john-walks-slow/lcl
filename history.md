@@ -6,7 +6,7 @@
   - [x] :bug: 背景/前景pushable
   - [x] :bug: 检查player scheme
   - [x] :bug: 输入事件捕获异常
-  - [x] :bug: 新对象卡启动
+  - [x] :bug: 新东西卡启动
   - [x] :bug: 再创建一个时页面重复刷新
   - [x] :bug: item dialog 窗口位置
   - [x] :bug: link dialog 按钮失效

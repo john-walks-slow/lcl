@@ -42,19 +42,19 @@ export default class ObjectData {
     this.offset = (configurations.DENSITY_OFFSET * (i ** 0.5));
     // console.log({ dateOffset, offset });
     // console.log(Math.min(1, (previousDate - o.birthday) / (30 * 24 * 60 * 60)));
-    let rad = o.seed[0] * (Math.PI / 180);
+    o.rad = o.seed[0] * (Math.PI / 180);
     o.isBackground = o.zFactor < 1;
     o.isForeground = o.zFactor > 1;
     o.zFactor == 1 && (o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2);
     let zFactorOffset;
     zFactorOffset = (o.zFactor || 1) ** 0.5;
-    let distance = (o.seed[1] * configurations.RANDOM_ZONE_W + this.offset + this.dateOffset) * zFactorOffset;
+    o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + this.offset + this.dateOffset) * zFactorOffset;
     let minDistance = (configurations.PLAYER_TARGET_H + configurations.OBJECT_W[o.size] / o.zFactor) / 2;
-    if (distance < minDistance) {
-      distance = minDistance + configurations.PLAYER_TARGET_W;
+    if (o.distance < minDistance) {
+      o.distance = minDistance + configurations.PLAYER_TARGET_W;
     }
-    o.x = Math.cos(rad) * distance;
-    o.y = Math.sin(rad) * distance;
+    o.x = Math.cos(o.rad) * o.distance;
+    o.y = Math.sin(o.rad) * o.distance;
 
     // (o.zFactor > 1) && (o.zFactor =1.4);
     // (o.zFactor < 1) && (o.zFactor =0.6);
@@ -77,10 +77,7 @@ export default class ObjectData {
         i._id = o._id;
         this.itemList.push(i);
         let rad = i.seed[0] * (Math.PI / 180);
-        // let sizeOffset = (configurations.PLAYER_TARGET_H + configurations.OBJECT_W.M) / 2;
-        let minDistance = configurations.PLAYER_TARGET_H + configurations.OBJECT_W[o.size];
-        let distance = i.seed[1] * configurations.RANDOM_ZONE_W + this.offset + this.dateOffset;
-        if (o.zFactor == 1 && distance < minDistance) { distance = minDistance; }
+        let distance = i.seed[1] * configurations.RANDOM_ZONE_W + o.distance;
         i.x = Math.cos(rad) * distance;
         i.y = Math.sin(rad) * distance;
         i.displayWidth = configurations.OBJECT_W.XS;
