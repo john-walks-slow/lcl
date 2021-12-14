@@ -62,7 +62,7 @@
   bottom: -4px;
   background: transparent;
   border-radius: 3px;
-  border: solid 1px grey;
+  border: solid 1px #5d5d5d;
 }
 .game__button-install.show {
   opacity: 1;
@@ -88,7 +88,7 @@
 #GAME_INVENTORY {
   user-select: none;
   filter: blur(0.2px);
-  background-color: black;
+  background-color: #131313;
   color: white;
   right: 21px;
   top: 45px;

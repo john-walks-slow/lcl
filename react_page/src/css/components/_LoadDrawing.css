@@ -26,7 +26,7 @@
 
     .load-drawing__drawing {
       position: relative;
-      border: 3px solid black;
+      border: 3px solid #131313;
       cursor: pointer;
       flex: 0 1 auto;
       margin: 0.5em;
@@ -43,7 +43,7 @@
         cursor: no-drop;
         padding: 0.1em;
         background-color: $color-mineShaft;
-        border: 2px solid black;
+        border: 2px solid #131313;
         border-width: 0 0 2px 2px;
       }
 

@@ -10,7 +10,7 @@ import { navigate, navigateWithoutHistory } from '../../utils/history';
 
 function setInitialState(state) {
   const cellSize = 1;
-  // const colorList = List(["#000000", "#FFFFFF"
+  // const colorList = List(["#131313", "#FFFFFF"
   // ]).map(color => Map({ color, id: shortid.generate() }));
   // const palette = Map({
   //   grid: colorList,
@@ -79,12 +79,12 @@ function updateUsedColors(state) {
 }
 function setStorage(state, action) {
   const player = secureStorage.getItem('player');
+  let result = { ...player, ...action.storage };
   secureStorage.setItem('player',
-    { ...player, ...action.storage });
+    result);
   return state.merge({
-    player: {
-      ...player
-    }
+    player:
+      result
   });
 }
 

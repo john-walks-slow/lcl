@@ -48,7 +48,7 @@
   .picker__container {
     font-family: $font-pixel;
     font-size: 16px;
-    border: 1px solid grey;
+    border: 1px solid #5d5d5d;
     border-top: none;
     border-radius: 0px;
     flex: 1;
@@ -60,7 +60,7 @@
       width: 100%;
       height: 1.5em;
       background: white;
-      color: black;
+      color: #131313;
       border-left: 1px solid $color-boulder;
     }
 

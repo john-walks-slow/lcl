@@ -4,8 +4,8 @@
   min-height: 1px;
   width: 100%;
   touch-action: none;
-  border-left: 0.1px solid lightgrey;
-  border-top: 0.1px solid lightgrey;
+  border-left: 0.1px solid #b4b4b4;
+  border-top: 0.1px solid #b4b4b4;
   border: outset;
   div {
     float: left;

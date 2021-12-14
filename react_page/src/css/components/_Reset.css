@@ -7,8 +7,8 @@
   margin: 0;
   display: inline-block;
   background: white;
-  color: black;
-  border: grey solid 1px;
+  color: #131313;
+  border: #5d5d5d solid 1px;
   border-top: none;
 }
 .reset:active {

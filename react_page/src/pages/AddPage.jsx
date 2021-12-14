@@ -7,6 +7,7 @@ import App from '../components/App';
 import {
   newProject, setPath, setStorage, updateUsedColors
 } from '../store/actions/actionCreators';
+import { REWARD_PALETTE } from "../store/reducers/paletteReducer";
 import { renderBlob } from '../utils/canvasGIF';
 import { secureStorage } from '../utils/storage';
 
@@ -119,11 +120,15 @@ const Page = ({ dispatch, isShown }) => {
       console.log(`Data uploaded ${result}`);
       // dispatch(setNewObject(result));
       setSubmitted(true);
+      setUploading(false);
+      setDialog("");
+      setName("");
+      setLink("");
+      setSize("S");
+      setZFactor(1);
       const getColor = Math.round(Math.random()) == 1;
       // let newRewardColor = Array(colorCount).map(i => ((Math.floor(Math.random() * 16777215).toString(16))));
-      let newRewardColor = getColor ?
-        "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); })
-        : false;
+      let newRewardColor = getColor ? REWARD_PALETTE[Math.floor(Math.random(REWARD_PALETTE.length))] : false;
       setRewardColor(newRewardColor);
       let currentPlayer = secureStorage.getItem('player');
       currentPlayer.palette = (getColor ?
@@ -173,7 +178,11 @@ const Page = ({ dispatch, isShown }) => {
             <span className="page__span-color" style={{ "backgroundColor": rewardColor }}></span>
             哇！找到了一瓶颜料</div>
             : ""}
-          <a className="page__link" onClick={() => { dispatch((newProject())); setRewardColor(false); setSubmitted(false); }}>再创建一个</a>
+          <a className="page__link" onClick={() => {
+            dispatch((newProject()));
+            setRewardColor(false);
+            setSubmitted(false);
+          }}>再创建一个</a>
 
 
         </div>
@@ -183,7 +192,7 @@ const Page = ({ dispatch, isShown }) => {
           <h1>新东西</h1>
           <label className={"page__label"}>形象 <sub>画彩色的画会消耗颜料</sub>
           </label>
-          <App dispatch={dispatch} color="#000000" animate="false" />
+          <App dispatch={dispatch} color="#131313" animate="false" />
           <label className={"page__label"}>
             对话
             <textarea type="text" value={dialog} onChange={(event) => { setDialog(event.target.value); }} placeholder="注:对话是由回车分割的" className="page__textarea dialog" />

@@ -12,8 +12,7 @@
 [data-tooltip]::after {
   position: absolute;
   opacity: 0;
-  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out,
-    transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
   transform: translate3d(0, 0, 0);
   pointer-events: none;
   bottom: 100%;
@@ -24,10 +23,10 @@
   z-index: 1001;
   border: 6px solid transparent;
   background: transparent;
-  content: '';
+  content: "";
   margin-left: -6px;
   margin-bottom: -12px;
-  border-top-color: black;
+  border-top-color: #131313;
   border-top-color: #4caf50;
 }
 
@@ -35,7 +34,7 @@
   z-index: 1000;
   padding: 8px;
   width: 160px;
-  background-color: black;
+  background-color: #131313;
   background-color: #4caf50;
   color: white;
   content: attr(data-tooltip);

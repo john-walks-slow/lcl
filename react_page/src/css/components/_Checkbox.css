@@ -15,7 +15,7 @@
 
       &:checked + span {
         color: white;
-        background-color: black;
+        background-color: #131313;
       }
 
       &:not(:checked) + span {

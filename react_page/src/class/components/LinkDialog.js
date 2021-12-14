@@ -31,7 +31,7 @@ export default class LinkDialog extends Dialog {
   setDisplay() {
     // super.setDisplay();
     this.setDisplayParams();
-    this.BUTTON_SELECTED_COLOR = "#000000";
+    this.BUTTON_SELECTED_COLOR = "#131313";
     this.WIDTH = Math.min(this.WINDOW_H / 1.5, this.WINDOW_W * 0.85);
     this.HEIGHT = this.FONT_SIZE * 7;
     this.PADDING = this.HEIGHT / 4;
@@ -67,7 +67,7 @@ export default class LinkDialog extends Dialog {
   select(i) {
     this.selectedOption = i;
     [this.dialogYes, this.dialogNo][i].setBackgroundColor(this.BUTTON_SELECTED_COLOR).setColor("#FFFFFF");
-    [this.dialogYes, this.dialogNo][1 - i].setBackgroundColor("").setColor("#000000");
+    [this.dialogYes, this.dialogNo][1 - i].setBackgroundColor("").setColor("#131313");
   }
   setHttp(link) {
     if (link.search(/^http[s]?\:\/\//) == -1) {

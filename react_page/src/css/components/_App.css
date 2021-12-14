@@ -1,5 +1,5 @@
 #app {
-  background: black;
+  background: #131313;
   .app__main-container,
   .app__central-container {
     lost-utility: clearfix;
@@ -167,7 +167,7 @@
   opacity: 0;
   display: none;
   position: fixed;
-  background-color: black;
+  background-color: #131313;
   width: 100vw;
   height: 100vh;
 }

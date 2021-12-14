@@ -43,7 +43,7 @@
       top: 0;
       background: white;
       border-radius: 20px;
-      color: black;
+      color: #131313;
       text-align: center;
       padding: 5px;
       margin-top: 10px;
@@ -81,7 +81,7 @@
         padding: 0 5px;
         border-radius: 6px;
         background-color: rgb(247, 247, 247);
-        color: black;
+        color: #131313;
         border: none;
         width: 100%;
         height: 5em;
@@ -116,5 +116,5 @@ sub {
 }
 .page__link {
   text-decoration: underline;
-  color: grey !important;
+  color: #5d5d5d !important;
 }

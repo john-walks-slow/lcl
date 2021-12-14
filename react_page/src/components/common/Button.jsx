@@ -28,7 +28,7 @@ const textColor = theme.variants('mode', 'variant', {
   action: { default: colors.silver },
   close: { default: colors.silver },
   info: { default: colors.silver },
-  white: { default: 'black' },
+  white: { default: '#131313' },
   proceed: { default: colors.silver }
 });
 

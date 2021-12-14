@@ -32,6 +32,7 @@ const Game = ({ dispatch, isShown }) => {
   const [showGame, setShowGame] = useState(true);
   const [zoomed, setZoomed] = useState(false);
   const player = useSelector(state => state.present.get('player')).toJS();
+  console.log(player);
   const newObject = useSelector(state => state.present.get('newObject'));
   // const objects = useSelector(state => state.present.get('objects'));
   const deferredPrompt = window.deferredPrompt;
@@ -83,7 +84,7 @@ const Game = ({ dispatch, isShown }) => {
       setShowGame(true);
       document.title = "lcl";
       document.body.style.overflow = "hidden";
-      document.body.style.backgroundColor = "black";
+      document.body.style.backgroundColor = "#131313";
       // if not initial run
       if (mainSceneRef) {
         setShowMenu(true);
