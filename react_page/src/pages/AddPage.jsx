@@ -143,7 +143,7 @@ const Page = ({ dispatch, isShown }) => {
       setZFactor(1);
 
       let currentPlayer = secureStorage.getItem('player');
-      const getColor = Math.round(Math.random()) == 1;
+      const getColor = (Math.round(Math.random()) == 1) && dialog.length > 0;
       // let newRewardColor = Array(colorCount).map(i => ((Math.floor(Math.random() * 16777215).toString(16))));
       let newRewardColor = getColor ? REWARD_PALETTE[Math.floor(Math.random() * REWARD_PALETTE.length)] : false;
       if (currentPlayer.palette.indexOf(newRewardColor) > -1) {
@@ -235,7 +235,7 @@ const Page = ({ dispatch, isShown }) => {
           >
             链接 <sub>{("箱子数量：" + boxes + (boxConsumption == 0 ? "" : `(-1)`))}</sub>
             <input type="text" value={link}
-              // disabled={boxes <= 0} 
+              // disabled={boxes <= 0}
               onChange={(event) => { setLink(event.target.value); }} placeholder="它可以携带一个网址" className="page__input link" />
           </label>
           <label className={"page__label"}

@@ -11,6 +11,9 @@
     margin: 0 auto;
   }
   padding-bottom: 60px;
+  a {
+    cursor: pointer;
+  }
   .page__button-back {
     background-color: transparent;
     border: none;
