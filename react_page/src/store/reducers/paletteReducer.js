@@ -68,7 +68,7 @@ const PALETTE = [
   "#571c27",
 ];
 const INITIAL_PALETTE = [
-  "#131313", "#FFFFFF", "#858585", "#424c6e", "#5d2c28", "#edab50", "#ffa214", "#33984b", "#0098dc", "#db3ffd", "#ff0040"
+  "#131313", "#FFFFFF", "#858585", "#5d2c28", "#ffa214", "#33984b", "#0098dc", "#db3ffd", "#ff0040"
 ];
 export const REWARD_PALETTE = PALETTE.filter(i => (INITIAL_PALETTE.indexOf(i) == -1));
 

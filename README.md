@@ -47,16 +47,20 @@
 
 ##### 当前版本
 - [x] :fire: 字体加载超级慢，更换字体
-- [x] :art: 重新设计Add Page 扩大画布面积 增加色板面积
-- [x] :bug: canvas和preview窗口白边
-- [x] :bug: 创建game前更新屏幕坐标
+- [x] :art: 调整UI色值，与色板吻合
+- [x] :art: 重新设计Add Page
+- [x] :art: 重新设计pixel editor，布局更合理，大屏下工具栏横置，简化画布操作
+- [x] :bug: frames drag&drop / scrollbar 重叠
+- [x] :bug: canvas和preview像素间白边
+- [x] :bug: 创建game前未更新屏幕坐标
 - [x] :bug: Add Page改变屏幕大小导致坐标偏移
+- [x] :bug: Inventory reducer未及时更新
+- [x] :sparkles: 重新设计颜料色板，默认赠送8色，奖励颜色从64色中抽取
 - [x] 增加分辨率设置，优化item大小
 - [ ] :bug: 程序化音乐start time 报错
 - [ ] :package: 安卓版开发（！）
 - [ ] :sparkles: 尝试粒子
 - [ ] :sparkles: 恒定的坐标系统
-- [ ] :sparkles: 重新考虑颜料（免费送？购买？）
 - [ ] :musical_note: 不难听的程序化音乐
   - [ ] :musical_note: 试试不同音色
   - [ ] :musical_note: 调整混音
