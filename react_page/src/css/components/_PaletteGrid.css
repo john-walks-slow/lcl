@@ -7,9 +7,9 @@
   top: 5px;
   left: 5px;
   width: calc(100% - 137px);
-  background: #5d5d5d;
+  background: rgb(83, 83, 83);
   height: 107.5px;
-  overflow-y: scroll;
+  overflow-y: auto;
   border: inset;
 }
 @media screen and (min-width: 900px) {
@@ -18,6 +18,5 @@
     left: 376px;
     width: calc(100% - 360px);
     height: 168px;
-    overflow-y: scroll;
   }
 }

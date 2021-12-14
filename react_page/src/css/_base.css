@@ -117,11 +117,11 @@ h3 {
 }
 
 *::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
   height: 5px;
-  background: #ffffff20;
+  background: white;
 }
 *::-webkit-scrollbar-thumb {
-  background-color: #b4b4b4;
+  background-color: #aaa;
   border-radius: 14px;
 }

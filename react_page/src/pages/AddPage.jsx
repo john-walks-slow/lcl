@@ -220,15 +220,25 @@ const Page = ({ dispatch, isShown }) => {
             对话
             <textarea type="text" value={dialog} onChange={(event) => { setDialog(event.target.value); }} placeholder="注:对话是由回车分割的" className="page__textarea dialog" />
           </label>
-          <label className={"page__label"} disabled={labels <= 0}>
+          <label className={"page__label"}
+          // disabled={labels <= 0}
+          >
             名字 <sub>{("便签条数量：" + labels + (labelConsumption == 0 ? "" : `(-1)`))}</sub>
-            <input type="text" value={name} disabled={labels <= 0} onChange={(event) => { setName(event.target.value); }} placeholder="？？？" className="page__input" />
+            <input type="text" value={name}
+              // disabled={labels <= 0}
+              onChange={(event) => { setName(event.target.value); }} placeholder="？？？" className="page__input" />
           </label>
-          <label className={"page__label"} disabled={boxes <= 0}>
+          <label className={"page__label"}
+          // disabled={boxes <= 0}
+          >
             链接 <sub>{("箱子数量：" + boxes + (boxConsumption == 0 ? "" : `(-1)`))}</sub>
-            <input type="text" value={link} disabled={boxes <= 0} onChange={(event) => { setLink(event.target.value); }} placeholder="它可以携带一个网址" className="page__input link" />
+            <input type="text" value={link}
+              // disabled={boxes <= 0} 
+              onChange={(event) => { setLink(event.target.value); }} placeholder="它可以携带一个网址" className="page__input link" />
           </label>
-          <label className={"page__label"} disabled={fats <= 0}>
+          <label className={"page__label"}
+          // disabled={fats <= 0}
+          >
             体积 <sub>{("肥料数量：" + fats + (fatConsumption == 0 ? "" : `(-${fatConsumption})`))}</sub>
             <select value={size} onChange={(event) => { setSize(event.target.value); }} className="page__input" >
               <option value="XL">XL</option>
