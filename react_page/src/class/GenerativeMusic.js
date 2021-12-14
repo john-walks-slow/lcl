@@ -353,10 +353,8 @@ class GenerativeMusic {
   startLoop(o) {
     try {
       o.loop.start(o.startDelay + Tone.now());
-
     } catch (error) {
       console.log(error);
-
     }
   }
   startBgm() {

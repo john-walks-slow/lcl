@@ -19,7 +19,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
       targets: this,
       props: { 'zoom': configurations.ZOOM_LEVEL, 'alpha': 1 },
       ease: 'Cubic',       // 'Cubic', 'Elastic', 'Bounce', 'Back'
-      duration: 500,
+      duration: 800,
       completeDelay: 0
     });
     this.zoomOutAnim = this.scene.tweens.create({

@@ -41,7 +41,10 @@ export default class ObjectData {
       dateOffset += Math.min(14, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) * configurations.DAY_OFFSET;
       previousDate = o.birthday;
       o.isTrash = o.dialog.length == 0;
-      if (!o.isTrash) { offsetIndex++; }
+      o.fadeSpeed = 1;
+      if (!o.isTrash) { offsetIndex++; } else {
+        o.fadeSpeed = 3;
+      }
       let offset = (configurations.DENSITY_OFFSET * (offsetIndex ** 0.5));
       // console.log({ dateOffset, offset });
       // console.log(Math.min(1, (previousDate - o.birthday) / (30 * 24 * 60 * 60)));
@@ -52,7 +55,8 @@ export default class ObjectData {
       let zFactorOffset;
       zFactorOffset = (o.zFactor || 1) ** 0.5;
       // o.distance = (offset + dateOffset) * zFactorOffset ;
-      o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) * zFactorOffset * (2 + o.seed[1]) / 3;
+      o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) * zFactorOffset * o.fadeSpeed;
+      // o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) * zFactorOffset * (2 + o.seed[1]) / 3;
       let minDistance = (configurations.PLAYER_TARGET_H + configurations.OBJECT_W[o.size] / o.zFactor) / 2;
       if (o.distance < minDistance) {
         o.distance = minDistance + configurations.PLAYER_TARGET_W;

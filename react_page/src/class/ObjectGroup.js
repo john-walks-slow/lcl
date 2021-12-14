@@ -48,7 +48,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
     let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()));
     let destroyZones = previousZones.filter(x => !currentZones.toString().includes(x.toString()));
     // console.log({ prev: previousZones, cur: currentZones });
-    // console.log({ create: createZones, destroy: destroyZones });
+    console.log({ create: createZones, destroy: destroyZones });
     createZones.forEach((zone) => {
       // console.log(this.scene.objectData.map);
       if (!this.scene.objectData.map[zone[0]]) { return; }

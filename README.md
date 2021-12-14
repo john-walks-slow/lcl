@@ -49,6 +49,8 @@
 - [x] :sparkles: 重新设计颜料色板，默认赠送8色，奖励颜色从64色中抽取
 - [x] :sparkles: undo redo现在会以一次完整的操作为单位
 - [x] :sparkles: 分辨率自适应，优化item大小
+- [x] :sparkles: 没有对话的东西更飘忽不定，会更快飘走
+- [x] :sparkles: 深度不为1的东西不会挡路
 - [x] :art: 新图标
 - [x] :art: 调整UI色值，与色板吻合
 - [x] :art: 重新设计Add Page
