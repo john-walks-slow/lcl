@@ -57,9 +57,8 @@ export default class LoadingScene extends Phaser.Scene {
         // });
 
         let objectData = new ObjectData(objectList);
-
+        objectData.setupObject();
         objectData.list.forEach((o, i) => {
-          objectData.setupObject(o, i);
           generativeMusic.setupSound(o);
           switch (o.isAnimate) {
             case true:

@@ -16,8 +16,8 @@ class Configurations {
     this.OBJECT_W = { XXL: this.PLAYER_TARGET_H * 4.5, XL: this.PLAYER_TARGET_H * 3, L: this.PLAYER_TARGET_H * 2, M: this.PLAYER_TARGET_H * 1.5, S: this.PLAYER_TARGET_H, XS: this.PLAYER_TARGET_H * 0.7 };
     this.TIME_DELAY = 60 * 60 * 1000;
     this.RANDOM_ZONE_W = this.OBJECT_W.L;
-    this.DAY_OFFSET = this.OBJECT_W.L;
-    this.DENSITY_OFFSET = this.OBJECT_W.L;
+    this.DAY_OFFSET = this.OBJECT_W.M;
+    this.DENSITY_OFFSET = this.OBJECT_W.M;
     this.ACTIVITY_OFFSET = 1;
     this.MOVE_SPEED = (this.DENSITY_OFFSET * 0.4);
     this.OBLIQUE_MOVE_SPEED = (this.MOVE_SPEED * 0.74);
