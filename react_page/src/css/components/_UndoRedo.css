@@ -1,7 +1,6 @@
 .undo-redo {
   lost-utility: clearfix;
   display: inline-block;
-  vertical-align: middle;
 
   button {
     background: transparent;
