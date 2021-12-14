@@ -89,31 +89,30 @@ export default class App extends React.Component {
         </div>
         <div className="app__central-container">
 
-          <div className="john_canvas">
-            <PixelCanvasContainer
-              drawHandlersFactory={this.drawHandlersFactory}
-            />
-          </div>
-
-          <div className="john_tools">
-            <div className="app__tools-wrapper">
-              <div
-                data-tooltip={
-                  helpOn
-                    ? 'It fills an area of the current frame based on color similarity (B)'
-                    : null
-                }
-              >
-                <BucketContainer />
-              </div>
-              {/* <div
+          <PixelCanvasContainer
+            drawHandlersFactory={this.drawHandlersFactory}
+          />
+          <div className="ToolsCanvasGroup">
+            <div className="tools__container">
+              <div className="tools__row">
+                <div className="app__tools-wrapper">
+                  <div
+                    data-tooltip={
+                      helpOn
+                        ? 'It fills an area of the current frame based on color similarity (B)'
+                        : null
+                    }
+                  >
+                    <BucketContainer />
+                  </div>
+                  {/* <div
                       data-tooltip={
                         helpOn ? 'Sample a color from your drawing (O)' : null
                       }
                     >
                       <EyedropperContainer />
                     </div> */}
-              {/* <div
+                  {/* <div
                       data-tooltip={
                         helpOn
                           ? 'Choose a new color that is not in your palette (P)'
@@ -122,35 +121,38 @@ export default class App extends React.Component {
                     >
                       <ColorPickerContainer />
                     </div> */}
-              <div data-tooltip={helpOn ? 'Remove colors (E)' : null}>
-                <EraserContainer />
-              </div>
-              <div
-                data-tooltip={
-                  helpOn
-                    ? 'Move your drawing around the canvas (M)'
-                    : null
-                }
-              >
-                <MoveContainer />
-              </div>
-              <UndoRedoContainer />
+                  <div data-tooltip={helpOn ? 'Remove colors (E)' : null}>
+                    <EraserContainer />
+                  </div>
+                  <div
+                    data-tooltip={
+                      helpOn
+                        ? 'Move your drawing around the canvas (M)'
+                        : null
+                    }
+                  >
+                    <MoveContainer />
+                  </div>
+                  <UndoRedoContainer />
 
-            </div>
-            <PaletteGridContainer />
-            <div className="dimension_group">
-              <DimensionsContainer />
-              <ResetContainer />
-            </div>
-            {/* <div className="app__mobile--group">
+                </div>
+
+                {/* <div className="app__mobile--group">
 
 
             </div> */}
 
+              </div>
+              <div className="tools__group-dimensions">
+                <DimensionsContainer />
+                <ResetContainer />
+              </div>
+            </div>
+
+            <PaletteGridContainer />
+
           </div>
-
         </div>
-
         <ModalContainer
           type={modalType}
           isOpen={modalOpen}

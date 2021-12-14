@@ -79,7 +79,7 @@ class FramesHandler extends React.Component {
           +
         </button>
         <div className="frame-handler__list">
-          <Scrollbars
+          {/* <Scrollbars
             autoHeight
             ref={c => {
               this.scrollbars = c;
@@ -88,26 +88,26 @@ class FramesHandler extends React.Component {
             onUpdate={() => {
               this.onScrollbarUpdate();
             }}
-          >
-            <DragDropContext onDragEnd={this.onDragEnd}>
-              <Droppable droppableId="droppable" direction="horizontal">
-                {provided => (
-                  <div
-                    className="list__container"
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                  >
-                    {this.getFrames()}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
-          </Scrollbars>
+          > */}
+          <DragDropContext onDragEnd={this.onDragEnd}>
+            <Droppable droppableId="droppable" direction="horizontal">
+              {provided => (
+                <div
+                  className="list__container"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {this.getFrames()}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          {/* </Scrollbars> */}
         </div>
         <div className="buttons">
 
-      </div>
+        </div>
       </div>
     );
   }

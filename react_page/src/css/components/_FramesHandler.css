@@ -21,6 +21,7 @@
       height: 65px;
       display: flex;
       flex-wrap: nowrap;
+      overflow: auto;
     }
   }
 }

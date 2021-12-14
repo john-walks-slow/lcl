@@ -8,7 +8,8 @@ const Animation = props => {
   const keyframeRules = keyframes`${boxShadow}`.rules;
   const style = {
     position: 'absolute',
-    animation: `x ${duration}s infinite`,
+    animationDuration: `${duration}s`,
+    animationIterationCount: 'infinite',
     animationName: keyframeName,
     left: '-5px',
     top: '-5px'

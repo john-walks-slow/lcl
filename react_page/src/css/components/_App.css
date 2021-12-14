@@ -1,4 +1,5 @@
 #app {
+  background: black;
   .app__main-container,
   .app__central-container {
     lost-utility: clearfix;
@@ -8,7 +9,7 @@
   }
   .app__main,
   .app__central-container {
-    margin-bottom: 0.5em;
+    margin-bottom: 1.5em;
   }
 
   .app__frames-container {
@@ -91,7 +92,7 @@
 
   .app__tools-wrapper {
     position: relative;
-    right: 7px;
+    right: 5px;
     margin-top: 0px;
     display: inline-block;
     > div {
@@ -100,10 +101,10 @@
         position: relative;
         font-size: 17px;
         vertical-align: middle;
-
-        padding: 5 px;
+        margin-left: 9px;
+        padding: 0px;
         text-align: center;
-        color: $color-mineShaft;
+        color: white;
         border: none;
         background-color: transparent;
 
@@ -132,11 +133,20 @@
     margin-left: auto;
     margin-right: 0;
   }
-  .john_tools {
-    width: 100%;
+  .tools__container {
+    display: inline-block;
+    width: 133px;
+  }
+  .tools__row {
+    width: 133px;
     display: inline-block;
     vertical-align: top;
-    margin: 10px 0;
+    margin: 7px 0 5px;
+  }
+  .tools__group-dimensions {
+    margin-top: 5px;
+    display: inline-block;
+    width: 133px;
   }
   .app__mobile--group {
     width: 100vw;
@@ -164,4 +174,25 @@
 .error__div.show {
   opacity: 1;
   display: block;
+}
+@media screen and (min-width: 900px) {
+  .ToolsCanvasGroup {
+    height: 0px;
+    position: relative;
+  }
+  .tools__container {
+    position: relative;
+    bottom: 511px;
+    left: 512px;
+  }
+  #app .tools__row {
+    position: relative;
+    width: 10px;
+  }
+  .tools__group-dimensions {
+    position: relative;
+  }
+  .app__tools-wrapper > div button {
+    margin-bottom: 11px;
+  }
 }

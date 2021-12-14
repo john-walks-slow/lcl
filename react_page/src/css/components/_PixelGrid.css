@@ -4,13 +4,13 @@
   min-height: 1px;
   width: 100%;
   touch-action: none;
-  border-left: 0.1px solid grey;
-  border-top: 0.1px solid grey;
-
+  border-left: 0.1px solid lightgrey;
+  border-top: 0.1px solid lightgrey;
+  border: outset;
   div {
     float: left;
-    border-right: 0.1px solid grey;
-    border-bottom: 0.1px solid grey;
+    border-right: 0.1px solid lightgray;
+    border-bottom: 0.1px solid lightgray;
   }
 
   &.cell {

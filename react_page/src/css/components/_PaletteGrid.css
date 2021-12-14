@@ -1,10 +1,23 @@
 .palette-grid {
   lost-utility: clearfix;
-  vertical-align: middle;
-  text-align: center;
+  vertical-align: top;
+  text-align: left;
   display: inline-block;
-  left: 160px;
-  width: 70px;
-  bottom: 151px;
-  width: calc(100% - 148px);
+  position: relative;
+  top: 5px;
+  left: 5px;
+  width: calc(100% - 137px);
+  background: grey;
+  height: 101px;
+  overflow-y: scroll;
+  border: inset;
+}
+@media screen and (min-width: 900px) {
+  .palette-grid {
+    top: -256px;
+    left: 376px;
+    width: calc(100% - 360px);
+    height: 168px;
+    overflow-y: scroll;
+  }
 }

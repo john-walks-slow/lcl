@@ -6,8 +6,9 @@ const PreviewBox = props => {
   const [animate, setAnimate] = useState(false);
   const [isNormalSize, setNormalSize] = useState(true);
   const frames = useSelector(state => state.present.get('frames'));
-  const duration = useSelector(state => state.present.get('duration'));
+  // const duration = useSelector(state => state.present.get('duration'));
   const frameList = frames.get('list');
+  const duration = frameList.size * 0.5;
   const activeFrameIndex = frames.get('activeIndex');
   const columns = frames.get('columns');
   const rows = frames.get('rows');
@@ -32,7 +33,7 @@ const PreviewBox = props => {
           frames={frameList}
           columns={columns}
           rows={rows}
-          cellSize={Math.ceil(Math.min(150 / rows, Math.min((window.innerWidth || document.body.clientWidth) * 0.8, 450) / columns))}
+          cellSize={Math.ceil(Math.min(90 / rows, Math.min((window.innerWidth || document.body.clientWidth) * 0.3, 450) / columns))}
           // cellSize={5}
           duration={duration}
           activeFrameIndex={activeFrameIndex}

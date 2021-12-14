@@ -1,8 +1,7 @@
 .palette-color {
-  float: left;
   border: 1px solid grey;
 
   &.selected {
-    border-color: yellow;
+    border: 2px solid yellow;
   }
 }

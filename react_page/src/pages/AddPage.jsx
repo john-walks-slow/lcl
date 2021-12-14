@@ -181,7 +181,7 @@ const Page = ({ dispatch, isShown }) => {
         <form className={"page__form" + (submitted ? " hide" : "")}>
 
           <h1>新对象</h1>
-          <label>形象 <sub>画彩色的画会消耗颜料</sub>
+          <label className={"page__label"}>形象 <sub>画彩色的画会消耗颜料</sub>
           </label>
           <App dispatch={dispatch} color="#000000" animate="false" />
           <label className={"page__label"}>

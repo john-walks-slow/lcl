@@ -6,7 +6,7 @@
     padding: 15px;
   }
   @media screen and (min-width: 600px) {
-    padding: 4% 0;
+    padding: 20px 0;
     max-width: min(500px, 100vh);
     margin: 0 auto;
   }
@@ -41,14 +41,18 @@
     h1 {
       display: block;
       top: 0;
-      background: black;
+      background: white;
       border-radius: 20px;
-      color: white;
+      color: black;
       text-align: center;
       padding: 5px;
       margin-top: 10px;
     }
     .page__label {
+      color: white;
+      sub {
+        color: white;
+      }
       input {
         margin: 10px 0 15px;
         padding: 5px 0;
@@ -113,14 +117,4 @@ sub {
 .page__link {
   text-decoration: underline;
   color: grey !important;
-}
-.dimension_group {
-  margin-top: 5px;
-  display: inline-block;
-  width: 133px;
-}
-.tools_group {
-  display: inline-block;
-  width: 100vw;
-  margin: 10px -5px;
 }

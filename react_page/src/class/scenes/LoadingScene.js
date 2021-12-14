@@ -68,6 +68,7 @@ export default class LoadingScene extends Phaser.Scene {
                 this.textures.addSpriteSheet("object" + o._id, shardsImg, { frameWidth: o.columns, frameHeight: o.rows });
               };
               shardsImg.src = o.blobURI;
+
               // this.load.spritesheet("object" + o._id, 'assets/objects/' + o._id + '.png', { frameWidth: o.columns, frameHeight: o.rows });
               break;
             default:
