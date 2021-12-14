@@ -2,6 +2,9 @@
   border: 1px solid #5d5d5d;
 
   &.selected {
-    border: 2px solid yellow;
+    border: inset;
+    transform: scale(0.9);
+    position: relative;
+    bottom: 1.3px;
   }
 }

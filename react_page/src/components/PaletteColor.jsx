@@ -13,7 +13,10 @@ const PaletteColor = props => {
 
   const cellColor = color;
   const styles = {
-    padding: `${width}`,
+    // padding: `${width}px`,
+    width: `${width * 2}px`,
+    height: `${width * 2}px`,
+    boxSizing: `border-box`,
     backgroundColor: cellColor
   };
 

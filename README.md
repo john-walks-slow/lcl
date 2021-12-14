@@ -54,6 +54,7 @@
 - [x] :bug: 创建game前未更新屏幕坐标
 - [x] :bug: Add Page改变屏幕大小导致坐标偏移
 - [x] :bug: Inventory reducer未及时更新
+- [x] :bug: 扩大canvas时按钮位移
 - [x] :sparkles: 重新设计颜料色板，默认赠送8色，奖励颜色从64色中抽取
 - [x] 增加分辨率设置，优化item大小
 - [ ] :bug: 程序化音乐start time 报错

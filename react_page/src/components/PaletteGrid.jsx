@@ -7,7 +7,7 @@ import PaletteColor from './PaletteColor';
 const PaletteGrid = props => {
   const getColors = () => {
     const { grid, position } = props;
-    const width = "10px";
+    const width = 10;
 
     return grid.map((color, index) => (
       <PaletteColor
