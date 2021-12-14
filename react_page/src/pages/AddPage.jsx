@@ -140,6 +140,8 @@ const Page = ({ dispatch, isShown }) => {
       setLink("");
       setSize("S");
       setZFactor(1);
+
+      let currentPlayer = secureStorage.getItem('player');
       const getColor = Math.round(Math.random()) == 1;
       // let newRewardColor = Array(colorCount).map(i => ((Math.floor(Math.random() * 16777215).toString(16))));
       let newRewardColor = getColor ? REWARD_PALETTE[Math.floor(Math.random() * REWARD_PALETTE.length)] : false;
@@ -147,7 +149,6 @@ const Page = ({ dispatch, isShown }) => {
         newRewardColor = false;
       }
       setRewardColor(newRewardColor);
-      let currentPlayer = secureStorage.getItem('player');
       currentPlayer.palette = (getColor ?
         [...currentPlayer.palette, newRewardColor] : currentPlayer.palette)
         .filter((c) => (usedColors.indexOf(c) == -1));
