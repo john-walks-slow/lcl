@@ -18,6 +18,8 @@ export default class PixelCell extends React.Component {
     } = this.props;
     const styles = {
       width: `${width}%`,
+      height: `${width}%`,
+      boxSizing: 'border-box',
       paddingBottom: `${width}%`,
       backgroundColor: color || GRID_INITIAL_COLOR
     };

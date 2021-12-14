@@ -33,8 +33,8 @@ const PreviewBox = props => {
           frames={frameList}
           columns={columns}
           rows={rows}
-          cellSize={Math.ceil(Math.min(90 / rows, Math.min((window.innerWidth || document.body.clientWidth) * 0.3, 450) / columns))}
-          // cellSize={5}
+          // cellSize={Math.ceil(Math.min(90 / rows, Math.min((window.innerWidth || document.body.clientWidth) * 0.3, 450) / columns))}
+          cellSize={7 * 16 / rows}
           duration={duration}
           activeFrameIndex={activeFrameIndex}
           animate={animate}
