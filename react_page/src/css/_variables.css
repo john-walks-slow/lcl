@@ -1,6 +1,7 @@
-$font-pixel: "pixelChinese", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-$font-icons: "WebFontIcons";
-$font-monospace: "monospace";
+$font-pixel: 'pixelChinese', 'Helvetica Neue Light', 'Helvetica Neue',
+  'Helvetica', 'Arial', sans-serif;
+$font-icons: 'WebFontIcons';
+$font-monospace: 'monospace';
 
 $max-width-container: 12em;
 

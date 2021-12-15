@@ -1,4 +1,4 @@
-import * as actionCreators from '../store/actions/actionCreators';
+import * as actionCreators from '../store/actions/actionCreators'
 
 /*
   Initial actions to dispatch:
@@ -6,12 +6,11 @@ import * as actionCreators from '../store/actions/actionCreators';
   2. Load a project if there is a current one
 */
 const initialSetup = (dispatch, storage) => {
-  dispatch(actionCreators.hideSpinner());
+  dispatch(actionCreators.hideSpinner())
 }
 // } else {
 //   // If no data initialize storage
 //   initStorage(storage);
 // }
 
-
-export default initialSetup;
+export default initialSetup

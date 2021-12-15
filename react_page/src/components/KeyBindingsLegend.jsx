@@ -1,17 +1,17 @@
-import React from 'react';
-import style from 'styled-components';
+import React from 'react'
+import style from 'styled-components'
 
 const Title = style.h2`
     font-size: 1.6em;
     margin-top: 1em;
     top: 0;
-    `;
+    `
 
 const Category = style.h3`
     margin-top: 1.6em;
     font-size: 1.2em;
     border-bottom: 1px solid;
-    `;
+    `
 
 const Wrapper = style.div`
     padding: 2em;
@@ -24,7 +24,7 @@ const Wrapper = style.div`
       padding: 1em 0;
       font-size: 0.8em;
     }
-    `;
+    `
 
 const ShortcutList = style.div`
     &:before, &:after {
@@ -36,11 +36,11 @@ const ShortcutList = style.div`
       clear: both;
     }
     padding: 0;
-    `;
+    `
 
 const ShortcutOption = style.div`
     padding: 1.4em 0;
-    `;
+    `
 
 const KeyContainer = style.span`
     padding: 0.1em 0.5em;
@@ -50,18 +50,18 @@ const KeyContainer = style.span`
     @media only screen and (max-width: 600px) {
       font-size: 0.8em;
     }
-`;
+`
 
 const Shortcut = ({ label, keyList }) => {
   const combination = keys => {
-    const keyCount = keys.length;
+    const keyCount = keys.length
     return keys.map((key, index) => (
       <span key={key}>
         <KeyContainer>{key}</KeyContainer>
         {`${index < keyCount - 1 ? ' + ' : ''}`}
       </span>
-    ));
-  };
+    ))
+  }
 
   return (
     <ShortcutOption>
@@ -70,8 +70,8 @@ const Shortcut = ({ label, keyList }) => {
       </div>
       <div className="col-1-2">{combination(keyList)}</div>
     </ShortcutOption>
-  );
-};
+  )
+}
 
 const KeyBindingsLegend = () => (
   <Wrapper>
@@ -97,6 +97,6 @@ const KeyBindingsLegend = () => (
       <Shortcut label="Remove row" keyList={['CTRL', 'UP']} />
     </ShortcutList>
   </Wrapper>
-);
+)
 
-export default KeyBindingsLegend;
+export default KeyBindingsLegend

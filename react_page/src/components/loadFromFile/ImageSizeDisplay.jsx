@@ -1,11 +1,11 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+import React from 'react'
+import styled, { css } from 'styled-components'
 
 const ImageDimensionDisplayContainer = styled.div`
   padding: 0.5rem 0;
   text-align: center;
   font-size: 1.2rem;
-`;
+`
 
 const ImageDimensionDisplay = styled.span`
   ${props =>
@@ -13,7 +13,7 @@ const ImageDimensionDisplay = styled.span`
     css`
       color: red;
     `}
-`;
+`
 
 const WarningSign = styled.span`
   margin-right: 0.5rem;
@@ -23,7 +23,7 @@ const WarningSign = styled.span`
   display: inline-block;
   background-color: red;
   color: white;
-`;
+`
 
 const ImageSizeDisplay = ({ description, width, height }) => (
   <ImageDimensionDisplayContainer>
@@ -38,6 +38,6 @@ const ImageSizeDisplay = ({ description, width, height }) => (
       {height.value}
     </ImageDimensionDisplay>
   </ImageDimensionDisplayContainer>
-);
+)
 
-export default ImageSizeDisplay;
+export default ImageSizeDisplay

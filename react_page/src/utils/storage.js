@@ -1,8 +1,8 @@
-import { blank } from '../../examples/import-export/blank';
+import { blank } from '../../examples/import-export/blank'
 // import { blank } from '../../examples/import-export/blank';
-import SecureStorage from "secure-web-storage";
-var CryptoJS = require("crypto-js");
-const SECRET_KEY = 'arabbitloveacat';
+import SecureStorage from 'secure-web-storage'
+var CryptoJS = require('crypto-js')
+const SECRET_KEY = 'arabbitloveacat'
 
 /*
  *  Storage data structure
@@ -20,31 +20,31 @@ const SECRET_KEY = 'arabbitloveacat';
 
 export const secureStorage = new SecureStorage(localStorage, {
   hash: function hash(key) {
-    key = CryptoJS.SHA256(key, SECRET_KEY);
-    return key.toString();
+    key = CryptoJS.SHA256(key, SECRET_KEY)
+    return key.toString()
   },
   encrypt: function encrypt(data) {
-    data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+    data = CryptoJS.AES.encrypt(data, SECRET_KEY)
 
-    data = data.toString();
+    data = data.toString()
 
-    return data;
+    return data
   },
   decrypt: function decrypt(data) {
-    data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+    data = CryptoJS.AES.decrypt(data, SECRET_KEY)
 
-    data = data.toString(CryptoJS.enc.Utf8);
+    data = data.toString(CryptoJS.enc.Utf8)
 
-    return data;
-  }
-});
+    return data
+  },
+})
 
 function saveDataToStorage(storage, data) {
   try {
-    storage.setItem(STORAGE_KEY, JSON.stringify(data));
-    return true;
+    storage.setItem(STORAGE_KEY, JSON.stringify(data))
+    return true
   } catch (e) {
-    return false; // There was an error
+    return false // There was an error
   }
 }
 
@@ -56,9 +56,9 @@ export function initStorage(storage) {
     STORAGE_KEY,
     JSON.stringify({
       stored: [], // Load an example project data by default
-      current: 0
+      current: 0,
     })
-  );
+  )
 }
 
 /*
@@ -66,10 +66,10 @@ export function initStorage(storage) {
 */
 export function getDataFromStorage(storage) {
   try {
-    const data = storage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : false;
+    const data = storage.getItem(STORAGE_KEY)
+    return data ? JSON.parse(data) : false
   } catch (e) {
-    return false; // There was an error
+    return false // There was an error
   }
 }
 
@@ -78,20 +78,20 @@ export function getDataFromStorage(storage) {
 */
 export function saveProjectToStorage(storage, projectData) {
   try {
-    let dataStored = getDataFromStorage(storage);
+    let dataStored = getDataFromStorage(storage)
     if (dataStored) {
-      dataStored.stored.push(projectData);
-      dataStored.current = dataStored.stored.length - 1;
+      dataStored.stored.push(projectData)
+      dataStored.current = dataStored.stored.length - 1
     } else {
       dataStored = {
         stored: [projectData],
-        current: 0
-      };
+        current: 0,
+      }
     }
-    storage.setItem(STORAGE_KEY, JSON.stringify(dataStored));
-    return true;
+    storage.setItem(STORAGE_KEY, JSON.stringify(dataStored))
+    return true
   } catch (e) {
-    return false; // There was an error
+    return false // There was an error
   }
 }
 
@@ -99,19 +99,19 @@ export function saveProjectToStorage(storage, projectData) {
   Remove a project from the stored data collection
 */
 export function removeProjectFromStorage(storage, indexToRemove) {
-  const dataStored = getDataFromStorage(storage);
+  const dataStored = getDataFromStorage(storage)
   if (dataStored) {
-    let newCurrent = 0;
-    dataStored.stored.splice(indexToRemove, 1);
+    let newCurrent = 0
+    dataStored.stored.splice(indexToRemove, 1)
     if (dataStored.stored.length === 0) {
-      newCurrent = -1; // Empty collection
+      newCurrent = -1 // Empty collection
     } else if (dataStored.current > indexToRemove) {
-      newCurrent = dataStored.current - 1; // Current is greater than the one to remove
+      newCurrent = dataStored.current - 1 // Current is greater than the one to remove
     }
-    dataStored.current = newCurrent;
-    return saveDataToStorage(storage, dataStored);
+    dataStored.current = newCurrent
+    return saveDataToStorage(storage, dataStored)
   }
-  return false; // There was an error if it reaches this code
+  return false // There was an error if it reaches this code
 }
 
 /*
@@ -119,9 +119,9 @@ export function removeProjectFromStorage(storage, indexToRemove) {
 */
 export function generateExportString(projectData) {
   try {
-    return JSON.stringify(projectData);
+    return JSON.stringify(projectData)
   } catch (e) {
-    return 'Sorry, there was an error';
+    return 'Sorry, there was an error'
   }
 }
 
@@ -130,11 +130,11 @@ export function generateExportString(projectData) {
 */
 export function exportedStringToProjectData(projectData) {
   if (projectData === '') {
-    return false;
+    return false
   }
   try {
-    return JSON.parse(projectData);
+    return JSON.parse(projectData)
   } catch (e) {
-    return false;
+    return false
   }
 }

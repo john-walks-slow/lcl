@@ -1,34 +1,41 @@
-import { fromJS } from 'immutable';
-import shortid from 'shortid';
-import getTimeInterval from './intervals';
+import { fromJS } from 'immutable'
+import shortid from 'shortid'
+import getTimeInterval from './intervals'
 
 export const getDimensionIntervals = (dimension, numberOfFrames) => {
-  const dimensionPerFrame = Math.floor(dimension / numberOfFrames);
-  const intervals = [];
-  let start = 0;
-  let end = dimensionPerFrame;
+  const dimensionPerFrame = Math.floor(dimension / numberOfFrames)
+  const intervals = []
+  let start = 0
+  let end = dimensionPerFrame
   for (let i = 0; i < numberOfFrames; i++) {
     intervals.push({
       start,
       end,
-      timePercentage: getTimeInterval(i, numberOfFrames)
-    });
-    start += dimensionPerFrame;
-    end += dimensionPerFrame;
+      timePercentage: getTimeInterval(i, numberOfFrames),
+    })
+    start += dimensionPerFrame
+    end += dimensionPerFrame
   }
-  return intervals;
-};
+  return intervals
+}
 
-const generateFrames = (imageContext, numberOfFrames, pixSize = 1) => {
-  const { width, height } = imageContext.canvas;
-  const heightIntervals = getDimensionIntervals(height, numberOfFrames);
-  const frameCollection = [];
+const generateFrames = (
+  imageContext,
+  numberOfFrames,
+  pixSize = 1
+) => {
+  const { width, height } = imageContext.canvas
+  const heightIntervals = getDimensionIntervals(
+    height,
+    numberOfFrames
+  )
+  const frameCollection = []
 
   heightIntervals.forEach(heightInterval => {
-    const pixelWidth = pixSize;
-    const pixelHeight = pixSize;
+    const pixelWidth = pixSize
+    const pixelHeight = pixSize
 
-    const grid = [];
+    const grid = []
     for (
       let y = heightInterval.start;
       y + pixelHeight <= heightInterval.end;
@@ -40,32 +47,32 @@ const generateFrames = (imageContext, numberOfFrames, pixSize = 1) => {
           y,
           pixelWidth,
           pixelHeight
-        ).data;
+        ).data
         grid.push(
           `rgba(${currentPixel[0]},${currentPixel[1]},${currentPixel[2]},${currentPixel[3]})`
-        );
+        )
       }
     }
 
     frameCollection.push({
       grid,
       interval: heightInterval.timePercentage,
-      key: shortid.generate()
-    });
-  });
+      key: shortid.generate(),
+    })
+  })
 
-  console.log(frameCollection);
+  console.log(frameCollection)
 
-  return fromJS(frameCollection);
-};
+  return fromJS(frameCollection)
+}
 
 export const getCanvasDimensions = canvasRef => {
   if (canvasRef && canvasRef.current) {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    return { w: context.canvas.width, h: context.canvas.height };
+    const canvas = canvasRef.current
+    const context = canvas.getContext('2d')
+    return { w: context.canvas.width, h: context.canvas.height }
   }
-  return { w: 0, h: 0 };
-};
+  return { w: 0, h: 0 }
+}
 
-export default generateFrames;
+export default generateFrames

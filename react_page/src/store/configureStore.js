@@ -1,7 +1,7 @@
-import { createStore } from 'redux';
-import undoable, { includeAction } from 'redux-undo';
-import { fromJS } from 'immutable';
-import reducer from './reducers/reducer';
+import { createStore } from 'redux'
+import undoable, { includeAction } from 'redux-undo'
+import { fromJS } from 'immutable'
+import reducer from './reducers/reducer'
 import {
   CHANGE_DIMENSIONS,
   CHANGE_BOTH_DIMENSIONS,
@@ -16,8 +16,8 @@ import {
   SET_CELL_SIZE,
   SET_RESET_GRID,
   SET_INITIAL_STATE,
-  END_DRAG
-} from './actions/actionTypes';
+  END_DRAG,
+} from './actions/actionTypes'
 
 const createIncludedActions = () =>
   includeAction([
@@ -28,23 +28,23 @@ const createIncludedActions = () =>
     SET_DRAWING,
     SET_CELL_SIZE,
     SET_RESET_GRID,
-    NEW_PROJECT
-  ]);
+    NEW_PROJECT,
+  ])
 
 const configureStore = devMode => {
-  let store;
+  let store
   if (devMode) {
     store = createStore(
       undoable(reducer, {
         filter: createIncludedActions(),
         debug: true,
-        ignoreInitialState: true
+        ignoreInitialState: true,
       })
-    );
+    )
 
     store.dispatch({
-      type: SHOW_SPINNER
-    });
+      type: SHOW_SPINNER,
+    })
   } else {
     // const initialState = window.__INITIAL_STATE__;
     // initialState.present = fromJS(initialState.present);
@@ -53,12 +53,12 @@ const configureStore = devMode => {
       undoable(reducer, {
         filter: createIncludedActions(),
         debug: false,
-        ignoreInitialState: true
+        ignoreInitialState: true,
       })
-    );
+    )
   }
 
-  return store;
-};
+  return store
+}
 
-export default configureStore;
+export default configureStore

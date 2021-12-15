@@ -1,24 +1,24 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import ModalReact from 'react-modal';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import ModalReact from 'react-modal'
 import {
   disableBodyScroll,
   enableBodyScroll,
-  clearAllBodyScrollLocks
-} from 'body-scroll-lock';
-import * as actionCreators from '../store/actions/actionCreators';
+  clearAllBodyScrollLocks,
+} from 'body-scroll-lock'
+import * as actionCreators from '../store/actions/actionCreators'
 
-import RadioSelector from './RadioSelector';
-import LoadDrawing from './LoadDrawing';
-import Preview from './Preview';
-import CopyCSS from './CopyCSS';
-import DownloadDrawing from './DownloadDrawing';
-import KeyBindingsLegend from './KeyBindingsLegend';
+import RadioSelector from './RadioSelector'
+import LoadDrawing from './LoadDrawing'
+import Preview from './Preview'
+import CopyCSS from './CopyCSS'
+import DownloadDrawing from './DownloadDrawing'
+import KeyBindingsLegend from './KeyBindingsLegend'
 
 class Modal extends React.Component {
   static generateRadioOptions(props) {
-    let options;
+    let options
 
     if (props.type !== 'load') {
       options = [
@@ -26,30 +26,32 @@ class Modal extends React.Component {
           value: 'single',
           description: 'single',
           labelFor: 'single',
-          id: 3
-        }
-      ];
+          id: 3,
+        },
+      ]
 
       if (props.frames.size > 1) {
         const spritesheetSupport =
-          props.type === 'download' || props.type === 'twitter';
-        const animationOptionLabel = spritesheetSupport ? 'GIF' : 'animation';
+          props.type === 'download' || props.type === 'twitter'
+        const animationOptionLabel = spritesheetSupport
+          ? 'GIF'
+          : 'animation'
 
         const animationOption = {
           value: 'animation',
           description: animationOptionLabel,
           labelFor: animationOptionLabel,
-          id: 4
-        };
-        options.push(animationOption);
+          id: 4,
+        }
+        options.push(animationOption)
 
         if (spritesheetSupport) {
           options.push({
             value: 'spritesheet',
             description: 'spritesheet',
             labelFor: 'spritesheet',
-            id: 5
-          });
+            id: 5,
+          })
         }
       }
     } else {
@@ -58,64 +60,65 @@ class Modal extends React.Component {
           value: 'storage',
           description: 'Stored',
           labelFor: 'stored',
-          id: 0
+          id: 0,
         },
         {
           value: 'loadImgFile',
           description: 'Load From Image',
           labelFor: 'load-img-file',
-          id: 1
+          id: 1,
         },
         {
           value: 'import',
           description: 'Import',
           labelFor: 'import',
-          id: 2
+          id: 2,
         },
         {
           value: 'export',
           description: 'Export',
           labelFor: 'export',
-          id: 3
+          id: 3,
         },
         {
           value: 'extractData',
           description: 'Useful Data',
           labelFor: 'useful-data',
-          id: 4
-        }
-      ];
+          id: 4,
+        },
+      ]
     }
 
-    return options;
+    return options
   }
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       previewType: 'single',
-      loadType: 'storage'
-    };
-    this.modalBodyRef = React.createRef();
-    this.modalContainerRef = React.createRef();
-    this.showModal = () => disableBodyScroll(this.modalContainerRef.current);
+      loadType: 'storage',
+    }
+    this.modalBodyRef = React.createRef()
+    this.modalContainerRef = React.createRef()
+    this.showModal = () =>
+      disableBodyScroll(this.modalContainerRef.current)
     this.closeModal = () => {
-      enableBodyScroll(this.modalContainerRef.current);
-      props.close();
-    };
-    this.changeRadioType = this.changeRadioType.bind(this);
-    this.scrollTop = () => this.modalBodyRef.current.scrollTo(0, 0);
-    ModalReact.setAppElement('body');
+      enableBodyScroll(this.modalContainerRef.current)
+      props.close()
+    }
+    this.changeRadioType = this.changeRadioType.bind(this)
+    this.scrollTop = () => this.modalBodyRef.current.scrollTo(0, 0)
+    ModalReact.setAppElement('body')
   }
 
   componentWillUnmount() {
-    clearAllBodyScrollLocks();
+    clearAllBodyScrollLocks()
   }
 
   getModalContent(props) {
-    const { previewType, loadType } = this.state;
-    const options = this.constructor.generateRadioOptions(props);
-    let content;
+    const { previewType, loadType } = this.state
+    const options = this.constructor.generateRadioOptions(props)
+    let content
     const previewBlock = (
       <>
         {previewType !== 'spritesheet' ? (
@@ -133,9 +136,9 @@ class Modal extends React.Component {
           </div>
         ) : null}
       </>
-    );
-    const isLoadModal = props.type === 'load';
-    const radioType = isLoadModal ? 'load' : 'preview';
+    )
+    const isLoadModal = props.type === 'load'
+    const radioType = isLoadModal ? 'load' : 'preview'
     let radioOptions = (
       <div className={`modal__${radioType}`}>
         <RadioSelector
@@ -145,7 +148,7 @@ class Modal extends React.Component {
           options={options}
         />
       </div>
-    );
+    )
 
     switch (props.type) {
       case 'load':
@@ -161,11 +164,11 @@ class Modal extends React.Component {
             paletteGridData={props.paletteGridData}
             actions={{
               setDrawing: props.actions.setDrawing,
-              sendNotification: props.actions.sendNotification
+              sendNotification: props.actions.sendNotification,
             }}
           />
-        );
-        break;
+        )
+        break
       case 'copycss':
         content = (
           <>
@@ -180,8 +183,8 @@ class Modal extends React.Component {
               duration={props.duration}
             />
           </>
-        );
-        break;
+        )
+        break
       case 'download':
         content = (
           <>
@@ -194,28 +197,34 @@ class Modal extends React.Component {
               cellSize={props.cellSize}
               duration={props.duration}
               downloadType={previewType}
-              actions={{ sendNotification: props.actions.sendNotification }}
+              actions={{
+                sendNotification: props.actions.sendNotification,
+              }}
             />
           </>
-        );
-        break;
+        )
+        break
       case 'keybindings':
         content = (
           <>
             <KeyBindingsLegend />
           </>
-        );
-        radioOptions = null;
-        break;
+        )
+        radioOptions = null
+        break
       default:
-        content = <>{previewBlock}</>;
-        break;
+        content = <>{previewBlock}</>
+        break
     }
 
     return (
       <div className="modal">
         <div className="modal__header">
-          <button type="button" className="close" onClick={this.closeModal}>
+          <button
+            type="button"
+            className="close"
+            onClick={this.closeModal}
+          >
             x
           </button>
         </div>
@@ -224,30 +233,30 @@ class Modal extends React.Component {
           {content}
         </div>
       </div>
-    );
+    )
   }
 
   changeRadioType(value, type) {
-    const newState = {};
-    this.scrollTop();
+    const newState = {}
+    this.scrollTop()
     switch (type) {
       case 'load-type':
-        newState.loadType = value;
-        break;
+        newState.loadType = value
+        break
       default:
-        newState.previewType = value;
+        newState.previewType = value
     }
-    this.setState(newState);
+    this.setState(newState)
   }
 
   render() {
-    const { isOpen, type } = this.props;
+    const { isOpen, type } = this.props
     const styles = {
       content: {
         overflow: 'hidden',
-        display: 'flex'
-      }
-    };
+        display: 'flex',
+      },
+    }
 
     return (
       <ModalReact
@@ -260,13 +269,13 @@ class Modal extends React.Component {
       >
         {this.getModalContent(this.props)}
       </ModalReact>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
-  const frames = state.present.get('frames');
-  const activeFrameIndex = frames.get('activeIndex');
+  const frames = state.present.get('frames')
+  const activeFrameIndex = frames.get('activeIndex')
   return {
     frames: frames.get('list'),
     activeFrameIndex,
@@ -275,13 +284,16 @@ const mapStateToProps = state => {
     columns: frames.get('columns'),
     rows: frames.get('rows'),
     cellSize: state.present.get('cellSize'),
-    duration: state.present.get('duration')
-  };
-};
+    duration: state.present.get('duration'),
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(actionCreators, dispatch)
-});
+  actions: bindActionCreators(actionCreators, dispatch),
+})
 
-const ModalContainer = connect(mapStateToProps, mapDispatchToProps)(Modal);
-export default ModalContainer;
+const ModalContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Modal)
+export default ModalContainer

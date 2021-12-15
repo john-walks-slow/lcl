@@ -1,7 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { switchTool } from '../store/actions/actionCreators';
-import { MOVE } from '../store/reducers/drawingToolStates';
+import React from 'react'
+import { connect } from 'react-redux'
+import { switchTool } from '../store/actions/actionCreators'
+import { MOVE } from '../store/reducers/drawingToolStates'
 
 const Move = ({ moveOn, switchMove }) => (
   <button
@@ -10,16 +10,19 @@ const Move = ({ moveOn, switchMove }) => (
     className={`move${moveOn ? ' selected' : ''}`}
     onClick={switchMove}
   />
-);
+)
 
 const mapStateToProps = state => ({
-  moveOn: state.present.get('drawingTool') === MOVE
-});
+  moveOn: state.present.get('drawingTool') === MOVE,
+})
 
-const switchMoveAction = switchTool(MOVE);
+const switchMoveAction = switchTool(MOVE)
 const mapDispatchToProps = dispatch => ({
-  switchMove: () => dispatch(switchMoveAction)
-});
+  switchMove: () => dispatch(switchMoveAction),
+})
 
-const MoveContainer = connect(mapStateToProps, mapDispatchToProps)(Move);
-export default MoveContainer;
+const MoveContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Move)
+export default MoveContainer

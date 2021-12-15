@@ -1,42 +1,48 @@
-import React from 'react';
-import { fromJS } from 'immutable';
-import Preview from './Preview';
-import Output from './Output';
-import UsefulData from './UsefulData';
-import LoadFromFile from './loadFromFile';
+import React from 'react'
+import { fromJS } from 'immutable'
+import Preview from './Preview'
+import Output from './Output'
+import UsefulData from './UsefulData'
+import LoadFromFile from './loadFromFile'
 import {
   getDataFromStorage,
   removeProjectFromStorage,
   generateExportString,
-  exportedStringToProjectData
-} from '../utils/storage';
+  exportedStringToProjectData,
+} from '../utils/storage'
 
 /*
   Avoid error when server-side render doesn't recognize
   localstorage (browser feature)
 */
 const browserStorage =
-  typeof localStorage === 'undefined' ? null : localStorage;
+  typeof localStorage === 'undefined' ? null : localStorage
 
 export default class LoadDrawing extends React.Component {
   getExportCode() {
-    const { frames, paletteGridData, cellSize, columns, rows } = this.props;
+    const {
+      frames,
+      paletteGridData,
+      cellSize,
+      columns,
+      rows,
+    } = this.props
     const projectData = {
       frames,
       paletteGridData,
       cellSize,
       columns,
       rows,
-      animate: frames.size > 1
-    };
-    return generateExportString(projectData);
+      animate: frames.size > 1,
+    }
+    return generateExportString(projectData)
   }
 
   importProject() {
     const importedProject = exportedStringToProjectData(
       this.importProjectData.value
-    );
-    const { actions, close } = this.props;
+    )
+    const { actions, close } = this.props
 
     if (importedProject) {
       const {
@@ -44,45 +50,53 @@ export default class LoadDrawing extends React.Component {
         paletteGridData,
         columns,
         rows,
-        cellSize
-      } = importedProject;
+        cellSize,
+      } = importedProject
 
-      actions.setDrawing(frames, paletteGridData, cellSize, columns, rows);
-      close();
-      actions.sendNotification('Project successfully imported');
+      actions.setDrawing(
+        frames,
+        paletteGridData,
+        cellSize,
+        columns,
+        rows
+      )
+      close()
+      actions.sendNotification('Project successfully imported')
     } else {
-      actions.sendNotification("Sorry, the project couldn't be imported");
+      actions.sendNotification(
+        "Sorry, the project couldn't be imported"
+      )
     }
   }
 
   removeFromStorage(key, e) {
-    const { actions, open, close } = this.props;
-    e.stopPropagation();
+    const { actions, open, close } = this.props
+    e.stopPropagation()
     if (browserStorage) {
-      const removed = removeProjectFromStorage(browserStorage, key);
+      const removed = removeProjectFromStorage(browserStorage, key)
       if (removed) {
-        actions.sendNotification('Drawing deleted');
-        close();
-        open();
+        actions.sendNotification('Drawing deleted')
+        close()
+        open()
       }
     }
   }
 
   drawingClick(data) {
-    const { actions, close } = this.props;
+    const { actions, close } = this.props
     actions.setDrawing(
       data.frames,
       data.paletteGridData,
       data.cellSize,
       data.columns,
       data.rows
-    );
-    close();
+    )
+    close()
   }
 
   giveMeDrawings() {
     if (browserStorage) {
-      const dataStored = getDataFromStorage(browserStorage);
+      const dataStored = getDataFromStorage(browserStorage)
       if (dataStored) {
         if (dataStored.stored.length > 0) {
           return dataStored.stored.map((data, i) => {
@@ -93,17 +107,17 @@ export default class LoadDrawing extends React.Component {
               frames: fromJS(data.frames), // Parse to immutable
               paletteGridData: fromJS(data.paletteGridData),
               rows: data.rows,
-              id: data.id
-            };
+              id: data.id,
+            }
 
             return (
               <div
                 key={elem.id}
                 onClick={() => {
-                  this.drawingClick(elem);
+                  this.drawingClick(elem)
                 }}
                 onKeyPress={() => {
-                  this.drawingClick(elem);
+                  this.drawingClick(elem)
                 }}
                 className="load-drawing__drawing"
                 role="button"
@@ -120,16 +134,16 @@ export default class LoadDrawing extends React.Component {
                   aria-label="Remove stored project"
                   className="drawing__delete"
                   onClick={event => {
-                    this.removeFromStorage(i, event);
+                    this.removeFromStorage(i, event)
                   }}
                 />
               </div>
-            );
-          });
+            )
+          })
         }
       }
     }
-    return [];
+    return []
   }
 
   giveMeOptions(type) {
@@ -139,15 +153,15 @@ export default class LoadDrawing extends React.Component {
           <div className="load-drawing">
             <h2>Import your project</h2>
             <p>
-              Paste a previously exported code in the text field and click on
-              the button &nbsp;
+              Paste a previously exported code in the text field and
+              click on the button &nbsp;
               <b>IMPORT</b>
               &nbsp;
             </p>
             <textarea
               className="load-drawing__import"
               ref={c => {
-                this.importProjectData = c;
+                this.importProjectData = c
               }}
               defaultValue=""
             />
@@ -155,50 +169,51 @@ export default class LoadDrawing extends React.Component {
               type="button"
               className="import__button"
               onClick={() => {
-                this.importProject();
+                this.importProject()
               }}
             >
               IMPORT
             </button>
           </div>
-        );
+        )
       }
       case 'export': {
         return (
           <div className="load-drawing">
             <h2>Export your project</h2>
             <p>
-              Please save the following text if you wish to import your project
-              in the future using the &nbsp;
+              Please save the following text if you wish to import
+              your project in the future using the &nbsp;
               <b>Import</b>
               &nbsp; button.
             </p>
             <p>
-              In the main page you can save your project by clicking on the
-              &nbsp;
+              In the main page you can save your project by clicking
+              on the &nbsp;
               <b>SAVE</b>
-              &nbsp; button, it will keep your work in your browser&apos;s local
-              storage. However, if you prefer not to use local storage or you
-              just want to keep your project safe somewhere else, this might be
-              a good option.
+              &nbsp; button, it will keep your work in your
+              browser&apos;s local storage. However, if you prefer not
+              to use local storage or you just want to keep your
+              project safe somewhere else, this might be a good
+              option.
             </p>
             <Output
               copyClipboardData={{
                 showButton: true,
                 textButton: 'Copy',
-                successMessage: 'Copied!'
+                successMessage: 'Copied!',
               }}
               outputText={`${this.getExportCode()}\n\n`}
             />
           </div>
-        );
+        )
       }
       case 'extractData': {
-        const { frames, columns } = this.props;
-        return <UsefulData frames={frames} columns={columns} />;
+        const { frames, columns } = this.props
+        return <UsefulData frames={frames} columns={columns} />
       }
       case 'loadImgFile': {
-        const { actions, frames, columns, close } = this.props;
+        const { actions, frames, columns, close } = this.props
         return (
           <LoadFromFile
             frames={frames}
@@ -206,12 +221,12 @@ export default class LoadDrawing extends React.Component {
             actions={actions}
             close={close}
           />
-        );
+        )
       }
       default: {
         // const drawings = this.giveMeDrawings();
-        const drawings = [];
-        const drawingsStored = drawings.length > 0;
+        const drawings = []
+        const drawingsStored = drawings.length > 0
         return (
           <div className="load-drawing">
             <h2>Select one of your projects stored in the browser</h2>
@@ -224,13 +239,13 @@ export default class LoadDrawing extends React.Component {
                 : 'Nothing awesome yet...'}
             </div>
           </div>
-        );
+        )
       }
     }
   }
 
   render() {
-    const { loadType } = this.props;
-    return this.giveMeOptions(loadType);
+    const { loadType } = this.props
+    return this.giveMeOptions(loadType)
   }
 }

@@ -1,12 +1,12 @@
-import React from 'react';
-import PixelCell from './PixelCell';
+import React from 'react'
+import PixelCell from './PixelCell'
 
 const PixelGrid = ({
   cells,
   drawHandlers,
   classes,
   nbrColumns,
-  hoveredCell
+  hoveredCell,
 }) => (
   <div className={classes} onTouchMove={drawHandlers.onTouchMove}>
     {cells.map(cell => (
@@ -21,5 +21,5 @@ const PixelGrid = ({
       />
     ))}
   </div>
-);
-export default PixelGrid;
+)
+export default PixelGrid

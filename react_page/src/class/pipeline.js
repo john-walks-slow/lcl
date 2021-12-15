@@ -1,15 +1,12 @@
-import Phaser from "phaser";
+import Phaser from 'phaser'
 const Vignette = new Phaser.Class({
-
   Extends: Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline,
 
-  initialize:
-
-    function Vignette(game) {
-      Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline.call(this, {
-        game: game,
-        renderer: game.renderer,
-        fragShader: `
+  initialize: function Vignette(game) {
+    Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline.call(this, {
+      game: game,
+      renderer: game.renderer,
+      fragShader: `
       precision mediump float;
               uniform vec2  resolution;
               uniform float tx;
@@ -36,9 +33,9 @@ const Vignette = new Phaser.Class({
         vec4 beforeColor = color*vec4(makeCircle(st,vec2(tx,ty),vec3(1.0)),1.0);
                   gl_FragColor = vec4 (beforeColor.x*bgred, beforeColor.y*bggreen, beforeColor.z*bgblue, beforeColor.w);
               }
-      `
-      });
-      /*
+      `,
+    })
+    /*
             regular:
             precision mediump float;
                     uniform sampler2D uMainSampler;
@@ -61,5 +58,5 @@ const Vignette = new Phaser.Class({
                         gl_FragColor = color*vec4(makeCircle(st,vec2(tx,ty),vec3(1.0)),1.0);
                     }
       */
-    }
-});
+  },
+})

@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import breakpoints from '../../utils/breakpoints';
-import Picker from '../Picker';
-import { getCanvasDimensions } from '../../utils/loadFromCanvas';
+import React from 'react'
+import styled from 'styled-components'
+import breakpoints from '../../utils/breakpoints'
+import Picker from '../Picker'
+import { getCanvasDimensions } from '../../utils/loadFromCanvas'
 
 const LoadSetup = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ const LoadSetup = styled.div`
   margin: 0 0 1.5rem;
   background-color: whitesmoke;
   padding: 1rem 0;
-`;
+`
 
 const PickerWrapper = styled.div`
   padding: 1rem;
@@ -20,7 +20,7 @@ const PickerWrapper = styled.div`
   @media only screen and (${breakpoints.device.lg}) {
     width: 50%;
   }
-`;
+`
 
 const PickerTitle = styled.h2`
   display: block;
@@ -29,7 +29,7 @@ const PickerTitle = styled.h2`
   font-size: 1rem;
   top: 0;
   padding: 0 0 0.5rem 0;
-`;
+`
 
 const PickerInfoIcon = styled.i`
   position: relative;
@@ -39,17 +39,18 @@ const PickerInfoIcon = styled.i`
   top: -9px;
   padding: 0.2rem;
   margin-left: 0.4rem;
-`;
+`
 
 const getImageDimensions = (canvasDimensions, pSize, frameAmount) => {
-  const pixelsWidth = Math.round((canvasDimensions.w / pSize) * 100) / 100;
+  const pixelsWidth =
+    Math.round((canvasDimensions.w / pSize) * 100) / 100
   const pixelsHeight =
-    Math.round((canvasDimensions.h / pSize / frameAmount) * 100) / 100;
+    Math.round((canvasDimensions.h / pSize / frameAmount) * 100) / 100
   return {
     original: { w: canvasDimensions.w, h: canvasDimensions.h },
-    result: { w: pixelsWidth, h: pixelsHeight }
-  };
-};
+    result: { w: pixelsWidth, h: pixelsHeight },
+  }
+}
 
 const ImageSetupSection = ({
   canvasRef,
@@ -58,28 +59,40 @@ const ImageSetupSection = ({
   pixelSize,
   setPixelSize,
   setResultDimensions,
-  imgSetupValidation
+  imgSetupValidation,
 }) => {
-  const getPickerAction = (property, setProperty) => (type, behaviour) => {
-    const newPickerCount = property.value + behaviour;
-    const pixelValue = property.id === 'frame' ? pixelSize : newPickerCount;
-    const frameValue = property.id === 'frame' ? newPickerCount : frameCount;
-    setProperty(newPickerCount);
+  const getPickerAction = (property, setProperty) => (
+    type,
+    behaviour
+  ) => {
+    const newPickerCount = property.value + behaviour
+    const pixelValue =
+      property.id === 'frame' ? pixelSize : newPickerCount
+    const frameValue =
+      property.id === 'frame' ? newPickerCount : frameCount
+    setProperty(newPickerCount)
     setResultDimensions(
-      getImageDimensions(getCanvasDimensions(canvasRef), pixelValue, frameValue)
-        .result
-    );
-    imgSetupValidation(getCanvasDimensions(canvasRef), pixelValue, frameValue);
-  };
+      getImageDimensions(
+        getCanvasDimensions(canvasRef),
+        pixelValue,
+        frameValue
+      ).result
+    )
+    imgSetupValidation(
+      getCanvasDimensions(canvasRef),
+      pixelValue,
+      frameValue
+    )
+  }
 
   const framePickerAction = getPickerAction(
     { value: frameCount, id: 'frame' },
     setFrameCount
-  );
+  )
   const pixelSizePickerAction = getPickerAction(
     { value: pixelSize, id: 'pixel' },
     setPixelSize
-  );
+  )
 
   return (
     <LoadSetup>
@@ -110,7 +123,7 @@ const ImageSetupSection = ({
         />
       </PickerWrapper>
     </LoadSetup>
-  );
-};
+  )
+}
 
-export default ImageSetupSection;
+export default ImageSetupSection

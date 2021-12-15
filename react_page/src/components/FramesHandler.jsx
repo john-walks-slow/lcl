@@ -1,52 +1,52 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Scrollbars } from 'react-custom-scrollbars';
-import * as actionCreators from '../store/actions/actionCreators';
-import Frame from './Frame';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { Scrollbars } from 'react-custom-scrollbars'
+import * as actionCreators from '../store/actions/actionCreators'
+import Frame from './Frame'
 
 class FramesHandler extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = { newFrame: false };
-    this.onDragEnd = this.onDragEnd.bind(this);
+    super(props)
+    this.state = { newFrame: false }
+    this.onDragEnd = this.onDragEnd.bind(this)
   }
 
   handleClick() {
-    const { actions } = this.props;
-    actions.createNewFrame();
-    this.setState({ newFrame: true });
+    const { actions } = this.props
+    actions.createNewFrame()
+    this.setState({ newFrame: true })
   }
 
   onDragEnd(result) {
-    const { destination, source } = result;
-    const { actions } = this.props;
+    const { destination, source } = result
+    const { actions } = this.props
 
     if (!destination) {
-      return;
+      return
     }
 
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
-      return;
+      return
     }
 
-    actions.reorderFrame(source.index, destination.index);
+    actions.reorderFrame(source.index, destination.index)
   }
 
   onScrollbarUpdate() {
-    const { newFrame } = this.state;
+    const { newFrame } = this.state
     if (newFrame) {
-      this.setState({ newFrame: false });
-      this.scrollbars.scrollToRight();
+      this.setState({ newFrame: false })
+      this.scrollbars.scrollToRight()
     }
   }
 
   getFrames() {
-    const { list, columns, rows, activeIndex, actions } = this.props;
+    const { list, columns, rows, activeIndex, actions } = this.props
     return list.map((frameData, index) => (
       <Frame
         key={frameData.get('key')}
@@ -60,10 +60,10 @@ class FramesHandler extends React.Component {
           changeActiveFrame: actions.changeActiveFrame,
           deleteFrame: actions.deleteFrame,
           duplicateFrame: actions.duplicateFrame,
-          changeFrameInterval: actions.changeFrameInterval
+          changeFrameInterval: actions.changeFrameInterval,
         }}
       />
-    ));
+    ))
   }
 
   render() {
@@ -73,7 +73,7 @@ class FramesHandler extends React.Component {
           type="button"
           className="frames-handler__add"
           onClick={() => {
-            this.handleClick();
+            this.handleClick()
           }}
         >
           +
@@ -105,22 +105,21 @@ class FramesHandler extends React.Component {
           </DragDropContext>
           {/* </Scrollbars> */}
         </div>
-        <div className="buttons">
-
-        </div>
+        <div className="buttons"></div>
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = state => state.present.get('frames').toObject();
+const mapStateToProps = state =>
+  state.present.get('frames').toObject()
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(actionCreators, dispatch)
-});
+  actions: bindActionCreators(actionCreators, dispatch),
+})
 
 const FramesHandlerContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(FramesHandler);
-export default FramesHandlerContainer;
+)(FramesHandler)
+export default FramesHandlerContainer

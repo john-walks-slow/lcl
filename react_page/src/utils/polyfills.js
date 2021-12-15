@@ -1,2 +1,2 @@
-import 'canvas-toBlob';
-import 'whatwg-fetch';
+import 'canvas-toBlob'
+import 'whatwg-fetch'
