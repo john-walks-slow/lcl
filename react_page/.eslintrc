@@ -14,5 +14,9 @@
     "plugin:react/recommended",
     "prettier"
   ],
+  "rules":{
+    "react/prop-types": "off",
+    "no-unused-vars": "off"
+  }
  
 }

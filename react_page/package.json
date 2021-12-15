@@ -1,8 +1,8 @@
 {
   "name": "lcl-frontend",
   "scripts": {
-    "lint": "eslint **/*.{js,jsx}",
     "csslint": "stylelint src/**/*.{css,js,jsx}",
+    "lint": "eslint **/*.{js,jsx}",
     "prettier": "prettier **/*.{js,jsx,json,yml,yaml,css,md}",
     "format": "npm run prettier -- --write --list-different",
     "validate": "npm run lint && npm run csslint && npm run prettier -- --list-different",

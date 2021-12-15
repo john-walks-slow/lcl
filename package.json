@@ -25,7 +25,10 @@
     "build": "cd react_page && npm ci --include=dev && npm run build",
     "clearDB": "rm data/objects.db",
     "test": "npm run lint && npm run mocha",
-    "lint": "eslint src/. test/. --config .eslintrc.json --fix",
+    "lint": "eslint src",
+    "prettier": "prettier src/**/*.{js,jsx,json,yml,yaml,css,md}",
+    "format": "npm run prettier -- --write --list-different",
+    "validate": "npm run lint && npm run prettier --list-different",
     "mocha": "mocha test/ --recursive --exit"
   },
   "dependencies": {

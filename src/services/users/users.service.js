@@ -1,17 +1,17 @@
 // Initializes the `user` service on path `/user`
-const { Users } = require('./users.class');
-const hooks = require('./users.hooks');
+const { Users } = require('./users.class')
+const hooks = require('./users.hooks')
 
 module.exports = function (app) {
   const options = {
-    paginate: app.get('paginate')
-  };
+    paginate: app.get('paginate'),
+  }
 
   // Initialize our service with any options it requires
-  app.use('/users', new Users(options, app));
+  app.use('/users', new Users(options, app))
 
   // Get our initialized service so that we can register hooks
-  const service = app.service('users');
+  const service = app.service('users')
 
-  service.hooks(hooks);
-};
+  service.hooks(hooks)
+}
