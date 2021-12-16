@@ -2,10 +2,10 @@
   "name": "lcl-frontend",
   "scripts": {
     "csslint": "stylelint src/**/*.{css,js,jsx}",
-    "lint": "eslint **/*.{js,jsx}",
+    "eslint": "eslint **/*.{js,jsx}",
     "prettier": "prettier **/*.{js,jsx,json,yml,yaml,css,md}",
     "format": "npm run prettier -- --write --list-different",
-    "validate": "npm run lint && npm run csslint && npm run prettier -- --list-different",
+    "lint": "npm run eslint && npm run csslint",
     "build": "cross-env NODE_ENV=production BUILD_PLATFORM=web webpack --config webpack.config.js",
     "build-app": "cross-env NODE_ENV=production BUILD_PLATFORM=app webpack --config webpack.config.js",
     "dev": "cross-env NODE_ENV=development BUILD_PLATFORM=web webpack --config webpack.config.js",

@@ -24,12 +24,12 @@
     "dev": "concurrently \"cd frontend && npm run dev\" \"npm run start\"",
     "build": "cd frontend && npm ci --include=dev && npm run build",
     "clearDB": "rm data/objects.db",
-    "test": "npm run lint && npm run mocha",
     "lint": "eslint src",
     "prettier": "prettier src/**/*.{js,jsx,json,yml,yaml,css,md}",
     "format": "npm run prettier -- --write --list-different",
-    "validate": "npm run lint && npm run prettier --list-different",
-    "mocha": "mocha test/ --recursive --exit"
+    "mocha": "mocha test/ --recursive --exit",
+    "test": "npm run lint && npm run mocha",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@feathersjs/configuration": "^4.5.11",
@@ -52,6 +52,7 @@
     "fs-blob-store": "^6.0.0",
     "helmet": "^4.6.0",
     "http-server": "^14.0.0",
+    "husky-init": "^7.0.0",
     "jquery": "^3.6.0",
     "mongodb": "^4.2.0",
     "mongodb-core": "^3.2.7",
@@ -69,6 +70,7 @@
     "axios": "^0.24.0",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
+    "husky": "^7.0.0",
     "mocha": "^8.4.0",
     "nodemon": "^2.0.15",
     "terser-webpack-plugin": "^5.2.5",
