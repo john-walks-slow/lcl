@@ -33,9 +33,7 @@ class Modal extends React.Component {
       if (props.frames.size > 1) {
         const spritesheetSupport =
           props.type === 'download' || props.type === 'twitter'
-        const animationOptionLabel = spritesheetSupport
-          ? 'GIF'
-          : 'animation'
+        const animationOptionLabel = spritesheetSupport ? 'GIF' : 'animation'
 
         const animationOption = {
           value: 'animation',
@@ -100,8 +98,7 @@ class Modal extends React.Component {
     }
     this.modalBodyRef = React.createRef()
     this.modalContainerRef = React.createRef()
-    this.showModal = () =>
-      disableBodyScroll(this.modalContainerRef.current)
+    this.showModal = () => disableBodyScroll(this.modalContainerRef.current)
     this.closeModal = () => {
       enableBodyScroll(this.modalContainerRef.current)
       props.close()
@@ -220,11 +217,7 @@ class Modal extends React.Component {
     return (
       <div className="modal">
         <div className="modal__header">
-          <button
-            type="button"
-            className="close"
-            onClick={this.closeModal}
-          >
+          <button type="button" className="close" onClick={this.closeModal}>
             x
           </button>
         </div>
@@ -292,8 +285,5 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(actionCreators, dispatch),
 })
 
-const ModalContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Modal)
+const ModalContainer = connect(mapStateToProps, mapDispatchToProps)(Modal)
 export default ModalContainer

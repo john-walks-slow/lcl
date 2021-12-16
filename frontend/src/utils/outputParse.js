@@ -36,13 +36,10 @@ const formatFrameOutput = (frame, columns, options) => {
 
   const lastPixelPos = frameFormatted.length
   return frameFormatted.reduce((acc, pixel, index) => {
-    const pixelFormatted = formatPixelColorOutput(
-      pixel,
-      options.colorFormat
-    )
-    return `${acc} ${pixelFormatted}${
-      index + 1 === lastPixelPos ? '' : ','
-    }${(index + 1) % columns ? '' : '\n'}`
+    const pixelFormatted = formatPixelColorOutput(pixel, options.colorFormat)
+    return `${acc} ${pixelFormatted}${index + 1 === lastPixelPos ? '' : ','}${
+      (index + 1) % columns ? '' : '\n'
+    }`
   }, '')
 }
 
@@ -56,9 +53,7 @@ const generateFramesOutput = ({ frames, columns, options }) =>
     .toJS()
     .reduce(
       (acc, frame, index) =>
-        `${acc}${
-          index ? '\n' : ''
-        }frame${index} = {\n${formatFrameOutput(
+        `${acc}${index ? '\n' : ''}frame${index} = {\n${formatFrameOutput(
           frame.grid,
           columns,
           options

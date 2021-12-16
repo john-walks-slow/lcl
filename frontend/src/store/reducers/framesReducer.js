@@ -156,12 +156,7 @@ const changeDimensions = (frames, { gridProperty, increment }) => {
   }
   const list = frames.get('list').map(frame =>
     Map({
-      grid: resizeGrid(
-        frame.get('grid'),
-        gridProperty,
-        increment,
-        dimensions
-      ),
+      grid: resizeGrid(frame.get('grid'), gridProperty, increment, dimensions),
       interval: frame.get('interval'),
       key: frame.get('key'),
     })
@@ -189,8 +184,7 @@ const setFrames = (frames, action) => {
   })
 }
 
-const changeHoveredCell = (frames, cell) =>
-  frames.merge({ hoveredIndex: cell })
+const changeHoveredCell = (frames, cell) => frames.merge({ hoveredIndex: cell })
 
 export default function(frames = initFrames({}), action) {
   switch (action.type) {

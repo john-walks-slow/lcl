@@ -15,10 +15,7 @@ const schema = yup.object().shape({
   zFactor: yup.number().min(0.2).max(2).required(),
   link: yup
     .mixed()
-    .oneOf([
-      yup.string().url().ensure(),
-      yup.string().max(0).ensure(),
-    ]),
+    .oneOf([yup.string().url().ensure(), yup.string().max(0).ensure()]),
   isAnimate: yup.boolean().default(false),
   columns: yup.number(),
   rows: yup.number(),
@@ -40,9 +37,7 @@ const trimDialog = (context) => {
       linebreakCharacter = '\r\n'
     }
     let sentences = context.data.dialog.split(linebreakCharacter)
-    context.data.dialog = sentences
-      .map((s) => s.trim())
-      .filter((s) => s != '')
+    context.data.dialog = sentences.map((s) => s.trim()).filter((s) => s != '')
     return context
   } catch (error) {
     throw new Error(error)

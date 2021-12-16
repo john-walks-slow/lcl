@@ -24,8 +24,7 @@ const PaletteGrid = props => {
   return <div className="palette-grid">{getColors()}</div>
 }
 
-const mapStateToProps = state =>
-  state.present.get('palette').toObject()
+const mapStateToProps = state => state.present.get('palette').toObject()
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(

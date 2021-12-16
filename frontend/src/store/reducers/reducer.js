@@ -111,8 +111,7 @@ function hideSpinner(state) {
 
 function sendNotification(state, message) {
   return state.merge({
-    notifications:
-      message === '' ? List() : List([{ message, id: 0 }]),
+    notifications: message === '' ? List() : List([{ message, id: 0 }]),
   })
 }
 
@@ -124,12 +123,7 @@ function updateGridBoundaries(state, action) {
   if (!action.gridElement) {
     return state
   }
-  const {
-    x,
-    y,
-    width,
-    height,
-  } = action.gridElement.getBoundingClientRect()
+  const { x, y, width, height } = action.gridElement.getBoundingClientRect()
   return state.set('gridBoundaries', {
     x,
     y,
@@ -146,10 +140,7 @@ function generateDefaultState() {
 }
 
 const pipeReducers = reducers => (initialState, action) =>
-  reducers.reduce(
-    (state, reducer) => reducer(state, action),
-    initialState
-  )
+  reducers.reduce((state, reducer) => reducer(state, action), initialState)
 
 function partialReducer(state, action) {
   switch (action.type) {

@@ -120,16 +120,12 @@ export default class App extends React.Component {
                     >
                       <ColorPickerContainer />
                     </div> */}
-                  <div
-                    data-tooltip={helpOn ? 'Remove colors (E)' : null}
-                  >
+                  <div data-tooltip={helpOn ? 'Remove colors (E)' : null}>
                     <EraserContainer />
                   </div>
                   <div
                     data-tooltip={
-                      helpOn
-                        ? 'Move your drawing around the canvas (M)'
-                        : null
+                      helpOn ? 'Move your drawing around the canvas (M)' : null
                     }
                   >
                     <MoveContainer />

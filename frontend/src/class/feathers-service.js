@@ -813,12 +813,7 @@ const MOCK_OBJECT = [
   {
     _id: '61a43e773c4d1081d6239a21',
     name: '小林',
-    dialog: [
-      '你是一只兔子',
-      '一只特别的兔子',
-      '你有一个笼子',
-      '你有一个球',
-    ],
+    dialog: ['你是一只兔子', '一只特别的兔子', '你有一个笼子', '你有一个球'],
     size: 'M',
     movement: 'static',
     zFactor: 1,
@@ -1044,11 +1039,7 @@ const MOCK_OBJECT = [
   {
     _id: '61a63a0e0e7123ce1561a740',
     name: '',
-    dialog: [
-      '我还想吃面包啊',
-      '我还想加一点滤镜',
-      '能够突然变好的东西',
-    ],
+    dialog: ['我还想吃面包啊', '我还想加一点滤镜', '能够突然变好的东西'],
     size: 'M',
     movement: 'static',
     zFactor: 1,
@@ -1279,11 +1270,7 @@ const MOCK_OBJECT = [
   {
     _id: '61a8d79f43e6eba75810f7ea',
     name: '',
-    dialog: [
-      '我是一颗螺丝',
-      '🔩我花掉了我的时间',
-      '我会花掉我的时间',
-    ],
+    dialog: ['我是一颗螺丝', '🔩我花掉了我的时间', '我会花掉我的时间'],
     size: 'S',
     movement: 'static',
     zFactor: 1,
@@ -1699,11 +1686,7 @@ const MOCK_OBJECT = [
   {
     _id: '61b1ac34759d6a8c39e6b3d1',
     name: '',
-    dialog: [
-      '为什么要做不要做的事',
-      '为什么这么闭塞',
-      '我只是一直没开手机',
-    ],
+    dialog: ['为什么要做不要做的事', '为什么这么闭塞', '我只是一直没开手机'],
     size: 'M',
     movement: 'static',
     zFactor: 1,

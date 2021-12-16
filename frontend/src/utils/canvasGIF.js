@@ -24,19 +24,9 @@ function fillCanvasWithFrame(canvas, frameInfo) {
   return ctx
 }
 
-function renderImageToCanvas(
-  type,
-  canvasInfo,
-  currentFrameInfo,
-  frames
-) {
+function renderImageToCanvas(type, canvasInfo, currentFrameInfo, frames) {
   const { canvas, canvasHeight, canvasWidth } = canvasInfo
-  const {
-    frame,
-    frameHeight,
-    frameWidth,
-    cellSize,
-  } = currentFrameInfo
+  const { frame, frameHeight, frameWidth, cellSize } = currentFrameInfo
   const cols = Math.floor(frameWidth / cellSize)
   let ctx = canvas.getContext('2d')
   ctx.canvas.width = canvasWidth

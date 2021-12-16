@@ -15,13 +15,7 @@ const updateInterval = updateFrameProp('interval')
 const isSameColor = (colorA, colorB) =>
   (colorA || GRID_INITIAL_COLOR) === (colorB || GRID_INITIAL_COLOR)
 
-const getSameColorAdjacentCells = (
-  frameGrid,
-  columns,
-  rows,
-  id,
-  color
-) => {
+const getSameColorAdjacentCells = (frameGrid, columns, rows, id, color) => {
   const adjacentCollection = []
   let auxId
 
@@ -59,10 +53,7 @@ const getSameColorAdjacentCells = (
 
 const drawPixel = (pixelGrid, color, id) => pixelGrid.set(id, color)
 
-const applyBucketToGrid = (
-  grid,
-  { id, paletteColor, columns, rows }
-) => {
+const applyBucketToGrid = (grid, { id, paletteColor, columns, rows }) => {
   const queue = [id]
   const cellColor = grid.get(id)
   let currentId

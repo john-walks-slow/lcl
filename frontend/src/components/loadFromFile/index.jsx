@@ -6,9 +6,7 @@ import ImageDimensions from './ImageDimensions'
 import ImageSetupSection from './ImageSetup'
 import breakpoints from '../../utils/breakpoints'
 import drawFileImageToCanvas from '../../utils/ImageToCanvas'
-import generateFrames, {
-  getCanvasDimensions,
-} from '../../utils/loadFromCanvas'
+import generateFrames, { getCanvasDimensions } from '../../utils/loadFromCanvas'
 
 const MAX_WIDTH = 100
 const MAX_HEIGHT = 100
@@ -80,12 +78,7 @@ const LoadFromFile = props => {
     const context = canvas.getContext('2d')
 
     context.fillStyle = '#CCCCCC'
-    context.fillRect(
-      0,
-      0,
-      context.canvas.width,
-      context.canvas.height
-    )
+    context.fillRect(0, 0, context.canvas.width, context.canvas.height)
   }, [])
 
   const showValidationMessage = validation => {
@@ -107,14 +100,9 @@ const LoadFromFile = props => {
     }
   }
 
-  const imgSetupValidation = (
-    contextDimensions,
-    size,
-    frameAmount
-  ) => {
+  const imgSetupValidation = (contextDimensions, size, frameAmount) => {
     const widthPixelsFit = contextDimensions.w % size === 0
-    const heightPixelsFit =
-      (contextDimensions.h / frameAmount) % size === 0
+    const heightPixelsFit = (contextDimensions.h / frameAmount) % size === 0
 
     const pixelsWidth = contextDimensions.w / size
     const pixelsHeight = contextDimensions.h / size / frameAmount
@@ -126,8 +114,7 @@ const LoadFromFile = props => {
       showValidationMessage({
         show: true,
         title: 'Error',
-        message:
-          'No valid frame size. Width and height must be exact.',
+        message: 'No valid frame size. Width and height must be exact.',
         widthError: !widthPixelsFit,
         heightError: !heightPixelsFit,
       })
@@ -224,11 +211,7 @@ const LoadFromFile = props => {
   return (
     <Container>
       <Title>Find an image and create a project</Title>
-      <Button
-        type="file"
-        onChange={onLoadImage}
-        ariaLabel="Load image file"
-      >
+      <Button type="file" onChange={onLoadImage} ariaLabel="Load image file">
         BROWSE...
       </Button>
       <LoadedImageContainer imageLoaded={imageLoaded}>
@@ -262,15 +245,11 @@ const LoadFromFile = props => {
           onClick={onCreateProject}
           size="full"
           ariaLabel="Create a project from the loaded image"
-          disabled={
-            validationError.widthError || validationError.heightError
-          }
+          disabled={validationError.widthError || validationError.heightError}
         >
           CREATE PROJECT
         </Button>
-        {validationError.show && (
-          <ValidationMessage value={validationError} />
-        )}
+        {validationError.show && <ValidationMessage value={validationError} />}
       </LoadedImageContainer>
     </Container>
   )

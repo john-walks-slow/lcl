@@ -1,12 +1,6 @@
 import React from 'react'
 
-const RadioSelector = ({
-  name,
-  selected,
-  legend,
-  options,
-  change,
-}) => {
+const RadioSelector = ({ name, selected, legend, options, change }) => {
   const availableOptions = ops =>
     ops.map(item => (
       <label htmlFor={`${name}-${item.labelFor}`} key={item.id}>

@@ -1,12 +1,6 @@
 import React from 'react'
 
-const Checkbox = ({
-  name,
-  labelFor,
-  checked,
-  description,
-  onChange,
-}) => (
+const Checkbox = ({ name, labelFor, checked, description, onChange }) => (
   <div className="checkbox">
     <label htmlFor={`${name}-${labelFor}`}>
       <input

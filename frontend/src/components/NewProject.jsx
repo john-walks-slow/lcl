@@ -26,8 +26,5 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(actionCreators, dispatch),
 })
 
-const NewProjectContainer = connect(
-  null,
-  mapDispatchToProps
-)(NewProject)
+const NewProjectContainer = connect(null, mapDispatchToProps)(NewProject)
 export default NewProjectContainer

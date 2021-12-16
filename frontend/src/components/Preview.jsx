@@ -7,12 +7,7 @@ import Animation from './Animation'
 
 const Preview = props => {
   const generatePreview = () => {
-    const {
-      activeFrameIndex,
-      duration,
-      storedData,
-      animationName,
-    } = props
+    const { activeFrameIndex, duration, storedData, animationName } = props
     const { frames, columns, cellSize, animate } = storedData || props
     const animation = frames.size > 1 && animate
     let animationData
@@ -30,11 +25,7 @@ const Preview = props => {
     }
 
     if (animation) {
-      animationData = generateAnimationCSSData(
-        frames,
-        columns,
-        cellSize
-      )
+      animationData = generateAnimationCSSData(frames, columns, cellSize)
     } else {
       cssString = generatePixelDrawCss(
         frames.get(activeFrameIndex),

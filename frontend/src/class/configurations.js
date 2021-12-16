@@ -42,8 +42,7 @@ class Configurations {
   updateConfigurations() {
     // Actually the size of the canvas,not the window
     this.RAW_WINDOW_W = window.innerWidth || document.body.clientWidth
-    this.RAW_WINDOW_H =
-      window.innerHeight || document.body.clientHeight
+    this.RAW_WINDOW_H = window.innerHeight || document.body.clientHeight
     this.SCALE = Math.min(
       Math.min(this.RAW_WINDOW_W / 15, this.RAW_WINDOW_H / 19) /
         this.PLAYER_TARGET_H,

@@ -15,18 +15,11 @@ import {
   Avoid error when server-side render doesn't recognize
   localstorage (browser feature)
 */
-const browserStorage =
-  typeof localStorage === 'undefined' ? null : localStorage
+const browserStorage = typeof localStorage === 'undefined' ? null : localStorage
 
 export default class LoadDrawing extends React.Component {
   getExportCode() {
-    const {
-      frames,
-      paletteGridData,
-      cellSize,
-      columns,
-      rows,
-    } = this.props
+    const { frames, paletteGridData, cellSize, columns, rows } = this.props
     const projectData = {
       frames,
       paletteGridData,
@@ -53,19 +46,11 @@ export default class LoadDrawing extends React.Component {
         cellSize,
       } = importedProject
 
-      actions.setDrawing(
-        frames,
-        paletteGridData,
-        cellSize,
-        columns,
-        rows
-      )
+      actions.setDrawing(frames, paletteGridData, cellSize, columns, rows)
       close()
       actions.sendNotification('Project successfully imported')
     } else {
-      actions.sendNotification(
-        "Sorry, the project couldn't be imported"
-      )
+      actions.sendNotification("Sorry, the project couldn't be imported")
     }
   }
 
@@ -153,8 +138,8 @@ export default class LoadDrawing extends React.Component {
           <div className="load-drawing">
             <h2>Import your project</h2>
             <p>
-              Paste a previously exported code in the text field and
-              click on the button &nbsp;
+              Paste a previously exported code in the text field and click on
+              the button &nbsp;
               <b>IMPORT</b>
               &nbsp;
             </p>
@@ -182,20 +167,19 @@ export default class LoadDrawing extends React.Component {
           <div className="load-drawing">
             <h2>Export your project</h2>
             <p>
-              Please save the following text if you wish to import
-              your project in the future using the &nbsp;
+              Please save the following text if you wish to import your project
+              in the future using the &nbsp;
               <b>Import</b>
               &nbsp; button.
             </p>
             <p>
-              In the main page you can save your project by clicking
-              on the &nbsp;
+              In the main page you can save your project by clicking on the
+              &nbsp;
               <b>SAVE</b>
-              &nbsp; button, it will keep your work in your
-              browser&apos;s local storage. However, if you prefer not
-              to use local storage or you just want to keep your
-              project safe somewhere else, this might be a good
-              option.
+              &nbsp; button, it will keep your work in your browser&apos;s local
+              storage. However, if you prefer not to use local storage or you
+              just want to keep your project safe somewhere else, this might be
+              a good option.
             </p>
             <Output
               copyClipboardData={{

@@ -1,14 +1,8 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Picker from 'react-color'
-import {
-  switchTool,
-  setCustomColor,
-} from '../store/actions/actionCreators'
-import {
-  COLOR_PICKER,
-  PENCIL,
-} from '../store/reducers/drawingToolStates'
+import { switchTool, setCustomColor } from '../store/actions/actionCreators'
+import { COLOR_PICKER, PENCIL } from '../store/reducers/drawingToolStates'
 
 const ColorPickerContainer = React.memo(() => {
   const colorPickerOn = useSelector(
@@ -61,9 +55,7 @@ const ColorPickerContainer = React.memo(() => {
       <button
         type="button"
         aria-label="Color Picker Tool"
-        className={`color-picker__button${
-          colorPickerOn ? ' selected' : ''
-        }`}
+        className={`color-picker__button${colorPickerOn ? ' selected' : ''}`}
         onClick={handleClick}
       />
       <div style={styles.picker}>

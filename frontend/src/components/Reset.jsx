@@ -1,9 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {
-  resetGrid,
-  updateUsedColors,
-} from '../store/actions/actionCreators'
+import { resetGrid, updateUsedColors } from '../store/actions/actionCreators'
 
 const Reset = ({ resetGridDispatch }) => (
   <button type="button" className="reset" onClick={resetGridDispatch}>

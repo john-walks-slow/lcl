@@ -108,10 +108,7 @@ const addColorToLastGridCell = (palette, newColor) => {
   const grid = palette.get('grid')
   const lastPosition = grid.size - 1
   return palette.merge({
-    grid: grid.setIn(
-      [lastPosition, 'color'],
-      parseColorToString(newColor)
-    ),
+    grid: grid.setIn([lastPosition, 'color'], parseColorToString(newColor)),
     position: lastPosition,
   })
 }
@@ -155,9 +152,7 @@ const createPaletteGrid = () => {
   if (player && player.palette) {
     colorList = colorList.concat(player.palette)
   }
-  return List(colorList).map(color =>
-    Map({ color, id: shortid.generate() })
-  )
+  return List(colorList).map(color => Map({ color, id: shortid.generate() }))
 }
 
 const isColorSelected = palette => palette.get('position') !== -1
@@ -216,16 +211,11 @@ const setPalette = (palette, action) => {
   const defaultPalette = action.paletteGridData.length === 0
   return palette.set(
     'grid',
-    fromJS(
-      defaultPalette ? createPaletteGrid() : action.paletteGridData
-    )
+    fromJS(defaultPalette ? createPaletteGrid() : action.paletteGridData)
   )
 }
 
-export default function paletteReducer(
-  palette = createPalette(),
-  action
-) {
+export default function paletteReducer(palette = createPalette(), action) {
   switch (action.type) {
     case types.SET_INITIAL_STATE:
     case types.NEW_PROJECT:

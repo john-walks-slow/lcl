@@ -35,8 +35,5 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(actionCreators, dispatch),
 })
 
-const CellSizeContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CellSize)
+const CellSizeContainer = connect(mapStateToProps, mapDispatchToProps)(CellSize)
 export default CellSizeContainer

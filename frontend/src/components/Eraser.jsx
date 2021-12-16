@@ -21,8 +21,5 @@ const mapDispatchToProps = dispatch => ({
   switchEraser: () => dispatch(switchEraserAction),
 })
 
-const EraserContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Eraser)
+const EraserContainer = connect(mapStateToProps, mapDispatchToProps)(Eraser)
 export default EraserContainer

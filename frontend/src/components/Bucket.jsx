@@ -21,8 +21,5 @@ const mapDispatchToProps = dispatch => ({
   switchBucket: () => dispatch(switchBucketAction),
 })
 
-const BucketContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Bucket)
+const BucketContainer = connect(mapStateToProps, mapDispatchToProps)(Bucket)
 export default BucketContainer

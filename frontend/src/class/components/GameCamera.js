@@ -1,7 +1,6 @@
 import configurations from '../configurations'
 
-export default class GameCamera extends Phaser.Cameras.Scene2D
-  .Camera {
+export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
   constructor(scene) {
     super(0, 0, configurations.WINDOW_W, configurations.WINDOW_H)
     this.scene = scene

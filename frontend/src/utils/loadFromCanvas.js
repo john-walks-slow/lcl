@@ -19,16 +19,9 @@ export const getDimensionIntervals = (dimension, numberOfFrames) => {
   return intervals
 }
 
-const generateFrames = (
-  imageContext,
-  numberOfFrames,
-  pixSize = 1
-) => {
+const generateFrames = (imageContext, numberOfFrames, pixSize = 1) => {
   const { width, height } = imageContext.canvas
-  const heightIntervals = getDimensionIntervals(
-    height,
-    numberOfFrames
-  )
+  const heightIntervals = getDimensionIntervals(height, numberOfFrames)
   const frameCollection = []
 
   heightIntervals.forEach(heightInterval => {

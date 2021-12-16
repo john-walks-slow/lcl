@@ -34,9 +34,7 @@ const Page = ({ dispatch, isShown }) => {
   const telescopes = player.get('telescopes')
   const batteries = player.get('batteries')
   const boxes = player.get('boxes')
-  const usedColors = useSelector(state =>
-    state.present.get('usedColors')
-  )
+  const usedColors = useSelector(state => state.present.get('usedColors'))
   const isEmpty = usedColors ? usedColors.length == 0 : true
   const frames = useSelector(state => state.present.get('frames'))
   const framesList = useSelector(state =>
@@ -79,9 +77,7 @@ const Page = ({ dispatch, isShown }) => {
   const boxConsumption = link == '' ? 0 : 1
   const fatConsumption = FAT_CONSUMPTION_MAP[size]
   const batteryConsumption = BATTERY_CONSUMPTION_MAP[movement]
-  const telescopeConsumption = Math.floor(
-    Math.abs(zFactor - 1) / 0.25
-  )
+  const telescopeConsumption = Math.floor(Math.abs(zFactor - 1) / 0.25)
   const regex = new RegExp(
     /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
   )
@@ -163,13 +159,10 @@ const Page = ({ dispatch, isShown }) => {
       setZFactor(1)
 
       let currentPlayer = secureStorage.getItem('player')
-      const getColor =
-        Math.round(Math.random()) == 1 && dialog.length > 0
+      const getColor = Math.round(Math.random()) == 1 && dialog.length > 0
       // let newRewardColor = Array(colorCount).map(i => ((Math.floor(Math.random() * 16777215).toString(16))));
       let newRewardColor = getColor
-        ? REWARD_PALETTE[
-            Math.floor(Math.random() * REWARD_PALETTE.length)
-          ]
+        ? REWARD_PALETTE[Math.floor(Math.random() * REWARD_PALETTE.length)]
         : false
       if (currentPlayer.palette.indexOf(newRewardColor) > -1) {
         newRewardColor = false
@@ -284,9 +277,7 @@ const Page = ({ dispatch, isShown }) => {
           >
             名字{' '}
             <sub>
-              {'便签条数量：' +
-                labels +
-                (labelConsumption == 0 ? '' : `(-1)`)}
+              {'便签条数量：' + labels + (labelConsumption == 0 ? '' : `(-1)`)}
             </sub>
             <input
               type="text"
@@ -305,9 +296,7 @@ const Page = ({ dispatch, isShown }) => {
           >
             链接{' '}
             <sub>
-              {'箱子数量：' +
-                boxes +
-                (boxConsumption == 0 ? '' : `(-1)`)}
+              {'箱子数量：' + boxes + (boxConsumption == 0 ? '' : `(-1)`)}
             </sub>
             <input
               type="text"
@@ -359,9 +348,7 @@ const Page = ({ dispatch, isShown }) => {
             <sub>
               {'镜片数量：' +
                 telescopes +
-                (telescopeConsumption == 0
-                  ? ''
-                  : `(-${telescopeConsumption})`)}
+                (telescopeConsumption == 0 ? '' : `(-${telescopeConsumption})`)}
             </sub>
             <input
               type="range"

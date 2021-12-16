@@ -22,9 +22,7 @@ let listener = false
 function vectorAngle(x, y) {
   let mX = Math.sqrt(x.reduce((acc, n) => acc + Math.pow(n, 2), 0))
   let mY = Math.sqrt(y.reduce((acc, n) => acc + Math.pow(n, 2), 0))
-  return Math.acos(
-    x.reduce((acc, n, i) => acc + n * y[i], 0) / (mX * mY)
-  )
+  return Math.acos(x.reduce((acc, n, i) => acc + n * y[i], 0) / (mX * mY))
 }
 
 export default class MainScene extends Phaser.Scene {
@@ -189,10 +187,7 @@ export default class MainScene extends Phaser.Scene {
         )
       }
       this.physics.collide(o1, o2)
-      if (
-        currentObj.oData.isBackground ||
-        currentObj.oData.isForeground
-      ) {
+      if (currentObj.oData.isBackground || currentObj.oData.isForeground) {
         currentObj.collider.destroy()
       } else {
         currentObj.oData.dialog = []
@@ -247,24 +242,13 @@ export default class MainScene extends Phaser.Scene {
     this.gameDialog = new Dialog(this)
     this.itemDialog = new ItemDialog(this)
     this.linkDialog = new LinkDialog(this)
-    this.uiLayer.add([
-      this.gameDialog,
-      this.itemDialog,
-      this.linkDialog,
-    ])
+    this.uiLayer.add([this.gameDialog, this.itemDialog, this.linkDialog])
 
     let reactMenu = document.getElementById('GAME_MENU')
     let gameInfo = document.getElementById('GAME_INFO')
     let gameInventory = document.getElementById('GAME_INVENTORY')
-    let gameButtons = document.getElementsByClassName(
-      'game__button-menu'
-    )
-    this.reactComponents = [
-      reactMenu,
-      gameInfo,
-      gameInventory,
-      ...gameButtons,
-    ]
+    let gameButtons = document.getElementsByClassName('game__button-menu')
+    this.reactComponents = [reactMenu, gameInfo, gameInventory, ...gameButtons]
     const handleInput = e => {
       // if the click is not on the root react div, we call stopPropagation()
       if (e.target.tagName != 'canvas') {
@@ -373,27 +357,23 @@ export default class MainScene extends Phaser.Scene {
     this.filter = (x, y) => {
       let result = ''
       let i = 0
-      for (const [
-        key,
-        { min, max, unit, probability },
-      ] of Object.entries(FILTER_LIST)) {
+      for (const [key, { min, max, unit, probability }] of Object.entries(
+        FILTER_LIST
+      )) {
         seeds[i] < probability &&
           (result += `${key}(${min +
             (max - min) *
               Math.min(
-                (seeds[i] * Math.abs(x)) /
-                  configurations.MOVE_SPEED /
-                  5,
+                (seeds[i] * Math.abs(x)) / configurations.MOVE_SPEED / 5,
                 1
               )}${unit}) `)
         i++
         RESULT_LIST[key] = false
       }
       i = 0
-      for (const [
-        key,
-        { min, max, unit, probability },
-      ] of Object.entries(FILTER_LIST)) {
+      for (const [key, { min, max, unit, probability }] of Object.entries(
+        FILTER_LIST
+      )) {
         if (!RESULT_LIST[key]) {
           continue
         }
@@ -401,9 +381,7 @@ export default class MainScene extends Phaser.Scene {
           (result += `${key}(${min +
             (max - min) *
               Math.min(
-                (seeds[i] * Math.abs(y)) /
-                  configurations.MOVE_SPEED /
-                  5,
+                (seeds[i] * Math.abs(y)) / configurations.MOVE_SPEED / 5,
                 1
               )}${unit}) `)
         i++
@@ -523,10 +501,7 @@ export default class MainScene extends Phaser.Scene {
             currentZone[1] == this.previousZone[1]
           )
         ) {
-          this.objectGroup.updateObjects(
-            this.previousZone,
-            currentZone
-          )
+          this.objectGroup.updateObjects(this.previousZone, currentZone)
 
           this.previousZone = currentZone
         }
@@ -544,18 +519,15 @@ export default class MainScene extends Phaser.Scene {
           isMouseMovement = mousePosX && mousePosY
         } else {
           mousePosX =
-            this.input.activePointer.x -
-            configurations.WINDOW_CENTER_X
+            this.input.activePointer.x - configurations.WINDOW_CENTER_X
           mousePosY =
-            configurations.WINDOW_CENTER_Y -
-            this.input.activePointer.y
+            configurations.WINDOW_CENTER_Y - this.input.activePointer.y
           isMouseMovement =
             this.input.activePointer.isDown && !this.pointerOnPlayer
         }
 
         let mouseAngle =
-          isMouseMovement &&
-          vectorAngle([0, 1], [mousePosX, mousePosY])
+          isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY])
         if (
           this.cursors.left.isDown ||
           this.cursors.right.isDown ||
@@ -662,10 +634,7 @@ export default class MainScene extends Phaser.Scene {
 
   resume() {
     this.scene.resume(this)
-    this.game.scale.resize(
-      configurations.WINDOW_W,
-      configurations.WINDOW_H
-    )
+    this.game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H)
     this.game.scale.setZoom(configurations.SCALE)
     this.setDisplay()
     this.input.keyboard.enableGlobalCapture()

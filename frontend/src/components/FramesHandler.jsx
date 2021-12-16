@@ -111,8 +111,7 @@ class FramesHandler extends React.Component {
   }
 }
 
-const mapStateToProps = state =>
-  state.present.get('frames').toObject()
+const mapStateToProps = state => state.present.get('frames').toObject()
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(actionCreators, dispatch),

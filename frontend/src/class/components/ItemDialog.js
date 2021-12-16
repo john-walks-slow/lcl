@@ -24,10 +24,7 @@ export default class ItemDialog extends Dialog {
     this.dialogText.setX(this.X - this.WIDTH / 2 + this.PADDING)
     this.dialogText.setY(this.Y - this.HEIGHT / 2 + this.PADDING_TOP)
     this.dialogText.wordWrap = {
-      width: Math.max(
-        this.WIDTH - this.PADDING * 2.5,
-        this.FONT_SIZE
-      ),
+      width: Math.max(this.WIDTH - this.PADDING * 2.5, this.FONT_SIZE),
       useAdvancedWrap: true,
     }
   }

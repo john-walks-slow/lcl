@@ -39,8 +39,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
                 o.x += (o.displayWidth - Math.abs(o.x - cg.x)) * 1.1
               }
               if (cg.y < o.y) {
-                cg.y -=
-                  (cg.displayHeight - Math.abs(o.y - cg.y)) * 1.1
+                cg.y -= (cg.displayHeight - Math.abs(o.y - cg.y)) * 1.1
               } else {
                 o.y += (o.displayHeight - Math.abs(o.y - cg.y)) * 1.1
               }
@@ -54,12 +53,8 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
   }
   updateObjects(previousZone, currentZone) {
     console.time('updateObjects')
-    let previousZones = this.scene.objectData.map.getNearBy(
-      previousZone
-    )
-    let currentZones = this.scene.objectData.map.getNearBy(
-      currentZone
-    )
+    let previousZones = this.scene.objectData.map.getNearBy(previousZone)
+    let currentZones = this.scene.objectData.map.getNearBy(currentZone)
     let createZones = currentZones.filter(
       x => !previousZones.toString().includes(x.toString())
     )
@@ -88,8 +83,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
             // o.instance = this.scene.physics.add.sprite(o.x,o.y,"object"+o.id);
             // console.log(this.scene.objectGroup);
             o.instance.depth = o.zFactor
-            o.isForeground &&
-              (o.instance.alpha = 1 - Math.abs(o.zFactor - 1))
+            o.isForeground && (o.instance.alpha = 1 - Math.abs(o.zFactor - 1))
             o.isBackground &&
               (o.instance.alpha = 1 - Math.abs(o.zFactor - 1) * 1.5)
             o.instance.oData = o
@@ -114,11 +108,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
             break
           case 'item':
             o.instance = this.scene.itemGroup
-              .create(
-                o.x,
-                o.y,
-                configurations.ITEM_LIST[o.itemId].name
-              )
+              .create(o.x, o.y, configurations.ITEM_LIST[o.itemId].name)
               .setDisplaySize(o.displayWidth, o.displayWidth)
             o.instance.fadeOut = this.scene.tweens.create({
               targets: o.instance,

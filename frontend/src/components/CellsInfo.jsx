@@ -6,11 +6,7 @@ const CellsInfo = props => {
   const xPos = hoveredIndex ? hoveredIndex.get('x') : '0'
   const yPos = hoveredIndex ? hoveredIndex.get('y') : '0'
   return (
-    <>
-      {hoveredIndex && (
-        <div className="cellinfo">{`${xPos}, ${yPos}`}</div>
-      )}
-    </>
+    <>{hoveredIndex && <div className="cellinfo">{`${xPos}, ${yPos}`}</div>}</>
   )
 }
 

@@ -60,9 +60,7 @@ class GenerativeMusic {
       let currentPos = 0
       let currentType = false
       // this.chordSequence = [...Array(this.chordLoopLength)].map(i => []);
-      this.chordSequence = [...Array(this.chordLoopLength)].map(
-        i => false
-      )
+      this.chordSequence = [...Array(this.chordLoopLength)].map(i => false)
       while (currentPos < this.chordLoopLength) {
         switch (currentType) {
           case 'D':
@@ -277,12 +275,8 @@ class GenerativeMusic {
               let jumpA
               let jumpB
               if (o.previousNote) {
-                jumpA = Math.abs(
-                  MS.interval(o.previousNote, a).semitones()
-                )
-                jumpB = Math.abs(
-                  MS.interval(o.previousNote, b).semitones()
-                )
+                jumpA = Math.abs(MS.interval(o.previousNote, a).semitones())
+                jumpB = Math.abs(MS.interval(o.previousNote, b).semitones())
                 // console.log(jumpA, jumpB);
               } else {
                 jumpA = 0
@@ -295,9 +289,7 @@ class GenerativeMusic {
             // possibleNotes[o.intRandom(0, possibleNotes.length - 1)];
 
             if (o.panner.audible) {
-              console.log(
-                `H: ${o.previousNote.scientific()} ${o.dialog}`
-              )
+              console.log(`H: ${o.previousNote.scientific()} ${o.dialog}`)
               // o.synth.set({
               //   width: Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180
               // });
@@ -351,21 +343,13 @@ class GenerativeMusic {
         o.note = this.scale.getNote(parseInt(o.noteIndex))
         o.loopInterval = this.melodyLoopLength + o.intRandom(-2, 2)
         // o.loopInterval = melodyLoopLength;
-        o.melodySequence = [
-          ...Array(this.melodyLoopLength),
-        ].map(i => [])
-        o.melodySequence[
-          o.intRandom(0, this.melodyLoopLength - 1)
-        ] = [o.note]
+        o.melodySequence = [...Array(this.melodyLoopLength)].map(i => [])
+        o.melodySequence[o.intRandom(0, this.melodyLoopLength - 1)] = [o.note]
         o.loop = new Tone.Sequence(
           (time, note) => {
             if (o.panner.audible) {
               // console.log(`M: ${o.note.scientific()} ${o.dialog}`);
-              o.synth.triggerAttackRelease(
-                note.scientific(),
-                '8n',
-                time
-              )
+              o.synth.triggerAttackRelease(note.scientific(), '8n', time)
             }
           },
           o.melodySequence,

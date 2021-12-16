@@ -68,14 +68,10 @@ export default class LoadingScene extends Phaser.Scene {
             case true:
               var shardsImg = new Image()
               shardsImg.onload = () => {
-                this.textures.addSpriteSheet(
-                  'object' + o._id,
-                  shardsImg,
-                  {
-                    frameWidth: o.columns,
-                    frameHeight: o.rows,
-                  }
-                )
+                this.textures.addSpriteSheet('object' + o._id, shardsImg, {
+                  frameWidth: o.columns,
+                  frameHeight: o.rows,
+                })
               }
               shardsImg.src = o.blobURI
 

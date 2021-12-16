@@ -53,9 +53,7 @@ export default class LinkDialog extends Dialog {
     this.dialogWindow.setX(this.WINDOW_CENTER_X)
     this.dialogWindow.setY(this.WINDOW_CENTER_Y)
     this.dialogWindow.setDisplaySize(this.WIDTH, this.HEIGHT)
-    this.dialogText.setX(
-      this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING
-    )
+    this.dialogText.setX(this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING)
     this.dialogText.setY(
       this.WINDOW_CENTER_Y - this.HEIGHT / 2 + this.PADDING_TOP
     )

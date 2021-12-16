@@ -10,18 +10,10 @@ export default class ObjectData {
     this.list = list
       .sort((a, b) => b.birthday - a.birthday)
       .filter(
-        o =>
-          configurations.TIMESTAMP - o.birthday >
-          configurations.TIME_DELAY
+        o => configurations.TIMESTAMP - o.birthday > configurations.TIME_DELAY
       )
-    this.map.getZone = (
-      player,
-      gridSize = configurations.GRID_SIZE
-    ) => {
-      return [
-        Math.ceil(player.x / gridSize),
-        Math.ceil(player.y / gridSize),
-      ]
+    this.map.getZone = (player, gridSize = configurations.GRID_SIZE) => {
+      return [Math.ceil(player.x / gridSize), Math.ceil(player.y / gridSize)]
     }
     this.map.getNearBy = (zone, scope = 1) => {
       if (!zone) {
@@ -54,10 +46,8 @@ export default class ObjectData {
     this.list.forEach((o, i) => {
       // if (configurations.TIMESTAMP - o.birthday < configurations.TIME_DELAY) { return; }
       dateOffset +=
-        Math.min(
-          14,
-          (previousDate - o.birthday) / 24 / 60 / 60 / 1000
-        ) * configurations.DAY_OFFSET
+        Math.min(14, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) *
+        configurations.DAY_OFFSET
       previousDate = o.birthday
       o.isTrash = o.dialog.length == 0
       o.fadeSpeed = 1
@@ -78,9 +68,7 @@ export default class ObjectData {
       zFactorOffset = (o.zFactor || 1) ** 0.5
       // o.distance = (offset + dateOffset) * zFactorOffset ;
       o.distance =
-        (o.seed[1] * configurations.RANDOM_ZONE_W +
-          offset +
-          dateOffset) *
+        (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) *
         zFactorOffset *
         o.fadeSpeed
       // o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) * zFactorOffset * (2 + o.seed[1]) / 3;
@@ -102,13 +90,11 @@ export default class ObjectData {
         o.displayHeight =
           (configurations.OBJECT_W[o.size] / o.zFactor) * o.ratio
       } else {
-        o.displayWidth =
-          configurations.OBJECT_W[o.size] / o.zFactor / o.ratio
+        o.displayWidth = configurations.OBJECT_W[o.size] / o.zFactor / o.ratio
         o.displayHeight = configurations.OBJECT_W[o.size] / o.zFactor
       }
       o.displayWidth =
-        Math.max(Math.round(o.displayWidth / o.columns), 1) *
-        o.columns
+        Math.max(Math.round(o.displayWidth / o.columns), 1) * o.columns
       o.displayHeight =
         Math.max(Math.round(o.displayHeight / o.rows), 1) * o.rows
 
@@ -123,13 +109,11 @@ export default class ObjectData {
           i._id = o._id
           this.itemList.push(i)
           let rad = i.seed[0] * (Math.PI / 180)
-          let distance =
-            i.seed[1] * configurations.RANDOM_ZONE_W + o.distance
+          let distance = i.seed[1] * configurations.RANDOM_ZONE_W + o.distance
           i.x = Math.cos(rad) * distance
           i.y = Math.sin(rad) * distance
           i.displayWidth = configurations.OBJECT_W.XS
-          i.displayWidth =
-            Math.max(Math.round(i.displayWidth / 17), 1) * 17
+          i.displayWidth = Math.max(Math.round(i.displayWidth / 17), 1) * 17
           i.zone = [
             Math.ceil(i.x / configurations.GRID_SIZE),
             Math.ceil(i.y / configurations.GRID_SIZE),

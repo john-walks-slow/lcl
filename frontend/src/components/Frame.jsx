@@ -34,20 +34,9 @@ export default class Frame extends React.Component {
   }
 
   render() {
-    const {
-      active,
-      dataId,
-      frame,
-      lastFrame,
-      columns,
-      rows,
-    } = this.props
+    const { active, dataId, frame, lastFrame, columns, rows } = this.props
     return (
-      <Draggable
-        key={dataId}
-        draggableId={dataId.toString()}
-        index={dataId}
-      >
+      <Draggable key={dataId} draggableId={dataId.toString()} index={dataId}>
         {provided => (
           <div
             className={`frame${active ? ' active' : ''}`}

@@ -42,8 +42,7 @@ const PickerInfoIcon = styled.i`
 `
 
 const getImageDimensions = (canvasDimensions, pSize, frameAmount) => {
-  const pixelsWidth =
-    Math.round((canvasDimensions.w / pSize) * 100) / 100
+  const pixelsWidth = Math.round((canvasDimensions.w / pSize) * 100) / 100
   const pixelsHeight =
     Math.round((canvasDimensions.h / pSize / frameAmount) * 100) / 100
   return {
@@ -61,28 +60,16 @@ const ImageSetupSection = ({
   setResultDimensions,
   imgSetupValidation,
 }) => {
-  const getPickerAction = (property, setProperty) => (
-    type,
-    behaviour
-  ) => {
+  const getPickerAction = (property, setProperty) => (type, behaviour) => {
     const newPickerCount = property.value + behaviour
-    const pixelValue =
-      property.id === 'frame' ? pixelSize : newPickerCount
-    const frameValue =
-      property.id === 'frame' ? newPickerCount : frameCount
+    const pixelValue = property.id === 'frame' ? pixelSize : newPickerCount
+    const frameValue = property.id === 'frame' ? newPickerCount : frameCount
     setProperty(newPickerCount)
     setResultDimensions(
-      getImageDimensions(
-        getCanvasDimensions(canvasRef),
-        pixelValue,
-        frameValue
-      ).result
+      getImageDimensions(getCanvasDimensions(canvasRef), pixelValue, frameValue)
+        .result
     )
-    imgSetupValidation(
-      getCanvasDimensions(canvasRef),
-      pixelValue,
-      frameValue
-    )
+    imgSetupValidation(getCanvasDimensions(canvasRef), pixelValue, frameValue)
   }
 
   const framePickerAction = getPickerAction(

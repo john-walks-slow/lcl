@@ -9,11 +9,7 @@ import {
 } from '../store/actions/actionCreators'
 import GridWrapper from './GridWrapper'
 import throttle from '../utils/throttle'
-import {
-  ERASER,
-  EYEDROPPER,
-  MOVE,
-} from '../store/reducers/drawingToolStates'
+import { ERASER, EYEDROPPER, MOVE } from '../store/reducers/drawingToolStates'
 
 const gridContainerClass = 'grid-container'
 
@@ -79,11 +75,7 @@ const mapStateToProps = state => {
     rows: frames.get('rows'),
     hoveredIndex: frames.get('hoveredIndex'),
     drawingTool,
-    paletteColor: palette.getIn([
-      'grid',
-      paletteCellPosition,
-      'color',
-    ]),
+    paletteColor: palette.getIn(['grid', paletteCellPosition, 'color']),
     eyedropperOn: drawingTool === EYEDROPPER,
     eraserOn: drawingTool === ERASER,
     moveOn: drawingTool === MOVE,
@@ -94,15 +86,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   cellAction: cellProps => dispatch(cellAction(cellProps)),
   updateGridBoundariesThrottle: throttle(() => {
-    const gridElement = document.getElementsByClassName(
-      gridContainerClass
-    )[0]
+    const gridElement = document.getElementsByClassName(gridContainerClass)[0]
     dispatch(updateGridBoundaries(gridElement))
   }, 500),
   applyMove: moveDiff => dispatch(moveDrawing(moveDiff)),
   endDrag: () => dispatch(endDrag()),
-  hoveredCell: cellPosition =>
-    dispatch(changeHoveredCell(cellPosition)),
+  hoveredCell: cellPosition => dispatch(changeHoveredCell(cellPosition)),
 })
 
 const PixelCanvasContainer = connect(

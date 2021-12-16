@@ -31,13 +31,9 @@ const Game = ({ dispatch, isShown }) => {
   const [hideMenu, setHideMenu] = useState(false)
   const [showGame, setShowGame] = useState(true)
   const [zoomed, setZoomed] = useState(false)
-  const player = useSelector(state =>
-    state.present.get('player')
-  ).toJS()
+  const player = useSelector(state => state.present.get('player')).toJS()
   console.log(player)
-  const newObject = useSelector(state =>
-    state.present.get('newObject')
-  )
+  const newObject = useSelector(state => state.present.get('newObject'))
   // const objects = useSelector(state => state.present.get('objects'));
   const deferredPrompt = window.deferredPrompt
   function toggleShowInventory() {
@@ -53,9 +49,7 @@ const Game = ({ dispatch, isShown }) => {
       secureStorage.setItem('haveReadInfo', 'true')
     }
     if (mainSceneRef && mainSceneRef.gamepad) {
-      !showInfo
-        ? mainSceneRef.gamepad.hide()
-        : mainSceneRef.gamepad.show()
+      !showInfo ? mainSceneRef.gamepad.hide() : mainSceneRef.gamepad.show()
     }
   }
   function navigateToAdd() {
@@ -103,14 +97,8 @@ const Game = ({ dispatch, isShown }) => {
         configurations.updateConfigurations()
         window.addEventListener('resize', () => {
           configurations.updateConfigurations()
-          console.log(
-            configurations.WINDOW_W,
-            configurations.WINDOW_H
-          )
-          game.scale.resize(
-            configurations.WINDOW_W,
-            configurations.WINDOW_H
-          )
+          console.log(configurations.WINDOW_W, configurations.WINDOW_H)
+          game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H)
           game.scale.setZoom(configurations.SCALE)
         })
         // let toggleShowInfoRef = useRef(toggleShowInfo).current;
@@ -170,9 +158,7 @@ const Game = ({ dispatch, isShown }) => {
       <div id="PHASER_ROOT"></div>
       <div
         id="GAME_MENU"
-        className={
-          (showMenu ? 'show' : '') + (hideMenu ? ' hide' : '')
-        }
+        className={(showMenu ? 'show' : '') + (hideMenu ? ' hide' : '')}
       >
         <div className="">
           {/* <input className="game__button-menu" type="image" onClick={() => { navigateToAdd(); }} src={newBtnURL} /> */}
@@ -188,9 +174,7 @@ const Game = ({ dispatch, isShown }) => {
             <u>N</u>ew
           </button>
           <button
-            className={
-              'game__button-menu' + (zoomed ? ' selected' : '')
-            }
+            className={'game__button-menu' + (zoomed ? ' selected' : '')}
             onClick={() => {
               mainSceneRef && mainSceneRef.camera.toggleZoom()
             }}
@@ -198,9 +182,7 @@ const Game = ({ dispatch, isShown }) => {
             <u>M</u>ap
           </button>
           <button
-            className={
-              'game__button-menu' + (showInventory ? ' selected' : '')
-            }
+            className={'game__button-menu' + (showInventory ? ' selected' : '')}
             onClick={() => {
               toggleShowInventory()
             }}
@@ -208,9 +190,7 @@ const Game = ({ dispatch, isShown }) => {
             <u>B</u>ag
           </button>
           <button
-            className={
-              'game__button-menu' + (showInfo ? ' selected' : '')
-            }
+            className={'game__button-menu' + (showInfo ? ' selected' : '')}
             onClick={() => {
               toggleShowInfo()
             }}
@@ -228,10 +208,7 @@ const Game = ({ dispatch, isShown }) => {
         </div>
       </div>
 
-      <div
-        id="GAME_INVENTORY"
-        className={showInventory ? 'show' : ''}
-      >
+      <div id="GAME_INVENTORY" className={showInventory ? 'show' : ''}>
         {player ? (
           <div>
             <div>
@@ -266,9 +243,7 @@ const Game = ({ dispatch, isShown }) => {
       </div>
       <div id="GAME_INFO" className={showInfo ? 'show' : ''}>
         <button
-          className={
-            'game__button-install' + (deferredPrompt ? ' show' : '')
-          }
+          className={'game__button-install' + (deferredPrompt ? ' show' : '')}
           onClick={() => {
             deferredPrompt.prompt()
             deferredPrompt.userChoice.then(choiceResult => {
@@ -292,9 +267,7 @@ const Game = ({ dispatch, isShown }) => {
           ×
         </button>
         <ReactMarkdown>
-          {ReadMe.toString().replace(/:\w+:/gi, name =>
-            emoji.getUnicode(name)
-          )}
+          {ReadMe.toString().replace(/:\w+:/gi, name => emoji.getUnicode(name))}
         </ReactMarkdown>
       </div>
     </div>

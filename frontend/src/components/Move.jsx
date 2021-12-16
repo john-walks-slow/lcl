@@ -21,8 +21,5 @@ const mapDispatchToProps = dispatch => ({
   switchMove: () => dispatch(switchMoveAction),
 })
 
-const MoveContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Move)
+const MoveContainer = connect(mapStateToProps, mapDispatchToProps)(Move)
 export default MoveContainer

@@ -24,12 +24,7 @@ export function getCssImageClassOutput(frame, columns, cellSize) {
   })
 }
 
-export function exportAnimationData(
-  frames,
-  columns,
-  cellSize,
-  duration
-) {
+export function exportAnimationData(frames, columns, cellSize, duration) {
   return getAnimationCssClassOutput(frames, {
     pSize: cellSize,
     c: columns,

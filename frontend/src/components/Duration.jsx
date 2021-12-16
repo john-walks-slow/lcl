@@ -32,8 +32,5 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(actionCreators, dispatch),
 })
 
-const DurationContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Duration)
+const DurationContainer = connect(mapStateToProps, mapDispatchToProps)(Duration)
 export default DurationContainer

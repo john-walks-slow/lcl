@@ -7,9 +7,7 @@ const getRgbaValues = color => {
   const match = color.match(
     /rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d*)?)\))?/
   )
-  return match
-    ? { r: match[1], g: match[2], b: match[3], a: match[4] }
-    : {}
+  return match ? { r: match[1], g: match[2], b: match[3], a: match[4] } : {}
 }
 
 /*
@@ -34,16 +32,14 @@ const isRgba = color => color.includes('rgba')
  *  @param {number}
  *  @return {string} Add a 0 before the number if this only had a digit
  */
-const padHexValue = value =>
-  value.length === 1 ? `0${value}` : value
+const padHexValue = value => (value.length === 1 ? `0${value}` : value)
 
 /*
  *  normalizeHexValue
  *  @param {number} Integer number
  *  @return {string} Return the hex value with 2 digits
  */
-const normalizeHexValue = value =>
-  padHexValue(parseInt(value, 10).toString(16))
+const normalizeHexValue = value => padHexValue(parseInt(value, 10).toString(16))
 
 /*
  *  parseRgbaToHex
@@ -80,9 +76,7 @@ const normalizeColor = colorCode => {
   const defaultValue = '000000'
   const normalized = {
     color:
-      typeof colorCode === 'string' && colorCode
-        ? colorCode
-        : defaultValue,
+      typeof colorCode === 'string' && colorCode ? colorCode : defaultValue,
     opacity: 1,
   }
   if (isRgba(normalized.color)) {
@@ -113,10 +107,7 @@ const formatPixelColorOutput = (color, formatId) => {
     case 1:
       return `${formatId === 0 ? '#' : '0x'}${colorFormatted.color}`
     default:
-      return parseHexToRgba(
-        colorFormatted.color,
-        colorFormatted.opacity
-      )
+      return parseHexToRgba(colorFormatted.color, colorFormatted.opacity)
   }
 }
 

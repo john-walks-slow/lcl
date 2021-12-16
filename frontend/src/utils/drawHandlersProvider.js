@@ -1,8 +1,6 @@
 const fromPositionToId = (posX, posY, grid, columns) => {
   const id = posX + columns * posY
-  return id < grid.size && posX >= 0 && posX < columns && posY >= 0
-    ? id
-    : null
+  return id < grid.size && posX >= 0 && posX < columns && posY >= 0 ? id : null
 }
 
 const fromEventToId = (ev, props) => {
@@ -13,9 +11,7 @@ const fromEventToId = (ev, props) => {
     gridBoundaries: { x, y, width, height },
   } = props
   const posX = Math.round(((clientX - x - radiusX) * columns) / width)
-  const posY = Math.round(
-    ((clientY - y - radiusY) * columns) / height
-  )
+  const posY = Math.round(((clientY - y - radiusY) * columns) / height)
   return fromPositionToId(posX, posY, grid, columns)
 }
 
@@ -44,8 +40,7 @@ const drawHandlersProvider = rootComponent => ({
         const { props } = gridComponent
         if (props.drawingTool !== 'MOVE') {
           const actionProps = getCellActionProps(props, id)
-          if (!rootComponent.state.dragging)
-            props.cellAction(actionProps)
+          if (!rootComponent.state.dragging) props.cellAction(actionProps)
           rootComponent.setState({
             dragging: true,
           })
@@ -57,8 +52,7 @@ const drawHandlersProvider = rootComponent => ({
         props.hoveredCell(getCellCoordinates(id, props.columns))
         if (props.drawingTool !== 'MOVE') {
           const actionProps = getCellActionProps(props, id)
-          if (rootComponent.state.dragging)
-            props.cellAction(actionProps)
+          if (rootComponent.state.dragging) props.cellAction(actionProps)
         }
       },
       onMouseUp(id, ev) {
@@ -91,17 +85,12 @@ const drawHandlersProvider = rootComponent => ({
           const { dragging } = rootComponent.state
           const touch = ev.touches[0]
           const { pageX, pageY } = touch
-          const xDiff = draggingCoord
-            ? pageX - draggingCoord.clientX
-            : 0
-          const yDiff = draggingCoord
-            ? pageY - draggingCoord.clientY
-            : 0
+          const xDiff = draggingCoord ? pageX - draggingCoord.clientX : 0
+          const yDiff = draggingCoord ? pageY - draggingCoord.clientY : 0
           const cellWidth = ev.target.clientWidth
           if (
             dragging &&
-            (Math.abs(xDiff) > cellWidth ||
-              Math.abs(yDiff) > cellWidth)
+            (Math.abs(xDiff) > cellWidth || Math.abs(yDiff) > cellWidth)
           ) {
             rootComponent.setState({
               draggingCoord: { clientX: pageX, clientY: pageY },
@@ -117,17 +106,12 @@ const drawHandlersProvider = rootComponent => ({
           const { draggingCoord } = rootComponent.state
           const { dragging } = rootComponent.state
           const { clientX, clientY } = ev
-          const xDiff = draggingCoord
-            ? clientX - draggingCoord.clientX
-            : 0
-          const yDiff = draggingCoord
-            ? clientY - draggingCoord.clientY
-            : 0
+          const xDiff = draggingCoord ? clientX - draggingCoord.clientX : 0
+          const yDiff = draggingCoord ? clientY - draggingCoord.clientY : 0
           const cellWidth = ev.target.clientWidth
           if (
             dragging &&
-            (Math.abs(xDiff) > cellWidth ||
-              Math.abs(yDiff) > cellWidth)
+            (Math.abs(xDiff) > cellWidth || Math.abs(yDiff) > cellWidth)
           ) {
             rootComponent.setState({
               draggingCoord: { clientX, clientY },

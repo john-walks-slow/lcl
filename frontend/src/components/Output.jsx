@@ -26,15 +26,11 @@ const Output = ({
           >
             {textButton || 'Copy'}
           </button>
-          <span className={copySuccess ? 'show' : ''}>
-            {copySuccess}
-          </span>
+          <span className={copySuccess ? 'show' : ''}>{copySuccess}</span>
         </div>
       )}
       <textarea
-        className={`output__text ${
-          preFormatted ? 'output__pre' : ''
-        }`}
+        className={`output__text ${preFormatted ? 'output__pre' : ''}`}
         ref={textAreaRef}
         readOnly={readOnly}
         value={outputText}

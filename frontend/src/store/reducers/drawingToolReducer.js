@@ -15,20 +15,14 @@ const disableTool = (drawingTool, tool) => {
   return drawingTool
 }
 
-export default function drawingToolReducer(
-  drawingTool = PENCIL,
-  action
-) {
+export default function drawingToolReducer(drawingTool = PENCIL, action) {
   switch (action.type) {
     case types.SET_INITIAL_STATE:
     case types.NEW_PROJECT:
     case types.APPLY_EYEDROPPER:
       return PENCIL
     case types.SELECT_PALETTE_COLOR:
-      return [EYEDROPPER, ERASER, MOVE].reduce(
-        disableTool,
-        drawingTool
-      )
+      return [EYEDROPPER, ERASER, MOVE].reduce(disableTool, drawingTool)
     case types.SWITCH_TOOL:
       return switchTool(drawingTool, action.tool)
     default:
