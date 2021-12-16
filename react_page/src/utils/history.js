@@ -1,6 +1,6 @@
 export function navigate(url, title) {
-  window.history.pushState({}, title ? title : '', url);
+  window.history.pushState({}, title ? title : '', url)
 }
 export function navigateWithoutHistory(url, title) {
-  window.history.replaceState({}, title ? title : '', url);
+  window.history.replaceState({}, title ? title : '', url)
 }

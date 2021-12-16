@@ -5,7 +5,7 @@ import {
   customIntRandom,
   customWRandom,
   seededRandom,
-  seededRandomKept
+  seededRandomKept,
 } from '../../utils/random';
 import { secureStorage } from '../../utils/storage';
 import Dialog from '../components/Dialog';
@@ -22,14 +22,16 @@ let listener = false;
 function vectorAngle(x, y) {
   let mX = Math.sqrt(x.reduce((acc, n) => acc + Math.pow(n, 2), 0));
   let mY = Math.sqrt(y.reduce((acc, n) => acc + Math.pow(n, 2), 0));
-  return Math.acos(x.reduce((acc, n, i) => acc + n * y[i], 0) / (mX * mY));
+  return Math.acos(
+    x.reduce((acc, n, i) => acc + n * y[i], 0) / (mX * mY)
+  );
 }
 
 export default class MainScene extends Phaser.Scene {
   constructor(methods) {
     super({
       key: 'MainScene',
-      active: false
+      active: false,
     });
 
     Object.assign(this, methods);
@@ -187,7 +189,10 @@ export default class MainScene extends Phaser.Scene {
         );
       }
       this.physics.collide(o1, o2);
-      if (currentObj.oData.isBackground || currentObj.oData.isForeground) {
+      if (
+        currentObj.oData.isBackground ||
+        currentObj.oData.isForeground
+      ) {
         currentObj.collider.destroy();
       } else {
         currentObj.oData.dialog = [];
@@ -219,7 +224,7 @@ export default class MainScene extends Phaser.Scene {
     let movedObjects = [];
 
     this.itemGroup = this.physics.add.group({
-      immovable: true
+      immovable: true,
     });
     let ownItems = secureStorage.getItem('player').ownItems;
 
@@ -232,7 +237,7 @@ export default class MainScene extends Phaser.Scene {
           frameRate: 2,
           delay: Math.random() * 1000,
           repeat: -1,
-          repeatDelay: 0
+          repeatDelay: 0,
         })
         : false;
     });
@@ -242,13 +247,24 @@ export default class MainScene extends Phaser.Scene {
     this.gameDialog = new Dialog(this);
     this.itemDialog = new ItemDialog(this);
     this.linkDialog = new LinkDialog(this);
-    this.uiLayer.add([this.gameDialog, this.itemDialog, this.linkDialog]);
+    this.uiLayer.add([
+      this.gameDialog,
+      this.itemDialog,
+      this.linkDialog,
+    ]);
 
     let reactMenu = document.getElementById('GAME_MENU');
     let gameInfo = document.getElementById('GAME_INFO');
     let gameInventory = document.getElementById('GAME_INVENTORY');
-    let gameButtons = document.getElementsByClassName('game__button-menu');
-    this.reactComponents = [reactMenu, gameInfo, gameInventory, ...gameButtons];
+    let gameButtons = document.getElementsByClassName(
+      'game__button-menu'
+    );
+    this.reactComponents = [
+      reactMenu,
+      gameInfo,
+      gameInventory,
+      ...gameButtons,
+    ];
     const handleInput = e => {
       // if the click is not on the root react div, we call stopPropagation()
       if (e.target.tagName != 'canvas') {
@@ -264,59 +280,71 @@ export default class MainScene extends Phaser.Scene {
 
     this.anims.create({
       key: 'runLeft',
-      frames: this.anims.generateFrameNumbers('player', { start: 8, end: 9 }),
+      frames: this.anims.generateFrameNumbers('player', {
+        start: 8,
+        end: 9,
+      }),
       frameRate: 4,
       repeat: -1,
-      repeatDelay: 0
+      repeatDelay: 0,
     });
     this.anims.create({
       key: 'runRight',
-      frames: this.anims.generateFrameNumbers('player', { start: 6, end: 7 }),
+      frames: this.anims.generateFrameNumbers('player', {
+        start: 6,
+        end: 7,
+      }),
       frameRate: 4,
       repeat: -1,
-      repeatDelay: 0
+      repeatDelay: 0,
     });
     this.anims.create({
       key: 'runUp',
-      frames: this.anims.generateFrameNumbers('player', { start: 3, end: 4 }),
+      frames: this.anims.generateFrameNumbers('player', {
+        start: 3,
+        end: 4,
+      }),
       frameRate: 4,
       repeat: -1,
-      repeatDelay: 0
+      repeatDelay: 0,
     });
     this.anims.create({
       key: 'runDown',
-      frames: this.anims.generateFrameNumbers('player', { start: 0, end: 1 }),
+      frames: this.anims.generateFrameNumbers('player', {
+        start: 0,
+        end: 1,
+      }),
       frameRate: 4,
       repeat: -1,
-      repeatDelay: 0
+      repeatDelay: 0,
     });
     this.anims.create({
       key: 'standLeft',
       frames: [{ key: 'player', frame: 9 }],
       frameRate: 20,
       repeat: -1,
-      repeatDelay: 0
+      repeatDelay: 0,
     });
     this.anims.create({
       key: 'standRight',
       frames: [{ key: 'player', frame: 7 }],
       frameRate: 20,
       repeat: -1,
-      repeatDelay: 0
+      repeatDelay: 0,
     });
     this.anims.create({
       key: 'standUp',
       frames: [{ key: 'player', frame: 5 }],
       frameRate: 20,
       repeat: -1,
-      repeatDelay: 0
+      repeatDelay: 0,
     });
     this.anims.create({
       key: 'standDown',
       frames: [{ key: 'player', frame: 2 }],
       frameRate: 20,
       repeat: -1,
-      repeatDelay: 0
+      repeatDelay: 0,
     });
     this.player.anims.play('standRight');
     this.gamepad = new GamePad(this);
@@ -326,9 +354,14 @@ export default class MainScene extends Phaser.Scene {
     const FILTER_LIST = {
       brightness: { min: 1, max: 0.3, unit: '', probability: 0.3 },
       contrast: { min: 0.3, max: 1, unit: '', probability: 0.3 },
-      'hue-rotate': { min: 0, max: 360, unit: 'deg', probability: 0.3 },
+      'hue-rotate': {
+        min: 0,
+        max: 360,
+        unit: 'deg',
+        probability: 0.3,
+      },
       invert: { min: 0, max: 1, unit: '', probability: 0.3 },
-      sepia: { min: 0, max: 1, unit: '', probability: 0.3 }
+      sepia: { min: 0, max: 1, unit: '', probability: 0.3 },
     };
     let seeds = [...Array(Object.keys(FILTER_LIST).length * 2)].map(
       (o, i) =>
@@ -340,23 +373,27 @@ export default class MainScene extends Phaser.Scene {
     this.filter = (x, y) => {
       let result = '';
       let i = 0;
-      for (const [key, { min, max, unit, probability }] of Object.entries(
-        FILTER_LIST
-      )) {
+      for (const [
+        key,
+        { min, max, unit, probability },
+      ] of Object.entries(FILTER_LIST)) {
         seeds[i] < probability &&
           (result += `${key}(${min +
             (max - min) *
             Math.min(
-              (seeds[i] * Math.abs(x)) / configurations.MOVE_SPEED / 5,
+              (seeds[i] * Math.abs(x)) /
+              configurations.MOVE_SPEED /
+              5,
               1
             )}${unit}) `);
         i++;
         RESULT_LIST[key] = false;
       }
       i = 0;
-      for (const [key, { min, max, unit, probability }] of Object.entries(
-        FILTER_LIST
-      )) {
+      for (const [
+        key,
+        { min, max, unit, probability },
+      ] of Object.entries(FILTER_LIST)) {
         if (!RESULT_LIST[key]) {
           continue;
         }
@@ -364,7 +401,9 @@ export default class MainScene extends Phaser.Scene {
           (result += `${key}(${min +
             (max - min) *
             Math.min(
-              (seeds[i] * Math.abs(y)) / configurations.MOVE_SPEED / 5,
+              (seeds[i] * Math.abs(y)) /
+              configurations.MOVE_SPEED /
+              5,
               1
             )}${unit}) `);
         i++;
@@ -485,7 +524,10 @@ export default class MainScene extends Phaser.Scene {
             currentZone[1] == this.previousZone[1]
           )
         ) {
-          this.objectGroup.updateObjects(this.previousZone, currentZone);
+          this.objectGroup.updateObjects(
+            this.previousZone,
+            currentZone
+          );
 
           this.previousZone = currentZone;
         }
@@ -503,15 +545,18 @@ export default class MainScene extends Phaser.Scene {
           isMouseMovement = mousePosX && mousePosY;
         } else {
           mousePosX =
-            this.input.activePointer.x - configurations.WINDOW_CENTER_X;
+            this.input.activePointer.x -
+            configurations.WINDOW_CENTER_X;
           mousePosY =
-            configurations.WINDOW_CENTER_Y - this.input.activePointer.y;
+            configurations.WINDOW_CENTER_Y -
+            this.input.activePointer.y;
           isMouseMovement =
             this.input.activePointer.isDown && !this.pointerOnPlayer;
         }
 
         let mouseAngle =
-          isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY]);
+          isMouseMovement &&
+          vectorAngle([0, 1], [mousePosX, mousePosY]);
         if (
           this.cursors.left.isDown ||
           this.cursors.right.isDown ||
@@ -618,7 +663,10 @@ export default class MainScene extends Phaser.Scene {
 
   resume() {
     this.scene.resume(this);
-    this.game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H);
+    this.game.scale.resize(
+      configurations.WINDOW_W,
+      configurations.WINDOW_H
+    );
     this.game.scale.setZoom(configurations.SCALE);
     this.setDisplay();
     this.input.keyboard.enableGlobalCapture();

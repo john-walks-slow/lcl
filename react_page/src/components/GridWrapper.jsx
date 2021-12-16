@@ -1,42 +1,42 @@
-import React from 'react';
-import PixelGrid from './PixelGrid';
+import React from 'react'
+import PixelGrid from './PixelGrid'
 
 export default class GridWrapper extends React.Component {
   shouldComponentUpdate(newProps) {
-    const { cells } = this.props;
-    return newProps.cells !== cells;
+    const { cells } = this.props
+    return newProps.cells !== cells
   }
 
   onMouseOver(ev) {
-    const { activeTool, drawHandlers } = this.props;
+    const { activeTool, drawHandlers } = this.props
     if (activeTool === 'MOVE') {
-      drawHandlers.onMoveMouseOver(ev);
+      drawHandlers.onMoveMouseOver(ev)
     }
   }
 
   onMouseDown(ev) {
-    const { activeTool, drawHandlers } = this.props;
+    const { activeTool, drawHandlers } = this.props
     if (activeTool === 'MOVE') {
-      drawHandlers.onMoveMouseDown(ev);
+      drawHandlers.onMoveMouseDown(ev)
     }
   }
 
   onTouchStart(ev) {
-    const { activeTool, drawHandlers } = this.props;
+    const { activeTool, drawHandlers } = this.props
     if (activeTool === 'MOVE') {
-      drawHandlers.onMoveTouchStart(ev);
+      drawHandlers.onMoveTouchStart(ev)
     }
   }
 
   onTouchMove(ev) {
-    const { activeTool, drawHandlers } = this.props;
+    const { activeTool, drawHandlers } = this.props
     if (activeTool === 'MOVE') {
-      drawHandlers.onMoveTouchMove(ev);
+      drawHandlers.onMoveTouchMove(ev)
     }
   }
 
   render() {
-    const { props } = this;
+    const { props } = this
     return (
       <div
         onMouseOver={ev => this.onMouseOver(ev)}
@@ -53,6 +53,6 @@ export default class GridWrapper extends React.Component {
           hoveredCell={props.hoveredCell}
         />
       </div>
-    );
+    )
   }
 }

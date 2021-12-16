@@ -1,29 +1,18 @@
 {
   "name": "lcl-frontend",
   "scripts": {
-    "lint": "eslint **/*.{js,jsx}",
     "csslint": "stylelint src/**/*.{css,js,jsx}",
+    "lint": "eslint **/*.{js,jsx}",
     "prettier": "prettier **/*.{js,jsx,json,yml,yaml,css,md}",
     "format": "npm run prettier -- --write --list-different",
-    "test": "jest",
-    "test:watch": "npm run test -- --watch",
-    "validate": "npm run lint && npm run csslint && npm run prettier -- --list-different && npm run test",
-    "development": "webpack-dev-server --hot",
+    "validate": "npm run lint && npm run csslint && npm run prettier -- --list-different",
     "build": "cross-env NODE_ENV=production BUILD_PLATFORM=web webpack --config webpack.config.js",
     "build-app": "cross-env NODE_ENV=production BUILD_PLATFORM=app webpack --config webpack.config.js",
-    "server": "node ./src/server/loader",
-    "server-debug": "node --inspect ./src/server/loader",
-    "start": "webpack",
     "dev": "cross-env NODE_ENV=development BUILD_PLATFORM=web webpack --config webpack.config.js",
     "dev-app": "cross-env NODE_ENV=development BUILD_PLATFORM=app webpack --config webpack.config.js"
   },
   "main": "index.js",
   "license": "MIT",
-  "jest": {
-    "setupFiles": [
-      "jest-canvas-mock"
-    ]
-  },
   "dependencies": {
     "@feathersjs/rest-client": "^4.5.11",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -94,7 +83,7 @@
     "whatwg-fetch": "^2.0.4"
   },
   "engines": {
-    "node": "<15.0.0",
+    "node": ">14.0.0",
     "npm": ">=7.0.0"
   },
   "devDependencies": {
@@ -124,9 +113,7 @@
     "eslint-plugin-react-hooks": "^2.3.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "html-webpack-plugin": "^5.5.0",
-    "jest": "^24.8.0",
     "jest-canvas-mock": "^2.3.1",
-    "lint-staged": "^9.2.0",
     "prettier": "^1.18.2",
     "raw-loader": "^4.0.2",
     "stylelint": "^10.1.0",

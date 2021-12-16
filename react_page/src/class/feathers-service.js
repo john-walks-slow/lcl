@@ -1,5 +1,5 @@
-import feathers from "@feathersjs/feathers";
-import rest from "@feathersjs/rest-client";
+import feathers from '@feathersjs/feathers';
+import rest from '@feathersjs/rest-client';
 var app = feathers();
 // Connect to a different URL
 var restClient = rest();

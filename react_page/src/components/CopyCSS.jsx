@@ -1,6 +1,9 @@
-import React from 'react';
-import Output from './Output';
-import { getCssImageClassOutput, exportAnimationData } from '../utils/cssParse';
+import React from 'react'
+import Output from './Output'
+import {
+  getCssImageClassOutput,
+  exportAnimationData,
+} from '../utils/cssParse'
 
 const CopyCSS = ({
   frames,
@@ -8,7 +11,7 @@ const CopyCSS = ({
   cellSize,
   activeFrameIndex,
   animationCode,
-  duration
+  duration,
 }) => {
   const generateCSS = () => {
     if (animationCode) {
@@ -17,16 +20,16 @@ const CopyCSS = ({
         columns,
         cellSize,
         duration
-      );
-      return cssAnimationString;
+      )
+      return cssAnimationString
     }
 
     return getCssImageClassOutput(
       frames.get(activeFrameIndex),
       columns,
       cellSize
-    );
-  };
+    )
+  }
 
   return (
     <div className="copy-css">
@@ -47,11 +50,11 @@ const CopyCSS = ({
         copyClipboardData={{
           showButton: true,
           textButton: 'Copy',
-          successMessage: 'Copied!'
+          successMessage: 'Copied!',
         }}
         outputText={generateCSS()}
       />
     </div>
-  );
-};
-export default CopyCSS;
+  )
+}
+export default CopyCSS

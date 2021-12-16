@@ -1,17 +1,22 @@
-import React from 'react';
+import React from 'react'
 import {
   generatePixelDrawCss,
-  generateAnimationCSSData
-} from '../utils/cssParse';
-import Animation from './Animation';
+  generateAnimationCSSData,
+} from '../utils/cssParse'
+import Animation from './Animation'
 
 const Preview = props => {
   const generatePreview = () => {
-    const { activeFrameIndex, duration, storedData, animationName } = props;
-    const { frames, columns, cellSize, animate } = storedData || props;
-    const animation = frames.size > 1 && animate;
-    let animationData;
-    let cssString;
+    const {
+      activeFrameIndex,
+      duration,
+      storedData,
+      animationName,
+    } = props
+    const { frames, columns, cellSize, animate } = storedData || props
+    const animation = frames.size > 1 && animate
+    let animationData
+    let cssString
 
     const styles = {
       previewWrapper: {
@@ -20,23 +25,27 @@ const Preview = props => {
         position: 'absolute',
         transform: 'scale(1.001)',
         top: '-5px',
-        left: '-5px'
-      }
-    };
+        left: '-5px',
+      },
+    }
 
     if (animation) {
-      animationData = generateAnimationCSSData(frames, columns, cellSize);
+      animationData = generateAnimationCSSData(
+        frames,
+        columns,
+        cellSize
+      )
     } else {
       cssString = generatePixelDrawCss(
         frames.get(activeFrameIndex),
         columns,
         cellSize,
         'string'
-      );
+      )
 
-      styles.previewWrapper.boxShadow = cssString;
-      styles.previewWrapper.MozBoxShadow = cssString;
-      styles.previewWrapper.WebkitBoxShadow = cssString;
+      styles.previewWrapper.boxShadow = cssString
+      styles.previewWrapper.MozBoxShadow = cssString
+      styles.previewWrapper.WebkitBoxShadow = cssString
     }
 
     return (
@@ -49,23 +58,23 @@ const Preview = props => {
           />
         ) : null}
       </div>
-    );
-  };
+    )
+  }
 
-  const { storedData } = props;
-  const { columns, rows, cellSize } = storedData || props;
+  const { storedData } = props
+  const { columns, rows, cellSize } = storedData || props
   const style = {
     // width: columns * cellSize,
     width: columns * cellSize,
     // height: rows * cellSize,
     height: rows * cellSize,
-    position: 'relative'
-  };
+    position: 'relative',
+  }
 
   return (
     <div className="preview" style={style}>
       {generatePreview()}
     </div>
-  );
-};
-export default Preview;
+  )
+}
+export default Preview

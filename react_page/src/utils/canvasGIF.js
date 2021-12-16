@@ -1,36 +1,46 @@
-import GIFEncoder from 'gif-encoder';
+import GIFEncoder from 'gif-encoder'
 // import blobStream from 'blob-stream';
-import { saveAs } from 'file-saver';
-import randomString from './random';
+import { saveAs } from 'file-saver'
+import randomString from './random'
 
 function fillCanvasWithFrame(canvas, frameInfo) {
-  const { frame, cols, cellSize, frameHeight, frameIdx } = frameInfo;
-  const ctx = canvas;
+  const { frame, cols, cellSize, frameHeight, frameIdx } = frameInfo
+  const ctx = canvas
   frame.get('grid').forEach((fillStyle, pixelIdx) => {
     if (!fillStyle) {
-      return;
+      return
     }
-    ctx.fillStyle = fillStyle;
+    ctx.fillStyle = fillStyle
 
-    const col = pixelIdx % cols;
-    const row = Math.floor(pixelIdx / cols);
+    const col = pixelIdx % cols
+    const row = Math.floor(pixelIdx / cols)
     ctx.fillRect(
       col * cellSize,
       row * cellSize + frameHeight * frameIdx,
       cellSize,
       cellSize
-    );
-  });
-  return ctx;
+    )
+  })
+  return ctx
 }
 
-function renderImageToCanvas(type, canvasInfo, currentFrameInfo, frames) {
-  const { canvas, canvasHeight, canvasWidth } = canvasInfo;
-  const { frame, frameHeight, frameWidth, cellSize } = currentFrameInfo;
-  const cols = Math.floor(frameWidth / cellSize);
-  let ctx = canvas.getContext('2d');
-  ctx.canvas.width = canvasWidth;
-  ctx.canvas.height = canvasHeight;
+function renderImageToCanvas(
+  type,
+  canvasInfo,
+  currentFrameInfo,
+  frames
+) {
+  const { canvas, canvasHeight, canvasWidth } = canvasInfo
+  const {
+    frame,
+    frameHeight,
+    frameWidth,
+    cellSize,
+  } = currentFrameInfo
+  const cols = Math.floor(frameWidth / cellSize)
+  let ctx = canvas.getContext('2d')
+  ctx.canvas.width = canvasWidth
+  ctx.canvas.height = canvasHeight
   switch (type) {
     case 'spritesheet':
       frames.forEach((currentFrame, frameIdx) => {
@@ -39,26 +49,26 @@ function renderImageToCanvas(type, canvasInfo, currentFrameInfo, frames) {
           cols,
           cellSize,
           frameHeight,
-          frameIdx
-        });
-      });
-      break;
+          frameIdx,
+        })
+      })
+      break
     default:
       ctx = fillCanvasWithFrame(ctx, {
         frame,
         cols,
         cellSize,
         frameHeight,
-        frameIdx: 0
-      });
-      break;
+        frameIdx: 0,
+      })
+      break
   }
-  return ctx.getImageData(0, 0, canvasWidth, canvasHeight).data;
+  return ctx.getImageData(0, 0, canvasWidth, canvasHeight).data
 }
 
 const saveCanvasToDisk = (blob, fileExtension) => {
-  saveAs(blob, `${randomString()}.${fileExtension}`);
-};
+  saveAs(blob, `${randomString()}.${fileExtension}`)
+}
 
 export function renderBlob(settings, callback) {
   const {
@@ -68,18 +78,17 @@ export function renderBlob(settings, callback) {
     activeFrame,
     rows,
     columns,
-    cellSize
-  } = settings;
+    cellSize,
+  } = settings
 
-  const durationInMillisecond = duration * 1000;
-  const frameWidth = columns * cellSize;
-  const frameHeight = rows * cellSize;
-  const canvasWidth = frameWidth;
+  const durationInMillisecond = duration * 1000
+  const frameWidth = columns * cellSize
+  const frameHeight = rows * cellSize
+  const canvasWidth = frameWidth
   const canvasHeight =
-    type === 'spritesheet' ? frameHeight * frames.size : frameHeight;
+    type === 'spritesheet' ? frameHeight * frames.size : frameHeight
 
-  const canvas = document.createElement('canvas');
-
+  const canvas = document.createElement('canvas')
 
   switch (type) {
     case 'single':
@@ -89,20 +98,20 @@ export function renderBlob(settings, callback) {
         {
           canvas,
           canvasHeight,
-          canvasWidth
+          canvasWidth,
         },
         {
           frame: activeFrame,
           frameHeight,
           frameWidth,
-          cellSize
+          cellSize,
         },
         frames
-      );
-      canvas.toBlob(function (blob) {
-        callback(blob); //png
-      });
-      break;
+      )
+      canvas.toBlob(function(blob) {
+        callback(blob) //png
+      })
+      break
     default:
   }
 }
@@ -114,17 +123,17 @@ export function renderFrames(settings) {
     activeFrame,
     rows,
     columns,
-    cellSize
-  } = settings;
+    cellSize,
+  } = settings
 
-  const durationInMillisecond = duration * 1000;
-  const frameWidth = columns * cellSize;
-  const frameHeight = rows * cellSize;
-  const canvasWidth = frameWidth;
+  const durationInMillisecond = duration * 1000
+  const frameWidth = columns * cellSize
+  const frameHeight = rows * cellSize
+  const canvasWidth = frameWidth
   const canvasHeight =
-    type === 'spritesheet' ? frameHeight * frames.size : frameHeight;
+    type === 'spritesheet' ? frameHeight * frames.size : frameHeight
 
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement('canvas')
 
   switch (type) {
     case 'single':
@@ -134,20 +143,20 @@ export function renderFrames(settings) {
         {
           canvas,
           canvasHeight,
-          canvasWidth
+          canvasWidth,
         },
         {
           frame: activeFrame,
           frameHeight,
           frameWidth,
-          cellSize
+          cellSize,
         },
         frames
-      );
-      canvas.toBlob(function (blob) {
-        saveCanvasToDisk(blob, 'png');
-      });
-      break;
+      )
+      canvas.toBlob(function(blob) {
+        saveCanvasToDisk(blob, 'png')
+      })
+      break
     default: {
     }
   }

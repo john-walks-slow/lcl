@@ -1,5 +1,5 @@
-import feathers from "@feathersjs/feathers";
-import rest from "@feathersjs/rest-client";
+import feathers from '@feathersjs/feathers';
+import rest from '@feathersjs/rest-client';
 import batteryURL from '../../assets/game/batteries.png';
 import bgURL from '../../assets/game/bg.png';
 import boxURL from '../../assets/game/boxes.png';
@@ -10,11 +10,11 @@ import labelURL from '../../assets/game/labels.png';
 import telescopeURL from '../../assets/game/telescopes.png';
 import whiteURL from '../../assets/game/white.png';
 import moreURL from '../../assets/game/more.png';
-import { setObjects } from "../../store/actions/actionCreators";
-import configurations from "../configurations";
-import generativeMusic from "../GenerativeMusic";
-import ObjectData from "../ObjectData";
-import { objectService } from "../feathers-service";
+import { setObjects } from '../../store/actions/actionCreators';
+import configurations from '../configurations';
+import generativeMusic from '../GenerativeMusic';
+import ObjectData from '../ObjectData';
+import { objectService } from '../feathers-service';
 export default class LoadingScene extends Phaser.Scene {
   constructor(methods) {
     super({
@@ -26,10 +26,8 @@ export default class LoadingScene extends Phaser.Scene {
   preload() { }
 
   create() {
-
     try {
-
-      const setup = (data) => {
+      const setup = data => {
         this.dispatch(setObjects(data));
         let objectList = data;
         this.load.image('bg', bgURL);
@@ -40,8 +38,14 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.image('telescopes', telescopeURL);
         this.load.image('batteries', batteryURL);
         this.load.image('more', moreURL);
-        this.load.spritesheet('player', whiteURL, { frameWidth: 40, frameHeight: 46 });
-        this.load.spritesheet('gamepad', gamepadURL, { frameWidth: 16, frameHeight: 16 });
+        this.load.spritesheet('player', whiteURL, {
+          frameWidth: 40,
+          frameHeight: 46,
+        });
+        this.load.spritesheet('gamepad', gamepadURL, {
+          frameWidth: 16,
+          frameHeight: 16,
+        });
         // [...Array(10000)].forEach(() => {
         //   list.push(createTestObject({
         //     "birthday": 1637818994985,
@@ -64,47 +68,57 @@ export default class LoadingScene extends Phaser.Scene {
             case true:
               var shardsImg = new Image();
               shardsImg.onload = () => {
-                this.textures.addSpriteSheet("object" + o._id, shardsImg, { frameWidth: o.columns, frameHeight: o.rows });
+                this.textures.addSpriteSheet(
+                  'object' + o._id,
+                  shardsImg,
+                  {
+                    frameWidth: o.columns,
+                    frameHeight: o.rows,
+                  }
+                );
               };
               shardsImg.src = o.blobURI;
 
               // this.load.spritesheet("object" + o._id, 'assets/objects/' + o._id + '.png', { frameWidth: o.columns, frameHeight: o.rows });
               break;
             default:
-              this.textures.addBase64("object" + o._id, o.blobURI);
+              this.textures.addBase64('object' + o._id, o.blobURI);
               // this.load.image("object" + o._id, 'assets/objects/' + o._id + '.png')
               break;
           }
           objectData.map.pushNew(o.zone, o);
         });
         // DENSITY_OFFSET = Math.min(OBJECT_W.L, DENSITY_OFFSET);
-        this.load.on("complete", () => {
-          this.label.text += `\nStarting ...`;
+        this.load.on(
+          'complete',
+          () => {
+            this.label.text += `\nStarting ...`;
 
-
-          console.log(objectData);
-          // setTimeout(() => {
-          this.scene.start("MainScene", {
-            "objectData": objectData
-          });
-          console.log("mainscene start");
-          this.scene.stop("LoadingScene");
-          // }, 300);
-
-        }, this);
-        this.load.on('start', (progress) => {
-          this.label.text +=
-            '\nFetching assets ...';
+            console.log(objectData);
+            // setTimeout(() => {
+            this.scene.start('MainScene', {
+              objectData: objectData,
+            });
+            console.log('mainscene start');
+            this.scene.stop('LoadingScene');
+            // }, 300);
+          },
+          this
+        );
+        this.load.on('start', progress => {
+          this.label.text += '\nFetching assets ...';
         });
         let loadStart = false;
         this.load.on('filecomplete', (key, type, data) => {
-          if (!loadStart) { loadStart = true; this.label.text += '\nLoading Content ...'; }
+          if (!loadStart) {
+            loadStart = true;
+            this.label.text += '\nLoading Content ...';
+          }
           this.label.text += `\n- Fetching ${key} ..`;
         });
         this.load.start();
       };
       objectService.find({ paginate: false }).then(setup);
-
     } catch (error) {
       console.log(error);
     };
@@ -116,4 +130,5 @@ export default class LoadingScene extends Phaser.Scene {
   update() {
 
   }
+  update() { }
 }

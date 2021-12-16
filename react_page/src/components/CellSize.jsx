@@ -1,14 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as actionCreators from '../store/actions/actionCreators';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as actionCreators from '../store/actions/actionCreators'
 
 const CellSize = props => {
   const handleCellSizeChange = event => {
-    props.actions.setCellSize(+event.target.value || 0);
-  };
+    props.actions.setCellSize(+event.target.value || 0)
+  }
 
-  const { cellSize } = props;
+  const { cellSize } = props
 
   return (
     <div className="cell-size">
@@ -18,25 +18,25 @@ const CellSize = props => {
           type="number"
           value={cellSize}
           onChange={ev => {
-            handleCellSizeChange(ev);
+            handleCellSizeChange(ev)
           }}
           id="cell-size__input"
         />
       </label>
     </div>
-  );
-};
+  )
+}
 
 const mapStateToProps = state => ({
-  cellSize: state.present.get('cellSize')
-});
+  cellSize: state.present.get('cellSize'),
+})
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(actionCreators, dispatch)
-});
+  actions: bindActionCreators(actionCreators, dispatch),
+})
 
 const CellSizeContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(CellSize);
-export default CellSizeContainer;
+)(CellSize)
+export default CellSizeContainer

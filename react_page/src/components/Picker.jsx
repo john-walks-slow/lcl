@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 const Picker = ({ type, value, action, min = 4, max = 64 }) => {
-  const pickerType = `picker__${type}`;
+  const pickerType = `picker__${type}`
   return (
     <div className="picker">
       <label className={pickerType} htmlFor={pickerType}>
@@ -12,7 +12,7 @@ const Picker = ({ type, value, action, min = 4, max = 64 }) => {
               type="button"
               onClick={() => {
                 if (max === 0 || value < max) {
-                  action(type, 1);
+                  action(type, 1)
                 }
               }}
               className="button-add"
@@ -24,7 +24,7 @@ const Picker = ({ type, value, action, min = 4, max = 64 }) => {
               type="button"
               onClick={() => {
                 if (min === 0 || value > min) {
-                  action(type, -1);
+                  action(type, -1)
                 }
               }}
               className="button-remove"
@@ -36,7 +36,7 @@ const Picker = ({ type, value, action, min = 4, max = 64 }) => {
         </div>
       </label>
     </div>
-  );
-};
+  )
+}
 
-export default Picker;
+export default Picker

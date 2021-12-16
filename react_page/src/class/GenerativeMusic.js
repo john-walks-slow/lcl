@@ -3,10 +3,11 @@ import * as Tone from 'tone';
 import {
   customIntRandom,
   customWRandom,
-  seededRandomKept
+  seededRandomKept,
 } from '../utils/random';
 import { range } from '../utils/utils';
 import configurations from './configurations';
+
 class GenerativeMusic {
   constructor() {
     this.N4_LENGTH = Tone.Time('4n').toSeconds();
@@ -40,18 +41,15 @@ class GenerativeMusic {
     // set this context as the global Context
     // Tone.setContext(context);
     const generateChord = () => {
-      let day = {};
+      const day = {};
       day._id = configurations.DAY.toString();
       day.random = seededRandomKept(day._id.toString());
       day.wRandom = customWRandom(day.random);
       day.intRandom = customIntRandom(day.random);
-      const T_CHORDS = [1, 3, 6];
-      const D_CHORDS = [5, 3, 7];
-      const S_CHORDS = [4, 2, 6];
       const CHORD_TYPE = {
         T: 0,
         D: 1,
-        S: 2
+        S: 2,
       };
       const CHORDS_LIST = [
         { 1: 0.6, 3: 0.2, 6: 0.2 },
@@ -103,7 +101,7 @@ class GenerativeMusic {
       let rootPadSynth = new Tone.PolySynth(Tone.Synth, {
         oscillator: { type: 'sine', volume: -40 },
         envelope: { release: '4n', attack: '8n' },
-        maxPolyphony: 64
+        maxPolyphony: 64,
       });
       rootPadSynth.chain(Tone.getDestination());
       // new Tone.Sequence((time, note) => {
@@ -165,6 +163,7 @@ class GenerativeMusic {
     };
     generateChord();
   }
+
   updateSound(scene) {
     // console.time('updateSound');
     scene.objectGroup.children.each(o => {
@@ -179,11 +178,11 @@ class GenerativeMusic {
       //   volume: 0,
       //   width: width
       // });
-      let positionX = o.x - scene.player.x;
-      let positionY = scene.player.y - o.y;
+      const positionX = o.x - scene.player.x;
+      const positionY = scene.player.y - o.y;
       o.oData.panner.set({
         positionX,
-        positionY
+        positionY,
       });
       o.oData.panner.distance = positionX ** 2 + positionY ** 2;
       o.oData.panner.audible =
@@ -192,6 +191,7 @@ class GenerativeMusic {
     // console.timeEnd('updateSound');
 
   }
+
   setupSound(o) {
     o.random = seededRandomKept(o._id.toString());
     o.wRandom = customWRandom(o.random);
@@ -270,13 +270,19 @@ class GenerativeMusic {
           let notes = [note - 1, note + 1, note + 3].map(n =>
             this.scale.getNote(n).name()
           );
-          let possibleNotes = o.range.filter(n => notes.includes(n.name()[0]));
+          const possibleNotes = o.range.filter(n =>
+            notes.includes(n.name()[0])
+          );
           possibleNotes.sort((a, b) => {
             let jumpA;
             let jumpB;
             if (o.previousNote) {
-              jumpA = Math.abs(MS.interval(o.previousNote, a).semitones());
-              jumpB = Math.abs(MS.interval(o.previousNote, b).semitones());
+              jumpA = Math.abs(
+                MS.interval(o.previousNote, a).semitones()
+              );
+              jumpB = Math.abs(
+                MS.interval(o.previousNote, b).semitones()
+              );
               // console.log(jumpA, jumpB);
             } else {
               jumpA = 0;
@@ -289,7 +295,9 @@ class GenerativeMusic {
           // possibleNotes[o.intRandom(0, possibleNotes.length - 1)];
 
           if (o.panner.audible) {
-            console.log(`H: ${o.previousNote.scientific()} ${o.dialog}`);
+            console.log(
+              `H: ${o.previousNote.scientific()} ${o.dialog}`
+            );
             // o.synth.set({
             //   width: Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180
             // });
@@ -311,7 +319,7 @@ class GenerativeMusic {
         o.synth = new Tone.PolySynth(Tone.Synth, {
           oscillator: { type: 'sine', volume: this.melodyVolume },
           envelope: { release: '2n' },
-          maxPolyphony: 64
+          maxPolyphony: 64,
         });
         o.panner = new Tone.Panner3D({
           rolloffFactor: this.melodyFadeFactor,
@@ -335,7 +343,7 @@ class GenerativeMusic {
           ' 3': 0.5,
           ' 4': 0.5,
           ' 5': 0.4,
-          ' 6': 0.2
+          ' 6': 0.2,
         });
         o.note = this.scale.getNote(parseInt(o.noteIndex));
         o.loopInterval = this.melodyLoopLength + o.intRandom(-2, 2);
@@ -361,6 +369,7 @@ class GenerativeMusic {
         break;
     }
   }
+
   startLoop(o) {
     console.log(o);
     //

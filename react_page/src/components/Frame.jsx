@@ -1,50 +1,61 @@
-import React from 'react';
-import { List } from 'immutable';
-import { Draggable } from 'react-beautiful-dnd';
-import Preview from './Preview';
+import React from 'react'
+import { List } from 'immutable'
+import { Draggable } from 'react-beautiful-dnd'
+import Preview from './Preview'
 
 export default class Frame extends React.Component {
   handleClick() {
-    const { actions, dataId } = this.props;
-    actions.changeActiveFrame(dataId);
+    const { actions, dataId } = this.props
+    actions.changeActiveFrame(dataId)
   }
 
   deleteFrame(e) {
-    const { active, actions, dataId } = this.props;
-    e.stopPropagation();
+    const { active, actions, dataId } = this.props
+    e.stopPropagation()
     if (active) {
-      actions.deleteFrame(dataId);
+      actions.deleteFrame(dataId)
     }
   }
 
   duplicateFrame(e) {
-    const { active, actions, dataId } = this.props;
-    e.stopPropagation();
+    const { active, actions, dataId } = this.props
+    e.stopPropagation()
     if (active) {
-      actions.duplicateFrame(dataId);
+      actions.duplicateFrame(dataId)
     }
   }
 
   changeInterval(e) {
-    const { active, actions, dataId } = this.props;
-    e.stopPropagation();
+    const { active, actions, dataId } = this.props
+    e.stopPropagation()
     if (active) {
-      actions.changeFrameInterval(dataId, this.percentage.value);
+      actions.changeFrameInterval(dataId, this.percentage.value)
     }
   }
 
   render() {
-    const { active, dataId, frame, lastFrame, columns, rows } = this.props;
+    const {
+      active,
+      dataId,
+      frame,
+      lastFrame,
+      columns,
+      rows,
+    } = this.props
     return (
-      <Draggable key={dataId} draggableId={dataId.toString()} index={dataId}>
+      <Draggable
+        key={dataId}
+        draggableId={dataId.toString()}
+        index={dataId}
+      >
         {provided => (
           <div
             className={`frame${active ? ' active' : ''}`}
             onClick={() => {
-              this.handleClick();
+              this.handleClick()
             }}
             onKeyPress={() => {
-              this.handleClick();
+              this.handleClick()
             }}
             role="button"
             tabIndex={0}
@@ -56,7 +67,7 @@ export default class Frame extends React.Component {
               frames={List([frame])}
               columns={columns}
               rows={rows}
-              cellSize={Math.min(65/rows)}
+              cellSize={Math.min(65 / rows)}
               activeFrameIndex={0}
             />
             <button
@@ -64,7 +75,7 @@ export default class Frame extends React.Component {
               aria-label="Delete Frame"
               className="delete"
               onClick={event => {
-                this.deleteFrame(event);
+                this.deleteFrame(event)
               }}
             />
             <button
@@ -72,24 +83,24 @@ export default class Frame extends React.Component {
               aria-label="Duplicate Frame"
               className="duplicate"
               onClick={event => {
-                this.duplicateFrame(event);
+                this.duplicateFrame(event)
               }}
             />
             <input
               type="number"
               value={frame.get('interval')}
               onChange={event => {
-                this.changeInterval(event);
+                this.changeInterval(event)
               }}
               className="frame__percentage"
               ref={c => {
-                this.percentage = c;
+                this.percentage = c
               }}
               disabled={lastFrame || !active}
             />
           </div>
         )}
       </Draggable>
-    );
+    )
   }
 }

@@ -25,7 +25,10 @@
     "build": "cd react_page && npm ci --include=dev && npm run build",
     "clearDB": "rm data/objects.db",
     "test": "npm run lint && npm run mocha",
-    "lint": "eslint src/. test/. --config .eslintrc.json --fix",
+    "lint": "eslint src",
+    "prettier": "prettier src/**/*.{js,jsx,json,yml,yaml,css,md}",
+    "format": "npm run prettier -- --write --list-different",
+    "validate": "npm run lint && npm run prettier --list-different",
     "mocha": "mocha test/ --recursive --exit"
   },
   "dependencies": {
@@ -40,6 +43,7 @@
     "concurrently": "^6.4.0",
     "connect-history-api-fallback": "^1.6.0",
     "cors": "^2.8.5",
+    "eslint-config-prettier": "^8.3.0",
     "express": "^4.17.1",
     "feathers-blob": "^2.6.0",
     "feathers-hooks-common": "^5.0.6",
@@ -54,6 +58,7 @@
     "nedb": "^1.8.0",
     "node-fetch": "^2.6.6",
     "phaser": "3.55.2",
+    "prettier": "^2.5.1",
     "serve-favicon": "^2.5.0",
     "uuid": "^8.3.2",
     "webpack": "^5.64.4",
@@ -70,7 +75,7 @@
     "webpack-cli": "^4.9.1"
   },
   "engines": {
-    "node": "<15.0.0",
+    "node": ">14.0.0",
     "npm": ">=7.0.0"
   },
   "standard": {

@@ -1,65 +1,65 @@
-import React from 'react';
-import PreviewBox from './PreviewBox';
-import PixelCanvasContainer from './PixelCanvas';
-import CellSizeContainer from './CellSize';
-import ColorPickerContainer from './ColorPicker';
-import ModalContainer from './Modal';
-import DimensionsContainer from './Dimensions';
-import KeyBindings from './KeyBindings';
-import CssDisplayContainer from './CssDisplay';
-import DurationContainer from './Duration';
-import EraserContainer from './Eraser';
-import BucketContainer from './Bucket';
-import MoveContainer from './Move';
-import EyedropperContainer from './Eyedropper';
-import FramesHandlerContainer from './FramesHandler';
-import PaletteGridContainer from './PaletteGrid';
-import ResetContainer from './Reset';
-import SaveDrawingContainer from './SaveDrawing';
-import NewProjectContainer from './NewProject';
-import SimpleNotificationContainer from './SimpleNotification';
-import SimpleSpinnerContainer from './SimpleSpinner';
-import CellsInfo from './CellsInfo';
-import UndoRedoContainer from './UndoRedo';
-import initialSetup from '../utils/startup';
-import drawHandlersProvider from '../utils/drawHandlersProvider';
+import React from 'react'
+import PreviewBox from './PreviewBox'
+import PixelCanvasContainer from './PixelCanvas'
+import CellSizeContainer from './CellSize'
+import ColorPickerContainer from './ColorPicker'
+import ModalContainer from './Modal'
+import DimensionsContainer from './Dimensions'
+import KeyBindings from './KeyBindings'
+import CssDisplayContainer from './CssDisplay'
+import DurationContainer from './Duration'
+import EraserContainer from './Eraser'
+import BucketContainer from './Bucket'
+import MoveContainer from './Move'
+import EyedropperContainer from './Eyedropper'
+import FramesHandlerContainer from './FramesHandler'
+import PaletteGridContainer from './PaletteGrid'
+import ResetContainer from './Reset'
+import SaveDrawingContainer from './SaveDrawing'
+import NewProjectContainer from './NewProject'
+import SimpleNotificationContainer from './SimpleNotification'
+import SimpleSpinnerContainer from './SimpleSpinner'
+import CellsInfo from './CellsInfo'
+import UndoRedoContainer from './UndoRedo'
+import initialSetup from '../utils/startup'
+import drawHandlersProvider from '../utils/drawHandlersProvider'
 
 export default class App extends React.Component {
   constructor() {
-    super();
+    super()
     this.state = {
       modalType: null,
       modalOpen: false,
-      helpOn: false
-    };
-    Object.assign(this, drawHandlersProvider(this));
+      helpOn: false,
+    }
+    Object.assign(this, drawHandlersProvider(this))
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    initialSetup(dispatch, localStorage);
+    const { dispatch } = this.props
+    initialSetup(dispatch, localStorage)
   }
 
   changeModalType(type) {
     this.setState({
       modalType: type,
-      modalOpen: true
-    });
+      modalOpen: true,
+    })
   }
 
   closeModal() {
     this.setState({
-      modalOpen: false
-    });
+      modalOpen: false,
+    })
   }
 
   toggleHelp() {
-    const { helpOn } = this.state;
-    this.setState({ helpOn: !helpOn });
+    const { helpOn } = this.state
+    this.setState({ helpOn: !helpOn })
   }
 
   render() {
-    const { helpOn, modalType, modalOpen } = this.state;
+    const { helpOn, modalType, modalOpen } = this.state
     return (
       <div
         className="app__main"
@@ -88,7 +88,6 @@ export default class App extends React.Component {
           <FramesHandlerContainer />
         </div>
         <div className="app__central-container">
-
           <PixelCanvasContainer
             drawHandlersFactory={this.drawHandlersFactory}
           />
@@ -121,7 +120,9 @@ export default class App extends React.Component {
                     >
                       <ColorPickerContainer />
                     </div> */}
-                  <div data-tooltip={helpOn ? 'Remove colors (E)' : null}>
+                  <div
+                    data-tooltip={helpOn ? 'Remove colors (E)' : null}
+                  >
                     <EraserContainer />
                   </div>
                   <div
@@ -134,14 +135,12 @@ export default class App extends React.Component {
                     <MoveContainer />
                   </div>
                   <UndoRedoContainer />
-
                 </div>
 
                 {/* <div className="app__mobile--group">
 
 
             </div> */}
-
               </div>
               <div className="tools__group-dimensions">
                 <DimensionsContainer />
@@ -150,20 +149,19 @@ export default class App extends React.Component {
             </div>
 
             <PaletteGridContainer />
-
           </div>
         </div>
         <ModalContainer
           type={modalType}
           isOpen={modalOpen}
           close={() => {
-            this.closeModal();
+            this.closeModal()
           }}
           open={() => {
-            this.changeModalType(modalType);
+            this.changeModalType(modalType)
           }}
         />
       </div>
-    );
+    )
   }
 }

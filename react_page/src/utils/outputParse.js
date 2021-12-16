@@ -1,4 +1,4 @@
-import formatPixelColorOutput from './color';
+import formatPixelColorOutput from './color'
 
 /*
  *  arrayChunks
@@ -10,7 +10,7 @@ const arrayChunks = (array, chunkSize) =>
   Array(Math.ceil(array.length / chunkSize))
     .fill()
     .map((_, index) => index * chunkSize)
-    .map(begin => array.slice(begin, begin + chunkSize));
+    .map(begin => array.slice(begin, begin + chunkSize))
 
 /*
  *  formatFrameOutput
@@ -20,28 +20,31 @@ const arrayChunks = (array, chunkSize) =>
  *  @return {string} The formatted output of the passed frame
  */
 const formatFrameOutput = (frame, columns, options) => {
-  const isEven = number => number % 2 === 0;
-  const flattened = arr => [].concat(...arr);
-  let frameRows = arrayChunks(frame, columns);
+  const isEven = number => number % 2 === 0
+  const flattened = arr => [].concat(...arr)
+  let frameRows = arrayChunks(frame, columns)
   frameRows = frameRows.map((row, index) => {
     if (
       (isEven(index + 1) && options.reverseEven) ||
       (!isEven(index + 1) && options.reverseOdd)
     ) {
-      return row.reverse();
+      return row.reverse()
     }
-    return row;
-  });
-  const frameFormatted = flattened(frameRows);
+    return row
+  })
+  const frameFormatted = flattened(frameRows)
 
-  const lastPixelPos = frameFormatted.length;
+  const lastPixelPos = frameFormatted.length
   return frameFormatted.reduce((acc, pixel, index) => {
-    const pixelFormatted = formatPixelColorOutput(pixel, options.colorFormat);
-    return `${acc} ${pixelFormatted}${index + 1 === lastPixelPos ? '' : ','}${
-      (index + 1) % columns ? '' : '\n'
-    }`;
-  }, '');
-};
+    const pixelFormatted = formatPixelColorOutput(
+      pixel,
+      options.colorFormat
+    )
+    return `${acc} ${pixelFormatted}${
+      index + 1 === lastPixelPos ? '' : ','
+    }${(index + 1) % columns ? '' : '\n'}`
+  }, '')
+}
 
 /*
  *  generateFramesOutput
@@ -53,12 +56,14 @@ const generateFramesOutput = ({ frames, columns, options }) =>
     .toJS()
     .reduce(
       (acc, frame, index) =>
-        `${acc}${index ? '\n' : ''}frame${index} = {\n${formatFrameOutput(
+        `${acc}${
+          index ? '\n' : ''
+        }frame${index} = {\n${formatFrameOutput(
           frame.grid,
           columns,
           options
         )}};`,
       ''
-    );
+    )
 
-export default generateFramesOutput;
+export default generateFramesOutput
