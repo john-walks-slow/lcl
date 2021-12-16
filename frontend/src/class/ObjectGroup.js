@@ -1,6 +1,6 @@
-import * as Tone from 'tone';
-import configurations from './configurations';
-import GenerativeMusic from './GenerativeMusic';
+import * as Tone from 'tone'
+import configurations from './configurations'
+import GenerativeMusic from './GenerativeMusic'
 
 export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
@@ -9,7 +9,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
       createCallback: o => {
         setTimeout(() => {
           if (o.oData.isBackground) {
-            return;
+            return
           }
           let collidedObjects = scene.physics
             .overlapRect(
@@ -18,92 +18,100 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
               o.displayWidth,
               o.displayHeight
             )
-            .filter(o => o.oData);
+            .filter(o => o.oData)
           if (collidedObjects.length > 0) {
             collidedObjects.forEach(c => {
               // scene.physics.collide(c, o);
-              let cg = c.gameObject;
-              console.log(cg, o);
+              let cg = c.gameObject
+              console.log(cg, o)
               if (cg.oData._id == o.oData._id) {
-                return;
+                return
               }
               if (cg.oData.isBackground) {
-                return;
+                return
               }
               // if (movedObjects.find((a) => (a[0] == o.id && a[1] == cg.id))) {
               //   return;
               // }
               if (cg.x < o.x) {
-                cg.x -= (cg.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
+                cg.x -= (cg.displayWidth - Math.abs(o.x - cg.x)) * 1.1
               } else {
-                o.x += (o.displayWidth - Math.abs(o.x - cg.x)) * 1.1;
+                o.x += (o.displayWidth - Math.abs(o.x - cg.x)) * 1.1
               }
               if (cg.y < o.y) {
                 cg.y -=
-                  (cg.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
+                  (cg.displayHeight - Math.abs(o.y - cg.y)) * 1.1
               } else {
-                o.y += (o.displayHeight - Math.abs(o.y - cg.y)) * 1.1;
+                o.y += (o.displayHeight - Math.abs(o.y - cg.y)) * 1.1
               }
               // movedObjects.push([cg.id, o.id]);
-            });
+            })
           }
-        }, 50);
+        }, 50)
       },
-    });
-    this.scene = scene;
+    })
+    this.scene = scene
   }
   updateObjects(previousZone, currentZone) {
-    console.time('updateObjects');
-    let previousZones = this.scene.objectData.map.getNearBy(previousZone);
-    let currentZones = this.scene.objectData.map.getNearBy(currentZone);
-    let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()));
-    let destroyZones = previousZones.filter(x => !currentZones.toString().includes(x.toString()));
+    console.time('updateObjects')
+    let previousZones = this.scene.objectData.map.getNearBy(
+      previousZone
+    )
+    let currentZones = this.scene.objectData.map.getNearBy(
+      currentZone
+    )
+    let createZones = currentZones.filter(
+      x => !previousZones.toString().includes(x.toString())
+    )
+    let destroyZones = previousZones.filter(
+      x => !currentZones.toString().includes(x.toString())
+    )
     // console.log({ prev: previousZones, cur: currentZones });
-    console.log({ create: createZones, destroy: destroyZones });
+    console.log({ create: createZones, destroy: destroyZones })
     createZones.forEach(zone => {
       // console.log(this.scene.objectData.map);
       if (!this.scene.objectData.map[zone[0]]) {
-        return;
+        return
       }
       if (!this.scene.objectData.map[zone[0]][[zone[1]]]) {
-        return;
+        return
       }
-      let os = this.scene.objectData.map[zone[0]][zone[1]];
+      let os = this.scene.objectData.map[zone[0]][zone[1]]
       os.forEach(o => {
         switch (o.type) {
           case 'object':
             // this.scene.physics.overlapRect(o.x-o.displayWidth/2, o.y-o.displayHeight/2, o.displayWidth, o.displayHeight,true,true);
-            o.instance = this.create(o.x, o.y, 'object' + o._id);
+            o.instance = this.create(o.x, o.y, 'object' + o._id)
             // o.instance.on('addedtoscene',()=>{
             //   console.log(collidedObjects);
             // })
             // o.instance = this.scene.physics.add.sprite(o.x,o.y,"object"+o.id);
             // console.log(this.scene.objectGroup);
-            o.instance.depth = o.zFactor;
+            o.instance.depth = o.zFactor
             o.isForeground &&
-              (o.instance.alpha = 1 - Math.abs(o.zFactor - 1));
+              (o.instance.alpha = 1 - Math.abs(o.zFactor - 1))
             o.isBackground &&
-              (o.instance.alpha = 1 - Math.abs(o.zFactor - 1) * 1.5);
-            o.instance.oData = o;
-            o.instance.setDisplaySize(o.displayWidth, o.displayHeight);
-            o.instance.body.onOverlap = true;
+              (o.instance.alpha = 1 - Math.abs(o.zFactor - 1) * 1.5)
+            o.instance.oData = o
+            o.instance.setDisplaySize(o.displayWidth, o.displayHeight)
+            o.instance.body.onOverlap = true
             if (o.isAnimate) {
-              o.instance.anims.play('spritesheet' + o._id);
+              o.instance.anims.play('spritesheet' + o._id)
             }
             // if (o.dialog.length > 0) {
             let collider = this.scene.physics.add.collider(
               this.scene.player,
               o.instance,
               this.scene.objectCollideHandler
-            );
-            o.instance.collider = collider;
+            )
+            o.instance.collider = collider
             //  }
-            o.instance.refreshBody();
-            this.scene.gameObjectsLayer.add(o.instance);
+            o.instance.refreshBody()
+            this.scene.gameObjectsLayer.add(o.instance)
             if (o.loop) {
-              GenerativeMusic.startLoop(o);
+              GenerativeMusic.startLoop(o)
             }
-            break;
+            break
           case 'item':
             o.instance = this.scene.itemGroup
               .create(
@@ -111,60 +119,60 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
                 o.y,
                 configurations.ITEM_LIST[o.itemId].name
               )
-              .setDisplaySize(o.displayWidth, o.displayWidth);
+              .setDisplaySize(o.displayWidth, o.displayWidth)
             o.instance.fadeOut = this.scene.tweens.create({
               targets: o.instance,
               duration: 600,
               props: { alpha: 0 },
               onComplete: () => {
-                o.instance.destroy();
+                o.instance.destroy()
               },
-            });
-            o.instance.alpha = 1;
-            o.instance.depth = 1;
-            o.instance._id = o._id;
+            })
+            o.instance.alpha = 1
+            o.instance.depth = 1
+            o.instance._id = o._id
             let itemCollider = this.scene.physics.add.collider(
               this.scene.player,
               o.instance,
               this.scene.itemCollideHandler
-            );
-            o.instance.collider = itemCollider;
-            o.instance.itemId = o.itemId;
-            this.scene.gameObjectsLayer.add(o.instance);
-            break;
+            )
+            o.instance.collider = itemCollider
+            o.instance.itemId = o.itemId
+            this.scene.gameObjectsLayer.add(o.instance)
+            break
           default:
-            break;
+            break
         }
-      });
-    });
+      })
+    })
     destroyZones.forEach(zone => {
       if (!this.scene.objectData.map[zone[0]]) {
-        return;
+        return
       }
       if (!this.scene.objectData.map[zone[0]][[zone[1]]]) {
-        return;
+        return
       }
-      let os = this.scene.objectData.map[zone[0]][zone[1]];
+      let os = this.scene.objectData.map[zone[0]][zone[1]]
       os.forEach(o => {
         switch (o.type) {
           case 'object':
-            this.remove(o.instance, true, true);
+            this.remove(o.instance, true, true)
             if (o.loop) {
-              GenerativeMusic.stopLoop(o);
+              GenerativeMusic.stopLoop(o)
             }
-            break;
+            break
           case 'item':
             // TODO: TypeError: Cannot read properties of undefined (reading 'active')
             // console.log(o.instance);
             if (o.instance) {
-              this.scene.itemGroup.remove(o.instance, true, true);
+              this.scene.itemGroup.remove(o.instance, true, true)
             }
-            break;
+            break
           default:
-            break;
+            break
         }
-      });
-    });
+      })
+    })
     // let seeds = [...Array(Object.keys(FILTER_LIST).length * 2)].map((o, i) => (Math.round(seededRandom(((i + 1) * currentZone[0] * this.scene.day + currentZone[1]).toString()) * 10)) / 10);
     // let RESULT_LIST = Object.assign({}, FILTER_LIST);
     // this.scene.filter = (x, y) => {
@@ -186,7 +194,6 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
     //   };
     //   return `${result}`;
     // };
-    console.timeEnd('updateObjects');
-
-  };
+    console.timeEnd('updateObjects')
+  }
 }
