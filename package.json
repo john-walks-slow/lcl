@@ -21,8 +21,8 @@
   "scripts": {
     "start": "node src/",
     "http-server": "http-server ./public",
-    "dev": "concurrently \"cd react_page && npm run dev\" \"npm run start\"",
-    "build": "cd react_page && npm ci --include=dev && npm run build",
+    "dev": "concurrently \"cd frontend && npm run dev\" \"npm run start\"",
+    "build": "cd frontend && npm ci --include=dev && npm run build",
     "clearDB": "rm data/objects.db",
     "test": "npm run lint && npm run mocha",
     "lint": "eslint src",
