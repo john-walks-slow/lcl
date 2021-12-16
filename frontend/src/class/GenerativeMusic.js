@@ -1,84 +1,87 @@
-import MS from 'teoria';
-import * as Tone from 'tone';
+import MS from 'teoria'
+import * as Tone from 'tone'
 import {
   customIntRandom,
   customWRandom,
   seededRandomKept,
-} from '../utils/random';
-import { range } from '../utils/utils';
-import configurations from './configurations';
+} from '../utils/random'
+import { range } from '../utils/utils'
+import configurations from './configurations'
 
 class GenerativeMusic {
   constructor() {
-    this.N4_LENGTH = Tone.Time('4n').toSeconds();
-    this.scale = MS.scale('C5', 'major');
-    this.chordLoopLength = 32;
-    this.melodyVolume = -30;
-    this.chordVolume = -30;
-    this.melodyLoopLength = 4;
+    this.N4_LENGTH = Tone.Time('4n').toSeconds()
+    this.scale = MS.scale('C5', 'major')
+    this.chordLoopLength = 32
+    this.melodyVolume = -30
+    this.chordVolume = -30
+    this.melodyLoopLength = 4
     // this.melodyLoopLength = 48;
-    this.melodyIntervalRandomRange = 1;
-    this.melodyFadeFactor = 1;
-    this.chordFadeFactor = 1;
-    this.chordRythm;
-    this.melodyRythm;
-    this.melodyMinSight = 2 * configurations.PLAYER_TARGET_H;
-    this.melodySight = 5 * configurations.PLAYER_TARGET_H;
-    this.chordMinSight = 2 * configurations.PLAYER_TARGET_H;
-    this.chordSight = 25 * configurations.PLAYER_TARGET_H;
-    MS.Scale.prototype.getNote = function (i) {
-      let degree = i.mod(this.notes().length);
-      let octave = (i - degree) / this.notes().length + 5;
+    this.melodyIntervalRandomRange = 1
+    this.melodyFadeFactor = 1
+    this.chordFadeFactor = 1
+    this.chordRythm
+    this.melodyRythm
+    this.melodyMinSight = 2 * configurations.PLAYER_TARGET_H
+    this.melodySight = 5 * configurations.PLAYER_TARGET_H
+    this.chordMinSight = 2 * configurations.PLAYER_TARGET_H
+    this.chordSight = 25 * configurations.PLAYER_TARGET_H
+    MS.Scale.prototype.getNote = function(i) {
+      let degree = i.mod(this.notes().length)
+      let octave = (i - degree) / this.notes().length + 5
       // console.log(degree);
-      return MS.note(this.notes()[degree].name() + octave.toString());
-    };
+      return MS.note(this.notes()[degree].name() + octave.toString())
+    }
     const initTone = () => {
-      const context = new Tone.Context({ latencyHint: 500 });
-      Tone.setContext(context);
-    };
-    initTone();
+      const context = new Tone.Context({ latencyHint: 500 })
+      Tone.setContext(context)
+    }
+    initTone()
     // const context = new Tone.Context({ latencyHint: "playback" });
     // set this context as the global Context
     // Tone.setContext(context);
     const generateChord = () => {
-      const day = {};
-      day._id = configurations.DAY.toString();
-      day.random = seededRandomKept(day._id.toString());
-      day.wRandom = customWRandom(day.random);
-      day.intRandom = customIntRandom(day.random);
+      const day = {}
+      day._id = configurations.DAY.toString()
+      day.random = seededRandomKept(day._id.toString())
+      day.wRandom = customWRandom(day.random)
+      day.intRandom = customIntRandom(day.random)
       const CHORD_TYPE = {
         T: 0,
         D: 1,
         S: 2,
-      };
+      }
       const CHORDS_LIST = [
         { 1: 0.6, 3: 0.2, 6: 0.2 },
         { 5: 0.6, 3: 0.2, 5: 0.2 },
-        { 4: 0.6, 2: 0.2, 6: 0.2 }
-      ];
-      let chords = [];
-      let currentPos = 0;
-      let currentType = false;
+        { 4: 0.6, 2: 0.2, 6: 0.2 },
+      ]
+      let chords = []
+      let currentPos = 0
+      let currentType = false
       // this.chordSequence = [...Array(this.chordLoopLength)].map(i => []);
-      this.chordSequence = [...Array(this.chordLoopLength)].map(i => false);
+      this.chordSequence = [...Array(this.chordLoopLength)].map(
+        i => false
+      )
       while (currentPos < this.chordLoopLength) {
         switch (currentType) {
           case 'D':
-            currentType = day.wRandom({ T: 0.4, D: 0.2, S: 0.1 });
-            break;
+            currentType = day.wRandom({ T: 0.4, D: 0.2, S: 0.1 })
+            break
           case 'S':
-            currentType = day.wRandom({ T: 0.3, D: 0.4, S: 0.2 });
-            break;
+            currentType = day.wRandom({ T: 0.3, D: 0.4, S: 0.2 })
+            break
           case 'T':
-            currentType = day.wRandom({ T: 0.2, D: 0.3, S: 0.4 });
-            break;
+            currentType = day.wRandom({ T: 0.2, D: 0.3, S: 0.4 })
+            break
           default:
-            currentType = day.wRandom({ T: 0.1, D: 0.1, S: 0.1 });
-            break;
+            currentType = day.wRandom({ T: 0.1, D: 0.1, S: 0.1 })
+            break
         }
         // let currentChordDegree = CHORDS_LIST[CHORD_TYPE[currentType]][day.wRandom({ 0: 0.4, 1: 0.3, 2: 0.3 })] ;
-        let currentChordDegree =
-          parseInt(day.wRandom(CHORDS_LIST[CHORD_TYPE[currentType]]));
+        let currentChordDegree = parseInt(
+          day.wRandom(CHORDS_LIST[CHORD_TYPE[currentType]])
+        )
         // let currentChordNotes = [scale.get(currentChordDegree).name(), scale.get(currentChordDegree + 2).name(), scale.get(currentChordDegree + 4).name().toUpperCase()];
         // console.log(chordSequence[currentPos]);
         // console.log(parseInt(day.wRandom({ 4: 0.1, 3: 0.1, 2: 0.5, 1: 0.4, 0: 0.2 })));
@@ -87,23 +90,23 @@ class GenerativeMusic {
         //   this.chordSequence[currentPos].push(false);
         // }
 
-        this.chordSequence[currentPos] = currentChordDegree;
+        this.chordSequence[currentPos] = currentChordDegree
         // this.chordSequence[currentPos].push(currentChordDegree);
-        let previousPos = currentPos;
-        currentPos += 4;
+        let previousPos = currentPos
+        currentPos += 4
         // currentPos += parseInt(day.wRandom({ 4: 0.2, 3: 0.3, 2: 0.8, 1: 0.1, 0: 0.1 }));
         // if ((previousPos + 1).iDivide(8) < (currentPos + 1).iDivide(8)) {
         //   currentPos = currentPos - (currentPos + 1).mod(8) - 1;
         // }
       }
-      console.log(`chordSequence: ${this.chordSequence}`);
-      console.log(this.chordSequence);
+      console.log(`chordSequence: ${this.chordSequence}`)
+      console.log(this.chordSequence)
       let rootPadSynth = new Tone.PolySynth(Tone.Synth, {
         oscillator: { type: 'sine', volume: -40 },
         envelope: { release: '4n', attack: '8n' },
         maxPolyphony: 64,
-      });
-      rootPadSynth.chain(Tone.getDestination());
+      })
+      rootPadSynth.chain(Tone.getDestination())
       // new Tone.Sequence((time, note) => {
       //   if (!note) { return; }
       //   console.log(`R: ${this.scale.getNote(note - 14).scientific()}`);
@@ -160,15 +163,15 @@ class GenerativeMusic {
       //     });
       //   currentPos += chordLength;
       // }
-    };
-    generateChord();
+    }
+    generateChord()
   }
 
   updateSound(scene) {
     // console.time('updateSound');
     scene.objectGroup.children.each(o => {
       if (!o.oData.synth) {
-        return;
+        return
       }
       // let width = Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180;
       // let distance = Phaser.Math.Distance.BetweenPoints(o, this.player);
@@ -178,24 +181,23 @@ class GenerativeMusic {
       //   volume: 0,
       //   width: width
       // });
-      const positionX = o.x - scene.player.x;
-      const positionY = scene.player.y - o.y;
+      const positionX = o.x - scene.player.x
+      const positionY = scene.player.y - o.y
       o.oData.panner.set({
         positionX,
         positionY,
-      });
-      o.oData.panner.distance = positionX ** 2 + positionY ** 2;
+      })
+      o.oData.panner.distance = positionX ** 2 + positionY ** 2
       o.oData.panner.audible =
-        o.oData.panner.distance < o.oData.panner.maxDistance ** 2;
-    });
+        o.oData.panner.distance < o.oData.panner.maxDistance ** 2
+    })
     // console.timeEnd('updateSound');
-
   }
 
   setupSound(o) {
-    o.random = seededRandomKept(o._id.toString());
-    o.wRandom = customWRandom(o.random);
-    o.intRandom = customIntRandom(o.random);
+    o.random = seededRandomKept(o._id.toString())
+    o.wRandom = customWRandom(o.random)
+    o.intRandom = customIntRandom(o.random)
     // switch (o.size) {
     //   case 'XXL':
     //     o.sound = 'pad';
@@ -237,78 +239,79 @@ class GenerativeMusic {
     if (o.isForeground) {
     }
     if (o.isBackground) {
-      o.sound = 'pad';
+      o.sound = 'pad'
     }
 
     switch (o.sound) {
       case 'pad':
         o.synth = new Tone.PolySynth(Tone.Synth, {
           oscillator: { type: 'sine', volume: this.chordVolume },
-          envelope: { release: "8n", attack: "32n", sustain: 1 },
-          maxPolyphony: 64
-        });
+          envelope: { release: '8n', attack: '32n', sustain: 1 },
+          maxPolyphony: 64,
+        })
         o.panner = new Tone.Panner3D({
           rolloffFactor: this.chordFadeFactor,
           refDistance: this.chordMinSight,
           maxDistance: this.chordSight,
           // positionZ: (o.zFactor - 1) * 100,
-          distanceModel: 'linear'
-        });
-        o.synth.chain(
-          o.panner,
-          Tone.getDestination()
-        );
-        o.min = o.intRandom(-2 * this.scale.notes().length - 5, -5);
-        o.max = o.min + o.intRandom(4, 6);
+          distanceModel: 'linear',
+        })
+        o.synth.chain(o.panner, Tone.getDestination())
+        o.min = o.intRandom(-2 * this.scale.notes().length - 5, -5)
+        o.max = o.min + o.intRandom(4, 6)
         // o.min = scale.getNote(o.min);
         // o.max = scale.getNote(o.max);
-        o.range = range(o.min, o.max).map(i => this.scale.getNote(i));
-        o.loop = new Tone.Sequence((time, note) => {
-          if (!note) {
-            return;
-          }
-          let notes = [note - 1, note + 1, note + 3].map(n =>
-            this.scale.getNote(n).name()
-          );
-          const possibleNotes = o.range.filter(n =>
-            notes.includes(n.name()[0])
-          );
-          possibleNotes.sort((a, b) => {
-            let jumpA;
-            let jumpB;
-            if (o.previousNote) {
-              jumpA = Math.abs(
-                MS.interval(o.previousNote, a).semitones()
-              );
-              jumpB = Math.abs(
-                MS.interval(o.previousNote, b).semitones()
-              );
-              // console.log(jumpA, jumpB);
-            } else {
-              jumpA = 0;
-              jumpB = 0;
+        o.range = range(o.min, o.max).map(i => this.scale.getNote(i))
+        o.loop = new Tone.Sequence(
+          (time, note) => {
+            if (!note) {
+              return
             }
-            return jumpA - jumpB;
-          });
-          o.previousNote = possibleNotes[0];
-          // o.previousNote =
-          // possibleNotes[o.intRandom(0, possibleNotes.length - 1)];
+            let notes = [note - 1, note + 1, note + 3].map(n =>
+              this.scale.getNote(n).name()
+            )
+            const possibleNotes = o.range.filter(n =>
+              notes.includes(n.name()[0])
+            )
+            possibleNotes.sort((a, b) => {
+              let jumpA
+              let jumpB
+              if (o.previousNote) {
+                jumpA = Math.abs(
+                  MS.interval(o.previousNote, a).semitones()
+                )
+                jumpB = Math.abs(
+                  MS.interval(o.previousNote, b).semitones()
+                )
+                // console.log(jumpA, jumpB);
+              } else {
+                jumpA = 0
+                jumpB = 0
+              }
+              return jumpA - jumpB
+            })
+            o.previousNote = possibleNotes[0]
+            // o.previousNote =
+            // possibleNotes[o.intRandom(0, possibleNotes.length - 1)];
 
-          if (o.panner.audible) {
-            console.log(
-              `H: ${o.previousNote.scientific()} ${o.dialog}`
-            );
-            // o.synth.set({
-            //   width: Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180
-            // });
-            o.synth.triggerAttackRelease(
-              o.previousNote.scientific(),
-              '1m',
-              time
-            );
-          }
-        }, this.chordSequence, '4n');
-        break;
+            if (o.panner.audible) {
+              console.log(
+                `H: ${o.previousNote.scientific()} ${o.dialog}`
+              )
+              // o.synth.set({
+              //   width: Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180
+              // });
+              o.synth.triggerAttackRelease(
+                o.previousNote.scientific(),
+                '1m',
+                time
+              )
+            }
+          },
+          this.chordSequence,
+          '4n'
+        )
+        break
       default:
         // What about using pattern?
         // if (!previousNote) {
@@ -320,16 +323,16 @@ class GenerativeMusic {
           oscillator: { type: 'sine', volume: this.melodyVolume },
           envelope: { release: '2n' },
           maxPolyphony: 64,
-        });
+        })
         o.panner = new Tone.Panner3D({
           rolloffFactor: this.melodyFadeFactor,
           refDistance: this.melodyMinSight,
           maxDistance: this.melodySight,
           // positionZ: (o.zFactor - 1) * 100,
-          distanceModel: 'exponential'
-        });
-        o.synth.chain(o.panner, Tone.getDestination());
-        o.noteIndex = o.intRandom(-5, 10);
+          distanceModel: 'exponential',
+        })
+        o.synth.chain(o.panner, Tone.getDestination())
+        o.noteIndex = o.intRandom(-5, 10)
 
         o.noteIndex = o.wRandom({
           '-5': 0.3,
@@ -344,50 +347,58 @@ class GenerativeMusic {
           ' 4': 0.5,
           ' 5': 0.4,
           ' 6': 0.2,
-        });
-        o.note = this.scale.getNote(parseInt(o.noteIndex));
-        o.loopInterval = this.melodyLoopLength + o.intRandom(-2, 2);
+        })
+        o.note = this.scale.getNote(parseInt(o.noteIndex))
+        o.loopInterval = this.melodyLoopLength + o.intRandom(-2, 2)
         // o.loopInterval = melodyLoopLength;
-        o.melodySequence = [...Array(this.melodyLoopLength)].map(i => []);
-        o.melodySequence[o.intRandom(0, this.melodyLoopLength - 1)] = [o.note];
-        o.loop = new Tone.Sequence((time, note) => {
-          if (o.panner.audible) {
-            // console.log(`M: ${o.note.scientific()} ${o.dialog}`);
-            o.synth.triggerAttackRelease(
-              note.scientific(),
-              '8n',
-              time
-            );
-          }
-        }, o.melodySequence, '4n');
+        o.melodySequence = [
+          ...Array(this.melodyLoopLength),
+        ].map(i => [])
+        o.melodySequence[
+          o.intRandom(0, this.melodyLoopLength - 1)
+        ] = [o.note]
+        o.loop = new Tone.Sequence(
+          (time, note) => {
+            if (o.panner.audible) {
+              // console.log(`M: ${o.note.scientific()} ${o.dialog}`);
+              o.synth.triggerAttackRelease(
+                note.scientific(),
+                '8n',
+                time
+              )
+            }
+          },
+          o.melodySequence,
+          '4n'
+        )
         // Tone.getTransport().scheduleRepeat(
         //   (t) => {
         //     console.log(o.note);
         //     synth.triggerAttackRelease(o.note.scientific(), "8n");
         //   }, this.N4_LENGTH * o.loopInterval, o.intRandom(0, 8) * this.N4_LENGTH);
         // code
-        break;
+        break
     }
   }
 
   startLoop(o) {
-    console.log(o);
+    console.log(o)
     //
     try {
       if (o.loop.state == 'stopped') {
-        o.loop.start('@');
+        o.loop.start('@')
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }
   stopLoop(o) {
     try {
       if (o.loop.state == 'started') {
-        o.loop.stop();
+        o.loop.stop()
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }
   startBgm(scene) {
@@ -409,7 +420,6 @@ class GenerativeMusic {
     //   } catch (error) {
     //     console.log(error);
     //   }
-
     // };
     // if (Tone.context.state == 'running') {
     //   // if (true) {
@@ -421,4 +431,4 @@ class GenerativeMusic {
     // }
   }
 }
-export default new GenerativeMusic();
+export default new GenerativeMusic()
