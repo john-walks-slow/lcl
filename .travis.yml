@@ -5,3 +5,4 @@ before_install:
   - npm i -g npm@7.24.1
 script:
   - npm run lint
+  - cd frontend && npm run lint
