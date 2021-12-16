@@ -3,7 +3,7 @@ class Configurations {
   constructor() {
     // this.ZOOM_LEVEL = 1;
     // this.DEV_MODE = true;
-    this.DEV_MODE = false;
+    this.DEV_MODE = true;
     this.RESOLUTION = 1;
     this.PLAYER_TARGET_W = 40 * this.RESOLUTION;
     this.PLAYER_TARGET_H = 46 * this.RESOLUTION;

@@ -43,6 +43,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
     this.scene = scene;
   }
   updateObjects(previousZone, currentZone) {
+    console.time('updateObjects');
     let previousZones = this.scene.objectData.map.getNearBy(previousZone);
     let currentZones = this.scene.objectData.map.getNearBy(currentZone);
     let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()));
@@ -113,7 +114,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
           case "object":
             this.remove(o.instance, true, true);
             if (o.loop) {
-              o.loop.stop();
+              GenerativeMusic.stopLoop(o);
             }
             break;
           case "item":
@@ -149,5 +150,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
     //   };
     //   return `${result}`;
     // };
+    console.timeEnd('updateObjects');
+
   };
 }

@@ -397,7 +397,7 @@ export default class MainScene extends Phaser.Scene {
     // import * as teoria from 'teoria';
     this.setupKeyboard();
     this.setShowMenu(true);
-    generativeMusic.startBgm();
+    generativeMusic.startBgm(this);
 
     // this.setDisplay();
     // this.gameDialog.showDialog('testtest', 'test');
@@ -446,7 +446,6 @@ export default class MainScene extends Phaser.Scene {
     });
   }
   update() {
-    generativeMusic.updateSound(this);
 
     // console.log(this.input.activePointer.x, this.input.activePointer.y);
     // console.log(this.gamepad.padX, this.gamepad.padY);

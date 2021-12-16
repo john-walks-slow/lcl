@@ -33,6 +33,7 @@ export default class ObjectData {
     this.playerData = secureStorage.getItem('player');
   }
   setupObject() {
+    console.time('setupObject');
     let previousDate = configurations.TIMESTAMP;
     let offsetIndex = 0;
     let dateOffset = 0;
@@ -43,7 +44,7 @@ export default class ObjectData {
       o.isTrash = o.dialog.length == 0;
       o.fadeSpeed = 1;
       if (!o.isTrash) { offsetIndex++; } else {
-        o.fadeSpeed = 3;
+        o.fadeSpeed = 2;
       }
       let offset = (configurations.DENSITY_OFFSET * (offsetIndex ** 0.5));
       // console.log({ dateOffset, offset });
@@ -98,5 +99,6 @@ export default class ObjectData {
 
     });
 
+    console.timeEnd('setupObject');
   };
 }
