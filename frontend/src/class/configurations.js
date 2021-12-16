@@ -1,13 +1,10 @@
 class Configurations {
   constructor() {
-    // this.ZOOM_LEVEL = 1;
-    // this.DEV_MODE = true;
     this.DEV_MODE = false
     this.RESOLUTION = 1
     this.PLAYER_TARGET_W = 40 * this.RESOLUTION
     this.PLAYER_TARGET_H = 46 * this.RESOLUTION
     // this.ZOOM_LEVEL = Math.min(Math.min(this.WINDOW_W / 15, this.WINDOW_H / 15) / this.PLAYER_TARGET_H, 1);
-    this.CANVAS_SCALE = 0.6
     this.ZOOM_LEVEL = 1
     // this.ZOOM_LEVEL = (this.WINDOW_W < 600 || this.WINDOW_W < 600) ? 0.6 : 1;
     this.ZOOM_OUT_LEVEL = 0.35 * this.ZOOM_LEVEL
