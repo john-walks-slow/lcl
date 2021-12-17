@@ -113,8 +113,9 @@ export default class ObjectData {
           this.map.pushNew(i.zone, i)
         }
       }
+      this.map.pushNew(o.zone, o)
     })
-
     console.timeEnd('setupObject')
+    console.log(this.map)
   }
 }

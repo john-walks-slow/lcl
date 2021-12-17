@@ -63,7 +63,6 @@ export default class LoadingScene extends Phaser.Scene {
         let objectData = new ObjectData(objectList)
         objectData.setupObject()
         objectData.list.forEach((o, i) => {
-          generativeMusic.setupSound(o)
           switch (o.isAnimate) {
             case true:
               var shardsImg = new Image()
@@ -82,7 +81,6 @@ export default class LoadingScene extends Phaser.Scene {
               // this.load.image("object" + o._id, 'assets/objects/' + o._id + '.png')
               break
           }
-          objectData.map.pushNew(o.zone, o)
         })
         // DENSITY_OFFSET = Math.min(OBJECT_W.L, DENSITY_OFFSET);
         this.load.on(

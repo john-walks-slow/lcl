@@ -57,10 +57,14 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
     console.time('updateObjects')
     let previousZones = this.scene.objectData.map.getNearBy(previousZone)
     let currentZones = this.scene.objectData.map.getNearBy(currentZone)
-    let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()))
-    let destroyZones = previousZones.filter(x => !currentZones.toString().includes(x.toString()))
+    let createZones = currentZones.filter(
+      x => !JSON.stringify(previousZones).includes(JSON.stringify(x))
+    )
+    let destroyZones = previousZones.filter(
+      x => !JSON.stringify(currentZones).includes(JSON.stringify(x))
+    )
     // console.log({ prev: previousZones, cur: currentZones });
-    console.log({ create: createZones, destroy: destroyZones })
+    console.log({ create: JSON.stringify(createZones), destroy: JSON.stringify(destroyZones) })
     createZones.forEach(zone => {
       // console.log(this.scene.objectData.map);
       if (!this.scene.objectData.map[zone[0]]) {
@@ -73,6 +77,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
       os.forEach(o => {
         switch (o.type) {
           case 'object':
+            GenerativeMusic.setupSound(o)
             o.instance = this.create(o.x, o.y, 'object' + o._id)
             // o.instance.on('addedtoscene',()=>{
             //   console.log(collidedObjects);
@@ -144,6 +149,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
           case 'object':
             this.remove(o.instance, true, true)
             if (o.loop) {
+              GenerativeMusic.disposeSound(o)
               // GenerativeMusic.stopLoop(o)
             }
             break

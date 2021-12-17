@@ -1,6 +1,6 @@
 class Configurations {
   constructor() {
-    this.DEV_MODE = false
+    this.DEV_MODE = process.env.NODE_ENV == 'development'
     this.RESOLUTION = 1
     this.PLAYER_TARGET_W = 40 * this.RESOLUTION
     this.PLAYER_TARGET_H = 46 * this.RESOLUTION
@@ -33,8 +33,9 @@ class Configurations {
     ]
 
     this.updateConfigurations()
-    this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL / 2
-    // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL;
+    this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL / 3
+    // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / 3
+    // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL/2;
 
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL;
   }

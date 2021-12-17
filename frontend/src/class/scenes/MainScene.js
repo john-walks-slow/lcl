@@ -11,6 +11,7 @@ import LinkDialog from '../components/LinkDialog'
 import configurations from '../configurations'
 import ObjectGroup from '../ObjectGroup'
 import generativeMusic from '../GenerativeMusic'
+import GenerativeMusic from '../GenerativeMusic'
 
 let listener = false
 
@@ -115,6 +116,7 @@ export default class MainScene extends Phaser.Scene {
         this.player.anims.play('standDown', true)
       }
       this.player.move(0, 0)
+      this.player.move(-6, -6)
     }
 
     this.player.setInteractive()
@@ -225,7 +227,7 @@ export default class MainScene extends Phaser.Scene {
         : false
     })
 
-    // this.objectGroup.updateObjects(false, [0, 0]);
+    this.objectGroup.updateObjects(false, [0, 0])
     // this.previousZone = [0, 0];
     this.gameDialog = new Dialog(this)
     this.itemDialog = new ItemDialog(this)
@@ -389,8 +391,7 @@ export default class MainScene extends Phaser.Scene {
     // import * as teoria from 'teoria';
     this.setupKeyboard()
     this.setShowMenu(true)
-    // generativeMusic.startBgm(this)
-
+    generativeMusic.startBgm(this)
     // this.setDisplay();
     // this.gameDialog.showDialog('testtest', 'test');
     // this.itemDialog.showDialog(['哇！你捡到了一个箱子'], 'test');
@@ -439,6 +440,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   update(time, delta) {
+    GenerativeMusic.updateSound(this)
     // console.log(this.input.activePointer.x, this.input.activePointer.y);
     // console.log(this.gamepad.padX, this.gamepad.padY);
 
@@ -461,6 +463,7 @@ export default class MainScene extends Phaser.Scene {
           ((this.player.body.velocity.x * (gameObject.oData.zFactor - 1)) / 1000) * delta
         gameObject.y -=
           ((this.player.body.velocity.y * (gameObject.oData.zFactor - 1)) / 1000) * delta
+        // GenerativeMusic.startLoop(gameObject.oData)
       }
     })
     if (
@@ -488,7 +491,7 @@ export default class MainScene extends Phaser.Scene {
             currentZone[1] == this.previousZone[1]
           )
         ) {
-          this.objectGroup.updateObjects(this.previousZone, currentZone)
+          // this.objectGroup.updateObjects(this.previousZone, currentZone)
 
           this.previousZone = currentZone
         }

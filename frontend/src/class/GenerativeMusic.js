@@ -8,10 +8,8 @@ class GenerativeMusic {
   constructor() {
     this.N4_LENGTH = Tone.Time('4n').toSeconds()
     this.scale = MS.scale('C5', 'major')
-    this.chordLoopLength = 32
-    this.melodyVolume = -30
-    this.chordVolume = -30
-    this.melodyLoopLength = 4
+    this.chordLoopLength = 64
+    this.melodyLoopLength = 7
     // this.melodyLoopLength = 48;
     this.melodyIntervalRandomRange = 1
     this.melodyFadeFactor = 1
@@ -19,9 +17,19 @@ class GenerativeMusic {
     this.chordRythm
     this.melodyRythm
     this.melodyMinSight = 2 * configurations.PLAYER_TARGET_H
-    this.melodySight = 5 * configurations.PLAYER_TARGET_H
-    this.chordMinSight = 2 * configurations.PLAYER_TARGET_H
-    this.chordSight = 25 * configurations.PLAYER_TARGET_H
+    this.melodySight = 8 * configurations.PLAYER_TARGET_H
+    this.chordMinSight = 3 * configurations.PLAYER_TARGET_H
+    this.chordSight = 50 * configurations.PLAYER_TARGET_H
+    this.reverb = new Tone.JCReverb(0.4)
+    this.delay = new Tone.FeedbackDelay(0.5)
+    this.channels = {
+      melody: new Tone.Channel(-35, 0),
+      chord: new Tone.Channel(-50, 0),
+    }
+    for (let key in this.channels) {
+      this.channels[key].chain(this.delay, this.reverb, Tone.getDestination())
+    }
+
     MS.Scale.prototype.getNote = function(i) {
       let degree = i.mod(this.notes().length)
       let octave = (i - degree) / this.notes().length + 5
@@ -29,8 +37,8 @@ class GenerativeMusic {
       return MS.note(this.notes()[degree].name() + octave.toString())
     }
     const initTone = () => {
-      const context = new Tone.Context({ latencyHint: 500 })
-      Tone.setContext(context)
+      // const context = new Tone.Context({ latencyHint: 'playback' })
+      // Tone.setContext(context)
     }
     initTone()
     // const context = new Tone.Context({ latencyHint: "playback" });
@@ -47,11 +55,22 @@ class GenerativeMusic {
         D: 1,
         S: 2,
       }
-      const CHORDS_LIST = [
-        { 1: 0.6, 3: 0.2, 6: 0.2 },
-        { 5: 0.6, 3: 0.2, 5: 0.2 },
-        { 4: 0.6, 2: 0.2, 6: 0.2 },
-      ]
+      let majorMinor = day.random() * 1.6 + 0.2
+      majorMinor = 0.2
+      let CHORDS_LIST
+      if (majorMinor > 1) {
+        CHORDS_LIST = [
+          { 1: Math.round((majorMinor - 0.4) * 0.6), 3: 0.2, 6: 0.2 },
+          { 5: Math.round((majorMinor - 0.4) * 0.6), 3: 0.2, 5: 0.2 },
+          { 4: Math.round((majorMinor - 0.4) * 0.6), 2: 0.2, 6: 0.2 },
+        ]
+      } else {
+        CHORDS_LIST = [
+          { 6: Math.round(0.6 / (majorMinor + 0.4)), 1: 0.2, 4: 0.2 },
+          { 3: Math.round(0.6 / (majorMinor + 0.4)), 1: 0.2, 5: 0.2 },
+          { 2: Math.round(0.6 / (majorMinor + 0.4)), 4: 0.2, 5: 0.2 },
+        ]
+      }
       let chords = []
       let currentPos = 0
       let currentType = false
@@ -60,16 +79,16 @@ class GenerativeMusic {
       while (currentPos < this.chordLoopLength) {
         switch (currentType) {
           case 'D':
-            currentType = day.wRandom({ T: 0.4, D: 0.2, S: 0.1 })
+            currentType = day.wRandom({ T: 4, D: 2, S: 1 })
             break
           case 'S':
-            currentType = day.wRandom({ T: 0.3, D: 0.4, S: 0.2 })
+            currentType = day.wRandom({ T: 3, D: 4, S: 2 })
             break
           case 'T':
-            currentType = day.wRandom({ T: 0.2, D: 0.3, S: 0.4 })
+            currentType = day.wRandom({ T: 2, D: 3, S: 4 })
             break
           default:
-            currentType = day.wRandom({ T: 0.1, D: 0.1, S: 0.1 })
+            currentType = day.wRandom({ T: 1, D: 1, S: 1 })
             break
         }
         // let currentChordDegree = CHORDS_LIST[CHORD_TYPE[currentType]][day.wRandom({ 0: 0.4, 1: 0.3, 2: 0.3 })] ;
@@ -94,7 +113,7 @@ class GenerativeMusic {
       console.log(`chordSequence: ${this.chordSequence}`)
       console.log(this.chordSequence)
       let rootPadSynth = new Tone.PolySynth(Tone.Synth, {
-        oscillator: { type: 'sine', volume: -40 },
+        oscillator: { type: 'sine', volume: 0 },
         envelope: { release: '4n', attack: '8n' },
         maxPolyphony: 64,
       })
@@ -160,7 +179,7 @@ class GenerativeMusic {
   }
 
   updateSound(scene) {
-    // console.time('updateSound');
+    // console.time('updateSound')
     scene.objectGroup.children.each(o => {
       if (!o.oData.synth) {
         return
@@ -175,6 +194,7 @@ class GenerativeMusic {
       // });
       const positionX = o.x - scene.player.x
       const positionY = scene.player.y - o.y
+
       o.oData.panner.set({
         positionX,
         positionY,
@@ -235,10 +255,11 @@ class GenerativeMusic {
 
     switch (o.sound) {
       case 'pad':
-        o.synth = new Tone.PolySynth(Tone.Synth, {
-          oscillator: { type: 'sine', volume: this.chordVolume },
-          envelope: { release: '8n', attack: '32n', sustain: 1 },
-          maxPolyphony: 64,
+        // PadSynth
+        o.synth = new Tone.Synth({
+          oscillator: { type: 'sine', volume: 0 },
+          envelope: { release: '8n', attack: '4n', sustain: 1 },
+          // maxPolyphony: 64,
         })
         o.panner = new Tone.Panner3D({
           rolloffFactor: this.chordFadeFactor,
@@ -247,7 +268,7 @@ class GenerativeMusic {
           // positionZ: (o.zFactor - 1) * 100,
           distanceModel: 'linear',
         })
-        o.synth.chain(o.panner, Tone.getDestination())
+        o.synth.chain(o.panner, this.channels.chord)
         o.min = o.intRandom(-2 * this.scale.notes().length - 5, -5)
         o.max = o.min + o.intRandom(4, 6)
         // o.min = scale.getNote(o.min);
@@ -287,7 +308,7 @@ class GenerativeMusic {
           },
           this.chordSequence,
           '4n'
-        )
+        ).start()
         break
       default:
         // What about using pattern?
@@ -296,10 +317,9 @@ class GenerativeMusic {
         // } else {
         //   // o.noteIndex = previousNote.noteIndex + Math.floor((o.random() ** 1.2) * 9) - 4;
         // }
-        o.synth = new Tone.PolySynth(Tone.Synth, {
-          oscillator: { type: 'sine', volume: this.melodyVolume },
+        o.synth = new Tone.Synth({
+          oscillator: { type: 'sine', volume: 0 },
           envelope: { release: '2n' },
-          maxPolyphony: 64,
         })
         o.panner = new Tone.Panner3D({
           rolloffFactor: this.melodyFadeFactor,
@@ -308,7 +328,7 @@ class GenerativeMusic {
           // positionZ: (o.zFactor - 1) * 100,
           distanceModel: 'exponential',
         })
-        o.synth.chain(o.panner, Tone.getDestination())
+        o.synth.chain(o.panner, this.channels.melody)
         o.noteIndex = o.intRandom(-5, 10)
 
         o.noteIndex = o.wRandom({
@@ -329,17 +349,26 @@ class GenerativeMusic {
         o.loopInterval = this.melodyLoopLength + o.intRandom(-2, 2)
         // o.loopInterval = melodyLoopLength;
         o.melodySequence = [...Array(this.melodyLoopLength)].map(i => [])
-        o.melodySequence[o.intRandom(0, this.melodyLoopLength - 1)] = [o.note]
+        o.beat = o.intRandom(0, this.melodyLoopLength - 1)
+        let isMelodySpaced = o.wRandom({ false: 0.3, true: 0.1 })
+        while (isMelodySpaced == 'true') {
+          o.melodySequence[o.beat].push(false)
+          isMelodySpaced = o.wRandom({ false: 0.4, true: 0.1 })
+        }
+        o.melodySequence[o.beat].push(o.note)
         o.loop = new Tone.Sequence(
           (time, note) => {
+            if (!note) {
+              return
+            }
             if (o.panner.audible) {
-              // console.log(`M: ${o.note.scientific()} ${o.dialog}`);
+              console.log(`M: ${o.note.scientific()} ${o.dialog}`)
               o.synth.triggerAttackRelease(note.scientific(), '8n', time)
             }
           },
           o.melodySequence,
           '4n'
-        )
+        ).start()
         // Tone.getTransport().scheduleRepeat(
         //   (t) => {
         //     console.log(o.note);
@@ -350,15 +379,19 @@ class GenerativeMusic {
     }
   }
 
+  disposeSound(o) {
+    o.synth && o.synth.dispose() && (o.synth = false)
+    o.panner && o.panner.dispose() && (o.panner = false)
+  }
+
   startLoop(o) {
-    console.log(o)
     //
     try {
       if (o.loop.state == 'stopped') {
-        o.loop.start('@')
+        o.loop.start()
       }
     } catch (error) {
-      console.log(error)
+      console.log('musicStartTime')
     }
   }
   stopLoop(o) {
@@ -371,33 +404,33 @@ class GenerativeMusic {
     }
   }
   startBgm(scene) {
-    // const start = () => {
-    //   // setup();
-    //   // this.objectGroup.initSound();
-    //   // set this context as the global Context
-    //   try {
-    //     Tone.start();
-    //     Tone.getTransport().bpm.value = 35;
-    //     Tone.getTransport().start();
-    //     // setInterval(this.updateSound.bind(this), 300);
-    //     document.removeEventListener('click', start);
-    //     document.removeEventListener('touchend', start);
-    //     document.removeEventListener('keydown', start);
-    //     setInterval(() => {
-    //       this.updateSound(scene);
-    //     }, 200);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // if (Tone.context.state == 'running') {
-    //   // if (true) {
-    //   start();
-    // } else {
-    //   let clickListener = document.addEventListener('click', start);
-    //   let touchListener = document.addEventListener('touchend', start);
-    //   let keyListener = document.addEventListener('keydown', start);
-    // }
+    const start = () => {
+      // setup();
+      // this.objectGroup.initSound();
+      // set this context as the global Context
+      try {
+        Tone.start()
+        Tone.getTransport().bpm.value = 38
+        Tone.getTransport().start()
+        // setInterval(this.updateSound.bind(this), 300);
+        document.removeEventListener('click', start)
+        document.removeEventListener('touchend', start)
+        document.removeEventListener('keydown', start)
+        // setInterval(() => {
+        //   this.updateSound(scene)
+        // }, 200)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    if (Tone.context.state == 'running') {
+      // if (true) {
+      start()
+    } else {
+      let clickListener = document.addEventListener('click', start)
+      let touchListener = document.addEventListener('touchend', start)
+      let keyListener = document.addEventListener('keydown', start)
+    }
   }
 }
 export default new GenerativeMusic()
