@@ -10,20 +10,20 @@ class Configurations {
     this.ZOOM_OUT_LEVEL = 0.35 * this.ZOOM_LEVEL
     // this.ZOOM_LEVEL = (Math.max(Math.min(this.WINDOW_W / 18, this.WINDOW_H / 15 / 46 * 40),) / this.PLAYER_TARGET_W);
     this.OBJECT_W = {
-      XXL: this.PLAYER_TARGET_H * 4.5,
-      XL: this.PLAYER_TARGET_H * 3,
-      L: this.PLAYER_TARGET_H * 2,
+      XXL: this.PLAYER_TARGET_H * 5,
+      XL: this.PLAYER_TARGET_H * 3.5,
+      L: this.PLAYER_TARGET_H * 2.5,
       M: this.PLAYER_TARGET_H * 1.5,
       S: this.PLAYER_TARGET_H,
       XS: this.PLAYER_TARGET_H * 0.7,
     }
     this.TIME_DELAY = 60 * 60 * 1000
-    this.RANDOM_ZONE_W = this.OBJECT_W.L
+    this.RANDOM_ZONE_W = this.OBJECT_W.XL
     this.DAY_OFFSET = this.OBJECT_W.M
     this.DENSITY_OFFSET = this.OBJECT_W.M
     this.ACTIVITY_OFFSET = 1
-    this.MOVE_SPEED = this.DENSITY_OFFSET * 0.4
-    this.OBLIQUE_MOVE_SPEED = this.MOVE_SPEED * 0.74
+    this.MOVE_SPEED = this.PLAYER_TARGET_H * 1.5
+    this.OBLIQUE_MOVE_SPEED = Math.round(this.MOVE_SPEED * 0.74)
     this.ITEM_LIST = [
       { name: 'boxes', dialog: '哇！你捡到了一个箱子' },
       { name: 'fats', dialog: '哇！你捡到了一袋肥料' },
