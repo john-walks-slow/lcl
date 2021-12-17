@@ -7,8 +7,6 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
     super(scene.physics.world, scene, [], {
       immovable: false,
       pushable: false,
-      frictionX: 10000,
-      mass: 100000,
     })
     // this.createCallback = o => {
     //   setTimeout(() => {

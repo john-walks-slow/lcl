@@ -7,7 +7,6 @@
     lost-utility: clearfix;
   }
   .app__main {
-    max-width: 500px;
   }
   .app__main,
   .app__central-container {
@@ -183,8 +182,8 @@
   }
   .tools__container {
     position: relative;
-    bottom: 511px;
-    left: 512px;
+    bottom: 463px;
+    left: 471px;
   }
   #app .tools__row {
     position: relative;

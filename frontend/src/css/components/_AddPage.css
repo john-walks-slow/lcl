@@ -7,7 +7,7 @@
   }
   @media screen and (min-width: 600px) {
     padding: 20px 0;
-    max-width: min(500px, 100vh);
+    max-width: min(450px, 100vh);
     margin: 0 auto;
   }
   padding-bottom: 60px;
@@ -48,8 +48,9 @@
       border-radius: 20px;
       color: white;
       text-align: center;
-      padding: 9px;
-      margin-top: 10px;
+      margin: 7px;
+      position: relative;
+      top: -7px;
     }
     .page__label {
       color: white;

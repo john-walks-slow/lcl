@@ -70,9 +70,15 @@ export default class ObjectData {
       o.displayWidth = Math.max(Math.round(o.width / o.columns), 1) * o.columns
       o.displayHeight = Math.max(Math.round(o.height / o.rows), 1) * o.rows
 
-      o.distance = o.seed[1] * configurations.RANDOM_ZONE_W + densityOffset + dateOffset
+      o.distance =
+        -configurations.RANDOM_ZONE_W / 2 +
+        o.seed[1] * configurations.RANDOM_ZONE_W +
+        densityOffset +
+        dateOffset
       // *  zFactorOffset
       // o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) * zFactorOffset * (2 + o.seed[1]) / 3;
+      o.distance = (o.distance * 7) ** 0.8
+
       let minDistance = configurations.PLAYER_TARGET_H + o.size
       if (o.distance < minDistance) {
         o.distance = minDistance + configurations.PLAYER_TARGET_W

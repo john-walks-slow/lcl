@@ -27,9 +27,9 @@
 
 @media screen and (min-width: 900px) {
   .palette-grid {
-    top: -256px;
-    left: 376px;
-    width: calc(100% - 340px);
+    top: -216px;
+    left: 338px;
+    width: calc(100% - 297px);
     height: 168px;
   }
   .palette-color {
