@@ -6,6 +6,8 @@
 | :wrench:       | 调整配置 |
 | :hammer:       | 重构     |
 | :fire:         | 删除     |
+| :art:          | 美术     |
+| :musical_note: | 音乐     |
 | :construction: | 工具链   |
 | :lipstick:     | 代码格式 |
 | :shirt:        | SEO      |
