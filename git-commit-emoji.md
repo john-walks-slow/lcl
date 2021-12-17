@@ -11,4 +11,5 @@
 | :shirt:        | SEO      |
 | :package:      | 新平台   |
 | :truck:        | 目录结构 |
+| :books:        | 文档     |
 | :zap:          | 未归类   |
