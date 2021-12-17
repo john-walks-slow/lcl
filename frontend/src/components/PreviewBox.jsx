@@ -1,24 +1,24 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import Preview from './Preview'
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import Preview from './Preview';
 
 const PreviewBox = props => {
-  const [animate, setAnimate] = useState(false)
-  const [isNormalSize, setNormalSize] = useState(true)
-  const frames = useSelector(state => state.present.get('frames'))
+  const [animate, setAnimate] = useState(false);
+  const [isNormalSize, setNormalSize] = useState(true);
+  const frames = useSelector(state => state.present.get('frames'));
   // const duration = useSelector(state => state.present.get('duration'));
-  const frameList = frames.get('list')
-  const duration = frameList.size * 0.5
-  const activeFrameIndex = frames.get('activeIndex')
-  const columns = frames.get('columns')
-  const rows = frames.get('rows')
-  const { helpOn, callback } = props
-  const animMessage = `${animate ? 'Pause' : 'Play'} the animation`
-  const zoomMessage = `Zoom ${isNormalSize ? '0.5' : '1.5'}`
-  const animTooltip = helpOn ? animMessage : null
-  const zoomTooltip = helpOn ? zoomMessage : null
-  const smPixelSize = 3
-  const bgPixelSize = 6
+  const frameList = frames.get('list');
+  const duration = frameList.size * 0.5;
+  const activeFrameIndex = frames.get('activeIndex');
+  const columns = frames.get('columns');
+  const rows = frames.get('rows');
+  const { helpOn, callback } = props;
+  const animMessage = `${animate ? 'Pause' : 'Play'} the animation`;
+  const zoomMessage = `Zoom ${isNormalSize ? '0.5' : '1.5'}`;
+  const animTooltip = helpOn ? animMessage : null;
+  const zoomTooltip = helpOn ? zoomMessage : null;
+  const smPixelSize = 3;
+  const bgPixelSize = 6;
 
   return (
     <div className="preview-box">
@@ -26,8 +26,8 @@ const PreviewBox = props => {
         type="button"
         className={animate ? 'pause' : 'play'}
         onClick={e => {
-          setAnimate(!animate)
-          console.log(e)
+          setAnimate(!animate);
+          console.log(e);
         }}
         aria-label="Animation control"
       />
@@ -46,7 +46,7 @@ const PreviewBox = props => {
         <div data-tooltip={animTooltip}></div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PreviewBox
+export default PreviewBox;
