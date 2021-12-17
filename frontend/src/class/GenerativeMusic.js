@@ -56,7 +56,6 @@ class GenerativeMusic {
         S: 2,
       }
       let majorMinor = day.random() * 1.6 + 0.2
-      majorMinor = 0.2
       let CHORDS_LIST
       if (majorMinor > 1) {
         CHORDS_LIST = [
