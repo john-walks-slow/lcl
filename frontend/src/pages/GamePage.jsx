@@ -140,7 +140,7 @@ const Game = ({ dispatch, isShown }) => {
           disableContextMenu: true,
           render: {
             antialias: false,
-            roundPixels: false,
+            roundPixels: true,
           },
         };
 
