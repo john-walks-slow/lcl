@@ -12,6 +12,7 @@
   right: 15px;
   z-index: 99;
   font-family: "pixelJP";
+  font-size: 1.2em;
 }
 #GAME_MENU.show {
   pointer-events: initial;
