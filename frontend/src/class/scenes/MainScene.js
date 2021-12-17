@@ -1,12 +1,7 @@
 import MS from 'teoria'
 import * as Tone from 'tone'
 import { range } from '../../utils/utils'
-import {
-  customIntRandom,
-  customWRandom,
-  seededRandom,
-  seededRandomKept,
-} from '../../utils/random'
+import { customIntRandom, customWRandom, seededRandom, seededRandomKept } from '../../utils/random'
 import { secureStorage } from '../../utils/storage'
 import Dialog from '../components/Dialog'
 import GameCamera from '../components/GameCamera'
@@ -93,10 +88,7 @@ export default class MainScene extends Phaser.Scene {
     // this.add.rectangle(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0xFFFFFF);
     this.player = this.physics.add
       .sprite(this.startPosX, this.startPosY, 'player')
-      .setDisplaySize(
-        configurations.PLAYER_TARGET_W,
-        configurations.PLAYER_TARGET_H
-      )
+      .setDisplaySize(configurations.PLAYER_TARGET_W, configurations.PLAYER_TARGET_H)
     // .refreshBody();
 
     this.player.depth = 0.9
@@ -176,15 +168,11 @@ export default class MainScene extends Phaser.Scene {
         currentObj = o1
       }
       if (currentObj.oData.dialog.length > 0) {
-        this.gameDialog.showDialog(
-          currentObj.oData.dialog,
-          currentObj.oData.name,
-          () => {
-            if (currentObj.oData.link.length > 0) {
-              this.linkDialog.showDialog(currentObj.oData.link)
-            }
+        this.gameDialog.showDialog(currentObj.oData.dialog, currentObj.oData.name, () => {
+          if (currentObj.oData.link.length > 0) {
+            this.linkDialog.showDialog(currentObj.oData.link)
           }
-        )
+        })
       }
       this.physics.collide(o1, o2)
       if (currentObj.oData.isBackground || currentObj.oData.isForeground) {
@@ -348,42 +336,29 @@ export default class MainScene extends Phaser.Scene {
       sepia: { min: 0, max: 1, unit: '', probability: 0.3 },
     }
     let seeds = [...Array(Object.keys(FILTER_LIST).length * 2)].map(
-      (o, i) =>
-        Math.round(
-          seededRandom(((i + 1) * configurations.DAY).toString()) * 10
-        ) / 10
+      (o, i) => Math.round(seededRandom(((i + 1) * configurations.DAY).toString()) * 10) / 10
     )
     let RESULT_LIST = Object.assign({}, FILTER_LIST)
     this.filter = (x, y) => {
       let result = ''
       let i = 0
-      for (const [key, { min, max, unit, probability }] of Object.entries(
-        FILTER_LIST
-      )) {
+      for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
         seeds[i] < probability &&
           (result += `${key}(${min +
             (max - min) *
-              Math.min(
-                (seeds[i] * Math.abs(x)) / configurations.MOVE_SPEED / 5,
-                1
-              )}${unit}) `)
+              Math.min((seeds[i] * Math.abs(x)) / configurations.MOVE_SPEED / 5, 1)}${unit}) `)
         i++
         RESULT_LIST[key] = false
       }
       i = 0
-      for (const [key, { min, max, unit, probability }] of Object.entries(
-        FILTER_LIST
-      )) {
+      for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
         if (!RESULT_LIST[key]) {
           continue
         }
         seeds[i] < probability &&
           (result += `${key}(${min +
             (max - min) *
-              Math.min(
-                (seeds[i] * Math.abs(y)) / configurations.MOVE_SPEED / 5,
-                1
-              )}${unit}) `)
+              Math.min((seeds[i] * Math.abs(y)) / configurations.MOVE_SPEED / 5, 1)}${unit}) `)
         i++
       }
       return `${result}`
@@ -483,9 +458,9 @@ export default class MainScene extends Phaser.Scene {
       if (gameObject.oData && gameObject.oData.type == 'object') {
         gameObject.setVelocity(0, 0)
         gameObject.x -=
-          ((velocityX * (gameObject.oData.zFactor - 1)) / 1000) * delta
+          ((this.player.body.velocity.x * (gameObject.oData.zFactor - 1)) / 1000) * delta
         gameObject.y -=
-          ((velocityY * (gameObject.oData.zFactor - 1)) / 1000) * delta
+          ((this.player.body.velocity.y * (gameObject.oData.zFactor - 1)) / 1000) * delta
       }
     })
     if (
@@ -530,16 +505,12 @@ export default class MainScene extends Phaser.Scene {
           // };
           isMouseMovement = mousePosX && mousePosY
         } else {
-          mousePosX =
-            this.input.activePointer.x - configurations.WINDOW_CENTER_X
-          mousePosY =
-            configurations.WINDOW_CENTER_Y - this.input.activePointer.y
-          isMouseMovement =
-            this.input.activePointer.isDown && !this.pointerOnPlayer
+          mousePosX = this.input.activePointer.x - configurations.WINDOW_CENTER_X
+          mousePosY = configurations.WINDOW_CENTER_Y - this.input.activePointer.y
+          isMouseMovement = this.input.activePointer.isDown && !this.pointerOnPlayer
         }
 
-        let mouseAngle =
-          isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY])
+        let mouseAngle = isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY])
         if (
           this.cursors.left.isDown ||
           this.cursors.right.isDown ||
@@ -548,8 +519,7 @@ export default class MainScene extends Phaser.Scene {
           isMouseMovement
         ) {
           // camera.setZoom(1);
-          this.camera.zoom == configurations.ZOOM_OUT_LEVEL &&
-            this.camera.zoomIn()
+          this.camera.zoom == configurations.ZOOM_OUT_LEVEL && this.camera.zoomIn()
         }
         if (
           (this.cursors.left.isDown && this.cursors.up.isDown) ||
@@ -558,10 +528,7 @@ export default class MainScene extends Phaser.Scene {
             mouseAngle >= Math.PI * 0.125 &&
             mouseAngle <= Math.PI * 0.375)
         ) {
-          this.player.move(
-            -configurations.OBLIQUE_MOVE_SPEED,
-            -configurations.OBLIQUE_MOVE_SPEED
-          )
+          this.player.move(-configurations.OBLIQUE_MOVE_SPEED, -configurations.OBLIQUE_MOVE_SPEED)
           this.gameDialog.dialogRetrigger = true
           this.player.anims.play('runLeft', true)
         } else if (
@@ -571,10 +538,7 @@ export default class MainScene extends Phaser.Scene {
             mouseAngle >= Math.PI * 0.625 &&
             mouseAngle <= Math.PI * 0.875)
         ) {
-          this.player.move(
-            -configurations.OBLIQUE_MOVE_SPEED,
-            configurations.OBLIQUE_MOVE_SPEED
-          )
+          this.player.move(-configurations.OBLIQUE_MOVE_SPEED, configurations.OBLIQUE_MOVE_SPEED)
           this.gameDialog.dialogRetrigger = true
           this.player.anims.play('runLeft', true)
         } else if (
@@ -584,10 +548,7 @@ export default class MainScene extends Phaser.Scene {
             mouseAngle >= Math.PI * 0.125 &&
             mouseAngle <= Math.PI * 0.375)
         ) {
-          this.player.move(
-            configurations.OBLIQUE_MOVE_SPEED,
-            -configurations.OBLIQUE_MOVE_SPEED
-          )
+          this.player.move(configurations.OBLIQUE_MOVE_SPEED, -configurations.OBLIQUE_MOVE_SPEED)
           this.gameDialog.dialogRetrigger = true
           this.player.anims.play('runRight', true)
         } else if (
@@ -597,10 +558,7 @@ export default class MainScene extends Phaser.Scene {
             mouseAngle >= Math.PI * 0.625 &&
             mouseAngle <= Math.PI * 0.875)
         ) {
-          this.player.move(
-            configurations.OBLIQUE_MOVE_SPEED,
-            configurations.OBLIQUE_MOVE_SPEED
-          )
+          this.player.move(configurations.OBLIQUE_MOVE_SPEED, configurations.OBLIQUE_MOVE_SPEED)
           this.gameDialog.dialogRetrigger = true
           this.player.anims.play('runRight', true)
         } else if (
@@ -623,17 +581,11 @@ export default class MainScene extends Phaser.Scene {
           this.player.move(configurations.MOVE_SPEED, 0)
           this.gameDialog.dialogRetrigger = true
           this.player.anims.play('runRight', true)
-        } else if (
-          this.cursors.down.isDown ||
-          (isMouseMovement && mouseAngle >= Math.PI * 0.875)
-        ) {
+        } else if (this.cursors.down.isDown || (isMouseMovement && mouseAngle >= Math.PI * 0.875)) {
           this.player.move(0, configurations.MOVE_SPEED)
           this.gameDialog.dialogRetrigger = true
           this.player.anims.play('runDown', true)
-        } else if (
-          this.cursors.up.isDown ||
-          (isMouseMovement && mouseAngle <= Math.PI * 0.125)
-        ) {
+        } else if (this.cursors.up.isDown || (isMouseMovement && mouseAngle <= Math.PI * 0.125)) {
           this.player.move(0, -configurations.MOVE_SPEED)
           this.gameDialog.dialogRetrigger = true
           this.player.anims.play('runUp', true)

@@ -14,12 +14,7 @@ function fillCanvasWithFrame(canvas, frameInfo) {
 
     const col = pixelIdx % cols
     const row = Math.floor(pixelIdx / cols)
-    ctx.fillRect(
-      col * cellSize,
-      row * cellSize + frameHeight * frameIdx,
-      cellSize,
-      cellSize
-    )
+    ctx.fillRect(col * cellSize, row * cellSize + frameHeight * frameIdx, cellSize, cellSize)
   })
   return ctx
 }
@@ -61,22 +56,13 @@ const saveCanvasToDisk = (blob, fileExtension) => {
 }
 
 export function renderBlob(settings, callback) {
-  const {
-    type,
-    frames,
-    duration,
-    activeFrame,
-    rows,
-    columns,
-    cellSize,
-  } = settings
+  const { type, frames, duration, activeFrame, rows, columns, cellSize } = settings
 
   const durationInMillisecond = duration * 1000
   const frameWidth = columns * cellSize
   const frameHeight = rows * cellSize
   const canvasWidth = frameWidth
-  const canvasHeight =
-    type === 'spritesheet' ? frameHeight * frames.size : frameHeight
+  const canvasHeight = type === 'spritesheet' ? frameHeight * frames.size : frameHeight
 
   const canvas = document.createElement('canvas')
 
@@ -106,22 +92,13 @@ export function renderBlob(settings, callback) {
   }
 }
 export function renderFrames(settings) {
-  const {
-    type,
-    frames,
-    duration,
-    activeFrame,
-    rows,
-    columns,
-    cellSize,
-  } = settings
+  const { type, frames, duration, activeFrame, rows, columns, cellSize } = settings
 
   const durationInMillisecond = duration * 1000
   const frameWidth = columns * cellSize
   const frameHeight = rows * cellSize
   const canvasWidth = frameWidth
-  const canvasHeight =
-    type === 'spritesheet' ? frameHeight * frames.size : frameHeight
+  const canvasHeight = type === 'spritesheet' ? frameHeight * frames.size : frameHeight
 
   const canvas = document.createElement('canvas')
 

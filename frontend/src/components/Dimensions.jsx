@@ -47,8 +47,5 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(actionCreators, dispatch),
 })
 
-const DimensionsContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dimensions)
+const DimensionsContainer = connect(mapStateToProps, mapDispatchToProps)(Dimensions)
 export default DimensionsContainer

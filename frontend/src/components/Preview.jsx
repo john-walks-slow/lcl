@@ -1,8 +1,5 @@
 import React from 'react'
-import {
-  generatePixelDrawCss,
-  generateAnimationCSSData,
-} from '../utils/cssParse'
+import { generatePixelDrawCss, generateAnimationCSSData } from '../utils/cssParse'
 import Animation from './Animation'
 
 const Preview = props => {
@@ -27,12 +24,7 @@ const Preview = props => {
     if (animation) {
       animationData = generateAnimationCSSData(frames, columns, cellSize)
     } else {
-      cssString = generatePixelDrawCss(
-        frames.get(activeFrameIndex),
-        columns,
-        cellSize,
-        'string'
-      )
+      cssString = generatePixelDrawCss(frames.get(activeFrameIndex), columns, cellSize, 'string')
 
       styles.previewWrapper.boxShadow = cssString
       styles.previewWrapper.MozBoxShadow = cssString
@@ -42,11 +34,7 @@ const Preview = props => {
     return (
       <div style={animation ? null : styles.previewWrapper}>
         {animation ? (
-          <Animation
-            duration={duration}
-            boxShadow={animationData}
-            name={animationName}
-          />
+          <Animation duration={duration} boxShadow={animationData} name={animationName} />
         ) : null}
       </div>
     )

@@ -88,10 +88,7 @@ const drawHandlersProvider = rootComponent => ({
           const xDiff = draggingCoord ? pageX - draggingCoord.clientX : 0
           const yDiff = draggingCoord ? pageY - draggingCoord.clientY : 0
           const cellWidth = ev.target.clientWidth
-          if (
-            dragging &&
-            (Math.abs(xDiff) > cellWidth || Math.abs(yDiff) > cellWidth)
-          ) {
+          if (dragging && (Math.abs(xDiff) > cellWidth || Math.abs(yDiff) > cellWidth)) {
             rootComponent.setState({
               draggingCoord: { clientX: pageX, clientY: pageY },
             })
@@ -109,10 +106,7 @@ const drawHandlersProvider = rootComponent => ({
           const xDiff = draggingCoord ? clientX - draggingCoord.clientX : 0
           const yDiff = draggingCoord ? clientY - draggingCoord.clientY : 0
           const cellWidth = ev.target.clientWidth
-          if (
-            dragging &&
-            (Math.abs(xDiff) > cellWidth || Math.abs(yDiff) > cellWidth)
-          ) {
+          if (dragging && (Math.abs(xDiff) > cellWidth || Math.abs(yDiff) > cellWidth)) {
             rootComponent.setState({
               draggingCoord: { clientX, clientY },
             })

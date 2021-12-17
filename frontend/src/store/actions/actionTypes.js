@@ -1,9 +1,4 @@
-import {
-  PENCIL,
-  ERASER,
-  BUCKET,
-  EYEDROPPER,
-} from '../reducers/drawingToolStates'
+import { PENCIL, ERASER, BUCKET, EYEDROPPER } from '../reducers/drawingToolStates'
 
 export const SET_INITIAL_STATE = 'SET_INITIAL_STATE'
 export const CHANGE_DIMENSIONS = 'CHANGE_DIMENSIONS'

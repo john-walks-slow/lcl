@@ -13,9 +13,7 @@ const schema = yup.object().shape({
     .matches(/(static|float|flash|wander|bf)/)
     .required(),
   zFactor: yup.number().min(0.2).max(2).required(),
-  link: yup
-    .mixed()
-    .oneOf([yup.string().url().ensure(), yup.string().max(0).ensure()]),
+  link: yup.mixed().oneOf([yup.string().url().ensure(), yup.string().max(0).ensure()]),
   isAnimate: yup.boolean().default(false),
   columns: yup.number(),
   rows: yup.number(),
@@ -87,13 +85,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [
-      setTimestamp('birthday'),
-      setSeed,
-      trimDialog,
-      generateItem,
-      schemaCheck,
-    ],
+    create: [setTimestamp('birthday'), setSeed, trimDialog, generateItem, schemaCheck],
     update: [disallow('external')],
     patch: [disallow('external')],
     remove: [disallow('external')],

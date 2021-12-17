@@ -5,11 +5,7 @@ import framesReducer from './framesReducer'
 import activeFrameReducer from './activeFrameReducer'
 import drawingToolReducer from './drawingToolReducer'
 import * as types from '../actions/actionTypes'
-import {
-  initStorage,
-  getDataFromStorage,
-  secureStorage,
-} from '../../utils/storage'
+import { initStorage, getDataFromStorage, secureStorage } from '../../utils/storage'
 import { navigate, navigateWithoutHistory } from '../../utils/history'
 let playerDefault = {
   palette: [],
@@ -191,9 +187,6 @@ export default function(state = generateDefaultState(), action) {
   return partialReducer(state, action).merge({
     drawingTool: drawingToolReducer(state.get('drawingTool'), action),
     palette: paletteReducer(state.get('palette'), action),
-    frames: pipeReducers([framesReducer, activeFrameReducer])(
-      state.get('frames'),
-      action
-    ),
+    frames: pipeReducers([framesReducer, activeFrameReducer])(state.get('frames'), action),
   })
 }

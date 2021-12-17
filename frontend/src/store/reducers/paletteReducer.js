@@ -2,11 +2,7 @@ import { List, Map, fromJS } from 'immutable'
 import shortid from 'shortid'
 import * as types from '../actions/actionTypes'
 import { GRID_INITIAL_COLOR } from './activeFrameReducer'
-import {
-  initStorage,
-  getDataFromStorage,
-  secureStorage,
-} from '../../utils/storage'
+import { initStorage, getDataFromStorage, secureStorage } from '../../utils/storage'
 const PALETTE = [
   '#131313',
   '#1b1b1b',
@@ -82,15 +78,12 @@ const INITIAL_PALETTE = [
   '#db3ffd',
   '#ff0040',
 ]
-export const REWARD_PALETTE = PALETTE.filter(
-  i => INITIAL_PALETTE.indexOf(i) == -1
-)
+export const REWARD_PALETTE = PALETTE.filter(i => INITIAL_PALETTE.indexOf(i) == -1)
 
 const getPositionFirstMatchInPalette = (grid, color) =>
   grid.findIndex(gridColor => gridColor.get('color') === color)
 
-const isColorInPalette = (grid, color) =>
-  getPositionFirstMatchInPalette(grid, color) !== -1
+const isColorInPalette = (grid, color) => getPositionFirstMatchInPalette(grid, color) !== -1
 
 const parseColorToString = colorData =>
   typeof colorData === 'string'
@@ -180,10 +173,7 @@ const eyedropColor = (palette, action) => {
   if (!isColorInPalette(grid, cellColor)) {
     return addColorToLastGridCell(palette, cellColor)
   }
-  return palette.set(
-    'position',
-    getPositionFirstMatchInPalette(grid, cellColor)
-  )
+  return palette.set('position', getPositionFirstMatchInPalette(grid, cellColor))
 }
 
 const preparePalette = palette => {
@@ -193,26 +183,19 @@ const preparePalette = palette => {
   return palette
 }
 
-const selectPaletteColor = (palette, action) =>
-  palette.set('position', action.position)
+const selectPaletteColor = (palette, action) => palette.set('position', action.position)
 
 const setCustomColor = (palette, { customColor }) => {
   if (!isColorSelected(palette)) {
     return addColorToLastGridCell(palette, customColor)
   }
   const customColorRgba = parseColorToString(customColor)
-  return palette.setIn(
-    ['grid', palette.get('position'), 'color'],
-    customColorRgba
-  )
+  return palette.setIn(['grid', palette.get('position'), 'color'], customColorRgba)
 }
 
 const setPalette = (palette, action) => {
   const defaultPalette = action.paletteGridData.length === 0
-  return palette.set(
-    'grid',
-    fromJS(defaultPalette ? createPaletteGrid() : action.paletteGridData)
-  )
+  return palette.set('grid', fromJS(defaultPalette ? createPaletteGrid() : action.paletteGridData))
 }
 
 export default function paletteReducer(palette = createPalette(), action) {

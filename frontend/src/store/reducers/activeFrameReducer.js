@@ -4,9 +4,7 @@ export const GRID_INITIAL_COLOR = '#FFFFFF'
 
 const updateFrameProp = prop => propReducer => (frames, action) => {
   const activeIndex = frames.get('activeIndex')
-  return frames.updateIn(['list', activeIndex, prop], stateProp =>
-    propReducer(stateProp, action)
-  )
+  return frames.updateIn(['list', activeIndex, prop], stateProp => propReducer(stateProp, action))
 }
 
 const updateGrid = updateFrameProp('grid')
@@ -65,22 +63,13 @@ const applyBucketToGrid = (grid, { id, paletteColor, columns, rows }) => {
   while (queue.length > 0) {
     currentId = queue.shift()
     newGrid = drawPixel(newGrid, paletteColor, currentId)
-    adjacents = getSameColorAdjacentCells(
-      newGrid,
-      columns,
-      rows,
-      currentId,
-      cellColor
-    )
+    adjacents = getSameColorAdjacentCells(newGrid, columns, rows, currentId, cellColor)
 
     for (let i = 0; i < adjacents.length; i++) {
       auxAdjacentId = adjacents[i]
       auxAdjacentColor = newGrid.get(auxAdjacentId)
       // Avoid introduce repeated or painted already cell into the queue
-      if (
-        queue.indexOf(auxAdjacentId) === -1 &&
-        auxAdjacentColor !== paletteColor
-      ) {
+      if (queue.indexOf(auxAdjacentId) === -1 && auxAdjacentColor !== paletteColor) {
         queue.push(auxAdjacentId)
       }
     }
@@ -137,11 +126,7 @@ const shiftPixelsLeft = (grid, columnCount) => {
 }
 
 const shiftPixelsRight = (grid, columnCount) => {
-  const indexArray = getGridColumnIndexes(
-    columnCount - 1,
-    columnCount,
-    grid.size
-  )
+  const indexArray = getGridColumnIndexes(columnCount - 1, columnCount, grid.size)
   let tempGrid = grid
   for (const cellIndex of indexArray) {
     const valueToMove = tempGrid.get(cellIndex)
@@ -193,15 +178,11 @@ const applyMove = (frames, action) => {
 
 const applyPencil = updateGrid(applyPencilToGrid)
 
-const applyEraser = updateGrid((pixelGrid, { id }) =>
-  drawPixel(pixelGrid, '', id)
-)
+const applyEraser = updateGrid((pixelGrid, { id }) => drawPixel(pixelGrid, '', id))
 
 const resetGrid = updateGrid(pixelGrid => pixelGrid.map(() => ''))
 
-const changeFrameInterval = updateInterval(
-  (previousInterval, { interval }) => interval
-)
+const changeFrameInterval = updateInterval((previousInterval, { interval }) => interval)
 
 export default function(frames, action) {
   switch (action.type) {

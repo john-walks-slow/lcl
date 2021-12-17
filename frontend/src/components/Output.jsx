@@ -1,11 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-const Output = ({
-  copyClipboardData = {},
-  readOnly = true,
-  outputText,
-  preFormatted = false,
-}) => {
+const Output = ({ copyClipboardData = {}, readOnly = true, outputText, preFormatted = false }) => {
   const { showButton, textButton, successMessage } = copyClipboardData
   const [copySuccess, setCopySuccess] = useState('')
   const textAreaRef = useRef(null)
@@ -19,11 +14,7 @@ const Output = ({
     <div className="output">
       {showButton && document.queryCommandSupported('copy') && (
         <div className="copy-to-clipboard__container">
-          <button
-            className="copy-to-clipboard"
-            type="button"
-            onClick={copyToClipboard}
-          >
+          <button className="copy-to-clipboard" type="button" onClick={copyToClipboard}>
             {textButton || 'Copy'}
           </button>
           <span className={copySuccess ? 'show' : ''}>{copySuccess}</span>

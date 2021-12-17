@@ -5,7 +5,10 @@ import GenerativeMusic from './GenerativeMusic'
 export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
     super(scene.physics.world, scene, [], {
-      immovable: true,
+      immovable: false,
+      pushable: false,
+      frictionX: 10000,
+      mass: 100000,
     })
     // this.createCallback = o => {
     //   setTimeout(() => {
@@ -56,12 +59,8 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
     console.time('updateObjects')
     let previousZones = this.scene.objectData.map.getNearBy(previousZone)
     let currentZones = this.scene.objectData.map.getNearBy(currentZone)
-    let createZones = currentZones.filter(
-      x => !previousZones.toString().includes(x.toString())
-    )
-    let destroyZones = previousZones.filter(
-      x => !currentZones.toString().includes(x.toString())
-    )
+    let createZones = currentZones.filter(x => !previousZones.toString().includes(x.toString()))
+    let destroyZones = previousZones.filter(x => !currentZones.toString().includes(x.toString()))
     // console.log({ prev: previousZones, cur: currentZones });
     console.log({ create: createZones, destroy: destroyZones })
     createZones.forEach(zone => {
@@ -83,10 +82,8 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
             // o.instance = this.scene.physics.add.sprite(o.x,o.y,"object"+o.id);
             // console.log(this.scene.objectGroup);
             o.instance.depth = o.zFactor
-            o.isForeground &&
-              (o.instance.alpha = 1 - Math.abs(o.zFactor - 1) / 2)
-            o.isBackground &&
-              (o.instance.alpha = 1 - Math.abs(o.zFactor - 1) * 1.5)
+            o.isForeground && (o.instance.alpha = 1 - Math.abs(o.zFactor - 1) / 2)
+            o.isBackground && (o.instance.alpha = 1 - Math.abs(o.zFactor - 1) ** 0.5)
             o.instance.oData = o
             o.instance.setDisplaySize(o.displayWidth, o.displayHeight)
             o.instance.body.onOverlap = true

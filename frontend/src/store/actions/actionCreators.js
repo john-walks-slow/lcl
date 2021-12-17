@@ -48,14 +48,7 @@ export function setCustomColor(customColor) {
   }
 }
 
-export function cellAction({
-  id,
-  drawingTool,
-  color,
-  paletteColor,
-  columns,
-  rows,
-}) {
+export function cellAction({ id, drawingTool, color, paletteColor, columns, rows }) {
   return {
     type: `APPLY_${drawingTool}`,
     id,
@@ -73,14 +66,7 @@ export function moveDrawing({ xDiff, yDiff, cellWidth }) {
   }
 }
 
-export function setDrawing(
-  frames,
-  paletteGridData,
-  cellSize,
-  columns,
-  rows,
-  hoveredIndex
-) {
+export function setDrawing(frames, paletteGridData, cellSize, columns, rows, hoveredIndex) {
   return {
     type: types.SET_DRAWING,
     frames,

@@ -2,30 +2,14 @@ import React from 'react'
 import Output from './Output'
 import { getCssImageClassOutput, exportAnimationData } from '../utils/cssParse'
 
-const CopyCSS = ({
-  frames,
-  columns,
-  cellSize,
-  activeFrameIndex,
-  animationCode,
-  duration,
-}) => {
+const CopyCSS = ({ frames, columns, cellSize, activeFrameIndex, animationCode, duration }) => {
   const generateCSS = () => {
     if (animationCode) {
-      const cssAnimationString = exportAnimationData(
-        frames,
-        columns,
-        cellSize,
-        duration
-      )
+      const cssAnimationString = exportAnimationData(frames, columns, cellSize, duration)
       return cssAnimationString
     }
 
-    return getCssImageClassOutput(
-      frames.get(activeFrameIndex),
-      columns,
-      cellSize
-    )
+    return getCssImageClassOutput(frames.get(activeFrameIndex), columns, cellSize)
   }
 
   return (

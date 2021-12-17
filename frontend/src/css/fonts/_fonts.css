@@ -22,8 +22,7 @@
 @font-face {
   font-family: 'WebFontIcons';
   src: url('fonts/files/webfont-icons.eot?v=4.5.0');
-  src: url('fonts/files/webfont-icons.eot?#iefix&v=4.5.0')
-      format('embedded-opentype'),
+  src: url('fonts/files/webfont-icons.eot?#iefix&v=4.5.0') format('embedded-opentype'),
     url('fonts/files/webfont-icons.woff?v=4.5.0') format('woff'),
     url('fonts/files/webfont-icons.ttf?v=4.5.0') format('truetype'),
     url('fonts/files/webfont-icons.svg?v=4.5.0#webfonticons') format('svg');

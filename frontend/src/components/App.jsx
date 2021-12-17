@@ -69,11 +69,7 @@ export default class App extends React.Component {
       >
         <PreviewBox />
         <SimpleSpinnerContainer />
-        <SimpleNotificationContainer
-          fadeInTime={1000}
-          fadeOutTime={1500}
-          duration={1500}
-        />
+        <SimpleNotificationContainer fadeInTime={1000} fadeOutTime={1500} duration={1500} />
         <div
           className="app__frames-container"
           data-tooltip={
@@ -88,9 +84,7 @@ export default class App extends React.Component {
           <FramesHandlerContainer />
         </div>
         <div className="app__central-container">
-          <PixelCanvasContainer
-            drawHandlersFactory={this.drawHandlersFactory}
-          />
+          <PixelCanvasContainer drawHandlersFactory={this.drawHandlersFactory} />
           <div className="ToolsCanvasGroup">
             <div className="tools__container">
               <div className="tools__row">
@@ -123,11 +117,7 @@ export default class App extends React.Component {
                   <div data-tooltip={helpOn ? 'Remove colors (E)' : null}>
                     <EraserContainer />
                   </div>
-                  <div
-                    data-tooltip={
-                      helpOn ? 'Move your drawing around the canvas (M)' : null
-                    }
-                  >
+                  <div data-tooltip={helpOn ? 'Move your drawing around the canvas (M)' : null}>
                     <MoveContainer />
                   </div>
                   <UndoRedoContainer />

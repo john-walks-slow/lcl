@@ -43,8 +43,7 @@ const PickerInfoIcon = styled.i`
 
 const getImageDimensions = (canvasDimensions, pSize, frameAmount) => {
   const pixelsWidth = Math.round((canvasDimensions.w / pSize) * 100) / 100
-  const pixelsHeight =
-    Math.round((canvasDimensions.h / pSize / frameAmount) * 100) / 100
+  const pixelsHeight = Math.round((canvasDimensions.h / pSize / frameAmount) * 100) / 100
   return {
     original: { w: canvasDimensions.w, h: canvasDimensions.h },
     result: { w: pixelsWidth, h: pixelsHeight },
@@ -66,20 +65,13 @@ const ImageSetupSection = ({
     const frameValue = property.id === 'frame' ? newPickerCount : frameCount
     setProperty(newPickerCount)
     setResultDimensions(
-      getImageDimensions(getCanvasDimensions(canvasRef), pixelValue, frameValue)
-        .result
+      getImageDimensions(getCanvasDimensions(canvasRef), pixelValue, frameValue).result
     )
     imgSetupValidation(getCanvasDimensions(canvasRef), pixelValue, frameValue)
   }
 
-  const framePickerAction = getPickerAction(
-    { value: frameCount, id: 'frame' },
-    setFrameCount
-  )
-  const pixelSizePickerAction = getPickerAction(
-    { value: pixelSize, id: 'pixel' },
-    setPixelSize
-  )
+  const framePickerAction = getPickerAction({ value: frameCount, id: 'frame' }, setFrameCount)
+  const pixelSizePickerAction = getPickerAction({ value: pixelSize, id: 'pixel' }, setPixelSize)
 
   return (
     <LoadSetup>
@@ -90,11 +82,7 @@ const ImageSetupSection = ({
             <PickerInfoIcon className="icon-help" />
           </span>
         </PickerTitle>
-        <Picker
-          type="frame-count"
-          value={frameCount}
-          action={framePickerAction}
-        />
+        <Picker type="frame-count" value={frameCount} action={framePickerAction} />
       </PickerWrapper>
       <PickerWrapper>
         <PickerTitle>
@@ -103,11 +91,7 @@ const ImageSetupSection = ({
             <PickerInfoIcon className="icon-help" />
           </span>
         </PickerTitle>
-        <Picker
-          type="pixel-size"
-          value={pixelSize}
-          action={pixelSizePickerAction}
-        />
+        <Picker type="pixel-size" value={pixelSize} action={pixelSizePickerAction} />
       </PickerWrapper>
     </LoadSetup>
   )

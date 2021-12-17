@@ -32,19 +32,11 @@ export default class LoadDrawing extends React.Component {
   }
 
   importProject() {
-    const importedProject = exportedStringToProjectData(
-      this.importProjectData.value
-    )
+    const importedProject = exportedStringToProjectData(this.importProjectData.value)
     const { actions, close } = this.props
 
     if (importedProject) {
-      const {
-        frames,
-        paletteGridData,
-        columns,
-        rows,
-        cellSize,
-      } = importedProject
+      const { frames, paletteGridData, columns, rows, cellSize } = importedProject
 
       actions.setDrawing(frames, paletteGridData, cellSize, columns, rows)
       close()
@@ -69,13 +61,7 @@ export default class LoadDrawing extends React.Component {
 
   drawingClick(data) {
     const { actions, close } = this.props
-    actions.setDrawing(
-      data.frames,
-      data.paletteGridData,
-      data.cellSize,
-      data.columns,
-      data.rows
-    )
+    actions.setDrawing(data.frames, data.paletteGridData, data.cellSize, data.columns, data.rows)
     close()
   }
 
@@ -108,12 +94,7 @@ export default class LoadDrawing extends React.Component {
                 role="button"
                 tabIndex={0}
               >
-                <Preview
-                  key={elem.id}
-                  storedData={elem}
-                  activeFrameIndex={0}
-                  duration={1}
-                />
+                <Preview key={elem.id} storedData={elem} activeFrameIndex={0} duration={1} />
                 <button
                   type="button"
                   aria-label="Remove stored project"
@@ -138,8 +119,7 @@ export default class LoadDrawing extends React.Component {
           <div className="load-drawing">
             <h2>Import your project</h2>
             <p>
-              Paste a previously exported code in the text field and click on
-              the button &nbsp;
+              Paste a previously exported code in the text field and click on the button &nbsp;
               <b>IMPORT</b>
               &nbsp;
             </p>
@@ -167,19 +147,17 @@ export default class LoadDrawing extends React.Component {
           <div className="load-drawing">
             <h2>Export your project</h2>
             <p>
-              Please save the following text if you wish to import your project
-              in the future using the &nbsp;
+              Please save the following text if you wish to import your project in the future using
+              the &nbsp;
               <b>Import</b>
               &nbsp; button.
             </p>
             <p>
-              In the main page you can save your project by clicking on the
-              &nbsp;
+              In the main page you can save your project by clicking on the &nbsp;
               <b>SAVE</b>
-              &nbsp; button, it will keep your work in your browser&apos;s local
-              storage. However, if you prefer not to use local storage or you
-              just want to keep your project safe somewhere else, this might be
-              a good option.
+              &nbsp; button, it will keep your work in your browser&apos;s local storage. However,
+              if you prefer not to use local storage or you just want to keep your project safe
+              somewhere else, this might be a good option.
             </p>
             <Output
               copyClipboardData={{
@@ -198,14 +176,7 @@ export default class LoadDrawing extends React.Component {
       }
       case 'loadImgFile': {
         const { actions, frames, columns, close } = this.props
-        return (
-          <LoadFromFile
-            frames={frames}
-            columns={columns}
-            actions={actions}
-            close={close}
-          />
-        )
+        return <LoadFromFile frames={frames} columns={columns} actions={actions} close={close} />
       }
       default: {
         // const drawings = this.giveMeDrawings();
@@ -218,9 +189,7 @@ export default class LoadDrawing extends React.Component {
               className={`load-drawing__container
                 ${!drawingsStored ? 'empty' : ''}`}
             >
-              {drawingsStored
-                ? this.giveMeDrawings()
-                : 'Nothing awesome yet...'}
+              {drawingsStored ? this.giveMeDrawings() : 'Nothing awesome yet...'}
             </div>
           </div>
         )

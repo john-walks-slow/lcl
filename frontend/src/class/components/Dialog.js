@@ -45,12 +45,10 @@ export default class Dialog extends Phaser.GameObjects.Container {
   setDisplayParams() {
     Object.assign(this, configurations)
     this.DIALOG_HEIGHT = this.WINDOW_H / 3.5
-    this.TEXT_PADDING_W =
-      this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 15 : 50 * this.RESOLUTION
+    this.TEXT_PADDING_W = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 15 : 50 * this.RESOLUTION
     this.TEXT_PADDING_H = Math.min(this.WINDOW_H / 25)
     this.PADDING_BETWEEN = 10 * this.RESOLUTION
-    this.DIALOG_PADDING_W =
-      this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 7 : 15 * this.RESOLUTION
+    this.DIALOG_PADDING_W = this.WINDOW_W > this.WINDOW_H ? this.WINDOW_W / 7 : 15 * this.RESOLUTION
     this.DIALOG_PADDING_H =
       this.WINDOW_W > this.WINDOW_H ? this.WINDOW_H / 16 : 25 * this.RESOLUTION
     this.FONT_SIZE = Math.max(this.WINDOW_H / 35, this.WINDOW_W / 45)
@@ -59,14 +57,10 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.FONT_FAMILY_HEADER = 'pixelChinese'
     this.DIALOG_WIDTH = this.WINDOW_W - this.DIALOG_PADDING_W * 2
     this.DIALOG_X = this.WINDOW_CENTER_X
-    this.DIALOG_Y =
-      this.WINDOW_H - this.DIALOG_PADDING_H - this.DIALOG_HEIGHT / 2
+    this.DIALOG_Y = this.WINDOW_H - this.DIALOG_PADDING_H - this.DIALOG_HEIGHT / 2
     this.DIALOG_HEADER_X = this.DIALOG_PADDING_W + this.TEXT_PADDING_W
     this.DIALOG_HEADER_Y =
-      this.WINDOW_H -
-      this.DIALOG_HEIGHT -
-      this.DIALOG_PADDING_H +
-      this.TEXT_PADDING_H
+      this.WINDOW_H - this.DIALOG_HEIGHT - this.DIALOG_PADDING_H + this.TEXT_PADDING_H
     this.DIALOG_TEXT_X = this.DIALOG_PADDING_W + this.TEXT_PADDING_W
     this.DIALOG_TEXT_Y =
       this.WINDOW_H -
@@ -97,10 +91,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
     })
     this.dialogText.setWordWrapWidth(
       Math.max(
-        this.WINDOW_W -
-          this.DIALOG_PADDING_W * 2 -
-          this.TEXT_PADDING_W * 2 +
-          10,
+        this.WINDOW_W - this.DIALOG_PADDING_W * 2 - this.TEXT_PADDING_W * 2 + 10,
         this.FONT_SIZE
       ),
       true

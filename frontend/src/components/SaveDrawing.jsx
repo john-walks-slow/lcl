@@ -51,8 +51,5 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(actionCreators, dispatch),
 })
 
-const SaveDrawingContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SaveDrawing)
+const SaveDrawingContainer = connect(mapStateToProps, mapDispatchToProps)(SaveDrawing)
 export default SaveDrawingContainer

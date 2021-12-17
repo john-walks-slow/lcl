@@ -144,20 +144,12 @@ const LoadFromFile = props => {
     const file = ev.target.files[0]
 
     if (canvasRef) {
-      const imageLoadedData = drawFileImageToCanvas(
-        file,
-        canvasRef.current,
-        imgDimensions => {
-          setImageLoaded(true)
-          setImageDimensions(imgDimensions)
-          setResultDimensions(imgDimensions)
-          imgSetupValidation(
-            getCanvasDimensions(canvasRef),
-            pixelSize,
-            frameCount
-          )
-        }
-      )
+      const imageLoadedData = drawFileImageToCanvas(file, canvasRef.current, imgDimensions => {
+        setImageLoaded(true)
+        setImageDimensions(imgDimensions)
+        setResultDimensions(imgDimensions)
+        imgSetupValidation(getCanvasDimensions(canvasRef), pixelSize, frameCount)
+      })
       if (imageLoadedData.errorType) {
         setImageLoaded(false)
         showValidationMessage({
@@ -216,12 +208,7 @@ const LoadFromFile = props => {
       </Button>
       <LoadedImageContainer imageLoaded={imageLoaded}>
         <CanvasWrapper>
-          <canvas
-            className="block mx-auto"
-            width="300"
-            height="300"
-            ref={canvasRef}
-          />
+          <canvas className="block mx-auto" width="300" height="300" ref={canvasRef} />
         </CanvasWrapper>
 
         <ImageDimensions

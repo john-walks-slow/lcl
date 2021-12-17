@@ -5,9 +5,7 @@ import { switchTool, setCustomColor } from '../store/actions/actionCreators'
 import { COLOR_PICKER, PENCIL } from '../store/reducers/drawingToolStates'
 
 const ColorPickerContainer = React.memo(() => {
-  const colorPickerOn = useSelector(
-    state => state.present.get('drawingTool') === COLOR_PICKER
-  )
+  const colorPickerOn = useSelector(state => state.present.get('drawingTool') === COLOR_PICKER)
   const paletteColor = useSelector(state => {
     const palette = state.present.get('palette')
     const currentColorPosition = palette.get('position')
@@ -61,12 +59,7 @@ const ColorPickerContainer = React.memo(() => {
       <div style={styles.picker}>
         {colorPickerOn ? (
           <div style={styles.popover} is="popover">
-            <div
-              style={styles.cover}
-              is="cover"
-              onClick={handleClose}
-              role="presentation"
-            />
+            <div style={styles.cover} is="cover" onClick={handleClose} role="presentation" />
             <Picker
               color={initialPickerColor}
               onChangeComplete={onPickerChange}

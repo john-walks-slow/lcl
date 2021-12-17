@@ -24,10 +24,7 @@ const formatFrameOutput = (frame, columns, options) => {
   const flattened = arr => [].concat(...arr)
   let frameRows = arrayChunks(frame, columns)
   frameRows = frameRows.map((row, index) => {
-    if (
-      (isEven(index + 1) && options.reverseEven) ||
-      (!isEven(index + 1) && options.reverseOdd)
-    ) {
+    if ((isEven(index + 1) && options.reverseEven) || (!isEven(index + 1) && options.reverseOdd)) {
       return row.reverse()
     }
     return row

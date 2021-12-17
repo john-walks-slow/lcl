@@ -13,9 +13,9 @@ class Configurations {
       XXL: this.PLAYER_TARGET_H * 5,
       XL: this.PLAYER_TARGET_H * 3.5,
       L: this.PLAYER_TARGET_H * 2.5,
-      M: this.PLAYER_TARGET_H * 1.5,
-      S: this.PLAYER_TARGET_H,
-      XS: this.PLAYER_TARGET_H * 0.7,
+      M: this.PLAYER_TARGET_H * 1.8,
+      S: this.PLAYER_TARGET_H * 1.3,
+      XS: this.PLAYER_TARGET_H * 0.8,
     }
     this.TIME_DELAY = 60 * 60 * 1000
     this.RANDOM_ZONE_W = this.OBJECT_W.XL
@@ -33,8 +33,7 @@ class Configurations {
     ]
 
     this.updateConfigurations()
-    this.GRID_SIZE =
-      Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL / 2
+    this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL / 2
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL;
 
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL;
@@ -44,8 +43,7 @@ class Configurations {
     this.RAW_WINDOW_W = window.innerWidth || document.body.clientWidth
     this.RAW_WINDOW_H = window.innerHeight || document.body.clientHeight
     this.SCALE = Math.min(
-      Math.min(this.RAW_WINDOW_W / 15, this.RAW_WINDOW_H / 19) /
-        this.PLAYER_TARGET_H,
+      Math.min(this.RAW_WINDOW_W / 15, this.RAW_WINDOW_H / 19) / this.PLAYER_TARGET_H,
       1
     )
     this.WINDOW_W = this.RAW_WINDOW_W / this.SCALE

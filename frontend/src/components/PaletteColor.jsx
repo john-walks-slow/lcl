@@ -1,13 +1,7 @@
 import React from 'react'
 
 const PaletteColor = props => {
-  const {
-    positionInPalette,
-    width,
-    color,
-    selected,
-    selectPaletteColor,
-  } = props
+  const { positionInPalette, width, color, selected, selectPaletteColor } = props
 
   const handleClick = () => selectPaletteColor(positionInPalette)
 

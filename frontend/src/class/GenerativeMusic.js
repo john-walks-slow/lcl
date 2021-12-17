@@ -1,10 +1,6 @@
 import MS from 'teoria'
 import * as Tone from 'tone'
-import {
-  customIntRandom,
-  customWRandom,
-  seededRandomKept,
-} from '../utils/random'
+import { customIntRandom, customWRandom, seededRandomKept } from '../utils/random'
 import { range } from '../utils/utils'
 import configurations from './configurations'
 
@@ -77,9 +73,7 @@ class GenerativeMusic {
             break
         }
         // let currentChordDegree = CHORDS_LIST[CHORD_TYPE[currentType]][day.wRandom({ 0: 0.4, 1: 0.3, 2: 0.3 })] ;
-        let currentChordDegree = parseInt(
-          day.wRandom(CHORDS_LIST[CHORD_TYPE[currentType]])
-        )
+        let currentChordDegree = parseInt(day.wRandom(CHORDS_LIST[CHORD_TYPE[currentType]]))
         // let currentChordNotes = [scale.get(currentChordDegree).name(), scale.get(currentChordDegree + 2).name(), scale.get(currentChordDegree + 4).name().toUpperCase()];
         // console.log(chordSequence[currentPos]);
         // console.log(parseInt(day.wRandom({ 4: 0.1, 3: 0.1, 2: 0.5, 1: 0.4, 0: 0.2 })));
@@ -186,8 +180,7 @@ class GenerativeMusic {
         positionY,
       })
       o.oData.panner.distance = positionX ** 2 + positionY ** 2
-      o.oData.panner.audible =
-        o.oData.panner.distance < o.oData.panner.maxDistance ** 2
+      o.oData.panner.audible = o.oData.panner.distance < o.oData.panner.maxDistance ** 2
     })
     // console.timeEnd('updateSound');
   }
@@ -265,12 +258,8 @@ class GenerativeMusic {
             if (!note) {
               return
             }
-            let notes = [note - 1, note + 1, note + 3].map(n =>
-              this.scale.getNote(n).name()
-            )
-            const possibleNotes = o.range.filter(n =>
-              notes.includes(n.name()[0])
-            )
+            let notes = [note - 1, note + 1, note + 3].map(n => this.scale.getNote(n).name())
+            const possibleNotes = o.range.filter(n => notes.includes(n.name()[0]))
             possibleNotes.sort((a, b) => {
               let jumpA
               let jumpB
@@ -293,11 +282,7 @@ class GenerativeMusic {
               // o.synth.set({
               //   width: Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180
               // });
-              o.synth.triggerAttackRelease(
-                o.previousNote.scientific(),
-                '1m',
-                time
-              )
+              o.synth.triggerAttackRelease(o.previousNote.scientific(), '1m', time)
             }
           },
           this.chordSequence,

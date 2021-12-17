@@ -7,11 +7,7 @@ const ImageSizeSection = styled.div`
   padding: 1rem 1rem;
 `
 
-const ImageDimensions = ({
-  imageDimensions,
-  resultDimensions,
-  validationError,
-}) => (
+const ImageDimensions = ({ imageDimensions, resultDimensions, validationError }) => (
   <ImageSizeSection>
     <ImageSizeDisplay
       description="Original:"

@@ -34,8 +34,5 @@ const mapDispatchToProps = dispatch =>
     dispatch
   )
 
-const PaletteGridContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PaletteGrid)
+const PaletteGridContainer = connect(mapStateToProps, mapDispatchToProps)(PaletteGrid)
 export default PaletteGridContainer

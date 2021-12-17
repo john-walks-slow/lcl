@@ -157,14 +157,7 @@ const Button = ({
   </ThemeProvider>
 )
 Button.propTypes = {
-  variant: PropTypes.oneOf([
-    'default',
-    'info',
-    'close',
-    'action',
-    'white',
-    'proceed',
-  ]),
+  variant: PropTypes.oneOf(['default', 'info', 'close', 'action', 'white', 'proceed']),
   size: PropTypes.oneOf(['normal', 'half', 'full']),
   ariaLabel: PropTypes.string.isRequired,
   onClick(props, ...rest) {

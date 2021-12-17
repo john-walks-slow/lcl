@@ -99,9 +99,7 @@ const reorderFrame = (frames, action) => {
   const insertPosition = destinationIndex + (targetIsBefore ? 1 : 0)
   const deletePosition = selectedIndex + (targetIsBefore ? 0 : 1)
   const list = resetIntervals(
-    frameList
-      .splice(insertPosition, 0, getFrame(frames, selectedIndex))
-      .splice(deletePosition, 1)
+    frameList.splice(insertPosition, 0, getFrame(frames, selectedIndex)).splice(deletePosition, 1)
   )
 
   return frames.merge({
@@ -112,9 +110,7 @@ const reorderFrame = (frames, action) => {
 
 const createNewFrame = frames => {
   const frameList = frames.get('list')
-  const list = resetIntervals(
-    frameList.push(create(frameList.getIn([0, 'grid']).size, 100))
-  )
+  const list = resetIntervals(frameList.push(create(frameList.getIn([0, 'grid']).size, 100)))
   return frames.merge({
     list,
     activeIndex: frameList.size,
@@ -140,9 +136,7 @@ const deleteFrame = (frames, action) => {
 const duplicateFrame = (frames, action) => {
   const { frameId } = action
   const frameList = frames.get('list')
-  const list = resetIntervals(
-    frameList.splice(frameId, 0, getFrame(frames, frameId))
-  )
+  const list = resetIntervals(frameList.splice(frameId, 0, getFrame(frames, frameId)))
   return frames.merge({
     list,
     activeIndex: frameId + 1,

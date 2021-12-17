@@ -27,10 +27,7 @@ class FramesHandler extends React.Component {
       return
     }
 
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
       return
     }
 
@@ -117,8 +114,5 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(actionCreators, dispatch),
 })
 
-const FramesHandlerContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FramesHandler)
+const FramesHandlerContainer = connect(mapStateToProps, mapDispatchToProps)(FramesHandler)
 export default FramesHandlerContainer

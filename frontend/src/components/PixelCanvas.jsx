@@ -94,8 +94,5 @@ const mapDispatchToProps = dispatch => ({
   hoveredCell: cellPosition => dispatch(changeHoveredCell(cellPosition)),
 })
 
-const PixelCanvasContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PixelCanvas)
+const PixelCanvasContainer = connect(mapStateToProps, mapDispatchToProps)(PixelCanvas)
 export default PixelCanvasContainer

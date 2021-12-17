@@ -9,9 +9,7 @@ export default class ObjectData {
     this.itemList = []
     this.list = list
       .sort((a, b) => b.birthday - a.birthday)
-      .filter(
-        o => configurations.TIMESTAMP - o.birthday > configurations.TIME_DELAY
-      )
+      .filter(o => configurations.TIMESTAMP - o.birthday > configurations.TIME_DELAY)
     this.map.getZone = (player, gridSize = configurations.GRID_SIZE) => {
       return [Math.ceil(player.x / gridSize), Math.ceil(player.y / gridSize)]
     }
@@ -46,8 +44,7 @@ export default class ObjectData {
     let dateOffset = 0
     this.list.forEach((o, i) => {
       dateOffset +=
-        Math.min(14, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) *
-        configurations.DAY_OFFSET
+        Math.min(14, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) * configurations.DAY_OFFSET
       previousDate = o.birthday
       o.isTrash = o.dialog.length == 0
       if (!o.isTrash) {
@@ -58,7 +55,9 @@ export default class ObjectData {
       o.zFactor = o.zFactor || 1
       o.isBackground = o.zFactor < 1
       o.isForeground = o.zFactor > 1
-      o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2
+      // o.zFactor != 1 &&
+      //   (o.zFactor = o.zFactor - 0.08 + seededRandom(o._id) * 0.04)
+
       let zFactorOffset = o.zFactor ** 0.5
       // o.distance = (offset + dateOffset) * zFactorOffset ;
       if (o.isBackground) {
@@ -66,17 +65,12 @@ export default class ObjectData {
       } else {
         o.size = configurations.OBJECT_W[o.size]
       }
-      o.rows <= o.columns &&
-        (o.width = o.size) &&
-        (o.height = (o.size / o.columns) * o.rows)
-      o.rows > o.columns &&
-        (o.height = o.size) &&
-        (o.width = (o.size / o.rows) * o.columns)
+      o.rows <= o.columns && (o.width = o.size) && (o.height = (o.size / o.columns) * o.rows)
+      o.rows > o.columns && (o.height = o.size) && (o.width = (o.size / o.rows) * o.columns)
       o.displayWidth = Math.max(Math.round(o.width / o.columns), 1) * o.columns
       o.displayHeight = Math.max(Math.round(o.height / o.rows), 1) * o.rows
 
-      o.distance =
-        o.seed[1] * configurations.RANDOM_ZONE_W + densityOffset + dateOffset
+      o.distance = o.seed[1] * configurations.RANDOM_ZONE_W + densityOffset + dateOffset
       // *  zFactorOffset
       // o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) * zFactorOffset * (2 + o.seed[1]) / 3;
       let minDistance = configurations.PLAYER_TARGET_H + o.size

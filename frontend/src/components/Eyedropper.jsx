@@ -21,8 +21,5 @@ const mapDispatchToProps = dispatch => ({
   switchEyedropper: () => dispatch(switchEyedropperAction),
 })
 
-const EyedropperContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Eyedropper)
+const EyedropperContainer = connect(mapStateToProps, mapDispatchToProps)(Eyedropper)
 export default EyedropperContainer

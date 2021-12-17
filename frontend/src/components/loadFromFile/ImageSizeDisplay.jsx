@@ -30,13 +30,9 @@ const ImageSizeDisplay = ({ description, width, height }) => (
     {(width.error || height.error) && <WarningSign>!</WarningSign>}
     {description}
     &nbsp;
-    <ImageDimensionDisplay error={width.error}>
-      {width.value}
-    </ImageDimensionDisplay>
+    <ImageDimensionDisplay error={width.error}>{width.value}</ImageDimensionDisplay>
     &nbsp;x&nbsp;
-    <ImageDimensionDisplay error={height.error}>
-      {height.value}
-    </ImageDimensionDisplay>
+    <ImageDimensionDisplay error={height.error}>{height.value}</ImageDimensionDisplay>
   </ImageDimensionDisplayContainer>
 )
 

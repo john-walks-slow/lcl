@@ -2,11 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import ModalReact from 'react-modal'
-import {
-  disableBodyScroll,
-  enableBodyScroll,
-  clearAllBodyScrollLocks,
-} from 'body-scroll-lock'
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import * as actionCreators from '../store/actions/actionCreators'
 
 import RadioSelector from './RadioSelector'
@@ -31,8 +27,7 @@ class Modal extends React.Component {
       ]
 
       if (props.frames.size > 1) {
-        const spritesheetSupport =
-          props.type === 'download' || props.type === 'twitter'
+        const spritesheetSupport = props.type === 'download' || props.type === 'twitter'
         const animationOptionLabel = spritesheetSupport ? 'GIF' : 'animation'
 
         const animationOption = {

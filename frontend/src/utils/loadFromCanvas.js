@@ -29,18 +29,9 @@ const generateFrames = (imageContext, numberOfFrames, pixSize = 1) => {
     const pixelHeight = pixSize
 
     const grid = []
-    for (
-      let y = heightInterval.start;
-      y + pixelHeight <= heightInterval.end;
-      y += pixelWidth
-    ) {
+    for (let y = heightInterval.start; y + pixelHeight <= heightInterval.end; y += pixelWidth) {
       for (let x = 0; x + pixelWidth <= width; x += pixelWidth) {
-        const currentPixel = imageContext.getImageData(
-          x,
-          y,
-          pixelWidth,
-          pixelHeight
-        ).data
+        const currentPixel = imageContext.getImageData(x, y, pixelWidth, pixelHeight).data
         grid.push(
           `rgba(${currentPixel[0]},${currentPixel[1]},${currentPixel[2]},${currentPixel[3]})`
         )

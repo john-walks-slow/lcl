@@ -5,12 +5,7 @@ import { generatePixelDrawCss } from '../utils/cssParse'
 const CssDisplay = props => {
   const generateCss = () => {
     const { activeFrame, columns, cellSize } = props
-    const cssString = generatePixelDrawCss(
-      activeFrame,
-      columns,
-      cellSize,
-      'string'
-    )
+    const cssString = generatePixelDrawCss(activeFrame, columns, cellSize, 'string')
     return <div>{cssString || ''}</div>
   }
 

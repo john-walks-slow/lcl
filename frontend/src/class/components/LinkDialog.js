@@ -39,24 +39,14 @@ export default class LinkDialog extends Dialog {
     this.PADDING = this.HEIGHT / 4
     this.PADDING_TOP = this.HEIGHT / 5
     this.YES_X = this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING
-    this.YES_Y =
-      this.WINDOW_CENTER_Y +
-      this.HEIGHT / 2 -
-      this.FONT_SIZE_HEADER -
-      this.PADDING_TOP
+    this.YES_Y = this.WINDOW_CENTER_Y + this.HEIGHT / 2 - this.FONT_SIZE_HEADER - this.PADDING_TOP
     this.NO_X = this.WINDOW_CENTER_X + this.PADDING
-    this.NO_Y =
-      this.WINDOW_CENTER_Y +
-      this.HEIGHT / 2 -
-      this.FONT_SIZE_HEADER -
-      this.PADDING_TOP
+    this.NO_Y = this.WINDOW_CENTER_Y + this.HEIGHT / 2 - this.FONT_SIZE_HEADER - this.PADDING_TOP
     this.dialogWindow.setX(this.WINDOW_CENTER_X)
     this.dialogWindow.setY(this.WINDOW_CENTER_Y)
     this.dialogWindow.setDisplaySize(this.WIDTH, this.HEIGHT)
     this.dialogText.setX(this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING)
-    this.dialogText.setY(
-      this.WINDOW_CENTER_Y - this.HEIGHT / 2 + this.PADDING_TOP
-    )
+    this.dialogText.setY(this.WINDOW_CENTER_Y - this.HEIGHT / 2 + this.PADDING_TOP)
     this.dialogText.setStyle({
       color: 0xffffff,
       fontSize: `${this.FONT_SIZE}px`,
@@ -84,9 +74,7 @@ export default class LinkDialog extends Dialog {
     ;[this.dialogYes, this.dialogNo][i]
       .setBackgroundColor(this.BUTTON_SELECTED_COLOR)
       .setColor('#FFFFFF')
-    ;[this.dialogYes, this.dialogNo][1 - i]
-      .setBackgroundColor('')
-      .setColor('#131313')
+    ;[this.dialogYes, this.dialogNo][1 - i].setBackgroundColor('').setColor('#131313')
   }
   setHttp(link) {
     if (link.search(/^http[s]?\:\/\//) == -1) {

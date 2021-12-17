@@ -32,11 +32,7 @@ const UsefulData = props => {
   const changeColorFormat = value => {
     setColorFormat(value)
   }
-  const generateUsefulDataOutput = (
-    formatId,
-    reverseOddRows,
-    reverseEvenRows
-  ) =>
+  const generateUsefulDataOutput = (formatId, reverseOddRows, reverseEvenRows) =>
     generateFramesOutput({
       frames,
       columns,
@@ -50,8 +46,8 @@ const UsefulData = props => {
     <div className="load-drawing useful-data">
       <h2>Get additional data from your project</h2>
       <p>
-        Here you will find every pixel color values grouped by frame. You can
-        modify the output with the following options:
+        Here you will find every pixel color values grouped by frame. You can modify the output with
+        the following options:
       </p>
       <div className="useful-data__options">
         <fieldset className="useful-data__rows">

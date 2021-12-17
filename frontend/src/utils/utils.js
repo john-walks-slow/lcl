@@ -3,9 +3,7 @@ export function range(min = 0, max) {
 }
 
 export function characterRange(startChar, endChar) {
-  return String.fromCharCode(
-    ...range(startChar.charCodeAt(0), endChar.charCodeAt(0))
-  )
+  return String.fromCharCode(...range(startChar.charCodeAt(0), endChar.charCodeAt(0)))
 }
 Number.prototype.mod = function(n) {
   return ((this % n) + n) % n

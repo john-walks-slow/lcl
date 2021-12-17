@@ -4,13 +4,7 @@ import { bindActionCreators } from 'redux'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import * as actionCreators from '../store/actions/actionCreators'
 
-const SimpleNotification = ({
-  duration,
-  fadeInTime,
-  fadeOutTime,
-  notifications,
-  actions,
-}) => {
+const SimpleNotification = ({ duration, fadeInTime, fadeOutTime, notifications, actions }) => {
   const removeNotifications = () => {
     setTimeout(() => {
       actions.sendNotification('')
@@ -18,11 +12,7 @@ const SimpleNotification = ({
   }
   const timeout = { enter: fadeInTime, exit: fadeOutTime }
   const notificationList = notifications.map(item => (
-    <CSSTransition
-      key={item.id}
-      timeout={timeout}
-      classNames="simple-notification"
-    >
+    <CSSTransition key={item.id} timeout={timeout} classNames="simple-notification">
       <div key={item.id} className="simple-notification">
         {item.message}
       </div>
@@ -44,8 +34,5 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(actionCreators, dispatch),
 })
 
-const SimpleNotificationContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SimpleNotification)
+const SimpleNotificationContainer = connect(mapStateToProps, mapDispatchToProps)(SimpleNotification)
 export default SimpleNotificationContainer

@@ -4,9 +4,7 @@
  *  @return {object} An object with r, g, b, a properties with its int correspondent value
  */
 const getRgbaValues = color => {
-  const match = color.match(
-    /rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d*)?)\))?/
-  )
+  const match = color.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d*)?)\))?/)
   return match ? { r: match[1], g: match[2], b: match[3], a: match[4] } : {}
 }
 
@@ -48,9 +46,9 @@ const normalizeHexValue = value => padHexValue(parseInt(value, 10).toString(16))
  */
 const parseRgbaToHex = colorCode => {
   const rgbaValues = getRgbaValues(colorCode)
-  return `${normalizeHexValue(rgbaValues.r)}${normalizeHexValue(
-    rgbaValues.g
-  )}${normalizeHexValue(rgbaValues.b)}`
+  return `${normalizeHexValue(rgbaValues.r)}${normalizeHexValue(rgbaValues.g)}${normalizeHexValue(
+    rgbaValues.b
+  )}`
 }
 
 /*
@@ -61,10 +59,10 @@ const parseRgbaToHex = colorCode => {
  */
 const parseHexToRgba = (colorCode, opacity) => {
   const hexValues = getRgbHexValues(colorCode)
-  return `rgba(${parseInt(hexValues.r, 16)},${parseInt(
-    hexValues.g,
+  return `rgba(${parseInt(hexValues.r, 16)},${parseInt(hexValues.g, 16)},${parseInt(
+    hexValues.b,
     16
-  )},${parseInt(hexValues.b, 16)},${opacity})`
+  )},${opacity})`
 }
 
 /*
@@ -75,8 +73,7 @@ const parseHexToRgba = (colorCode, opacity) => {
 const normalizeColor = colorCode => {
   const defaultValue = '000000'
   const normalized = {
-    color:
-      typeof colorCode === 'string' && colorCode ? colorCode : defaultValue,
+    color: typeof colorCode === 'string' && colorCode ? colorCode : defaultValue,
     opacity: 1,
   }
   if (isRgba(normalized.color)) {
