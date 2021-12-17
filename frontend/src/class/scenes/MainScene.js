@@ -102,6 +102,10 @@ export default class MainScene extends Phaser.Scene {
     this.player.moveY = y => {
       this.player.setVelocityY(y)
     }
+    // let flow = [
+    //   -1 + configurations.DAY.intRandom(0, 1) * configurations.DAY.intRandom(1, 6),
+    //   -1 + configurations.DAY.intRandom(0, 1) * configurations.DAY.intRandom(1, 6),
+    // ]
     this.player.stopMovement = () => {
       if (this.player.anims.getName() == 'runLeft') {
         this.player.anims.play('standLeft', true)
@@ -116,7 +120,8 @@ export default class MainScene extends Phaser.Scene {
         this.player.anims.play('standDown', true)
       }
       this.player.move(0, 0)
-      this.player.move(-2, -2)
+
+      // this.player.move(flow[0], flow[1])
     }
 
     this.player.setInteractive()
@@ -323,8 +328,7 @@ export default class MainScene extends Phaser.Scene {
     this.player.anims.play('standRight')
     this.gamepad = new GamePad(this)
     this.uiLayer.add(this.gamepad)
-    this.filterUsed = seededRandom(configurations.DAY.toString())
-    console.log(configurations.DAY)
+    this.filterUsed = seededRandom(configurations.DAY._id)
     const FILTER_LIST = {
       brightness: { min: 1, max: 0.3, unit: '', probability: 0.3 },
       contrast: { min: 0.3, max: 1, unit: '', probability: 0.3 },
@@ -338,7 +342,7 @@ export default class MainScene extends Phaser.Scene {
       sepia: { min: 0, max: 1, unit: '', probability: 0.3 },
     }
     let seeds = [...Array(Object.keys(FILTER_LIST).length * 2)].map(
-      (o, i) => Math.round(seededRandom(((i + 1) * configurations.DAY).toString()) * 10) / 10
+      (o, i) => Math.round(seededRandom(((i + 1) * configurations.DAY.stamp).toString()) * 10) / 10
     )
     let RESULT_LIST = Object.assign({}, FILTER_LIST)
     this.filter = (x, y) => {
@@ -460,9 +464,15 @@ export default class MainScene extends Phaser.Scene {
       if (gameObject.oData && gameObject.oData.type == 'object') {
         gameObject.setVelocity(0, 0)
         gameObject.x -=
-          ((this.player.body.velocity.x * (gameObject.oData.zFactor - 1)) / 1000) * delta
+          ((gameObject.oData.flow[0] +
+            this.player.body.velocity.x * (gameObject.oData.zFactor - 1)) /
+            1000) *
+          delta
         gameObject.y -=
-          ((this.player.body.velocity.y * (gameObject.oData.zFactor - 1)) / 1000) * delta
+          ((gameObject.oData.flow[1] +
+            this.player.body.velocity.y * (gameObject.oData.zFactor - 1)) /
+            1000) *
+          delta
         // GenerativeMusic.startLoop(gameObject.oData)
       }
     })

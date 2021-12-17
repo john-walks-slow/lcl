@@ -45,11 +45,8 @@ class GenerativeMusic {
     // set this context as the global Context
     // Tone.setContext(context);
     const generateChord = () => {
-      const day = {}
-      day._id = configurations.DAY.toString()
-      day.random = seededRandomKept(day._id.toString())
-      day.wRandom = customWRandom(day.random)
-      day.intRandom = customIntRandom(day.random)
+      const day = configurations.DAY
+
       const CHORD_TYPE = {
         T: 0,
         D: 1,

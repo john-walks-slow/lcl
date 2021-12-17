@@ -93,6 +93,12 @@ export default class ObjectData {
         Math.ceil(o.x / configurations.GRID_SIZE),
         Math.ceil(o.y / configurations.GRID_SIZE),
       ]
+
+      o.flow = [
+        (configurations.DAY.intRandom(-10, 10) + configurations.DAY.flow[0]) * o.zFactor ** 6,
+        (configurations.DAY.intRandom(-10, 10) + configurations.DAY.flow[1]) * o.zFactor ** 6,
+      ]
+
       o.type = 'object'
       if (o.item) {
         if (!this.playerData.ownItems.includes(o._id)) {

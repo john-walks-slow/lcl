@@ -1,5 +1,18 @@
+import { seededRandomKept, customWRandom, customIntRandom } from '../utils/random'
+
 class Configurations {
   constructor() {
+    this.TIMESTAMP = Date.parse(new Date())
+    this.DAY = {}
+    this.DAY.stamp = this.DEV_MODE
+      ? Math.random() * 100
+      : Math.floor(this.TIMESTAMP / (24 * 60 * 60 * 1000))
+    this.DAY._id = this.DAY.toString()
+    this.DAY.random = seededRandomKept(this.DAY._id.toString())
+    this.DAY.wRandom = customWRandom(this.DAY.random)
+    this.DAY.intRandom = customIntRandom(this.DAY.random)
+    this.DAY.flow = [this.DAY.intRandom(-10, 10), this.DAY.intRandom(-10, 10)]
+
     this.DEV_MODE = process.env.NODE_ENV == 'development'
     this.RESOLUTION = 1
     this.PLAYER_TARGET_W = 40 * this.RESOLUTION
@@ -51,10 +64,7 @@ class Configurations {
     this.WINDOW_H = this.RAW_WINDOW_H / this.SCALE
     this.WINDOW_CENTER_X = this.WINDOW_W / 2
     this.WINDOW_CENTER_Y = this.WINDOW_H / 2
-    this.TIMESTAMP = Date.parse(new Date())
-    this.DAY = this.DEV_MODE
-      ? Math.random() * 100
-      : Math.floor(this.TIMESTAMP / (24 * 60 * 60 * 1000))
+
     // this.time = timestamp % (24 * 60 * 60 * 1000) ;
     this.IS_MOBILE =
       ('ontouchstart' in window ||
