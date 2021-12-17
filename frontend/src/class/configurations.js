@@ -32,8 +32,8 @@ class Configurations {
     }
     this.TIME_DELAY = 60 * 60 * 1000
     this.RANDOM_ZONE_W = this.PLAYER_TARGET_H * 5
-    this.DAY_OFFSET = this.PLAYER_TARGET_H * 1.4
-    this.DENSITY_OFFSET = this.PLAYER_TARGET_H * 1.4
+    this.DAY_OFFSET = this.PLAYER_TARGET_H * 1
+    this.DENSITY_OFFSET = this.PLAYER_TARGET_H * 1
     this.ACTIVITY_OFFSET = 1
     this.MOVE_SPEED = this.PLAYER_TARGET_H * 1.3
     this.OBLIQUE_MOVE_SPEED = Math.round(this.MOVE_SPEED * 0.74)
