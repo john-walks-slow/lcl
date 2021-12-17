@@ -116,7 +116,7 @@ export default class MainScene extends Phaser.Scene {
         this.player.anims.play('standDown', true)
       }
       this.player.move(0, 0)
-      this.player.move(-6, -6)
+      this.player.move(-2, -2)
     }
 
     this.player.setInteractive()
