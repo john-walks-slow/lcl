@@ -8,10 +8,10 @@
   position: fixed;
   opacity: 0;
   transition: 300ms;
-  top: 15px;
+  top: 10px;
   right: 15px;
   z-index: 99;
-  font-family: 'pixel';
+  font-family: "pixelTitle";
 }
 #GAME_MENU.show {
   pointer-events: initial;
@@ -23,6 +23,7 @@
   image-rendering: pixelated;
   user-select: none;
   margin: 0;
+  padding: 10px 5px;
   border: none;
   background: transparent;
   font-weight: 100;
@@ -30,22 +31,17 @@
 #GAME_MENU.hide .game__button-menu {
   opacity: 0;
 }
-.game__button-hide {
-  user-select: none;
-  image-rendering: pixelated;
-  margin: 0;
-  border: none;
-  background: transparent;
+#GAME_MENU.hide .game__button-hide {
+  opacity: 1;
 }
+
 .game__button-menu:active {
   transform: scale(0.8);
 }
 .game__button-menu.selected {
   font-weight: 600;
 }
-.game__button-hide:active {
-  transform: scale(0.8);
-}
+
 .game__button-close-info {
   position: absolute;
   cursor: pointer;
