@@ -1,10 +1,8 @@
 .palette-color {
-  border: 1px solid #5d5d5d;
+  border: 2px solid transparent;
 
   &.selected {
-    border: inset;
-    transform: scale(0.9);
+    border: 2px inset;
     position: relative;
-    bottom: 1.3px;
   }
 }
