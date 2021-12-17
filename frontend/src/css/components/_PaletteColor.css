@@ -1,8 +1,0 @@
-.palette-color {
-  border: 2px solid transparent;
-
-  &.selected {
-    border: 2px inset;
-    position: relative;
-  }
-}

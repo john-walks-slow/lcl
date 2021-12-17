@@ -98,6 +98,9 @@
   transform: translateX(10px);
   font-size: 1em;
 }
+.page__span-color {
+  margin: 0;
+}
 #GAME_INVENTORY.show {
   pointer-events: initial;
   opacity: 1;

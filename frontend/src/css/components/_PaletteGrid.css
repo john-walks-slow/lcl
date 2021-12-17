@@ -6,17 +6,36 @@
   position: relative;
   top: 5px;
   left: 5px;
-  width: calc(100% - 137px);
+  width: calc(100% - 139px);
   background: rgb(83, 83, 83);
-  height: 107.5px;
+  height: 104px;
   overflow-y: auto;
   border: inset;
+  line-height: 0px;
 }
+.palette-color {
+  border: 2px solid transparent;
+  width: 11.07%;
+  height: 22%;
+  vertical-align: text-bottom;
+  padding-bottom: 0;
+  &.selected {
+    border: 2px inset;
+    position: relative;
+  }
+}
+
 @media screen and (min-width: 900px) {
   .palette-grid {
     top: -256px;
     left: 376px;
-    width: calc(100% - 360px);
+    width: calc(100% - 340px);
     height: 168px;
+  }
+  .palette-color {
+    border: 2px solid transparent;
+    width: 11.07%;
+    height: 0px;
+    padding-bottom: 9%;
   }
 }
