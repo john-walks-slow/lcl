@@ -1,0 +1,14 @@
+| Emoji          | 含义     |
+| -------------- | -------- |
+| :tada:         | 新版本   |
+| :sparkles:     | 新功能   |
+| :bug:          | Bug      |
+| :wrench:       | 调整配置 |
+| :hammer:       | 重构     |
+| :fire:         | 删除     |
+| :construction: | 工具链   |
+| :lipstick:     | 代码格式 |
+| :shirt:        | SEO      |
+| :package:      | 新平台   |
+| :truck:        | 目录结构 |
+| :zap:          | 未归类   |
