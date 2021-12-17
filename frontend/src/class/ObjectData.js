@@ -95,8 +95,8 @@ export default class ObjectData {
       ]
 
       o.flow = [
-        (configurations.DAY.intRandom(-10, 10) + configurations.DAY.flow[0]) * o.zFactor ** 6,
-        (configurations.DAY.intRandom(-10, 10) + configurations.DAY.flow[1]) * o.zFactor ** 6,
+        (configurations.DAY.intRandom(-10, 10) + configurations.DAY.flow[0]) * o.zFactor ** 3,
+        (configurations.DAY.intRandom(-10, 10) + configurations.DAY.flow[1]) * o.zFactor ** 3,
       ]
 
       o.type = 'object'

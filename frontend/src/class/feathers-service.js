@@ -2552,6 +2552,9 @@ const MOCK_OBJECT = [
     item: false,
   },
 ]
+// .reverse()
+// .slice(0, 10)
+// .reverse()
 switch (process.env.BUILD_PLATFORM) {
   case 'web':
     url = 'objects'
@@ -2562,10 +2565,12 @@ switch (process.env.BUILD_PLATFORM) {
   default:
     break
 }
+
 export let objectService
 if (process.env.NODE_ENV == 'development') {
   objectService = {
     find: async () => MOCK_OBJECT,
+
     get: async () => MOCK_OBJECT,
     post: async () => MOCK_OBJECT,
   }
