@@ -44,7 +44,7 @@ class Configurations {
     this.RAW_WINDOW_W = window.innerWidth || document.body.clientWidth
     this.RAW_WINDOW_H = window.innerHeight || document.body.clientHeight
     this.SCALE = Math.min(
-      Math.min(this.RAW_WINDOW_W / 15, this.RAW_WINDOW_H / 19) / this.PLAYER_TARGET_H,
+      Math.min(this.RAW_WINDOW_W / 12, this.RAW_WINDOW_H / 15) / this.PLAYER_TARGET_H,
       1
     )
     this.WINDOW_W = this.RAW_WINDOW_W / this.SCALE
