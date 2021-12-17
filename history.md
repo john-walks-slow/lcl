@@ -1,34 +1,34 @@
-- 0.8: 初步完成程序化音乐 解决很多bug 重做ui 设置M以下及一级深度不消耗道具 离线可用 重构代码
+- 0.8: 初步完成程序化音乐 解决很多 bug 重做 ui 设置 M 以下及一级深度不消耗道具 离线可用 重构代码
   - [x] :art: 调整响应式布局
   - [x] :art: 重做滤镜
-  - [x] :art: 重做ui
-  - [x] :books: 优化README
-  - [x] :bug: 背景/前景pushable
-  - [x] :bug: 检查player scheme
+  - [x] :art: 重做 ui
+  - [x] :books: 优化 README
+  - [x] :bug: 背景/前景 pushable
+  - [x] :bug: 检查 player scheme
   - [x] :bug: 输入事件捕获异常
-  - [x] :bug: 新东西卡启动
+  - [x] :bug: 新对象卡启动
   - [x] :bug: 再创建一个时页面重复刷新
   - [x] :bug: item dialog 窗口位置
   - [x] :bug: link dialog 按钮失效
   - [x] :bug: link dialog 隐藏虚拟键盘
-  - [x] :bug: resize时更新camera viewport
-  - [x] :fire: 重构Configurations
-  - [x] :fire: 重构GenerativeMusic
-  - [x] :fire: 重构ObjectData
-  - [x] :fire: 重构ObjectGroup
+  - [x] :bug: resize 时更新 camera viewport
+  - [x] :fire: 重构 Configurations
+  - [x] :fire: 重构 GenerativeMusic
+  - [x] :fire: 重构 ObjectData
+  - [x] :fire: 重构 ObjectGroup
   - [x] :musical_note: 音乐能听
   - [x] :sparkles: 道具生成率降低，道具大小减少
   - [x] :sparkles: 发言前检测用户是否阅读本文档
   - [x] :sparkles: 更好的报错界面
-  - [x] :sparkles: 键盘快捷键 
-  - [x] :sparkles: 降低道具重要性，深度-2~2不消耗镜片
-  - [x] :sparkles: 配置sw 离线可用
+  - [x] :sparkles: 键盘快捷键
+  - [x] :sparkles: 降低道具重要性，深度-2~2 不消耗镜片
+  - [x] :sparkles: 配置 sw 离线可用
   - [x] :sparkles: 优化自动转屏逻辑
   - [x] :sparkles: 重写渲染算法（pixel perfect）
   - [x] :sparkles: Generative Music
-  - [x] :sparkles: ui可以隐藏
+  - [x] :sparkles: ui 可以隐藏
   - [x] :wrench: 调整数值
-  - [x] :wrench: 设置M以下不需要肥料
-  - [x] :wrench: 使用history api优化后退键
+  - [x] :wrench: 设置 M 以下不需要肥料
+  - [x] :wrench: 使用 history api 优化后退键
   - [x] :wrench: 提高服务器安全性
   - [x] :wrench: ui 事件优化
