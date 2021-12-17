@@ -41,41 +41,45 @@ export default class ObjectData {
   setupObject() {
     console.time('setupObject')
     let previousDate = configurations.TIMESTAMP
-    let offsetIndex = 0
+    // let offsetIndex = 0
+    let densityOffset = 0
     let dateOffset = 0
     this.list.forEach((o, i) => {
-      // if (configurations.TIMESTAMP - o.birthday < configurations.TIME_DELAY) { return; }
       dateOffset +=
         Math.min(14, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) *
         configurations.DAY_OFFSET
       previousDate = o.birthday
       o.isTrash = o.dialog.length == 0
-      o.fadeSpeed = 1
       if (!o.isTrash) {
-        offsetIndex++
-      } else {
-        o.fadeSpeed = 2
+        densityOffset += configurations.OBJECT_W[o.size] / 4
       }
-      let offset = configurations.DENSITY_OFFSET * offsetIndex ** 0.5
-      // console.log({ dateOffset, offset });
-      // console.log(Math.min(1, (previousDate - o.birthday) / (30 * 24 * 60 * 60)));
+
       o.rad = o.seed[0] * (Math.PI / 180)
+      o.zFactor = o.zFactor || 1
       o.isBackground = o.zFactor < 1
       o.isForeground = o.zFactor > 1
-      o.zFactor == 1 &&
-        (o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2)
-      let zFactorOffset
-      zFactorOffset = (o.zFactor || 1) ** 0.5
+      o.zFactor = o.zFactor - 0.1 + seededRandom(o._id) * 0.2
+      let zFactorOffset = o.zFactor ** 0.5
       // o.distance = (offset + dateOffset) * zFactorOffset ;
+      if (o.isBackground) {
+        o.size = configurations.OBJECT_W[o.size] * (2 - o.zFactor)
+      } else {
+        o.size = configurations.OBJECT_W[o.size]
+      }
+      o.rows <= o.columns &&
+        (o.width = o.size) &&
+        (o.height = (o.size / o.columns) * o.rows)
+      o.rows > o.columns &&
+        (o.height = o.size) &&
+        (o.width = (o.size / o.rows) * o.columns)
+      o.displayWidth = Math.max(Math.round(o.width / o.columns), 1) * o.columns
+      o.displayHeight = Math.max(Math.round(o.height / o.rows), 1) * o.rows
+
       o.distance =
-        (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) *
-        zFactorOffset *
-        o.fadeSpeed
+        o.seed[1] * configurations.RANDOM_ZONE_W + densityOffset + dateOffset
+      // *  zFactorOffset
       // o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) * zFactorOffset * (2 + o.seed[1]) / 3;
-      let minDistance =
-        (configurations.PLAYER_TARGET_H +
-          configurations.OBJECT_W[o.size] / o.zFactor) /
-        2
+      let minDistance = configurations.PLAYER_TARGET_H + o.size
       if (o.distance < minDistance) {
         o.distance = minDistance + configurations.PLAYER_TARGET_W
       }
@@ -84,19 +88,6 @@ export default class ObjectData {
 
       // (o.zFactor > 1) && (o.zFactor =1.4);
       // (o.zFactor < 1) && (o.zFactor =0.6);
-      o.ratio = o.rows / o.columns
-      if (o.ratio < 1) {
-        o.displayWidth = configurations.OBJECT_W[o.size] / o.zFactor
-        o.displayHeight =
-          (configurations.OBJECT_W[o.size] / o.zFactor) * o.ratio
-      } else {
-        o.displayWidth = configurations.OBJECT_W[o.size] / o.zFactor / o.ratio
-        o.displayHeight = configurations.OBJECT_W[o.size] / o.zFactor
-      }
-      o.displayWidth =
-        Math.max(Math.round(o.displayWidth / o.columns), 1) * o.columns
-      o.displayHeight =
-        Math.max(Math.round(o.displayHeight / o.rows), 1) * o.rows
 
       o.zone = [
         Math.ceil(o.x / configurations.GRID_SIZE),

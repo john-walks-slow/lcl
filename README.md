@@ -77,6 +77,18 @@ LCL 是一个空间化的留言板。你可以在里留下会说话的像素物�
 
 ##### 当前版本
 
+- [ ] :bug: 程序化音乐 start time 报错
+- [ ] :musical_note: 不难听的程序化音乐
+  - [ ] :musical_note: 试试不同音色
+  - [ ] :musical_note: 调整混音
+  - [ ] :musical_note: 性能优化
+  - [ ] :musical_note: 试试不同算法
+- [ ] :wrench: 调试参数
+- [ ] :sparkles: 恒定的坐标系统
+- [x] :sparkles: 现在只有视野范围内的对象会根据 zfactor 更新坐标
+- [ ] :shirt: 邀请第一批用户
+- [ ] :package: 安卓版开发（！）
+- [x] :sparkles: 尝试粒子（否决，用户可以自行创建粒子）
 - [x] :fire: 字体加载超级慢，更换字体
 - [x] :sparkles: 重新设计颜料色板，默认赠送 8 色，奖励颜色从 64 色中抽取
 - [x] :sparkles: undo redo 现在会以一次完整的操作为单位
@@ -95,21 +107,13 @@ LCL 是一个空间化的留言板。你可以在里留下会说话的像素物�
 - [x] :bug: 扩大 canvas/选择颜料时按钮位移
 - [x] :bug: 连续点击 map 相机卡死
 - [x] :fire: 拒绝“白洞”这个名字，白洞是一个只发射，不吸收的时空区域。白洞更真，意识海更有指向性。
-- [ ] :bug: 程序化音乐 start time 报错
-- [ ] :package: 安卓版开发（！）
-- [ ] :sparkles: 尝试粒子
-- [ ] :sparkles: 恒定的坐标系统
-- [ ] :musical_note: 不难听的程序化音乐
-  - [ ] :musical_note: 试试不同音色
-  - [ ] :musical_note: 调整混音
-  - [ ] :musical_note: 性能优化
-  - [ ] :musical_note: 试试不同算法
 
 ##### 今后
 
 - [ ] :package: PC 版开发
 - [ ] :sparkles: i18n
 - [ ] :sparkles: 自动翻译
+- [ ] :shirt: SEO
 
 ### Changelog
 

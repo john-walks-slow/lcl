@@ -218,7 +218,7 @@ export default class MainScene extends Phaser.Scene {
 
     let movedObjects = []
 
-    this.itemGroup = this.physics.add.group({
+    this.itemGroup = this.physics.add.staticGroup({
       immovable: true,
     })
     let ownItems = secureStorage.getItem('player').ownItems
@@ -414,7 +414,7 @@ export default class MainScene extends Phaser.Scene {
     // import * as teoria from 'teoria';
     this.setupKeyboard()
     this.setShowMenu(true)
-    generativeMusic.startBgm(this)
+    // generativeMusic.startBgm(this)
 
     // this.setDisplay();
     // this.gameDialog.showDialog('testtest', 'test');
@@ -462,7 +462,8 @@ export default class MainScene extends Phaser.Scene {
       this.camera.toggleZoom()
     })
   }
-  update() {
+
+  update(time, delta) {
     // console.log(this.input.activePointer.x, this.input.activePointer.y);
     // console.log(this.gamepad.padX, this.gamepad.padY);
 
@@ -472,9 +473,20 @@ export default class MainScene extends Phaser.Scene {
     let notTouching = this.player.body.touching.none
     let velocityX = notTouching ? this.player.body.velocity.x : 0
     let velocityY = notTouching ? this.player.body.velocity.y : 0
-    this.objectGroup.children.each(o => {
-      o.setVelocityX(-velocityX * (o.oData.zFactor - 1))
-      o.setVelocityY(-velocityY * (o.oData.zFactor - 1))
+    this.visibleObjects = this.physics.overlapRect(
+      this.player.x - configurations.WINDOW_W / 2,
+      this.player.y - configurations.WINDOW_H / 2,
+      configurations.WINDOW_W,
+      configurations.WINDOW_H
+    )
+    this.visibleObjects.forEach(({ gameObject }) => {
+      if (gameObject.oData && gameObject.oData.type == 'object') {
+        gameObject.setVelocity(0, 0)
+        gameObject.x -=
+          ((velocityX * (gameObject.oData.zFactor - 1)) / 1000) * delta
+        gameObject.y -=
+          ((velocityY * (gameObject.oData.zFactor - 1)) / 1000) * delta
+      }
     })
     if (
       this.gameDialog.inDialog ||
