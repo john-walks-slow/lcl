@@ -14,13 +14,13 @@ class Configurations {
       XL: this.PLAYER_TARGET_H * 3.5,
       L: this.PLAYER_TARGET_H * 2.5,
       M: this.PLAYER_TARGET_H * 1.8,
-      S: this.PLAYER_TARGET_H * 1.3,
+      S: this.PLAYER_TARGET_H * 1.2,
       XS: this.PLAYER_TARGET_H * 0.8,
     }
     this.TIME_DELAY = 60 * 60 * 1000
-    this.RANDOM_ZONE_W = this.OBJECT_W.XL
-    this.DAY_OFFSET = this.OBJECT_W.M
-    this.DENSITY_OFFSET = this.OBJECT_W.M
+    this.RANDOM_ZONE_W = this.PLAYER_TARGET_H * 5
+    this.DAY_OFFSET = this.PLAYER_TARGET_H * 1.4
+    this.DENSITY_OFFSET = this.PLAYER_TARGET_H * 1.4
     this.ACTIVITY_OFFSET = 1
     this.MOVE_SPEED = this.PLAYER_TARGET_H * 1.3
     this.OBLIQUE_MOVE_SPEED = Math.round(this.MOVE_SPEED * 0.74)

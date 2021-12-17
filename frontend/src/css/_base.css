@@ -2,6 +2,7 @@ html {
   box-sizing: border-box;
   background-color: $color-scorpion;
   font-size: 16px;
+  filter: blur(0.3px);
 }
 
 *,
@@ -29,7 +30,7 @@ blockquote {
   margin: 5px 0px;
   font-size: 0.8em;
   padding: 0.5em 10px;
-  quotes: '\201C''\201D''\2018''\2019';
+  quotes: "\201C""\201D""\2018""\2019";
 }
 blockquote:before {
   color: #ccc;

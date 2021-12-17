@@ -12,20 +12,24 @@
   font-style: normal;
 } */
 @font-face {
-  font-family: 'pixel';
-  src: url('fonts/files/slkscr.ttf');
+  font-family: "pixelJP";
+  src: url("fonts/files/GuanZhi-8px.ttf");
 }
 @font-face {
-  font-family: 'pixelChinese';
-  src: url('fonts/files/mplus_hzk_12.ttf');
+  font-family: "pixelCN";
+  src: url("fonts/files/mplus_hzk_12-modified.ttf");
 }
 @font-face {
-  font-family: 'WebFontIcons';
-  src: url('fonts/files/webfont-icons.eot?v=4.5.0');
-  src: url('fonts/files/webfont-icons.eot?#iefix&v=4.5.0') format('embedded-opentype'),
-    url('fonts/files/webfont-icons.woff?v=4.5.0') format('woff'),
-    url('fonts/files/webfont-icons.ttf?v=4.5.0') format('truetype'),
-    url('fonts/files/webfont-icons.svg?v=4.5.0#webfonticons') format('svg');
+  font-family: "pixelTitle";
+  src: url("fonts/files/slkscr.ttf");
+}
+@font-face {
+  font-family: "WebFontIcons";
+  src: url("fonts/files/webfont-icons.eot?v=4.5.0");
+  src: url("fonts/files/webfont-icons.eot?#iefix&v=4.5.0") format("embedded-opentype"),
+    url("fonts/files/webfont-icons.woff?v=4.5.0") format("woff"),
+    url("fonts/files/webfont-icons.ttf?v=4.5.0") format("truetype"),
+    url("fonts/files/webfont-icons.svg?v=4.5.0#webfonticons") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -44,64 +48,64 @@
 }
 
 @define-extend twitter {
-  content: '\61';
+  content: "\61";
 }
 @define-extend keybindings {
-  content: '\62';
+  content: "\62";
 }
 @define-extend play {
-  content: '\63';
+  content: "\63";
 }
 @define-extend duplicate {
-  content: '\64';
+  content: "\64";
 }
 @define-extend eraser {
-  content: '\65';
+  content: "\65";
 }
 @define-extend pause {
-  content: '\66';
+  content: "\66";
 }
 @define-extend screen-full {
-  content: '\67';
+  content: "\67";
 }
 @define-extend paint-brush {
-  content: '\68';
+  content: "\68";
 }
 @define-extend move {
-  content: '\69';
+  content: "\69";
 }
 @define-extend screen-normal {
-  content: '\6a';
+  content: "\6a";
 }
 @define-extend frames {
-  content: '\6b';
+  content: "\6b";
 }
 @define-extend columns {
-  content: '\6c';
+  content: "\6c";
 }
 @define-extend rows {
-  content: '\6d';
+  content: "\6d";
 }
 @define-extend bucket {
-  content: '\6e';
+  content: "\6e";
 }
 @define-extend eyedropper {
-  content: '\6f';
+  content: "\6f";
 }
 @define-extend undo {
-  content: '\70';
+  content: "\70";
 }
 @define-extend redo {
-  content: '\71';
+  content: "\71";
 }
 @define-extend download {
-  content: '\72';
+  content: "\72";
 }
 @define-extend help {
-  content: '\73';
+  content: "\73";
 }
 @define-extend trash {
-  content: '\74';
+  content: "\74";
 }
 
 .icon-help {

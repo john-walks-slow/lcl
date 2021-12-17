@@ -83,7 +83,6 @@
 }
 #GAME_INVENTORY {
   user-select: none;
-  filter: blur(0.2px);
   background-color: #131313;
   color: white;
   right: 21px;
