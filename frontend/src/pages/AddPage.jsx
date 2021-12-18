@@ -335,7 +335,7 @@ const Page = ({ dispatch, isShown }) => {
               step="0.2"
               value={2 - zFactor}
               onChange={event => {
-                setZFactor(2 - event.target.value);
+                setZFactor(Math.fround(2 - event.target.value));
               }}
               placeholder="深度的范围是0.5 - 1.5（近大远小）"
               className="page__input"

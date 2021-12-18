@@ -69,12 +69,12 @@ export default class MainScene extends Phaser.Scene {
     // console.log(this.input.activePointer);
     this.startPosX = 0
     this.startPosY = 0
-    this.camera
-    this.gameDialog
     this.pointerOnPlayer = false
     this.objectGroup = new ObjectGroup(this)
     this.gameObjectsLayer = this.add.layer()
+    this.gameObjectsLayer.depth = 0
     this.uiLayer = this.add.layer()
+    this.uiLayer.depth = 100
     this.cameras.remove(this.cameras.main)
     this.camera = new GameCamera(this)
     this.cameras.addExisting(this.camera, false)

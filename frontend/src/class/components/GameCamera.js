@@ -3,6 +3,7 @@ import configurations from '../configurations'
 export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
   constructor(scene) {
     super(0, 0, configurations.WINDOW_W, configurations.WINDOW_H)
+    this.cameraManager = scene.cameras
     this.scene = scene
     this.setBackgroundColor(0xffffff)
     // this.setFollowOffset(0, 100);
@@ -23,6 +24,17 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
   setDisplay() {
     // this.setZoom(configurations.ZOOM_LEVEL);
     this.setSize(configurations.WINDOW_W, configurations.WINDOW_H)
+    // this.setMask(
+    //   new Phaser.Display.Masks.GeometryMask(
+    //     this.scene,
+    //     new Phaser.GameObjects.Graphics(this.scene, {
+    //       x: configurations.WINDOW_CENTER_X,
+    //       y: configurations.WINDOW_CENTER_Y,
+    //     })
+    //       .fillCircle(0, 0, 800)
+    //       .setAlpha(1)
+    //   )
+    // )
   }
   zoomIn() {
     if (this.zoomInAnim && this.zoomInAnim.isPlaying()) {

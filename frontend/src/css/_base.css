@@ -2,7 +2,7 @@ html {
   box-sizing: border-box;
   background-color: $color-scorpion;
   font-size: 16px;
-  filter: blur(0.5px);
+  // filter: blur(0.5px);
 }
 
 *,

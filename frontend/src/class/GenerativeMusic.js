@@ -244,7 +244,7 @@ class GenerativeMusic {
       const distance = (positionX ** 2 + positionY ** 2) ** 0.5
       const pan = positionX / distance
       const volume = Math.round(-(distance ** synth.fadeFactor))
-      console.log(distance, pan, volume)
+      // console.log(distance, pan, volume)
       synth.audible = distance < o.oData.panner.maxDistance
       o.oData.channel.set({
         pan,
@@ -313,7 +313,7 @@ class GenerativeMusic {
           envelope: { release: '8n', attack: '4n', sustain: 1 },
           // maxPolyphony: 64,
         })
-        o.synth.fadeFactor = 0.4
+        o.synth.fadeFactor = 0.5
         o.panner = new Tone.Panner3D({
           rolloffFactor: this.chordFadeFactor,
           refDistance: this.chordMinSight,
@@ -381,7 +381,7 @@ class GenerativeMusic {
           oscillator: { type: 'sine', volume: 0 },
           envelope: { release: '2n' },
         })
-        o.synth.fadeFactor = 0.6
+        o.synth.fadeFactor = 0.55
 
         o.panner = new Tone.Panner3D({
           rolloffFactor: this.melodyFadeFactor,

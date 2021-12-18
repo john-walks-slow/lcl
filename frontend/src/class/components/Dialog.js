@@ -6,7 +6,6 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.scene = scene
     this.initializeComponents()
     this.setDisplay()
-    this.depth = 999
     this.setScrollFactor(0)
     this.setAlpha(0)
     this.dialogIndex = 0

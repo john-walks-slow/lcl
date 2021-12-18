@@ -61,34 +61,38 @@ export default class ObjectData {
       let zFactorOffset = o.zFactor ** 0.5
       // o.distance = (offset + dateOffset) * zFactorOffset ;
       if (o.isBackground) {
-        o.size = configurations.OBJECT_W[o.size] * (2 - o.zFactor)
+        o.displaySize = configurations.OBJECT_W[o.size] * (2 - o.zFactor)
       } else {
-        o.size = configurations.OBJECT_W[o.size]
+        o.displaySize = configurations.OBJECT_W[o.size]
       }
-      o.rows <= o.columns && (o.width = o.size) && (o.height = (o.size / o.columns) * o.rows)
-      o.rows > o.columns && (o.height = o.size) && (o.width = (o.size / o.rows) * o.columns)
+      o.rows <= o.columns &&
+        (o.width = o.displaySize) &&
+        (o.height = (o.displaySize / o.columns) * o.rows)
+      o.rows > o.columns &&
+        (o.height = o.displaySize) &&
+        (o.width = (o.displaySize / o.rows) * o.columns)
       o.displayWidth = Math.max(Math.round(o.width / o.columns), 1) * o.columns
       o.displayHeight = Math.max(Math.round(o.height / o.rows), 1) * o.rows
 
-      o.distance =
+      o.distance = Math.max(
         -configurations.RANDOM_ZONE_W / 2 +
-        o.seed[1] * configurations.RANDOM_ZONE_W +
-        densityOffset +
-        dateOffset
+          o.seed[1] * configurations.RANDOM_ZONE_W +
+          densityOffset +
+          dateOffset,
+        0
+      )
       // *  zFactorOffset
       // o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) * zFactorOffset * (2 + o.seed[1]) / 3;
       o.distance = (o.distance * 7) ** 0.8
 
-      let minDistance = configurations.PLAYER_TARGET_H + o.size
+      let minDistance = (configurations.PLAYER_TARGET_H + o.displaySize) / 0.7 / 2
       if (o.distance < minDistance) {
-        o.distance = minDistance + configurations.PLAYER_TARGET_W
+        o.distance = minDistance
       }
       o.x = Math.cos(o.rad) * o.distance
       o.y = Math.sin(o.rad) * o.distance
-
       // (o.zFactor > 1) && (o.zFactor =1.4);
       // (o.zFactor < 1) && (o.zFactor =0.6);
-
       o.zone = [
         Math.ceil(o.x / configurations.GRID_SIZE),
         Math.ceil(o.y / configurations.GRID_SIZE),
