@@ -27,8 +27,8 @@ class GenerativeMusic {
     this.chordMinSight = configurations.PLAYER_TARGET_H
     this.chordSight = 45 * configurations.PLAYER_TARGET_H
     this.channels = {
-      melody: new Tone.Channel({ volume: -30, pan: 0, channelCount: 2 }),
-      chord: new Tone.Channel({ volume: -40, pan: 0, channelCount: 2 }),
+      melody: new Tone.Channel({ volume: -5, pan: 0, channelCount: 2 }),
+      chord: new Tone.Channel({ volume: -15, pan: 0, channelCount: 2 }),
       effects: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
       master: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
     }
@@ -66,8 +66,8 @@ class GenerativeMusic {
       // this.effectNodes.stereoWidener,
       // this.effectNodes.stereoWidener2,
       // this.effectNodes.compressor,
-      this.effectNodes.compressor2,
-      this.effectNodes.limiter,
+      // this.effectNodes.compressor2,
+      // this.effectNodes.limiter,
       this.channels.master
     )
     // .connect(this.effectNodes.stereoWidener)
