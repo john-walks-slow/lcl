@@ -7,7 +7,7 @@ import configurations from './configurations'
 class GenerativeMusic {
   constructor() {
     const initTone = () => {
-      // const context = new Tone.Context({ latencyHint: 600 })
+      // const context = new Tone.Context({ latencyHint: 4000 })
       const context = new Tone.Context({ latencyHint: 'playback' })
       Tone.setContext(context)
     }
@@ -15,20 +15,20 @@ class GenerativeMusic {
     this.N4_LENGTH = Tone.Time('4n').toSeconds()
     this.scale = MS.scale('C5', 'major')
     this.chordLoopLength = 64
-    this.melodyLoopLength = 4
+    this.melodyLoopLength = 1
     // this.melodyLoopLength = 48;
     this.melodyIntervalRandomRange = 1
-    this.melodyFadeFactor = 1.4
-    this.chordFadeFactor = 1.3
+    this.melodyFadeFactor = 2
+    this.chordFadeFactor = 1.1
     this.chordRythm
     this.melodyRythm
     this.melodyMinSight = configurations.PLAYER_TARGET_H
-    this.melodySight = 8 * configurations.PLAYER_TARGET_H
+    this.melodySight = 9 * configurations.PLAYER_TARGET_H
     this.chordMinSight = configurations.PLAYER_TARGET_H
     this.chordSight = 45 * configurations.PLAYER_TARGET_H
     this.channels = {
-      melody: new Tone.Channel({ volume: -20, pan: 0, channelCount: 2 }),
-      chord: new Tone.Channel({ volume: -30, pan: 0, channelCount: 2 }),
+      melody: new Tone.Channel({ volume: -30, pan: 0, channelCount: 2 }),
+      chord: new Tone.Channel({ volume: -40, pan: 0, channelCount: 2 }),
       effects: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
       master: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
     }
@@ -63,7 +63,7 @@ class GenerativeMusic {
     this.channels.effects.chain(
       this.effectNodes.delay,
       this.effectNodes.reverb,
-      this.effectNodes.stereoWidener,
+      // this.effectNodes.stereoWidener,
       // this.effectNodes.stereoWidener2,
       // this.effectNodes.compressor,
       this.effectNodes.compressor2,
@@ -227,7 +227,8 @@ class GenerativeMusic {
   updateSound(scene) {
     // console.time('updateSound')
     scene.objectGroup.children.each(o => {
-      if (!o.oData.synth) {
+      let synth = o.oData.synth
+      if (!synth) {
         return
       }
       // let width = Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180;
@@ -239,10 +240,19 @@ class GenerativeMusic {
       //   width: width
       // });
       const positionX = o.x - scene.player.x
-      const positionY = scene.player.y - o.y
-      o.oData.panner.set({ positionX, positionY })
-      o.oData.panner.distance = positionX ** 2 + positionY ** 2
-      o.oData.panner.audible = o.oData.panner.distance < o.oData.panner.maxDistance ** 2
+      const positionY = o.y - scene.player.y
+      const distance = (positionX ** 2 + positionY ** 2) ** 0.5
+      const pan = positionX / distance
+      const volume = Math.round(-(distance ** synth.fadeFactor))
+      console.log(distance, pan, volume)
+      synth.audible = distance < o.oData.panner.maxDistance
+      o.oData.channel.set({
+        pan,
+        volume,
+      })
+      // o.oData.panner.set({ positionX, positionY })
+      // o.oData.panner.distance = positionX ** 2 + positionY ** 2
+      // o.oData.panner.audible = o.oData.panner.distance < o.oData.panner.maxDistance ** 2
     })
     // console.timeEnd('updateSound');
   }
@@ -303,16 +313,22 @@ class GenerativeMusic {
           envelope: { release: '8n', attack: '4n', sustain: 1 },
           // maxPolyphony: 64,
         })
+        o.synth.fadeFactor = 0.4
         o.panner = new Tone.Panner3D({
           rolloffFactor: this.chordFadeFactor,
           refDistance: this.chordMinSight,
           maxDistance: this.chordSight,
-          panningModel: 'HRTF',
+          panningModel: 'equalpower',
           positionZ: (o.zFactor - 1) * 100,
           distanceModel: 'exponential',
         })
-        o.synth.chain(o.panner, this.channels.chord)
-        o.min = o.intRandom(-2 * this.scale.notes().length - 5, -5)
+        o.channel = new Tone.Channel({ channelCount: 2 })
+        o.synth.chain(
+          // o.panner,
+          o.channel,
+          this.channels.chord
+        )
+        o.min = o.intRandom(-2 * this.scale.notes().length - 5, 5)
         o.max = o.min + o.intRandom(4, 6)
         // o.min = scale.getNote(o.min);
         // o.max = scale.getNote(o.max);
@@ -341,7 +357,7 @@ class GenerativeMusic {
             // o.previousNote =
             // possibleNotes[o.intRandom(0, possibleNotes.length - 1)];
             o.synth.triggerRelease()
-            if (o.panner.audible) {
+            if (o.synth.audible) {
               console.log(`H: ${o.previousNote.scientific()} ${o.dialog}`)
               // o.synth.set({
               //   width: Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180
@@ -365,15 +381,22 @@ class GenerativeMusic {
           oscillator: { type: 'sine', volume: 0 },
           envelope: { release: '2n' },
         })
+        o.synth.fadeFactor = 0.6
+
         o.panner = new Tone.Panner3D({
           rolloffFactor: this.melodyFadeFactor,
           refDistance: this.melodyMinSight,
           maxDistance: this.melodySight,
-          panningModel: 'HRTF',
+          panningModel: 'equalpower',
           positionZ: (o.zFactor - 1) * 100,
-          distanceModel: 'exponential',
+          distanceModel: 'linear',
         })
-        o.synth.chain(o.panner, this.channels.melody)
+        o.channel = new Tone.Channel({ channelCount: 2 })
+        o.synth.chain(
+          // o.panner,
+          o.channel,
+          this.channels.melody
+        )
         o.noteIndex = o.intRandom(-5, 10)
 
         o.noteIndex = o.wRandom({
@@ -406,7 +429,7 @@ class GenerativeMusic {
             if (!note) {
               return
             }
-            if (o.panner.audible) {
+            if (o.synth.audible) {
               console.log(`M: ${o.note.scientific()} ${o.dialog}`)
               o.synth.triggerAttackRelease(note.scientific(), '8n')
             }
@@ -423,7 +446,7 @@ class GenerativeMusic {
         break
     }
     // o.loop.humanize = (Math.random() - 0.5) * 100
-    o.loop.humanize = true
+    o.loop.humanize = 300
     o.loop.start()
   }
 

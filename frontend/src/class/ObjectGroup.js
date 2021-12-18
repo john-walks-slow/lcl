@@ -149,7 +149,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
           case 'object':
             this.remove(o.instance, true, true)
             if (o.loop) {
-              GenerativeMusic.disposeSound(o)
+              // GenerativeMusic.disposeSound(o)
               // GenerativeMusic.stopLoop(o)
             }
             break

@@ -232,7 +232,7 @@ export default class MainScene extends Phaser.Scene {
         : false
     })
 
-    this.objectGroup.updateObjects(false, [0, 0])
+    // this.objectGroup.updateObjects(false, [0, 0])
     // this.previousZone = [0, 0];
     this.gameDialog = new Dialog(this)
     this.itemDialog = new ItemDialog(this)
@@ -463,6 +463,12 @@ export default class MainScene extends Phaser.Scene {
     this.visibleObjects.forEach(({ gameObject }) => {
       if (gameObject.oData && gameObject.oData.type == 'object') {
         gameObject.setVelocity(0, 0)
+        // if (this.player.body.velocity.x == 0 && this.player.body.velocity.y == 0) {
+        //   return
+        // }
+        if (this.gameDialog.inDialog || this.itemDialog.inDialog || this.linkDialog.inDialog) {
+          return
+        }
         gameObject.x -=
           ((gameObject.oData.flow[0] +
             this.player.body.velocity.x * (gameObject.oData.zFactor - 1)) /
@@ -501,7 +507,7 @@ export default class MainScene extends Phaser.Scene {
             currentZone[1] == this.previousZone[1]
           )
         ) {
-          // this.objectGroup.updateObjects(this.previousZone, currentZone)
+          this.objectGroup.updateObjects(this.previousZone, currentZone)
 
           this.previousZone = currentZone
         }
