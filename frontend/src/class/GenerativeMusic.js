@@ -44,7 +44,7 @@ class GenerativeMusic {
       delay: new Tone.FeedbackDelay({
         delayTime: '8n.',
         maxDelayTime: '1m',
-        feedback: 0.1,
+        feedback: 0.2,
       }),
       stereoWidener: new Tone.StereoWidener(0.7),
       stereoWidener2: new Tone.StereoWidener(0.96),
@@ -587,7 +587,7 @@ class GenerativeMusic {
       default:
         o.synth = new Tone.Synth({
           oscillator: { type: 'sine', volume: 0 },
-          envelope: { release: '2n' },
+          envelope: { attack: '16n', release: '2n' },
         })
         o.synth.fadeFactor = this.melodyFadeFactor
         o.synth.minSight = this.melodyMinSight
