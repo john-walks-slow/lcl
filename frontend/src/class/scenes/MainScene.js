@@ -462,7 +462,7 @@ export default class MainScene extends Phaser.Scene {
     setTimeout(() => {
       this.camera.fadeIn()
       this.camera.initAnim.play()
-    }, 300)
+    }, 150)
   }
   setupKeyboard() {
     this.input.keyboard.on('keydown-B', () => {
