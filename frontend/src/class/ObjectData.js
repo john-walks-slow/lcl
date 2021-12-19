@@ -97,7 +97,7 @@ export default class ObjectData {
           this.map.pushNew(this.map.getZone(i), i)
         }
       }
-      // GenerativeMusic.setupSound(o)
+      GenerativeMusic.setupSound(o)
       this.map.pushNew(o.zone, o)
       this.soundMap.pushNew(this.soundMap.getZone(o), o)
     })

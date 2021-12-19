@@ -35,7 +35,7 @@ class GenerativeMusic {
       melody: new Tone.Channel({ volume: -25, pan: 0, channelCount: 2 }),
       chord: new Tone.Channel({ volume: -45, pan: 0, channelCount: 2 }),
       effects: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
-      master: new Tone.Channel({ volume: -5, pan: 0, channelCount: 2 }),
+      master: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
     }
     this.channels.master.connect(Tone.getDestination())
     this.effectNodes = {

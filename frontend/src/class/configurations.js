@@ -52,7 +52,7 @@ class Configurations {
     ]
 
     this.updateConfigurations()
-    this.SOUND_GRID_SIZE = 30 * this.PLAYER_TARGET_H
+    this.SOUND_GRID_SIZE = 20 * this.PLAYER_TARGET_H
     this.GRID_SIZE = 50 * this.PLAYER_TARGET_H
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / 3
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL/2;

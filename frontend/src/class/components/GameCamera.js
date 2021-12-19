@@ -8,7 +8,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     this.state = 'zoomIn'
     this.setBackgroundColor(0xffffff)
     // this.setFollowOffset(0, 100);
-    this.setAlpha(1)
+    this.setAlpha(0)
     // this.setRoundPixels(false);
     this.initAnim = this.scene.tweens.create({
       targets: this,
@@ -18,9 +18,8 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
       completeDelay: 0,
     })
     this.setDisplay()
-    this.fadeIn()
+    // this.fadeIn()
     this.setZoom(configurations.ZOOM_OUT_LEVEL)
-    this.initAnim.play()
   }
   setDisplay() {
     // this.setZoom(configurations.ZOOM_LEVEL);

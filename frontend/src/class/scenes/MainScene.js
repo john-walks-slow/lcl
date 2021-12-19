@@ -261,7 +261,7 @@ export default class MainScene extends Phaser.Scene {
         : false
     })
 
-    // this.objectGroup.updateObjects(false, [0, 0])
+    this.objectGroup.updateObjects(false, [0, 0])
     // this.previousZone = [0, 0];
     this.gameDialog = new Dialog(this)
     this.itemDialog = new ItemDialog(this)
@@ -459,6 +459,10 @@ export default class MainScene extends Phaser.Scene {
     setInterval(() => {
       GenerativeMusic.updateSound(150)
     }, 150)
+    setTimeout(() => {
+      this.camera.fadeIn()
+      this.camera.initAnim.play()
+    }, 300)
   }
   setupKeyboard() {
     this.input.keyboard.on('keydown-B', () => {
