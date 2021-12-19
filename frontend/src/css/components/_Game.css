@@ -3,6 +3,15 @@
   div {
   }
 }
+
+#GAME_UI > div {
+  filter: blur(0.4px);
+}
+@media screen and (max-width: 600px) {
+  #GAME_UI > div {
+    filter: blur(0.2px);
+  }
+}
 #GAME_MENU {
   pointer-events: none;
   position: fixed;

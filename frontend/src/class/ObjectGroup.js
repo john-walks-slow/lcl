@@ -114,6 +114,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
               o.instance.collider = collider
               //  }
               o.instance.refreshBody()
+              !o.loop && GenerativeMusic.setupSound(o)
               this.scene.gameObjectsLayer.add(o.instance)
               if (o.loop) {
                 // GenerativeMusic.startLoop(o)
@@ -141,6 +142,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
               )
               o.instance.collider = itemCollider
               o.instance.itemId = o.itemId
+
               this.scene.gameObjectsLayer.add(o.instance)
               break
             default:
@@ -161,7 +163,8 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
             case 'object':
               this.remove(o.instance, true, true)
               if (o.loop) {
-                // GenerativeMusic.stopSound(o)
+                o.loop.dispose()
+                o.loop = false
               }
               break
             case 'item':

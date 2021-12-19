@@ -116,9 +116,6 @@ export default class Dialog extends Phaser.GameObjects.Container {
     }
   }
   showDialog(dialog, name, callback) {
-    if (configurations.DEV_MODE) {
-      return
-    }
     this.dialogCallback = callback || false
     this.inDialog = true
     this.scene.gamepad.hide()

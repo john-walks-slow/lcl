@@ -81,7 +81,7 @@ const Game = ({ dispatch, isShown }) => {
     }
     if (isShown) {
       setShowGame(true);
-      document.title = 'LCL / 白洞';
+      document.title = '白洞 / 意识海';
       document.body.style.overflow = 'hidden';
       document.body.style.backgroundColor = '#131313';
       // if not initial run
@@ -156,117 +156,120 @@ const Game = ({ dispatch, isShown }) => {
   return (
     <div id="GAME_DIV" className={showGame ? 'show' : ''}>
       <div id="PHASER_ROOT"></div>
-      <div id="GAME_MENU" className={(showMenu ? 'show' : '') + (hideMenu ? ' hide' : '')}>
-        <div className="">
-          {/* <input className="game__button-menu" type="image" onClick={() => { navigateToAdd(); }} src={newBtnURL} /> */}
-          {/* <input className="game__button-menu" type="image" onClick={() => { mainSceneRef.camera.toggleZoom(); }} src={mapBtnURL} /> */}
-          {/* <input className="game__button-menu" type="image" onClick={() => { toggleShowInventory(); }} src={bagBtnURL} /> */}
-          {/* <input className="game__button-menu" type="image" onClick={() => { toggleShowInfo(); }} src={infoBtnURL} /> */}
+      <div id="GAME_UI">
+        <div id="GAME_MENU" className={(showMenu ? 'show' : '') + (hideMenu ? ' hide' : '')}>
+          <div className="">
+            {/* <input className="game__button-menu" type="image" onClick={() => { navigateToAdd(); }} src={newBtnURL} /> */}
+            {/* <input className="game__button-menu" type="image" onClick={() => { mainSceneRef.camera.toggleZoom(); }} src={mapBtnURL} /> */}
+            {/* <input className="game__button-menu" type="image" onClick={() => { toggleShowInventory(); }} src={bagBtnURL} /> */}
+            {/* <input className="game__button-menu" type="image" onClick={() => { toggleShowInfo(); }} src={infoBtnURL} /> */}
+            <button
+              className="game__button-menu"
+              onClick={() => {
+                navigateToAdd();
+              }}
+            >
+              <u>N</u>ew
+            </button>
+            <button
+              className={'game__button-menu' + (zoomed ? ' selected' : '')}
+              onClick={() => {
+                mainSceneRef && mainSceneRef.camera.toggleZoom();
+              }}
+            >
+              <u>M</u>ap
+            </button>
+            <button
+              className={'game__button-menu' + (showInventory ? ' selected' : '')}
+              onClick={() => {
+                toggleShowInventory();
+              }}
+            >
+              <u>B</u>ag
+            </button>
+            <button
+              className={'game__button-menu' + (showInfo ? ' selected' : '')}
+              onClick={() => {
+                toggleShowInfo();
+              }}
+            >
+              <u>H</u>elp
+            </button>
+            <button
+              className="game__button-menu game__button-hide"
+              onClick={() => {
+                toggleHideMenu();
+              }}
+            >
+              H<u>i</u>de
+            </button>
+          </div>
+        </div>
+
+        <div id="GAME_INVENTORY" className={showInventory ? 'show' : ''}>
+          {player ? (
+            <div>
+              <div>
+                <span>便签条:{player.labels}</span>
+              </div>
+              <div>
+                <span>箱子:{player.boxes}</span>
+              </div>
+              <div>
+                <span>肥料:{player.fats}</span>
+              </div>
+              <div>
+                <span>电池:{player.batteries}</span>
+              </div>
+              <div>
+                <span>镜片:{player.telescopes}</span>
+              </div>
+              <div>
+                颜料:
+                {player.palette.map(color => (
+                  <span
+                    key={color}
+                    className="page__span-color"
+                    style={{ backgroundColor: color }}
+                  ></span>
+                ))}
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
+        </div>
+        <div id="GAME_INFO" className={showInfo ? 'show' : ''}>
           <button
-            className="game__button-menu"
+            className={'game__button-install' + (deferredPrompt ? ' show' : '')}
             onClick={() => {
-              navigateToAdd();
+              deferredPrompt.prompt();
+              deferredPrompt.userChoice.then(choiceResult => {
+                if (choiceResult.outcome === 'accepted') {
+                  console.log('User accepted the A2HS prompt');
+                } else {
+                  console.log('User dismissed the A2HS prompt');
+                }
+                deferredPrompt = null;
+              });
             }}
           >
-            <u>N</u>ew
+            安装到桌面
           </button>
           <button
-            className={'game__button-menu' + (zoomed ? ' selected' : '')}
-            onClick={() => {
-              mainSceneRef && mainSceneRef.camera.toggleZoom();
-            }}
-          >
-            <u>M</u>ap
-          </button>
-          <button
-            className={'game__button-menu' + (showInventory ? ' selected' : '')}
-            onClick={() => {
-              toggleShowInventory();
-            }}
-          >
-            <u>B</u>ag
-          </button>
-          <button
-            className={'game__button-menu' + (showInfo ? ' selected' : '')}
+            className="game__button-close-info"
             onClick={() => {
               toggleShowInfo();
             }}
           >
-            <u>H</u>elp
+            ×
           </button>
-          <button
-            className="game__button-menu game__button-hide"
-            onClick={() => {
-              toggleHideMenu();
-            }}
-          >
-            H<u>i</u>de
-          </button>
+          <ReactMarkdown>
+            {ReadMe.toString().replace(/:\w+:/gi, name => emoji.getUnicode(name))}
+          </ReactMarkdown>
         </div>
       </div>
 
-      <div id="GAME_INVENTORY" className={showInventory ? 'show' : ''}>
-        {player ? (
-          <div>
-            <div>
-              <span>便签条:{player.labels}</span>
-            </div>
-            <div>
-              <span>箱子:{player.boxes}</span>
-            </div>
-            <div>
-              <span>肥料:{player.fats}</span>
-            </div>
-            <div>
-              <span>电池:{player.batteries}</span>
-            </div>
-            <div>
-              <span>镜片:{player.telescopes}</span>
-            </div>
-            <div>
-              颜料:
-              {player.palette.map(color => (
-                <span
-                  key={color}
-                  className="page__span-color"
-                  style={{ backgroundColor: color }}
-                ></span>
-              ))}
-            </div>
-          </div>
-        ) : (
-          ''
-        )}
-      </div>
-      <div id="GAME_INFO" className={showInfo ? 'show' : ''}>
-        <button
-          className={'game__button-install' + (deferredPrompt ? ' show' : '')}
-          onClick={() => {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then(choiceResult => {
-              if (choiceResult.outcome === 'accepted') {
-                console.log('User accepted the A2HS prompt');
-              } else {
-                console.log('User dismissed the A2HS prompt');
-              }
-              deferredPrompt = null;
-            });
-          }}
-        >
-          安装到桌面
-        </button>
-        <button
-          className="game__button-close-info"
-          onClick={() => {
-            toggleShowInfo();
-          }}
-        >
-          ×
-        </button>
-        <ReactMarkdown>
-          {ReadMe.toString().replace(/:\w+:/gi, name => emoji.getUnicode(name))}
-        </ReactMarkdown>
-      </div>
     </div>
   );
 };

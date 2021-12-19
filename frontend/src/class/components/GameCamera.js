@@ -5,6 +5,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     super(0, 0, configurations.WINDOW_W, configurations.WINDOW_H)
     this.cameraManager = scene.cameras
     this.scene = scene
+    this.state = 'zoomIn'
     this.setBackgroundColor(0xffffff)
     // this.setFollowOffset(0, 100);
     this.setAlpha(1)
@@ -51,6 +52,8 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
       completeDelay: 0,
     })
     this.zoomInAnim.play()
+    this.state = 'zoomIn'
+
     this.scene.setZoomed(false)
   }
   zoomOut() {
@@ -68,6 +71,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     })
 
     this.zoomOutAnim.play()
+    this.state = 'zoomOut'
     this.scene.setZoomed(true)
   }
   toggleZoom() {

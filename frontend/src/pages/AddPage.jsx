@@ -181,7 +181,7 @@ const Page = ({ dispatch, isShown }) => {
   };
   useEffect(() => {
     document.body.style.backgroundColor = 'white';
-    document.title = 'LCL / 创建';
+    document.title = '白洞 / 创建';
     setShow(true);
     dispatch(newProject());
     dispatch(updateUsedColors());
@@ -199,7 +199,7 @@ const Page = ({ dispatch, isShown }) => {
             dispatch(setPath('/', true));
           }}
         >
-          {/* <i class="fas fa-sign-out-alt"></i> */}⏎ 回到LCL
+          {/* <i class="fas fa-sign-out-alt"></i> */}⏎ 回到白洞
         </button>
       </div>
       {submitted || errorData ? (

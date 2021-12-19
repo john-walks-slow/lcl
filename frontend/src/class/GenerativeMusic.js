@@ -16,22 +16,22 @@ class GenerativeMusic {
     }
     initTone()
     this.N4_LENGTH = Tone.Time('4n').toSeconds()
-    this.scale = MS.note.fromMIDI(configurations.DAY.intRandom(67, 78)).scale('major')
-    this.chordLoopLength = 64
+    this.scale = MS.note.fromMIDI(configurations.DAY.intRandom(71, 90)).scale('major')
+    this.chordLoopLength = 128
     this.melodyLoopLength = 8
     // this.melodyLoopLength = 48;
     this.melodyIntervalRandomRange = 1
-    this.melodyFadeFactor = 0.8
+    this.melodyFadeFactor = 1.5
     this.chordFadeFactor = 0.8
     this.chordRythm
     this.melodyRythm
-    this.melodyMinSight = configurations.PLAYER_TARGET_H
+    this.melodyMinSight = 0
     this.melodyMaxSight = 15 * configurations.PLAYER_TARGET_H
-    this.chordMinSight = configurations.PLAYER_TARGET_H
-    this.chordMaxSight = 35 * configurations.PLAYER_TARGET_H
+    this.chordMinSight = 2 * configurations.PLAYER_TARGET_H
+    this.chordMaxSight = 30 * configurations.PLAYER_TARGET_H
     this.channels = {
-      melody: new Tone.Channel({ volume: -14, pan: 0, channelCount: 2 }),
-      chord: new Tone.Channel({ volume: -40, pan: 0, channelCount: 2 }),
+      melody: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
+      chord: new Tone.Channel({ volume: -26, pan: 0, channelCount: 2 }),
       effects: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
       master: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
     }
@@ -56,7 +56,7 @@ class GenerativeMusic {
       }),
       compressor2: new Tone.Compressor({
         ratio: 1.7,
-        threshold: -8,
+        threshold: -7,
         release: 0.25,
         attack: 0.02,
       }),
@@ -69,7 +69,7 @@ class GenerativeMusic {
       // this.effectNodes.stereoWidener,
       // this.effectNodes.stereoWidener2,
       // this.effectNodes.compressor,
-      // this.effectNodes.compressor2,
+      this.effectNodes.compressor2,
       // this.effectNodes.limiter,
       this.channels.master
     )
@@ -162,17 +162,19 @@ class GenerativeMusic {
       }
       console.log(`chordSequence: ${this.chordSequence}`)
       console.log(this.chordSequence)
-      let rootPadSynth = new Tone.PolySynth(Tone.Synth, {
-        oscillator: { type: 'sine', volume: 0 },
-        envelope: { release: '4n', attack: '8n' },
-        maxPolyphony: 64,
+      let rootPadSynth = new Tone.Synth({
+        oscillator: { type: 'sine', volume: -55 },
+        envelope: { release: '4n', attack: '4n' },
       })
-      rootPadSynth.chain(Tone.getDestination())
-      // new Tone.Sequence((time, note) => {
-      //   if (!note) { return; }
-      //   console.log(`R: ${this.scale.getNote(note - 14).scientific()}`);
-      //   rootPadSynth.triggerAttackRelease(this.scale.getNote(note - 7).scientific(), "2n.", 1);
-      // }, this.chordSequence).start();
+      rootPadSynth.chain(this.channels.chord)
+      new Tone.Sequence((time, note) => {
+        if (!note) {
+          return
+        }
+        // console.log(`R: ${this.scale.getNote(note - 14).scientific()}`)
+        rootPadSynth.triggerRelease()
+        rootPadSynth.triggerAttack(this.scale.getNote(note - 7).scientific())
+      }, this.chordSequence).start()
       // while (currentPos < 16) {
       //   let chordLength = day.wRandom({
       //     4: 0.1, 2: 0.5, 1: 0.2, 0.5: 0.1
@@ -260,11 +262,11 @@ class GenerativeMusic {
   //   console.timeEnd('updateSound')
   // }
   updateSound(delta) {
-    // console.time('updateSynth')
+    console.time('updateSynth')
     this.soundList.forEach(o => {
       this.updateSynth(o, delta)
     })
-    // console.timeEnd('updateSynth')
+    console.timeEnd('updateSynth')
 
     let currentZone = this.scene.objectData.soundMap.getZone(this.scene.player)
     // console.log(currentZone, this.previousZone)

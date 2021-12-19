@@ -65,6 +65,7 @@ export default class MainScene extends Phaser.Scene {
     this.gamepad.setDisplay()
   }
   create() {
+    // this.location.setText()
     console.log('create')
     // console.log(this.input.activePointer);
     this.startPosX = 0
@@ -84,7 +85,27 @@ export default class MainScene extends Phaser.Scene {
     // this.staticCamera.inputEnabled = false;
     this.cursors = this.input.keyboard.createCursorKeys()
     this.updateUIMethod(this)
-    console.log(this)
+    this.location = this.add.text(15, 15, '', {
+      color: 0xffffff,
+      fontFamily: 'pixelJP',
+    })
+    setTimeout(() => {
+      this.location.setText('...')
+    }, 100)
+    this.location.updateLocation = () => {
+      this.location.rad =
+        Math.round(Phaser.Math.Angle.Between(0, 0, this.player.x, this.player.y) * 100) / 100
+      this.location.distance =
+        Math.round(
+          ((this.objectData.zeroDistance ** (1 / configurations.DENSITY_FACTOR) -
+            Phaser.Math.Distance.Between(0, 0, this.player.x, this.player.y) **
+              (1 / configurations.DENSITY_FACTOR)) /
+            5000) *
+            10
+        ) / 10
+      this.location.setText(`(${this.location.rad}, ${this.location.distance})`)
+    }
+    this.uiLayer.add(this.location)
     // this.add.tileSprite(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y,WINDOW_W,WINDOW_H,'bg');
     // this.add.rectangle(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0xFFFFFF);
     this.player = this.physics.add
@@ -120,8 +141,9 @@ export default class MainScene extends Phaser.Scene {
         this.player.anims.play('standDown', true)
       }
       this.player.move(0, 0)
-
-      // this.player.move(flow[0], flow[1])
+      // if (configurations.DEV_MODE) {
+      // this.player.move(configurations.DAY.flow[0] * 3, configurations.DAY.flow[1] * 3)
+      // }
     }
 
     this.player.setInteractive()
@@ -149,7 +171,10 @@ export default class MainScene extends Phaser.Scene {
       let dialog = configurations.ITEM_LIST[currentObj.itemId].dialog
       let player = secureStorage.getItem('player')
       if (!player.ownItems.includes(currentObj._id)) {
-        this.itemDialog.showDialog([dialog])
+        if (configurations.SETTINGS.quiet || this.camera.state == 'zoomOut') {
+        } else {
+          this.itemDialog.showDialog([dialog])
+        }
         player[configurations.ITEM_LIST[currentObj.itemId].name]++
         player.ownItems.push(currentObj._id)
         this.dispatch(this.setStorage(player))
@@ -164,7 +189,10 @@ export default class MainScene extends Phaser.Scene {
       // console.log(this.player.body.velocity);
       // this.player.stopMovement();
       // console.log(this.player.body);
-
+      this.physics.collide(o1, o2)
+      if (this.player.isStopping) {
+        return
+      }
       if (this.gameDialog.inDialog || this.itemDialog.inDialog) {
         return
       }
@@ -175,13 +203,15 @@ export default class MainScene extends Phaser.Scene {
         currentObj = o1
       }
       if (currentObj.oData.dialog.length > 0) {
-        this.gameDialog.showDialog(currentObj.oData.dialog, currentObj.oData.name, () => {
-          if (currentObj.oData.link.length > 0) {
-            this.linkDialog.showDialog(currentObj.oData.link)
-          }
-        })
+        if (configurations.SETTINGS.quiet || this.camera.state == 'zoomOut') {
+        } else {
+          this.gameDialog.showDialog(currentObj.oData.dialog, currentObj.oData.name, () => {
+            if (currentObj.oData.link.length > 0) {
+              this.linkDialog.showDialog(currentObj.oData.link)
+            }
+          })
+        }
       }
-      this.physics.collide(o1, o2)
       if (currentObj.oData.isBackground || currentObj.oData.isForeground) {
         currentObj.collider.destroy()
       } else {
@@ -455,7 +485,7 @@ export default class MainScene extends Phaser.Scene {
     // this.game.canvas.style.filter = this.filter(this.player.x, this.player.y);
     // console.log(this.filter(this.player.x, this.player.y));
     // console.log(this.player.body);
-
+    this.location.updateLocation()
     let notTouching = this.player.body.touching.none
     let velocityX = notTouching ? this.player.body.velocity.x : 0
     let velocityY = notTouching ? this.player.body.velocity.y : 0
@@ -510,107 +540,107 @@ export default class MainScene extends Phaser.Scene {
       //   Phaser.Input.Keyboard.JustDown(this.cursors.right)
       // )
 
-      if (true) {
-        let mousePosX
-        let mousePosY
-        let isMouseMovement
+      let mousePosX
+      let mousePosY
+      let isMouseMovement
 
-        if (configurations.IS_MOBILE) {
-          mousePosX = this.gamepad.padX
-          mousePosY = this.gamepad.padY
-          // console.log(mousePosX, mousePosY);
-          // if (this.input.activePointer.isDown && (Math.abs(mousePosX) <= PLAYER_TARGET_W * 0.5 || Math.abs(mousePosY) <= configurations.PLAYER_TARGET_H * 0.5)){
-          // 	camera.toggleZoom();
-          // };
-          isMouseMovement = mousePosX && mousePosY
-        } else {
-          mousePosX = this.input.activePointer.x - configurations.WINDOW_CENTER_X
-          mousePosY = configurations.WINDOW_CENTER_Y - this.input.activePointer.y
-          isMouseMovement = this.input.activePointer.isDown && !this.pointerOnPlayer
-        }
+      if (configurations.IS_MOBILE) {
+        mousePosX = this.gamepad.padX
+        mousePosY = this.gamepad.padY
+        // console.log(mousePosX, mousePosY);
+        // if (this.input.activePointer.isDown && (Math.abs(mousePosX) <= PLAYER_TARGET_W * 0.5 || Math.abs(mousePosY) <= configurations.PLAYER_TARGET_H * 0.5)){
+        // 	camera.toggleZoom();
+        // };
+        isMouseMovement = mousePosX && mousePosY
+      } else {
+        mousePosX = this.input.activePointer.x - configurations.WINDOW_CENTER_X
+        mousePosY = configurations.WINDOW_CENTER_Y - this.input.activePointer.y
+        isMouseMovement = this.input.activePointer.isDown && !this.pointerOnPlayer
+      }
 
-        let mouseAngle = isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY])
-        if (
-          this.cursors.left.isDown ||
-          this.cursors.right.isDown ||
-          this.cursors.up.isDown ||
-          this.cursors.down.isDown ||
-          isMouseMovement
-        ) {
-          // camera.setZoom(1);
-          this.camera.zoom == configurations.ZOOM_OUT_LEVEL && this.camera.zoomIn()
-        }
-        if (
-          (this.cursors.left.isDown && this.cursors.up.isDown) ||
-          (isMouseMovement &&
-            mousePosX <= 0 &&
-            mouseAngle >= Math.PI * 0.125 &&
-            mouseAngle <= Math.PI * 0.375)
-        ) {
-          this.player.move(-configurations.OBLIQUE_MOVE_SPEED, -configurations.OBLIQUE_MOVE_SPEED)
-          this.gameDialog.dialogRetrigger = true
-          this.player.anims.play('runLeft', true)
-        } else if (
-          (this.cursors.left.isDown && this.cursors.down.isDown) ||
-          (isMouseMovement &&
-            mousePosX <= 0 &&
-            mouseAngle >= Math.PI * 0.625 &&
-            mouseAngle <= Math.PI * 0.875)
-        ) {
-          this.player.move(-configurations.OBLIQUE_MOVE_SPEED, configurations.OBLIQUE_MOVE_SPEED)
-          this.gameDialog.dialogRetrigger = true
-          this.player.anims.play('runLeft', true)
-        } else if (
-          (this.cursors.right.isDown && this.cursors.up.isDown) ||
-          (isMouseMovement &&
-            mousePosX > 0 &&
-            mouseAngle >= Math.PI * 0.125 &&
-            mouseAngle <= Math.PI * 0.375)
-        ) {
-          this.player.move(configurations.OBLIQUE_MOVE_SPEED, -configurations.OBLIQUE_MOVE_SPEED)
-          this.gameDialog.dialogRetrigger = true
-          this.player.anims.play('runRight', true)
-        } else if (
-          (this.cursors.right.isDown && this.cursors.down.isDown) ||
-          (isMouseMovement &&
-            mousePosX > 0 &&
-            mouseAngle >= Math.PI * 0.625 &&
-            mouseAngle <= Math.PI * 0.875)
-        ) {
-          this.player.move(configurations.OBLIQUE_MOVE_SPEED, configurations.OBLIQUE_MOVE_SPEED)
-          this.gameDialog.dialogRetrigger = true
-          this.player.anims.play('runRight', true)
-        } else if (
-          this.cursors.left.isDown ||
-          (isMouseMovement &&
-            mousePosX < 0 &&
-            mouseAngle >= Math.PI * 0.375 &&
-            mouseAngle <= Math.PI * 0.625)
-        ) {
-          this.player.move(-configurations.MOVE_SPEED, 0)
-          this.gameDialog.dialogRetrigger = true
-          this.player.anims.play('runLeft', true)
-        } else if (
-          this.cursors.right.isDown ||
-          (isMouseMovement &&
-            mousePosX > 0 &&
-            mouseAngle >= Math.PI * 0.375 &&
-            mouseAngle <= Math.PI * 0.625)
-        ) {
-          this.player.move(configurations.MOVE_SPEED, 0)
-          this.gameDialog.dialogRetrigger = true
-          this.player.anims.play('runRight', true)
-        } else if (this.cursors.down.isDown || (isMouseMovement && mouseAngle >= Math.PI * 0.875)) {
-          this.player.move(0, configurations.MOVE_SPEED)
-          this.gameDialog.dialogRetrigger = true
-          this.player.anims.play('runDown', true)
-        } else if (this.cursors.up.isDown || (isMouseMovement && mouseAngle <= Math.PI * 0.125)) {
-          this.player.move(0, -configurations.MOVE_SPEED)
-          this.gameDialog.dialogRetrigger = true
-          this.player.anims.play('runUp', true)
-        } else {
-          this.player.stopMovement()
-        }
+      let mouseAngle = isMouseMovement && vectorAngle([0, 1], [mousePosX, mousePosY])
+      if (
+        this.cursors.left.isDown ||
+        this.cursors.right.isDown ||
+        this.cursors.up.isDown ||
+        this.cursors.down.isDown ||
+        isMouseMovement
+      ) {
+        // camera.setZoom(1);
+        this.player.isStopping = false
+        this.camera.zoom == configurations.ZOOM_OUT_LEVEL && this.camera.zoomIn()
+      }
+      if (
+        (this.cursors.left.isDown && this.cursors.up.isDown) ||
+        (isMouseMovement &&
+          mousePosX <= 0 &&
+          mouseAngle >= Math.PI * 0.125 &&
+          mouseAngle <= Math.PI * 0.375)
+      ) {
+        this.player.move(-configurations.OBLIQUE_MOVE_SPEED, -configurations.OBLIQUE_MOVE_SPEED)
+        this.gameDialog.dialogRetrigger = true
+        this.player.anims.play('runLeft', true)
+      } else if (
+        (this.cursors.left.isDown && this.cursors.down.isDown) ||
+        (isMouseMovement &&
+          mousePosX <= 0 &&
+          mouseAngle >= Math.PI * 0.625 &&
+          mouseAngle <= Math.PI * 0.875)
+      ) {
+        this.player.move(-configurations.OBLIQUE_MOVE_SPEED, configurations.OBLIQUE_MOVE_SPEED)
+        this.gameDialog.dialogRetrigger = true
+        this.player.anims.play('runLeft', true)
+      } else if (
+        (this.cursors.right.isDown && this.cursors.up.isDown) ||
+        (isMouseMovement &&
+          mousePosX > 0 &&
+          mouseAngle >= Math.PI * 0.125 &&
+          mouseAngle <= Math.PI * 0.375)
+      ) {
+        this.player.move(configurations.OBLIQUE_MOVE_SPEED, -configurations.OBLIQUE_MOVE_SPEED)
+        this.gameDialog.dialogRetrigger = true
+        this.player.anims.play('runRight', true)
+      } else if (
+        (this.cursors.right.isDown && this.cursors.down.isDown) ||
+        (isMouseMovement &&
+          mousePosX > 0 &&
+          mouseAngle >= Math.PI * 0.625 &&
+          mouseAngle <= Math.PI * 0.875)
+      ) {
+        this.player.move(configurations.OBLIQUE_MOVE_SPEED, configurations.OBLIQUE_MOVE_SPEED)
+        this.gameDialog.dialogRetrigger = true
+        this.player.anims.play('runRight', true)
+      } else if (
+        this.cursors.left.isDown ||
+        (isMouseMovement &&
+          mousePosX < 0 &&
+          mouseAngle >= Math.PI * 0.375 &&
+          mouseAngle <= Math.PI * 0.625)
+      ) {
+        this.player.move(-configurations.MOVE_SPEED, 0)
+        this.gameDialog.dialogRetrigger = true
+        this.player.anims.play('runLeft', true)
+      } else if (
+        this.cursors.right.isDown ||
+        (isMouseMovement &&
+          mousePosX > 0 &&
+          mouseAngle >= Math.PI * 0.375 &&
+          mouseAngle <= Math.PI * 0.625)
+      ) {
+        this.player.move(configurations.MOVE_SPEED, 0)
+        this.gameDialog.dialogRetrigger = true
+        this.player.anims.play('runRight', true)
+      } else if (this.cursors.down.isDown || (isMouseMovement && mouseAngle >= Math.PI * 0.875)) {
+        this.player.move(0, configurations.MOVE_SPEED)
+        this.gameDialog.dialogRetrigger = true
+        this.player.anims.play('runDown', true)
+      } else if (this.cursors.up.isDown || (isMouseMovement && mouseAngle <= Math.PI * 0.125)) {
+        this.player.move(0, -configurations.MOVE_SPEED)
+        this.gameDialog.dialogRetrigger = true
+        this.player.anims.play('runUp', true)
+      } else {
+        this.player.isStopping = true
+        this.player.stopMovement()
       }
     }
   }

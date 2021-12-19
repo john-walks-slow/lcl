@@ -9,6 +9,7 @@ export default class ObjectData {
     this.map = []
     this.soundMap = []
     this.itemList = []
+    this.zeroDistance
     this.list = list
       .sort((a, b) => b.birthday - a.birthday)
       .filter(o => configurations.TIMESTAMP - o.birthday > configurations.TIME_DELAY)
@@ -63,7 +64,7 @@ export default class ObjectData {
       )
       // *  zFactorOffset
       // o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) * zFactorOffset * (2 + o.seed[1]) / 3;
-      o.distance = (o.distance * 7) ** 0.8
+      o.distance = configurations.calculateDistance(o.distance)
 
       let minDistance = (configurations.PLAYER_TARGET_H + o.displaySize) / 0.7 / 2
       if (o.distance < minDistance) {
@@ -96,11 +97,12 @@ export default class ObjectData {
           this.map.pushNew(this.map.getZone(i), i)
         }
       }
-      GenerativeMusic.setupSound(o)
+      // GenerativeMusic.setupSound(o)
       this.map.pushNew(o.zone, o)
       this.soundMap.pushNew(this.soundMap.getZone(o), o)
     })
     console.timeEnd('setupObject')
     console.log(this.map)
+    this.zeroDistance = this.list[this.list.length - 1].distance
   }
 }
