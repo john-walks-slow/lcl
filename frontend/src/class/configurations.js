@@ -5,13 +5,13 @@ class Configurations {
     this.TIMESTAMP = Date.parse(new Date())
     this.DAY = {}
     this.DAY.stamp = this.DEV_MODE
-      ? Math.random() * 100
+      ? Math.floor(this.TIMESTAMP / (24 * 60 * 60 * 1000))
       : Math.floor(this.TIMESTAMP / (24 * 60 * 60 * 1000))
-    this.DAY._id = this.DAY.toString()
-    this.DAY.random = seededRandomKept(this.DAY._id.toString())
+    this.DAY._id = this.DAY.stamp.toString()
+    this.DAY.random = seededRandomKept(this.DAY._id)
     this.DAY.wRandom = customWRandom(this.DAY.random)
     this.DAY.intRandom = customIntRandom(this.DAY.random)
-    this.DAY.flow = [this.DAY.intRandom(-10, 10), this.DAY.intRandom(-10, 10)]
+    this.DAY.flow = [this.DAY.intRandom(-4, 4), this.DAY.intRandom(-4, 4)]
 
     this.DEV_MODE = process.env.NODE_ENV == 'development'
     this.RESOLUTION = 1
@@ -46,6 +46,7 @@ class Configurations {
     ]
 
     this.updateConfigurations()
+    this.SOUND_GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W)
     this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL / 3
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / 3
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL/2;

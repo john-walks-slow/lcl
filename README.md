@@ -78,6 +78,9 @@ LCL 是一个空间化的留言板。你可以在里留下会说话的像素物�
 ##### 当前版本
 
 - [ ] :bug: 程序化音乐 start time 报错
+- [ ] :musical_note: 性能 - 不考虑动态加载
+- [ ] :musical_note: 有些没声音
+- [ ] :musical_note: 卡！！！
 - [ ] :musical_note: 不难听的程序化音乐
   - [ ] :musical_note: 试试不同音色
   - [ ] :musical_note: 调整混音

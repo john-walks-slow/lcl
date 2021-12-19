@@ -31,7 +31,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     //       x: configurations.WINDOW_CENTER_X,
     //       y: configurations.WINDOW_CENTER_Y,
     //     })
-    //       .fillCircle(0, 0, 800)
+    //       .fillCircle(0, 0, 400)
     //       .setAlpha(1)
     //   )
     // )

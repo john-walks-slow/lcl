@@ -2,38 +2,18 @@ import { seededRandom } from '../utils/random'
 import { secureStorage } from '../utils/storage'
 import { range } from '../utils/utils'
 import configurations from './configurations'
-
+import GenerativeMusic from './GenerativeMusic'
+import ObjectMap from './ObjectMap'
 export default class ObjectData {
   constructor(list) {
     this.map = []
+    this.soundMap = []
     this.itemList = []
     this.list = list
       .sort((a, b) => b.birthday - a.birthday)
       .filter(o => configurations.TIMESTAMP - o.birthday > configurations.TIME_DELAY)
-    this.map.getZone = (player, gridSize = configurations.GRID_SIZE) => {
-      return [Math.ceil(player.x / gridSize), Math.ceil(player.y / gridSize)]
-    }
-    this.map.getNearBy = (zone, scope = 1) => {
-      if (!zone) {
-        return []
-      }
-      let results = []
-      range(-scope, scope).forEach(v1 => {
-        range(-scope, scope).forEach(v2 => {
-          results.push([zone[0] + v1, zone[1] + v2])
-        })
-      })
-      return results
-    }
-    this.map.pushNew = (zone, o) => {
-      if (!this.map[zone[0]]) {
-        this.map[zone[0]] = []
-      }
-      if (!this.map[zone[0]][zone[1]]) {
-        this.map[zone[0]][zone[1]] = []
-      }
-      this.map[zone[0]][zone[1]].push(o)
-    }
+    this.map = new ObjectMap(configurations.GRID_SIZE)
+    this.soundMap = new ObjectMap(configurations.SOUND_GRID_SIZE)
     this.playerData = secureStorage.getItem('player')
   }
   setupObject() {
@@ -91,13 +71,9 @@ export default class ObjectData {
       }
       o.x = Math.cos(o.rad) * o.distance
       o.y = Math.sin(o.rad) * o.distance
+      o.zone = this.map.getZone(o)
       // (o.zFactor > 1) && (o.zFactor =1.4);
       // (o.zFactor < 1) && (o.zFactor =0.6);
-      o.zone = [
-        Math.ceil(o.x / configurations.GRID_SIZE),
-        Math.ceil(o.y / configurations.GRID_SIZE),
-      ]
-
       o.flow = [
         (configurations.DAY.intRandom(-5, 5) + configurations.DAY.flow[0]) * o.zFactor ** 3,
         (configurations.DAY.intRandom(-5, 5) + configurations.DAY.flow[1]) * o.zFactor ** 3,
@@ -113,17 +89,16 @@ export default class ObjectData {
           let distance = i.seed[1] * configurations.RANDOM_ZONE_W + o.distance
           i.x = Math.cos(rad) * distance
           i.y = Math.sin(rad) * distance
+          i.zone = this.map.getZone(i)
           i.displayWidth = configurations.OBJECT_W.XS
           i.displayWidth = Math.max(Math.round(i.displayWidth / 17), 1) * 17
-          i.zone = [
-            Math.ceil(i.x / configurations.GRID_SIZE),
-            Math.ceil(i.y / configurations.GRID_SIZE),
-          ]
           i.type = 'item'
-          this.map.pushNew(i.zone, i)
+          this.map.pushNew(this.map.getZone(i), i)
         }
       }
+      GenerativeMusic.setupSound(o)
       this.map.pushNew(o.zone, o)
+      this.soundMap.pushNew(this.soundMap.getZone(o), o)
     })
     console.timeEnd('setupObject')
     console.log(this.map)

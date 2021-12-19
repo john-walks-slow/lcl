@@ -218,7 +218,6 @@ export default class MainScene extends Phaser.Scene {
     })
     let ownItems = secureStorage.getItem('player').ownItems
 
-    this.previousZone = null
     this.objectData.list.forEach(o => {
       o.isAnimate
         ? this.anims.create({
@@ -424,6 +423,12 @@ export default class MainScene extends Phaser.Scene {
     // emitter.minRotation = 0;
     // emitter.maxRotation = 40;
     // emitter.start();
+    setInterval(() => {
+      this.objectGroup.updateObjects()
+    }, 50)
+    setInterval(() => {
+      GenerativeMusic.updateSound(150)
+    }, 150)
   }
   setupKeyboard() {
     this.input.keyboard.on('keydown-B', () => {
@@ -444,13 +449,13 @@ export default class MainScene extends Phaser.Scene {
   }
 
   update(time, delta) {
-    GenerativeMusic.updateSound(this)
     // console.log(this.input.activePointer.x, this.input.activePointer.y);
     // console.log(this.gamepad.padX, this.gamepad.padY);
 
     // this.game.canvas.style.filter = this.filter(this.player.x, this.player.y);
     // console.log(this.filter(this.player.x, this.player.y));
     // console.log(this.player.body);
+
     let notTouching = this.player.body.touching.none
     let velocityX = notTouching ? this.player.body.velocity.x : 0
     let velocityY = notTouching ? this.player.body.velocity.y : 0
@@ -462,7 +467,11 @@ export default class MainScene extends Phaser.Scene {
     )
     this.visibleObjects.forEach(({ gameObject }) => {
       if (gameObject.oData && gameObject.oData.type == 'object') {
-        gameObject.setVelocity(0, 0)
+        try {
+          gameObject.setVelocity(0, 0)
+        } catch (error) {
+          console.log(gameObject, error)
+        }
         // if (this.player.body.velocity.x == 0 && this.player.body.velocity.y == 0) {
         //   return
         // }
@@ -479,9 +488,13 @@ export default class MainScene extends Phaser.Scene {
             this.player.body.velocity.y * (gameObject.oData.zFactor - 1)) /
             1000) *
           delta
-        // GenerativeMusic.startLoop(gameObject.oData)
+        // GenerativeMusic.updateSound(this, gameObject.oData, delta)
       }
     })
+    // this.objectGroup.children.each(o => {
+    //   GenerativeMusic.updateSound(this, o.oData, delta)
+    // })
+
     if (
       this.gameDialog.inDialog ||
       this.itemDialog.inDialog ||
@@ -498,19 +511,6 @@ export default class MainScene extends Phaser.Scene {
       // )
 
       if (true) {
-        let currentZone = this.objectData.map.getZone(this.player)
-        // console.log(currentZone,this.previousZone);
-        if (
-          !(
-            this.previousZone &&
-            currentZone[0] == this.previousZone[0] &&
-            currentZone[1] == this.previousZone[1]
-          )
-        ) {
-          this.objectGroup.updateObjects(this.previousZone, currentZone)
-
-          this.previousZone = currentZone
-        }
         let mousePosX
         let mousePosY
         let isMouseMovement

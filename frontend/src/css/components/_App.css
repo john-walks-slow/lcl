@@ -168,8 +168,11 @@
   display: none;
   position: fixed;
   background-color: #131313;
+  z-index: 99999;
+  color: white;
   width: 100vw;
   height: 100vh;
+  padding: 10vw;
 }
 .error__div.show {
   opacity: 1;
