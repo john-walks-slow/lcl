@@ -57,7 +57,7 @@ const setSeed = async (context) => {
 const generateItem = async (context) => {
   context.data.item = false
   // if (ownItems.includes(context.data._id)) { return; }
-  let itemId = Math.floor(Math.random() * 25)
+  let itemId = Math.floor(Math.random() * 16)
   if (context.data.dialog.length == 0 || itemId > 4) {
     return context
   }
