@@ -70,7 +70,7 @@ class GenerativeMusic {
       // this.effectNodes.stereoWidener2,
       // this.effectNodes.compressor,
       this.effectNodes.compressor2,
-      // this.effectNodes.limiter,
+      this.effectNodes.limiter,
       this.channels.master
     )
     // .connect(this.effectNodes.stereoWidener)

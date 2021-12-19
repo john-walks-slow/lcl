@@ -77,22 +77,22 @@
 
 ##### 当前版本
 
-- [ ] :bug: 程序化音乐 start time 报错
-- [ ] :musical_note: 性能 - 不考虑动态加载
-- [ ] :musical_note: 有些没声音
-- [ ] :musical_note: 卡！！！
-- [ ] :musical_note: 不难听的程序化音乐
-  - [ ] :musical_note: 试试不同音色
-  - [ ] :musical_note: 调整混音
-  - [ ] :musical_note: 性能优化
-  - [ ] :musical_note: 试试不同算法
-- [ ] :wrench: 调试参数
-- [ ] :zap: 扩大按钮面积
+- [ ] :musical_note: 使用 worker api 继续优化性能
+- [x] :rocket: 邀请第一批用户
+- [x] :musical_note: 重构，大量性能优化，动态挂载 synth，仅更新可听见的 node，新手机上基本不卡
+- [x] :musical_note: 完成 pannernode 替代方案
+- [x] :musical_note: 每天会随机生成调性
+- [x] :musical_note: 和弦和旋律的时值更有随机性
+- [x] :musical_note: start time 报错
+- [x] :musical_note: 调整距离算法
+- [x] :musical_note: 增加混响和延迟
+- [x] :musical_note: 尝试不同音色
+- [x] :musical_note: 根据对象参数调整效果
+- [x] :wrench: 调试参数，
+- [x] :sparkles: 恒定的坐标系统
+- [x] :zap: 扩大按钮面积
 - [x] :art: 修复字体缺失符号，增加日语、英语、繁体字
-- [ ] :sparkles: 恒定的坐标系统
 - [x] :sparkles: 现在只有视野范围内的对象会根据 zfactor 更新坐标
-- [ ] :shirt: 邀请第一批用户
-- [ ] :package: 安卓版开发（！）
 - [x] :sparkles: 尝试粒子（否决，用户可以自行创建粒子）
 - [x] :fire: 字体加载超级慢，更换字体
 - [x] :sparkles: 重新设计颜料色板，默认赠送 8 色，奖励颜色从 64 色中抽取
@@ -116,6 +116,9 @@
 ##### 今后
 
 - [ ] :package: PC 版开发
+- [ ] :package: 安卓版开发
+- [x] :musical_note: 根据对象参数调整效果
+- [x] :musical_note: 尝试不同音色
 - [ ] :sparkles: i18n
 - [ ] :sparkles: 自动翻译
 - [ ] :shirt: SEO
