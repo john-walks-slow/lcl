@@ -587,7 +587,7 @@ class GenerativeMusic {
       default:
         o.synth = new Tone.Synth({
           oscillator: { type: 'sine', volume: 0 },
-          envelope: { attack: '16n', release: '2n' },
+          envelope: { attack: this.N4_LENGTH / 100, release: '2n' },
         })
         o.synth.fadeFactor = this.melodyFadeFactor
         o.synth.minSight = this.melodyMinSight
