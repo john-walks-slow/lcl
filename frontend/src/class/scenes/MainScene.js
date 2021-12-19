@@ -141,9 +141,9 @@ export default class MainScene extends Phaser.Scene {
         this.player.anims.play('standDown', true)
       }
       this.player.move(0, 0)
-      // if (configurations.DEV_MODE) {
-      // this.player.move(configurations.DAY.flow[0] * 3, configurations.DAY.flow[1] * 3)
-      // }
+      if (configurations.DEV_MODE) {
+        this.player.move(configurations.DAY.flow[0] * 3, configurations.DAY.flow[1] * 3)
+      }
     }
 
     this.player.setInteractive()

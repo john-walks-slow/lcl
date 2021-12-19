@@ -9,9 +9,10 @@ class Configurations {
     this.DEV_MODE = process.env.NODE_ENV == 'development'
     this.TIMESTAMP = Date.parse(new Date())
     this.DAY = {}
-    this.DAY.stamp = this.DEV_MODE
-      ? Math.random()
-      : Math.floor(this.TIMESTAMP / (24 * 60 * 60 * 1000))
+    this.DAY.stamp = Math.floor(this.TIMESTAMP / (24 * 60 * 60 * 1000))
+    // this.DAY.stamp = this.DEV_MODE
+    // ? Math.random()
+    // : Math.floor(this.TIMESTAMP / (24 * 60 * 60 * 1000))
     this.DAY._id = this.DAY.stamp.toString()
     this.DAY.random = seededRandomKept(this.DAY._id)
     this.DAY.wRandom = customWRandom(this.DAY.random)
@@ -38,7 +39,7 @@ class Configurations {
     this.RANDOM_ZONE_W = this.PLAYER_TARGET_H * 5
     this.DAY_OFFSET = this.PLAYER_TARGET_H * 1
     this.DENSITY_OFFSET = this.PLAYER_TARGET_H * 1
-    this.DENSITY_FACTOR = 0.74
+    this.DENSITY_FACTOR = 0.72
     this.ACTIVITY_OFFSET = 1
     this.MOVE_SPEED = this.PLAYER_TARGET_H * 1.3
     this.OBLIQUE_MOVE_SPEED = Math.round(this.MOVE_SPEED * 0.74)

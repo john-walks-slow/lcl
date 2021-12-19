@@ -4,8 +4,10 @@ import { customIntRandom, customWRandom, seededRandomKept } from '../utils/rando
 import { range } from '../utils/utils'
 import configurations from './configurations'
 import SpatialPanner from './SpatialPanner'
+
 class GenerativeMusic {
   constructor() {
+    console.log(Tone.getDestination().volume)
     this.soundList = []
     const initTone = () => {
       // const context = new Tone.Context({ latencyHint: 4000 })
@@ -30,10 +32,10 @@ class GenerativeMusic {
     this.chordMinSight = 2 * configurations.PLAYER_TARGET_H
     this.chordMaxSight = 30 * configurations.PLAYER_TARGET_H
     this.channels = {
-      melody: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
-      chord: new Tone.Channel({ volume: -26, pan: 0, channelCount: 2 }),
+      melody: new Tone.Channel({ volume: -25, pan: 0, channelCount: 2 }),
+      chord: new Tone.Channel({ volume: -45, pan: 0, channelCount: 2 }),
       effects: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
-      master: new Tone.Channel({ volume: 0, pan: 0, channelCount: 2 }),
+      master: new Tone.Channel({ volume: -5, pan: 0, channelCount: 2 }),
     }
     this.channels.master.connect(Tone.getDestination())
     this.effectNodes = {
@@ -42,9 +44,9 @@ class GenerativeMusic {
         wet: 0.6,
       }),
       delay: new Tone.FeedbackDelay({
-        delayTime: '8n.',
+        delayTime: '4n',
         maxDelayTime: '1m',
-        feedback: 0.2,
+        feedback: 0.25,
       }),
       stereoWidener: new Tone.StereoWidener(0.7),
       stereoWidener2: new Tone.StereoWidener(0.96),
@@ -61,7 +63,7 @@ class GenerativeMusic {
         attack: 0.02,
       }),
 
-      limiter: new Tone.Limiter(-4),
+      limiter: new Tone.Limiter(-2),
     }
     this.channels.effects.chain(
       this.effectNodes.delay,
@@ -69,7 +71,7 @@ class GenerativeMusic {
       // this.effectNodes.stereoWidener,
       // this.effectNodes.stereoWidener2,
       // this.effectNodes.compressor,
-      this.effectNodes.compressor2,
+      // this.effectNodes.compressor2,
       this.effectNodes.limiter,
       this.channels.master
     )
