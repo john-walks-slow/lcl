@@ -39,9 +39,9 @@ class Configurations {
     this.RANDOM_ZONE_W = this.PLAYER_TARGET_H * 5
     this.DAY_OFFSET = this.PLAYER_TARGET_H * 1
     this.DENSITY_OFFSET = this.PLAYER_TARGET_H * 1
-    this.DENSITY_FACTOR = 0.72
+    this.DENSITY_FACTOR = 0.73
     this.ACTIVITY_OFFSET = 1
-    this.MOVE_SPEED = this.PLAYER_TARGET_H * 1.3
+    this.MOVE_SPEED = this.PLAYER_TARGET_H
     this.OBLIQUE_MOVE_SPEED = Math.round(this.MOVE_SPEED * 0.74)
     this.ITEM_LIST = [
       { name: 'boxes', dialog: '哇！你捡到了一个箱子' },
@@ -60,7 +60,7 @@ class Configurations {
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL;
   }
   calculateDistance(d) {
-    return (d * 15) ** this.DENSITY_FACTOR
+    return (d * 16) ** this.DENSITY_FACTOR
   }
   updateConfigurations() {
     // Actually the size of the canvas,not the window
