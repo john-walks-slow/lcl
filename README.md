@@ -78,7 +78,9 @@
 ##### 当前版本
 
 - [ ] :musical_note: 使用 worker api 继续优化性能
-- [x] :rocket: 邀请第一批用户
+- [ ] :rocket: 研究到底性能的瓶颈在哪里
+- [x] :ambulance: jsdelivr 出问题了，增加 cdn fallback
+- [x] :alien: 邀请第一批用户
 - [x] :musical_note: 重构，大量性能优化，动态挂载 synth，仅更新可听见的 node，新手机上基本不卡
 - [x] :musical_note: 完成 pannernode 替代方案
 - [x] :musical_note: 每天会随机生成调性
@@ -88,7 +90,7 @@
 - [x] :musical_note: 增加混响和延迟
 - [x] :musical_note: 尝试不同音色
 - [x] :musical_note: 根据对象参数调整效果
-- [x] :wrench: 调试参数，
+- [x] :wrench: 调试参数
 - [x] :sparkles: 恒定的坐标系统
 - [x] :zap: 扩大按钮面积
 - [x] :art: 修复字体缺失符号，增加日语、英语、繁体字

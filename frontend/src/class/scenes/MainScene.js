@@ -92,7 +92,7 @@ export default class MainScene extends Phaser.Scene {
     })
     setTimeout(() => {
       this.location.setText('...')
-    }, 100)
+    }, 200)
     this.location.updateLocation = () => {
       this.location.rad =
         Math.round(Phaser.Math.Angle.Between(0, 0, this.player.x, this.player.y) * 100) / 100
@@ -463,7 +463,7 @@ export default class MainScene extends Phaser.Scene {
     setTimeout(() => {
       this.camera.fadeIn()
       this.camera.initAnim.play()
-    }, 150)
+    }, 250)
   }
   setupKeyboard() {
     this.input.keyboard.on('keydown-B', () => {

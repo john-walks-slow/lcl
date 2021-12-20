@@ -123,12 +123,24 @@ module.exports = (() => {
         clientsClaim: true,
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 50000000,
-        include: [/\.(ttf|png|webmanifest|ico|html)$/],
+        include: [/\.(ttf|png|webmanifest|ico|html|js)$/],
+        exclude: [/main\.bundle\.js/],
         // additionalManifestEntries: Object.values(cdn),
         runtimeCaching: [
+          // {
+          //   // Match any request that ends with .png, .jpg, .jpeg or .svg.
+          //   urlPattern: /\.(?:js)$/,
+          //   // Apply a cache-first strategy.
+          //   handler: 'NetworkFirst',
+          //   options: {
+          //     // Use a custom cache name.
+          //     cacheName: 'app',
+          //     // Only cache 10 images.
+          //   },
+          // },
           {
             // Match any request that ends with .png, .jpg, .jpeg or .svg.
-            urlPattern: /\.(?:js)$/,
+            urlPattern: /main\.bundle\.js/,
             // Apply a cache-first strategy.
             handler: 'NetworkFirst',
             options: {
