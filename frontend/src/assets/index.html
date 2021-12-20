@@ -28,6 +28,7 @@
 </head>
 
 <body style="background-color: #000000;">
+
   <script>
     // window.onerror = (message) => { alert(message) }
     if ('serviceWorker' in navigator) {
@@ -45,7 +46,11 @@
       });
     }
   </script>
-  <div id="app"></div>
+  <div id="app">
+    <div class="loading-div" style="background-color: #000000;z-index: -999;color:white;font-size: 1em; padding: 15px;">
+      正在加载资源... (首次加载需要10秒左右)
+    </div>
+  </div>
 </body>
 
 </html>

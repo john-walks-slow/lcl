@@ -88,11 +88,11 @@ export default class MainScene extends Phaser.Scene {
     this.updateUIMethod(this)
     this.location = this.add.text(15, 15, '', {
       color: 0xffffff,
-      fontFamily: 'pixelJP',
+      fontFamily: 'pixelTitle',
     })
     setTimeout(() => {
       this.location.setText('...')
-    }, 200)
+    }, 400)
     this.location.updateLocation = () => {
       this.location.rad =
         Math.round(Phaser.Math.Angle.Between(0, 0, this.player.x, this.player.y) * 100) / 100

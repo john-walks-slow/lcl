@@ -16,6 +16,19 @@ const bigChunks = {
   // lodash: 'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js',
   tone: 'https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js',
 }
+
+const publicRes = [
+  '/android-chrome-192x192.png',
+  '/android-chrome-256x256.png',
+  '/apple-touch-icon.png',
+  '/browserconfig.xml',
+  '/favicon-16x16.png',
+  '/favicon-32x32.png',
+  '/favicon.ico',
+  '/manifest.webmanifest',
+  '/mstile-150x150.png',
+  '/safari-pinned-tab.svg',
+]
 module.exports = (() => {
   let production = process.env.NODE_ENV == 'production'
   let platform = process.env.BUILD_PLATFORM
@@ -117,15 +130,16 @@ module.exports = (() => {
           // 'lodash': '_',
         },
     plugins: [
-      production ? new CleanWebpackPlugin() : new BundleAnalyzerPlugin(),
+      production ? false : new BundleAnalyzerPlugin(),
+      new CleanWebpackPlugin(),
       new CopyWebpackPlugin([{ from: 'src/assets/public_res', to: outputPath }]),
       new WorkboxPlugin.GenerateSW({
         clientsClaim: true,
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 50000000,
-        include: [/\.(ttf|png|webmanifest|ico|html|js)$/],
+        include: [/\.(ttf|png|webmanifest|ico|html|js|xml)$/],
         exclude: [/main\.bundle\.js/],
-        // additionalManifestEntries: Object.values(cdn),
+        additionalManifestEntries: [...publicRes],
         runtimeCaching: [
           // {
           //   // Match any request that ends with .png, .jpg, .jpeg or .svg.
@@ -170,7 +184,7 @@ module.exports = (() => {
         'process.env': JSON.stringify(process.env),
         'process.browser': true,
       }),
-    ],
+    ].filter(Boolean),
     optimization: {
       splitChunks: {
         chunks: 'all',
