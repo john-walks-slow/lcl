@@ -22,6 +22,7 @@
     "start": "node src/",
     "http-server": "http-server ./public",
     "dev": "concurrently \"cd frontend && npm run dev\" \"npm run start\"",
+    "testFlight": "concurrently \"cd frontend && npm run build\" \"npm run start\"",
     "build": "cd frontend && npm ci --include=dev && npm run build",
     "clearDB": "rm data/objects.db",
     "lint": "eslint src",

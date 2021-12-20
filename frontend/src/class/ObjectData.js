@@ -58,13 +58,11 @@ export default class ObjectData {
       o.distance = Math.max(
         -configurations.RANDOM_ZONE_W / 2 +
           o.seed[1] * configurations.RANDOM_ZONE_W +
-          densityOffset +
-          dateOffset,
+          configurations.calculateDistance(densityOffset + dateOffset),
         0
       )
       // *  zFactorOffset
       // o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) * zFactorOffset * (2 + o.seed[1]) / 3;
-      o.distance = configurations.calculateDistance(o.distance)
 
       let minDistance = (configurations.PLAYER_TARGET_H + o.displaySize) / 0.7 / 2
       if (o.distance < minDistance) {
@@ -76,8 +74,12 @@ export default class ObjectData {
       // (o.zFactor > 1) && (o.zFactor =1.4);
       // (o.zFactor < 1) && (o.zFactor =0.6);
       o.flow = [
-        (configurations.DAY.intRandom(-5, 5) + configurations.DAY.flow[0]) * o.zFactor ** 3,
-        (configurations.DAY.intRandom(-5, 5) + configurations.DAY.flow[1]) * o.zFactor ** 3,
+        (configurations.DAY.intRandom(-configurations.FLOW_SPEED, configurations.FLOW_SPEED) +
+          configurations.DAY.flow[0]) *
+          o.zFactor ** 1.5,
+        (configurations.DAY.intRandom(-configurations.FLOW_SPEED, configurations.FLOW_SPEED) +
+          configurations.DAY.flow[1]) *
+          o.zFactor ** 1.5,
       ]
 
       o.type = 'object'

@@ -67,6 +67,7 @@ export default class MainScene extends Phaser.Scene {
   create() {
     // this.location.setText()
     console.log('create')
+    this.physics.world.setFPS(30)
     // console.log(this.input.activePointer);
     this.startPosX = 0
     this.startPosY = 0
@@ -142,7 +143,7 @@ export default class MainScene extends Phaser.Scene {
       }
       this.player.move(0, 0)
       if (configurations.DEV_MODE) {
-        this.player.move(configurations.DAY.flow[0] * 3, configurations.DAY.flow[1] * 3)
+        this.player.move(configurations.DAY.flow[0], configurations.DAY.flow[1])
       }
     }
 
@@ -457,8 +458,8 @@ export default class MainScene extends Phaser.Scene {
       this.objectGroup.updateObjects()
     }, 50)
     setInterval(() => {
-      GenerativeMusic.updateSound(150)
-    }, 150)
+      GenerativeMusic.updateSound(250)
+    }, 250)
     setTimeout(() => {
       this.camera.fadeIn()
       this.camera.initAnim.play()

@@ -17,8 +17,11 @@ class Configurations {
     this.DAY.random = seededRandomKept(this.DAY._id)
     this.DAY.wRandom = customWRandom(this.DAY.random)
     this.DAY.intRandom = customIntRandom(this.DAY.random)
-    this.DAY.flow = [this.DAY.intRandom(-6, 6), this.DAY.intRandom(-6, 6)]
-
+    this.FLOW_SPEED = 10
+    this.DAY.flow = [
+      this.DAY.intRandom(-this.FLOW_SPEED, this.FLOW_SPEED),
+      this.DAY.intRandom(-this.FLOW_SPEED, this.FLOW_SPEED),
+    ]
     this.RESOLUTION = 1
     this.PLAYER_TARGET_W = 40 * this.RESOLUTION
     this.PLAYER_TARGET_H = 46 * this.RESOLUTION

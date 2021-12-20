@@ -5,9 +5,17 @@ const WorkboxPlugin = require('workbox-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+var HtmlWebpackSkipAssetsPlugin = require('html-webpack-skip-assets-plugin')
+  .HtmlWebpackSkipAssetsPlugin
 
 const path = require('path')
-
+const bigChunks = {
+  phaser: 'https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js',
+  react: 'https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js',
+  'react-dom': 'https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js',
+  // lodash: 'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js',
+  tone: 'https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js',
+}
 module.exports = (() => {
   let production = process.env.NODE_ENV == 'production'
   let platform = process.env.BUILD_PLATFORM
@@ -25,7 +33,10 @@ module.exports = (() => {
   return {
     mode: production ? 'production' : 'development',
     devtool: production ? false : 'cheap-module-source-map',
-    entry: ['babel-polyfill', './src/index.jsx', './src/libs.js'],
+    entry: {
+      polyfill: 'babel-polyfill',
+      main: './src/index.jsx',
+    },
     output: {
       path: outputPath,
       publicPath: '/',
@@ -113,13 +124,7 @@ module.exports = (() => {
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 50000000,
         include: [/\.(ttf|png|webmanifest|ico|html)$/],
-        additionalManifestEntries: [
-          'https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js',
-          'https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js',
-          'https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js',
-          'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js',
-          'https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js',
-        ],
+        // additionalManifestEntries: Object.values(cdn),
         runtimeCaching: [
           {
             // Match any request that ends with .png, .jpg, .jpeg or .svg.
@@ -142,9 +147,13 @@ module.exports = (() => {
         ],
       }),
       new HtmlWebpackPlugin({
+        excludeAssets: [/.*\.fallback\.bundle\.js/],
         template: 'src/assets/index.html',
         inject: true,
+        minify: 'auto',
       }),
+      new HtmlWebpackSkipAssetsPlugin(),
+
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(process.env),
         'process.browser': true,
@@ -153,8 +162,28 @@ module.exports = (() => {
     optimization: {
       splitChunks: {
         chunks: 'all',
-      },
+        // maxInitialRequests: Infinity,
+        // minSize: 0,
+        cacheGroups: {
+          bigChunks: {
+            test: module => {
+              const packageName = module?.context?.match(
+                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+              )?.[1]
+              return packageName && Object.keys(bigChunks).includes(packageName)
+            },
+            name(module) {
+              // get the name. E.g. node_modules/packageName/not/this/part.js
+              // or node_modules/packageName
+              const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
 
+              // npm package names are URL-safe, but some servers don't like @ symbols
+              return `${packageName.replace('@', '')}`
+            },
+            enforce: true,
+          },
+        },
+      },
       minimizer: production
         ? [
             new TerserPlugin({

@@ -136,7 +136,7 @@ const Game = ({ dispatch, isShown }) => {
           // scale: { mode: Phaser.Scale.FIT, },
           parent: 'PHASER_ROOT',
           scene: [loadingScene, mainScene],
-          fps: undefined,
+          fps: 30,
           disableContextMenu: true,
           render: {
             antialias: false,
