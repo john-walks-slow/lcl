@@ -399,49 +399,49 @@ class GenerativeMusic {
     o.random = seededRandomKept(o._id.toString())
     o.wRandom = customWRandom(o.random)
     o.intRandom = customIntRandom(o.random)
-    // switch (o.size) {
-    //   case 'XXL':
-    //     o.sound = 'pad';
-    //     o.tone = -6;
-    //     o.reverb = 0.65;
-    //     o.delay = 0;
-    //     break;
-    //   case 'XL':
-    //     o.sound = 'pad';
-    //     o.tone = -4;
-    //     o.reverb = 0.5;
-    //     o.delay = 0;
-    //     break;
-    //   case 'L':
-    //     o.sound = 'pad';
-    //     o.tone = -2;
-    //     o.reverb = 0.35;
-    //     o.delay = 0;
-    //     break;
-    //   case 'M':
-    //     o.sound = 'piano';
-    //     o.tone = 1;
-    //     o.reverb = 0.1;
-    //     o.delay = 0.1;
-    //     break;
-    //   case 'S':
-    //     o.sound = 'bell';
-    //     o.tone = 3;
-    //     o.reverb = 0.15;
-    //     o.delay = 0.25;
-    //     break;
-    //   case 'XS':
-    //     o.sound = 'bell';
-    //     o.tone = 5;
-    //     o.reverb = 0.2;
-    //     o.delay = 0.4;
-    //     break;
+    switch (o.size) {
+      case 'XXL':
+        o.sound = 'pad'
+        o.tone = -6
+        o.reverb = 0.65
+        o.delay = 0
+        break
+      case 'XL':
+        o.sound = 'pad'
+        o.tone = -4
+        o.reverb = 0.5
+        o.delay = 0
+        break
+      case 'L':
+        o.sound = 'pad'
+        o.tone = -2
+        o.reverb = 0.35
+        o.delay = 0
+        break
+      case 'M':
+        o.sound = 'piano'
+        o.tone = 1
+        o.reverb = 0.1
+        o.delay = 0.1
+        break
+      case 'S':
+        o.sound = 'bell'
+        o.tone = 3
+        o.reverb = 0.15
+        o.delay = 0.25
+        break
+      case 'XS':
+        o.sound = 'bell'
+        o.tone = 5
+        o.reverb = 0.2
+        o.delay = 0.4
+        break
+    }
+    // if (o.isForeground) {
     // }
-    if (o.isForeground) {
-    }
-    if (o.isBackground) {
-      o.sound = 'pad'
-    }
+    // if (o.isBackground) {
+    //   o.sound = 'pad'
+    // }
 
     switch (o.sound) {
       case 'pad':
