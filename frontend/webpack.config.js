@@ -25,7 +25,7 @@ const publicRes = [
   '/favicon-16x16.png',
   '/favicon-32x32.png',
   '/favicon.ico',
-  '/manifest.webmanifest',
+  '/manifest.json',
   '/mstile-150x150.png',
   '/safari-pinned-tab.svg',
 ]
@@ -137,9 +137,9 @@ module.exports = (() => {
         clientsClaim: true,
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 50000000,
-        include: [/\.(ttf|png|webmanifest|ico|html|js|xml)$/],
+        include: [/\.(ttf|png|json|ico|html|js|xml)$/],
         exclude: [/main\.bundle\.js/],
-        additionalManifestEntries: [...publicRes],
+        additionalManifestEntries: [...publicRes].map(r => ({ url: r, revision: '20220106' })),
         runtimeCaching: [
           // {
           //   // Match any request that ends with .png, .jpg, .jpeg or .svg.

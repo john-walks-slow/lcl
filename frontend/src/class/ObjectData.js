@@ -25,7 +25,8 @@ export default class ObjectData {
     let dateOffset = 0
     this.list.forEach((o, i) => {
       dateOffset +=
-        Math.min(14, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) * configurations.DAY_OFFSET
+        Math.min(configurations.MAX_DAY_GAP, (previousDate - o.birthday) / 24 / 60 / 60 / 1000) *
+        configurations.DAY_OFFSET
       previousDate = o.birthday
       o.isTrash = o.dialog.length == 0
       if (!o.isTrash) {
@@ -76,10 +77,10 @@ export default class ObjectData {
       o.flow = [
         (configurations.DAY.intRandom(-configurations.FLOW_SPEED, configurations.FLOW_SPEED) +
           configurations.DAY.flow[0]) *
-          o.zFactor ** 1.5,
+          o.zFactor ** 3,
         (configurations.DAY.intRandom(-configurations.FLOW_SPEED, configurations.FLOW_SPEED) +
           configurations.DAY.flow[1]) *
-          o.zFactor ** 1.5,
+          o.zFactor ** 3,
       ]
 
       o.type = 'object'
@@ -99,7 +100,6 @@ export default class ObjectData {
           this.map.pushNew(this.map.getZone(i), i)
         }
       }
-      GenerativeMusic.setupSound(o)
       this.map.pushNew(o.zone, o)
       this.soundMap.pushNew(this.soundMap.getZone(o), o)
     })

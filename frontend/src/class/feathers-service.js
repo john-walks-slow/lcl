@@ -2911,7 +2911,7 @@ switch (process.env.BUILD_PLATFORM) {
 }
 
 export let objectService
-if (process.env.NODE_ENV == 'development' && false) {
+if (process.env.NODE_ENV == 'development') {
   objectService = {
     find: async () => MOCK_OBJECT,
 

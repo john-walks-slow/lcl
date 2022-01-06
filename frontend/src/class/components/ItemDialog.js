@@ -12,7 +12,7 @@ export default class ItemDialog extends Dialog {
     this.PADDING = this.FONT_SIZE
     this.PADDING_TOP = this.FONT_SIZE * 1.3
     this.X = this.WINDOW_CENTER_X
-    this.Y = this.WINDOW_H - this.HEIGHT * 1.5
+    this.Y = this.WINDOW_CENTER_Y + this.FONT_SIZE * 2
     this.dialogWindow.setX(this.X)
     this.dialogWindow.setY(this.Y)
     this.dialogWindow.setDisplaySize(this.WIDTH, this.HEIGHT)

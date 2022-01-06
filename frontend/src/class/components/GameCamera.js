@@ -10,31 +10,62 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     // this.setFollowOffset(0, 100);
     this.setAlpha(0)
     // this.setRoundPixels(false);
-    this.initAnim = this.scene.tweens.create({
+    this.initTween = this.scene.tweens.create({
       targets: this,
       props: { zoom: configurations.ZOOM_LEVEL, alpha: 1 },
       ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 1000,
       completeDelay: 0,
     })
+
     this.setDisplay()
     // this.fadeIn()
     this.setZoom(configurations.ZOOM_OUT_LEVEL)
   }
+  enterDialog() {
+    if (this.exitAnim) {
+      this.exitAnim.stop()
+    }
+    this.enterAnim = this.scene.tweens.create({
+      targets: this,
+      props: { alpha: 0.4 },
+      ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
+      duration: 500,
+      completeDelay: 0,
+    })
+    this.enterAnim.play()
+  }
+  exitDialog() {
+    if (this.enterAnim) {
+      this.enterAnim.stop()
+    }
+    this.exitAnim = this.scene.tweens.create({
+      targets: this,
+      props: { alpha: 1 },
+      ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
+      duration: 500,
+      completeDelay: 0,
+    })
+    this.exitAnim.play()
+  }
   setDisplay() {
     // this.setZoom(configurations.ZOOM_LEVEL);
     this.setSize(configurations.WINDOW_W, configurations.WINDOW_H)
-    // this.setMask(
-    //   new Phaser.Display.Masks.GeometryMask(
-    //     this.scene,
-    //     new Phaser.GameObjects.Graphics(this.scene, {
-    //       x: configurations.WINDOW_CENTER_X,
-    //       y: configurations.WINDOW_CENTER_Y,
-    //     })
-    //       .fillCircle(0, 0, 400)
-    //       .setAlpha(1)
-    //   )
-    // )
+    this.setMask(
+      new Phaser.Display.Masks.GeometryMask(
+        this.scene,
+        new Phaser.GameObjects.Graphics(this.scene, {
+          x: configurations.WINDOW_CENTER_X,
+          y: configurations.WINDOW_CENTER_Y,
+        })
+          .fillCircle(0, 0, configurations.MASK_RADIUS)
+          .setAlpha(1)
+      )
+    )
+  }
+  initAnim() {
+    this.fadeIn()
+    this.initTween.play()
   }
   zoomIn() {
     if (this.zoomInAnim && this.zoomInAnim.isPlaying()) {

@@ -114,7 +114,6 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
               o.instance.collider = collider
               //  }
               o.instance.refreshBody()
-              // !o.loop && GenerativeMusic.setupSound(o)
               this.scene.gameObjectsLayer.add(o.instance)
               if (o.loop) {
                 // GenerativeMusic.startLoop(o)

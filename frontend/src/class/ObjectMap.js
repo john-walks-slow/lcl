@@ -3,9 +3,14 @@ import { range } from '../utils/utils'
 export default class ObjectMap extends Array {
   constructor(gridSize) {
     super()
+    // return the zone of o
     this.getZone = o => {
-      return [Math.ceil(o.x / gridSize), Math.ceil(o.y / gridSize)]
+      return [
+        Math.ceil((o.x + gridSize / 2) / gridSize),
+        Math.ceil((o.y + gridSize / 2) / gridSize),
+      ]
     }
+    // return nearby zones
     this.getNearBy = (zone, scope = 1) => {
       if (!zone) {
         return []

@@ -86,16 +86,17 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.on(
           'complete',
           () => {
+            this.label.text += `\nLoading complete!`
             this.label.text += `\nStarting ...`
-
+            // this.label.setText('test')
+            // this.label.updateText()
             console.log(objectData)
-            // setTimeout(() => {
-            this.scene.start('MainScene', {
-              objectData: objectData,
-            })
-            console.log('mainscene start')
-            this.scene.stop('LoadingScene')
-            // }, 300);
+            setTimeout(() => {
+              this.scene.start('MainScene', {
+                objectData: objectData,
+              })
+              console.log('mainscene start')
+            }, 10)
           },
           this
         )

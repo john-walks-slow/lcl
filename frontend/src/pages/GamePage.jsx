@@ -1,20 +1,20 @@
 // import Phaser from 'jquery';
-import Phaser from 'phaser';
-import React, { useEffect, useState, useRef } from 'react';
-import ReactMarkdown from 'react-markdown';
-import { useSelector } from 'react-redux';
-import ReadMe from '../../../README.md';
-import newBtnURL from '../assets/game/new.png';
-import mapBtnURL from '../assets/game/map.png';
-import bagBtnURL from '../assets/game/bag.png';
-import infoBtnURL from '../assets/game/info.png';
-import moreBtnURL from '../assets/game/more.png';
-import configurations from '../class/configurations';
-import { setPath, setStorage } from '../store/actions/actionCreators';
-import MainScene from '../class/scenes/MainScene';
-import LoadingScene from '../class/scenes/LoadingScene';
-import emoji from 'emoji-dictionary/lib/index';
-import { secureStorage } from '../utils/storage';
+import Phaser from 'phaser'
+import React, { useEffect, useState, useRef } from 'react'
+import ReactMarkdown from 'react-markdown'
+import { useSelector } from 'react-redux'
+import ReadMe from '../../../README.md'
+import newBtnURL from '../assets/game/new.png'
+import mapBtnURL from '../assets/game/map.png'
+import bagBtnURL from '../assets/game/bag.png'
+import infoBtnURL from '../assets/game/info.png'
+import moreBtnURL from '../assets/game/more.png'
+import configurations from '../class/configurations'
+import { setPath, setStorage } from '../store/actions/actionCreators'
+import MainScene from '../class/scenes/MainScene'
+import LoadingScene from '../class/scenes/LoadingScene'
+import emoji from 'emoji-dictionary/lib/index'
+import { secureStorage } from '../utils/storage'
 
 // function createTestObject(object) {
 //   object._id = 3;
@@ -23,100 +23,105 @@ import { secureStorage } from '../utils/storage';
 // }
 
 const Game = ({ dispatch, isShown }) => {
-  const [mainSceneRef, setMainScene] = useState();
-  const [gameRef, setGame] = useState();
-  const [showInfo, setShowInfo] = useState(false);
-  const [showInventory, setShowInventory] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
-  const [hideMenu, setHideMenu] = useState(false);
-  const [showGame, setShowGame] = useState(true);
-  const [zoomed, setZoomed] = useState(false);
-  const player = useSelector(state => state.present.get('player')).toJS();
-  console.log(player);
-  const newObject = useSelector(state => state.present.get('newObject'));
+  const [mainSceneRef, setMainScene] = useState()
+  const [gameRef, setGame] = useState()
+  const [showInfo, setShowInfo] = useState(false)
+  const [showInventory, setShowInventory] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
+  const [hideMenu, setHideMenu] = useState(false)
+  const [showGame, setShowGame] = useState(true)
+  const [zoomed, setZoomed] = useState(false)
+  const player = useSelector(state => state.present.get('player')).toJS()
+  console.log(player)
+  const newObject = useSelector(state => state.present.get('newObject'))
   // const objects = useSelector(state => state.present.get('objects'));
-  const deferredPrompt = window.deferredPrompt;
+  const deferredPrompt = window.deferredPrompt
   function toggleShowInventory() {
-    console.log(showInventory);
-    setShowInventory(!showInventory);
+    console.log(showInventory)
+    setShowInventory(!showInventory)
   }
   function toggleHideMenu() {
-    setHideMenu(!hideMenu);
+    setHideMenu(!hideMenu)
+  }
+  function toggleShowMenu() {
+    setShowMenu(!showMenu)
   }
   function toggleShowInfo() {
-    setShowInfo(!showInfo);
+    setShowInfo(!showInfo)
     if (!showInfo) {
-      secureStorage.setItem('haveReadInfo', 'true');
+      secureStorage.setItem('haveReadInfo', 'true')
     }
     if (mainSceneRef && mainSceneRef.gamepad) {
-      !showInfo ? mainSceneRef.gamepad.hide() : mainSceneRef.gamepad.show();
+      !showInfo ? mainSceneRef.gamepad.hide() : mainSceneRef.gamepad.show()
     }
   }
   function navigateToAdd() {
     if (secureStorage.getItem('haveReadInfo')) {
-      dispatch(setPath('/add', true));
+      dispatch(setPath('/add', true))
     } else {
-      alert('请看看帮助中的“规则”');
+      alert('请看看帮助中的“规则”')
     }
   }
 
   function updateUIMethod(mainScene) {
-    mainScene.toggleShowInventory = toggleShowInventory;
-    mainScene.toggleHideMenu = toggleHideMenu;
-    mainScene.toggleShowInfo = toggleShowInfo;
+    mainScene.toggleShowInventory = toggleShowInventory
+    mainScene.toggleHideMenu = toggleHideMenu
+    mainScene.toggleShowMenu = toggleShowMenu
+    mainScene.toggleShowInfo = toggleShowInfo
   }
   useEffect(() => {
-    mainSceneRef && updateUIMethod(mainSceneRef);
-  }, [showInventory, showInfo, hideMenu]);
-  useEffect(() => { }, []);
+    mainSceneRef && updateUIMethod(mainSceneRef)
+  }, [showInventory, showInfo, hideMenu, showMenu])
+  useEffect(() => {}, [])
   useEffect(() => {
     if (!isShown && mainSceneRef) {
-      setShowMenu(false);
-      setShowInventory(false);
-      setShowInfo(false);
-      setShowGame(false);
-      console.log('pause');
-      mainSceneRef.pause();
-      return;
+      setShowMenu(false)
+      setShowInventory(false)
+      setShowInfo(false)
+      setShowGame(false)
+      console.log('pause')
+      mainSceneRef.pause()
+      return
     }
     if (isShown) {
-      setShowGame(true);
-      document.title = '白洞 / 意识海';
-      document.body.style.overflow = 'hidden';
-      document.body.style.backgroundColor = '#131313';
+      setShowGame(true)
+      document.title = '白洞 / 意识海'
+      document.body.style.overflow = 'hidden'
+      document.body.style.backgroundColor = '#131313'
       // if not initial run
       if (mainSceneRef) {
-        setShowMenu(true);
-        console.log('resume');
-        mainSceneRef.resume();
+        setShowMenu(true)
+        console.log('resume')
+        mainSceneRef.resume()
         // mainSceneRef.scene.restart({ objectList: mainSceneRef.objectList, gameObjectMap: mainSceneRef.gameObjectMap });
       }
       // initialize
       else {
-        console.log('initial run');
-        configurations.updateConfigurations();
+        console.log('initial run')
+        configurations.updateConfigurations()
         window.addEventListener('resize', () => {
-          configurations.updateConfigurations();
-          console.log(configurations.WINDOW_W, configurations.WINDOW_H);
-          game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H);
-          game.scale.setZoom(configurations.SCALE);
-        });
+          configurations.updateConfigurations()
+          console.log(configurations.WINDOW_W, configurations.WINDOW_H)
+          game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H)
+          game.scale.setZoom(configurations.SCALE)
+        })
         // let toggleShowInfoRef = useRef(toggleShowInfo).current;
         // let toggleShowInventoryRef = useRef(toggleShowInventory).current;
         let methods = {
           setShowMenu,
           toggleShowInfo,
           toggleShowInventory,
+          toggleShowMenu,
           toggleHideMenu,
           setStorage,
           dispatch,
           updateUIMethod,
           setZoomed,
           navigateToAdd,
-        };
-        var loadingScene = new LoadingScene(methods);
-        var mainScene = new MainScene(methods);
-        setMainScene(mainScene);
+        }
+        var loadingScene = new LoadingScene(methods)
+        var mainScene = new MainScene(methods)
+        setMainScene(mainScene)
         var config = {
           type: Phaser.CANVAS,
           width: configurations.WINDOW_W,
@@ -136,23 +141,23 @@ const Game = ({ dispatch, isShown }) => {
           // scale: { mode: Phaser.Scale.FIT, },
           parent: 'PHASER_ROOT',
           scene: [loadingScene, mainScene],
-          fps: 30,
+          // fps: 30,
           disableContextMenu: true,
           render: {
             antialias: false,
             roundPixels: true,
           },
-        };
+        }
 
-        var game = new Phaser.Game(config);
-        game.canvas.style.imageRendering = 'auto';
+        var game = new Phaser.Game(config)
+        game.canvas.style.imageRendering = 'auto'
 
-        setGame(game);
+        setGame(game)
         // game.scale.autoRound = true;
         // game.scale.setMaxZoom();
       }
     }
-  }, [isShown]);
+  }, [isShown])
   return (
     <div id="GAME_DIV" className={showGame ? 'show' : ''}>
       <div id="PHASER_ROOT"></div>
@@ -166,7 +171,7 @@ const Game = ({ dispatch, isShown }) => {
             <button
               className="game__button-menu"
               onClick={() => {
-                navigateToAdd();
+                navigateToAdd()
               }}
             >
               <u>N</u>ew
@@ -174,7 +179,7 @@ const Game = ({ dispatch, isShown }) => {
             <button
               className={'game__button-menu' + (zoomed ? ' selected' : '')}
               onClick={() => {
-                mainSceneRef && mainSceneRef.camera.toggleZoom();
+                mainSceneRef && mainSceneRef.camera.toggleZoom()
               }}
             >
               <u>M</u>ap
@@ -182,7 +187,7 @@ const Game = ({ dispatch, isShown }) => {
             <button
               className={'game__button-menu' + (showInventory ? ' selected' : '')}
               onClick={() => {
-                toggleShowInventory();
+                toggleShowInventory()
               }}
             >
               <u>B</u>ag
@@ -190,19 +195,19 @@ const Game = ({ dispatch, isShown }) => {
             <button
               className={'game__button-menu' + (showInfo ? ' selected' : '')}
               onClick={() => {
-                toggleShowInfo();
+                toggleShowInfo()
               }}
             >
               <u>H</u>elp
             </button>
-            <button
+            {/* <button
               className="game__button-menu game__button-hide"
               onClick={() => {
-                toggleHideMenu();
+                toggleHideMenu()
               }}
             >
               H<u>i</u>de
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -243,15 +248,15 @@ const Game = ({ dispatch, isShown }) => {
           <button
             className={'game__button-install' + (deferredPrompt ? ' show' : '')}
             onClick={() => {
-              deferredPrompt.prompt();
+              deferredPrompt.prompt()
               deferredPrompt.userChoice.then(choiceResult => {
                 if (choiceResult.outcome === 'accepted') {
-                  console.log('User accepted the A2HS prompt');
+                  console.log('User accepted the A2HS prompt')
                 } else {
-                  console.log('User dismissed the A2HS prompt');
+                  console.log('User dismissed the A2HS prompt')
                 }
-                deferredPrompt = null;
-              });
+                deferredPrompt = null
+              })
             }}
           >
             安装到桌面
@@ -259,7 +264,7 @@ const Game = ({ dispatch, isShown }) => {
           <button
             className="game__button-close-info"
             onClick={() => {
-              toggleShowInfo();
+              toggleShowInfo()
             }}
           >
             ×
@@ -269,8 +274,7 @@ const Game = ({ dispatch, isShown }) => {
           </ReactMarkdown>
         </div>
       </div>
-
     </div>
-  );
-};
-export default Game;
+  )
+}
+export default Game

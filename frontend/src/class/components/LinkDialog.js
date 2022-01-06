@@ -9,6 +9,10 @@ export default class LinkDialog extends Dialog {
   initializeComponents() {
     super.initializeComponents()
     this.dialogText.setText('它带着一个箱子，打开看看吗？')
+    this.dialogText.setStyle({
+      color: 0xffffff,
+      fontFamily: this.FONT_FAMILY,
+    })
     this.selectedOption = 0
     this.dialogYes = this.scene.add
       .text(0, 0, ' 是 ', {
@@ -97,6 +101,7 @@ export default class LinkDialog extends Dialog {
       this.dialogFadeOut.play().on('complete', () => {})
     }
     this.scene.gamepad.show()
+    this.scene.camera.exitDialog()
     this.inDialog = false
     this.select(1)
     this.link = ''
@@ -105,6 +110,7 @@ export default class LinkDialog extends Dialog {
   showDialog(link) {
     console.log('show link')
     this.scene.gamepad.hide()
+    this.scene.camera.enterDialog()
     this.link = link
     this.inDialog = true
     this.scene.input.on('gameobjectover', (pointer, o, event) => {

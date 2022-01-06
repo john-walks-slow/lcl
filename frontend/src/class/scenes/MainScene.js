@@ -11,7 +11,6 @@ import LinkDialog from '../components/LinkDialog'
 import configurations from '../configurations'
 import ObjectGroup from '../ObjectGroup'
 import generativeMusic from '../GenerativeMusic'
-import GenerativeMusic from '../GenerativeMusic'
 
 let listener = false
 
@@ -34,24 +33,6 @@ export default class MainScene extends Phaser.Scene {
   init(data) {
     console.log('init')
     this.objectData = data.objectData
-    // if (data.newObject) {
-    //   let o = data.newObject;
-    //   switch (o.isAnimate) {
-    //     case true:
-    //       var shardsImg = new Image();
-    //       shardsImg.onload = () => {
-    //         this.textures.addSpriteSheet("object" + o._id, shardsImg, { frameWidth: o.columns, frameHeight: o.rows });
-    //       };
-    //       shardsImg.src = o.blobURI;
-    //       // this.load.spritesheet("object" + o._id, 'assets/objects/' + o._id + '.png', { frameWidth: o.columns, frameHeight: o.rows });
-    //       break;
-    //     default:
-    //       this.textures.addBase64("object" + o._id, o.blobURI);
-    //       // this.load.image("object" + o._id, 'assets/objects/' + o._id + '.png')
-    //       break;
-    //   }
-    //   this.objectData.list.unshift(o);
-    // }
     window.addEventListener('resize', () => {
       this.setDisplay()
     })
@@ -65,55 +46,38 @@ export default class MainScene extends Phaser.Scene {
     this.gamepad.setDisplay()
   }
   create() {
-    // this.location.setText()
-    console.log('create')
-    this.physics.world.setFPS(30)
-    // console.log(this.input.activePointer);
+    // - Setup World
+    // this.physics.world.setFPS(30)
     this.startPosX = 0
     this.startPosY = 0
     this.pointerOnPlayer = false
+    this.updateUIMethod(this)
+    this.cursors = this.input.keyboard.createCursorKeys()
+
+    // - Create Groups
     this.objectGroup = new ObjectGroup(this)
+    this.itemGroup = this.physics.add.staticGroup({
+      immovable: true,
+    })
+
+    // - Create Layers
     this.gameObjectsLayer = this.add.layer()
     this.gameObjectsLayer.depth = 0
     this.uiLayer = this.add.layer()
     this.uiLayer.depth = 100
+
+    // - Create Cameras
     this.cameras.remove(this.cameras.main)
     this.camera = new GameCamera(this)
     this.cameras.addExisting(this.camera, false)
     this.camera.ignore(this.uiLayer)
     this.staticCamera = this.cameras.add()
     this.staticCamera.ignore(this.gameObjectsLayer)
-    // this.staticCamera.inputEnabled = false;
-    this.cursors = this.input.keyboard.createCursorKeys()
-    this.updateUIMethod(this)
-    this.location = this.add.text(15, 15, '', {
-      color: 0xffffff,
-      fontFamily: 'pixelTitle',
-    })
-    setTimeout(() => {
-      this.location.setText('...')
-    }, 400)
-    this.location.updateLocation = () => {
-      this.location.rad =
-        Math.round(Phaser.Math.Angle.Between(0, 0, this.player.x, this.player.y) * 100) / 100
-      this.location.distance =
-        Math.round(
-          ((this.objectData.zeroDistance ** (1 / configurations.DENSITY_FACTOR) -
-            Phaser.Math.Distance.Between(0, 0, this.player.x, this.player.y) **
-              (1 / configurations.DENSITY_FACTOR)) /
-            5000) *
-            10
-        ) / 10
-      this.location.setText(`(${this.location.rad}, ${this.location.distance})`)
-    }
-    this.uiLayer.add(this.location)
-    // this.add.tileSprite(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y,WINDOW_W,WINDOW_H,'bg');
-    // this.add.rectangle(configurations.WINDOW_CENTER_X, configurations.WINDOW_CENTER_Y, WINDOW_W, WINDOW_H, 0xFFFFFF);
+
+    // - Create Player
     this.player = this.physics.add
       .sprite(this.startPosX, this.startPosY, 'player')
       .setDisplaySize(configurations.PLAYER_TARGET_W, configurations.PLAYER_TARGET_H)
-    // .refreshBody();
-
     this.player.depth = 0.9
     this.player.move = (x, y) => {
       this.player.setVelocity(x, y)
@@ -124,10 +88,7 @@ export default class MainScene extends Phaser.Scene {
     this.player.moveY = y => {
       this.player.setVelocityY(y)
     }
-    // let flow = [
-    //   -1 + configurations.DAY.intRandom(0, 1) * configurations.DAY.intRandom(1, 6),
-    //   -1 + configurations.DAY.intRandom(0, 1) * configurations.DAY.intRandom(1, 6),
-    // ]
+
     this.player.stopMovement = () => {
       if (this.player.anims.getName() == 'runLeft') {
         this.player.anims.play('standLeft', true)
@@ -142,151 +103,25 @@ export default class MainScene extends Phaser.Scene {
         this.player.anims.play('standDown', true)
       }
       this.player.move(0, 0)
-      if (configurations.DEV_MODE) {
-        this.player.move(configurations.DAY.flow[0], configurations.DAY.flow[1])
-      }
+      // if (configurations.DEV_MODE) {
+      //   this.player.move(configurations.DAY.flow[0], configurations.DAY.flow[1])
+      // }
     }
 
-    this.player.setInteractive()
+    this.player.setInteractive({
+      useHandCursor: true,
+    })
     this.player.on('pointerover', () => {
       this.pointerOnPlayer = true
     })
     this.player.on('pointerout', () => {
       this.pointerOnPlayer = false
     })
+    this.player.on('pointerdown', () => {
+      this.toggleShowMenu()
+    })
     this.camera.startFollow(this.player, false)
     this.gameObjectsLayer.add(this.player)
-
-    this.itemCollideHandler = (o1, o2) => {
-      // console.log(this.player.body.velocity);
-      // this.player.stopMovement();
-      if (this.gameDialog.inDialog || this.itemDialog.inDialog) {
-        return
-      }
-      let currentObj
-      if (o1.texture.key == 'player') {
-        currentObj = o2
-      } else {
-        currentObj = o1
-      }
-      let dialog = configurations.ITEM_LIST[currentObj.itemId].dialog
-      let player = secureStorage.getItem('player')
-      if (!player.ownItems.includes(currentObj._id)) {
-        if (configurations.SETTINGS.quiet || this.camera.state == 'zoomOut') {
-        } else {
-          this.itemDialog.showDialog([dialog])
-        }
-        player[configurations.ITEM_LIST[currentObj.itemId].name]++
-        player.ownItems.push(currentObj._id)
-        this.dispatch(this.setStorage(player))
-      }
-      console.log(currentObj)
-      currentObj.fadeOut.play()
-      // currentObj.destroy();
-      // currentObj.collider.destroy();
-      // currentObj.alpha=0;
-    }
-    this.objectCollideHandler = (o1, o2) => {
-      // console.log(this.player.body.velocity);
-      // this.player.stopMovement();
-      // console.log(this.player.body);
-      this.physics.collide(o1, o2)
-      if (this.player.isStopping) {
-        return
-      }
-      if (this.gameDialog.inDialog || this.itemDialog.inDialog) {
-        return
-      }
-      let currentObj
-      if (o1.texture.key == 'player') {
-        currentObj = o2
-      } else {
-        currentObj = o1
-      }
-      if (currentObj.oData.dialog.length > 0) {
-        if (configurations.SETTINGS.quiet || this.camera.state == 'zoomOut') {
-        } else {
-          this.gameDialog.showDialog(currentObj.oData.dialog, currentObj.oData.name, () => {
-            if (currentObj.oData.link.length > 0) {
-              this.linkDialog.showDialog(currentObj.oData.link)
-            }
-          })
-        }
-      }
-      if (currentObj.oData.isBackground || currentObj.oData.isForeground) {
-        currentObj.collider.destroy()
-      } else {
-        currentObj.oData.dialog = []
-      }
-      // let xOverlap = this.player.displayWidth / 2 + currentObj.displayWidth / 2 - Math.abs(this.player.x - currentObj.x);
-      // let yOverlap = this.player.displayHeight / 2 + currentObj.displayHeight / 2 - Math.abs(this.player.y - currentObj.y);
-      // // console.log(xOverlap, yOverlap);
-      // if (xOverlap < 0 || yOverlap < 0) {
-      //   // return;
-      // }
-      // if (xOverlap < yOverlap && this.player.x < currentObj.x) {
-      //   this.player.setX(this.player.x + -0.1);
-      //   // console.log('left');
-      // }
-      // if (xOverlap < yOverlap && this.player.x > currentObj.x) {
-      //   this.player.setX(this.player.x - -0.1);
-      //   // console.log('right');
-      // }
-      // if (xOverlap > yOverlap && this.player.y < currentObj.y) {
-      //   this.player.setY(this.player.y + -0.1);
-      //   // console.log('up');
-      // }
-      // if (xOverlap > yOverlap && this.player.y > currentObj.y) {
-      //   this.player.setY(this.player.y - -0.1);
-      //   // console.log('down');
-      // }
-    }
-
-    let movedObjects = []
-
-    this.itemGroup = this.physics.add.staticGroup({
-      immovable: true,
-    })
-    let ownItems = secureStorage.getItem('player').ownItems
-
-    this.objectData.list.forEach(o => {
-      o.isAnimate
-        ? this.anims.create({
-            key: 'spritesheet' + o._id,
-            frames: 'object' + o._id,
-            frameRate: 2,
-            delay: Math.random() * 1000,
-            repeat: -1,
-            repeatDelay: 0,
-          })
-        : false
-    })
-
-    this.objectGroup.updateObjects(false, [0, 0])
-    // this.previousZone = [0, 0];
-    this.gameDialog = new Dialog(this)
-    this.itemDialog = new ItemDialog(this)
-    this.linkDialog = new LinkDialog(this)
-    this.uiLayer.add([this.gameDialog, this.itemDialog, this.linkDialog])
-
-    let reactMenu = document.getElementById('GAME_MENU')
-    let gameInfo = document.getElementById('GAME_INFO')
-    let gameInventory = document.getElementById('GAME_INVENTORY')
-    let gameButtons = document.getElementsByClassName('game__button-menu')
-    this.reactComponents = [reactMenu, gameInfo, gameInventory, ...gameButtons]
-    const handleInput = e => {
-      // if the click is not on the root react div, we call stopPropagation()
-      if (e.target.tagName != 'canvas') {
-        // if (target.className == "game__button-menu") {
-        e.stopPropagation()
-      }
-      // }
-    }
-    this.reactComponents.forEach(c => {
-      c.addEventListener('mousedown', handleInput)
-      c.addEventListener('touchstart', handleInput)
-    })
-
     this.anims.create({
       key: 'runLeft',
       frames: this.anims.generateFrameNumbers('player', {
@@ -356,6 +191,123 @@ export default class MainScene extends Phaser.Scene {
       repeatDelay: 0,
     })
     this.player.anims.play('standRight')
+
+    // - Setup collider handlers
+    this.itemCollideHandler = (o1, o2) => {
+      if (this.gameDialog.inDialog || this.itemDialog.inDialog) {
+        return
+      }
+      let currentObj
+      if (o1.texture.key == 'player') {
+        currentObj = o2
+      } else {
+        currentObj = o1
+      }
+      let dialog = configurations.ITEM_LIST[currentObj.itemId].dialog
+      let player = secureStorage.getItem('player')
+      if (!player.ownItems.includes(currentObj._id)) {
+        if (configurations.SETTINGS.quiet || this.camera.state == 'zoomOut') {
+        } else {
+          this.itemDialog.showDialog([dialog])
+        }
+        player[configurations.ITEM_LIST[currentObj.itemId].name]++
+        player.ownItems.push(currentObj._id)
+        this.dispatch(this.setStorage(player))
+      }
+      console.log(currentObj)
+      currentObj.fadeOut.play()
+    }
+    this.objectCollideHandler = (o1, o2) => {
+      this.physics.collide(o1, o2)
+      if (this.player.isStopping) {
+        return
+      }
+      if (this.gameDialog.inDialog || this.itemDialog.inDialog) {
+        return
+      }
+      let currentObj
+      if (o1.texture.key == 'player') {
+        currentObj = o2
+      } else {
+        currentObj = o1
+      }
+      if (currentObj.oData.dialog.length > 0) {
+        if (configurations.SETTINGS.quiet || this.camera.state == 'zoomOut') {
+        } else {
+          this.gameDialog.showDialog(currentObj.oData.dialog, currentObj.oData.name, () => {
+            if (currentObj.oData.link.length > 0) {
+              this.linkDialog.showDialog(currentObj.oData.link)
+            }
+          })
+        }
+      }
+      if (currentObj.oData.isBackground || currentObj.oData.isForeground) {
+        currentObj.collider.destroy()
+      } else {
+        currentObj.oData.dialog = []
+      }
+    }
+
+    // - Load Objects
+    this.objectData.list.forEach(o => {
+      o.isAnimate
+        ? this.anims.create({
+            key: 'spritesheet' + o._id,
+            frames: 'object' + o._id,
+            frameRate: 2,
+            delay: Math.random() * 1000,
+            repeat: -1,
+            repeatDelay: 0,
+          })
+        : false
+    })
+
+    // - Setup Ui
+    let setupLocation = () => {
+      this.location = this.add.text(15, 15, '', {
+        color: 0xffffff,
+        fontFamily: 'pixelTitle',
+      })
+      setTimeout(() => {
+        this.location.setText('...')
+      }, 400)
+      this.location.updateLocation = () => {
+        this.location.rad =
+          Math.round(Phaser.Math.Angle.Between(0, 0, this.player.x, this.player.y) * 100) / 100
+        this.location.distance =
+          Math.round(
+            ((this.objectData.zeroDistance ** (1 / configurations.DENSITY_FACTOR) -
+              Phaser.Math.Distance.Between(0, 0, this.player.x, this.player.y) **
+                (1 / configurations.DENSITY_FACTOR)) /
+              5000) *
+              10
+          ) / 10
+        this.location.setText(`(${this.location.rad}, ${this.location.distance})`)
+      }
+      this.uiLayer.add(this.location)
+    }
+    setupLocation()
+    this.gameDialog = new Dialog(this)
+    this.itemDialog = new ItemDialog(this)
+    this.linkDialog = new LinkDialog(this)
+    this.uiLayer.add([this.gameDialog, this.itemDialog, this.linkDialog])
+
+    // - Stop propagation on external UIs
+    let reactMenu = document.getElementById('GAME_MENU')
+    let gameInfo = document.getElementById('GAME_INFO')
+    let gameInventory = document.getElementById('GAME_INVENTORY')
+    let gameButtons = document.getElementsByClassName('game__button-menu')
+    this.reactComponents = [reactMenu, gameInfo, gameInventory, ...gameButtons]
+    const stopEventPropagation = e => {
+      if (e.target.tagName != 'canvas') {
+        e.stopPropagation()
+      }
+    }
+    this.reactComponents.forEach(c => {
+      c.addEventListener('mousedown', stopEventPropagation)
+      c.addEventListener('touchstart', stopEventPropagation)
+    })
+
     this.gamepad = new GamePad(this)
     this.uiLayer.add(this.gamepad)
     this.filterUsed = seededRandom(configurations.DAY._id)
@@ -399,7 +351,7 @@ export default class MainScene extends Phaser.Scene {
       }
       return `${result}`
     }
-
+    // - Setup PostFX
     // this.grayscalePipeline = new Phaser.Renderer.WebGL.Pipelines.PostFXPipeline({
     //   name: "grayscale",
     //   game: this.game,
@@ -420,12 +372,6 @@ export default class MainScene extends Phaser.Scene {
 
     // this.game.canvas.style.filter = "opacity(0.7) saturate(1.1) sepia(0.2) brightness(0.98) contrast(1.1)";
     // console.log(this.filter(1000, 1000));
-
-    // import Tone from 'Tone';
-    // import * as teoria from 'teoria';
-    this.setupKeyboard()
-    this.setShowMenu(true)
-    generativeMusic.startBgm(this)
     // this.setDisplay();
     // this.gameDialog.showDialog('testtest', 'test');
     // this.itemDialog.showDialog(['哇！你捡到了一个箱子'], 'test');
@@ -454,16 +400,23 @@ export default class MainScene extends Phaser.Scene {
     // emitter.minRotation = 0;
     // emitter.maxRotation = 40;
     // emitter.start();
+
+    // - Startup
+    this.objectGroup.updateObjects(false, [0, 0])
+    generativeMusic.startBgm(this)
+    generativeMusic.updateSound()
+    this.setupKeyboard()
+    this.setShowMenu(true)
     setInterval(() => {
       this.objectGroup.updateObjects()
-    }, 50)
+    }, 100)
     setInterval(() => {
-      GenerativeMusic.updateSound(250)
+      generativeMusic.updateSound()
+      generativeMusic.updateSynths(250)
     }, 250)
-    setTimeout(() => {
-      this.camera.fadeIn()
-      this.camera.initAnim.play()
-    }, 250)
+
+    this.scene.stop('LoadingScene')
+    this.camera.initAnim()
   }
   setupKeyboard() {
     this.input.keyboard.on('keydown-B', () => {
@@ -473,7 +426,7 @@ export default class MainScene extends Phaser.Scene {
       this.toggleShowInfo()
     })
     this.input.keyboard.on('keydown-I', () => {
-      this.toggleHideMenu()
+      this.toggleShowMenu()
     })
     this.input.keyboard.on('keydown-N', () => {
       this.navigateToAdd()
