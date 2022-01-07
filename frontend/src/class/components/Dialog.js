@@ -10,19 +10,33 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.setAlpha(0)
     this.dialogIndex = 0
     this.inDialog = false
-    this.dialogFadeIn = this.scene.tweens.create({
-      targets: this,
-      alpha: { from: 0, to: 1 },
-      ease: 'Linear', // 'Cubic', 'Elastic', 'Bounce', 'Back'
-      duration: 500,
-    })
-    this.dialogFadeOut = this.scene.tweens.create({
-      targets: this,
-      alpha: { from: 1, to: 0 },
-      ease: 'Linear', // 'Cubic', 'Elastic', 'Bounce', 'Back'
-      duration: 500,
-    })
     this.scene.add.existing(this)
+  }
+  dialogFadeIn() {
+    if (this.fadeOutAnim) {
+      this.fadeOutAnim.stop()
+    }
+    this.fadeInAnim = this.scene.tweens.create({
+      targets: this,
+      props: { alpha: 1 },
+      ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
+      duration: 500,
+      completeDelay: 0,
+    })
+    return this.fadeInAnim.play()
+  }
+  dialogFadeOut() {
+    if (this.fadeInAnim) {
+      this.fadeInAnim.stop()
+    }
+    this.fadeOutAnim = this.scene.tweens.create({
+      targets: this,
+      props: { alpha: 0 },
+      ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
+      duration: 500,
+      completeDelay: 0,
+    })
+    return this.fadeOutAnim.play()
   }
   initializeComponents() {
     // this.dialogWindow = this.scene.add.sprite(0, 0, 'dialog')
@@ -98,7 +112,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
     if (this.inDialog) {
       this.dialogIndex++
       if (this.dialogIndex > this.sentences.length - 1) {
-        this.dialogFadeOut.play().on('complete', () => {
+        this.dialogFadeOut().on('complete', () => {
           this.inDialog = false
           this.scene.camera.exitDialog()
           this.scene.gamepad.show()
@@ -128,7 +142,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
       this.proceedDialog()
     })
 
-    this.dialogFadeIn.play()
+    this.dialogFadeIn()
     this.sentences = dialog
     this.dialogIndex = 0
     if (name != '') {

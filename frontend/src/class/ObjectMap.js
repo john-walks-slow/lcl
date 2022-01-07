@@ -1,17 +1,19 @@
 import { range } from '../utils/utils'
 
 export default class ObjectMap extends Array {
-  constructor(gridSize) {
+  constructor(sight) {
     super()
+    this.SCOPE = 2
+    this.gridSize = sight / (2 * this.SCOPE + 1)
     // return the zone of o
     this.getZone = o => {
       return [
-        Math.ceil((o.x + gridSize / 2) / gridSize),
-        Math.ceil((o.y + gridSize / 2) / gridSize),
+        Math.ceil((o.x + this.gridSize / 2) / this.gridSize),
+        Math.ceil((o.y + this.gridSize / 2) / this.gridSize),
       ]
     }
     // return nearby zones
-    this.getNearBy = (zone, scope = 1) => {
+    this.getNearBy = (zone, scope = this.SCOPE) => {
       if (!zone) {
         return []
       }

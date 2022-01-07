@@ -1,14 +1,12 @@
 #GAME_DIV {
   overflow: hidden;
-  div {
-  }
+
 }
 
 #GAME_UI > div {
   filter: blur(0.2px);
 }
-#GAME_UI{
-}
+
 @media screen and (max-width: 600px) {
   #GAME_UI > div {
     filter: blur(0.2px);
@@ -102,8 +100,8 @@
 }
 #GAME_INVENTORY {
   user-select: none;
-  background-color: lightgrey;
-  color: black;
+  background-color: darkgrey;
+  color: white;
   right: 9px;
   bottom: 47px;
   width: 140px;

@@ -41,10 +41,10 @@ class GenerativeMusic {
     this.chordFadeFactor = 6
     this.chordRythm
     this.melodyRythm
-    this.melodyMinSight = configurations.PLAYER_TARGET_H
-    this.melodyMaxSight = 10 * configurations.PLAYER_TARGET_H
-    this.chordMinSight = configurations.PLAYER_TARGET_H
-    this.chordMaxSight = 30 * configurations.PLAYER_TARGET_H
+    this.melodyMinAudible = configurations.PLAYER_TARGET_H
+    this.melodyMaxAudible = 10 * configurations.PLAYER_TARGET_H
+    this.chordMinAudible = configurations.PLAYER_TARGET_H
+    this.chordMaxAudible = 30 * configurations.PLAYER_TARGET_H
     /* NOTE
     instrument sound trail
     ->Instance Channel->Instrument Channel->Master
@@ -68,8 +68,8 @@ class GenerativeMusic {
         // maxPolyphony: 64,
       })
       synth.fadeFactor = this.melodyFadeFactor
-      synth.MinSight = this.melodyMinSight
-      synth.MaxSight = this.melodyMaxSight
+      synth.MinAudible = this.melodyMinAudible
+      synth.MaxAudible = this.melodyMaxAudible
       synth.audible = false
       synth.channel = new Tone.Channel({ channelCount: 2 })
       synth.effectChannel = new Tone.Channel({ channelCount: 2 })
@@ -86,8 +86,8 @@ class GenerativeMusic {
         // maxPolyphony: 64,
       })
       synth.fadeFactor = this.chordFadeFactor
-      synth.MinSight = this.chordMinSight
-      synth.MaxSight = this.chordMaxSight
+      synth.MinAudible = this.chordMinAudible
+      synth.MaxAudible = this.chordMaxAudible
       synth.audible = false
       synth.channel = new Tone.Channel({ channelCount: 2 })
       synth.effectChannel = new Tone.Channel({ channelCount: 2 })
@@ -419,12 +419,13 @@ class GenerativeMusic {
     const positionY = o.y - this.scene.player.y
     let distance = (positionX ** 2 + positionY ** 2) ** 0.5
     const pan = positionX / distance
-    distance = Math.max(distance, synth.MinSight)
-    synth.audible = distance < synth.MaxSight
+    distance = Math.max(distance, synth.MinAudible)
+    synth.audible = distance < synth.MaxAudible
 
     if (synth.audible) {
       let volume =
-        -40 * ((distance - synth.MinSight) / (synth.MaxSight - synth.MinSight)) ** synth.fadeFactor
+        -40 *
+        ((distance - synth.MinAudible) / (synth.MaxAudible - synth.MinAudible)) ** synth.fadeFactor
 
       synth.channel.pan.rampTo(pan, delta / 128)
       synth.channel.volume.rampTo(-10, delta / 128)

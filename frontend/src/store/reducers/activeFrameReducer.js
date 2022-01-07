@@ -49,7 +49,10 @@ const getSameColorAdjacentCells = (frameGrid, columns, rows, id, color) => {
   return adjacentCollection
 }
 
-const drawPixel = (pixelGrid, color, id) => pixelGrid.set(id, color)
+const drawPixel = (pixelGrid, color, id) => {
+  // document.getElementById(`cell-${id}`).style.backgroundColor = color
+  return pixelGrid.set(id, color)
+}
 
 const applyBucketToGrid = (grid, { id, paletteColor, columns, rows }) => {
   const queue = [id]

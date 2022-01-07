@@ -29,7 +29,7 @@ class Configurations {
     // this.ZOOM_LEVEL = Math.min(Math.min(this.WINDOW_W / 15, this.WINDOW_H / 15) / this.PLAYER_TARGET_H, 1);
     this.ZOOM_LEVEL = 1
     // this.ZOOM_LEVEL = (this.WINDOW_W < 600 || this.WINDOW_W < 600) ? 0.6 : 1;
-    this.ZOOM_OUT_LEVEL = 0.35 * this.ZOOM_LEVEL
+    this.ZOOM_OUT_LEVEL = 0.5 * this.ZOOM_LEVEL
     // this.ZOOM_LEVEL = (Math.max(Math.min(this.WINDOW_W / 18, this.WINDOW_H / 15 / 46 * 40),) / this.PLAYER_TARGET_W);
     this.OBJECT_W = {
       XXL: this.PLAYER_TARGET_H * 5,
@@ -57,8 +57,8 @@ class Configurations {
     ]
 
     this.updateConfigurations()
-    this.SOUND_GRID_SIZE = 6 * this.PLAYER_TARGET_H
-    this.GRID_SIZE = 30 * this.PLAYER_TARGET_H
+    this.SOUND_SIGHT = 15 * this.PLAYER_TARGET_H
+    this.OBJECT_SIGHT = 70 * this.PLAYER_TARGET_H
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / 3
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL/2;
 
@@ -71,10 +71,11 @@ class Configurations {
     // Actually the size of the canvas,not the window
     this.RAW_WINDOW_W = window.innerWidth || document.body.clientWidth
     this.RAW_WINDOW_H = window.innerHeight || document.body.clientHeight
-    this.SCALE = Math.min(
-      Math.min(this.RAW_WINDOW_W / 15, this.RAW_WINDOW_H / 15) / this.PLAYER_TARGET_H,
-      1
-    )
+    // this.SCALE = Math.min(
+    //   Math.min(this.RAW_WINDOW_W / 15, this.RAW_WINDOW_H / 15) / this.PLAYER_TARGET_H,
+    //   1
+    // )
+    this.SCALE = this.RAW_WINDOW_W > 900 ? 0.75 : 0.5
     this.WINDOW_W = this.RAW_WINDOW_W / this.SCALE
     this.WINDOW_H = this.RAW_WINDOW_H / this.SCALE
     this.WINDOW_CENTER_X = this.WINDOW_W / 2

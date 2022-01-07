@@ -33,7 +33,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
       duration: 500,
       completeDelay: 0,
     })
-    this.enterAnim.play()
+    return this.enterAnim.play()
   }
   exitDialog() {
     if (this.enterAnim) {
@@ -46,7 +46,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
       duration: 500,
       completeDelay: 0,
     })
-    this.exitAnim.play()
+    return this.exitAnim.play()
   }
   setDisplay() {
     // this.setZoom(configurations.ZOOM_LEVEL);
@@ -95,7 +95,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     }
     this.zoomOutAnim = this.scene.tweens.create({
       targets: this,
-      props: { zoom: configurations.ZOOM_OUT_LEVEL, alpha: 0.6 },
+      props: { zoom: configurations.ZOOM_OUT_LEVEL, alpha: 1 },
       ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 1000,
     })

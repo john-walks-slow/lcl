@@ -10,20 +10,20 @@ export default class LinkDialog extends Dialog {
     super.initializeComponents()
     this.dialogText.setText('它带着一个箱子，打开看看吗？')
     this.dialogText.setStyle({
-      color: 0xffffff,
+      fontSize: `${this.FONT_SIZE}px`,
       fontFamily: this.FONT_FAMILY,
     })
     this.selectedOption = 0
     this.dialogYes = this.scene.add
       .text(0, 0, ' 是 ', {
-        color: 0xffffff,
+        fontSize: `${this.FONT_SIZE}px`,
         fontFamily: this.FONT_FAMILY,
       })
       .setInteractive()
     this.dialogYes.buttonId = 'yes'
     this.dialogNo = this.scene.add
       .text(0, 0, ' 否 ', {
-        color: 0xffffff,
+        fontSize: `${this.FONT_SIZE}px`,
         fontFamily: this.FONT_FAMILY,
       })
       .setInteractive()
@@ -38,18 +38,18 @@ export default class LinkDialog extends Dialog {
     // super.setDisplay();
     this.setDisplayParams()
     this.BUTTON_SELECTED_COLOR = '#131313'
-    this.WIDTH = Math.min(this.WINDOW_H / 1.5, this.WINDOW_W * 0.85)
+    this.WIDTH = Math.min(Math.min(this.WINDOW_H / 1.5, this.WINDOW_W), this.FONT_SIZE * 18)
     this.HEIGHT = this.FONT_SIZE * 7
-    this.PADDING = this.HEIGHT / 4
+    this.PADDING = 0
     this.PADDING_TOP = this.HEIGHT / 5
-    this.YES_X = this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING
+    this.YES_X = this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING + 2 * this.FONT_SIZE
     this.YES_Y = this.WINDOW_CENTER_Y + this.HEIGHT / 2 - this.FONT_SIZE_HEADER - this.PADDING_TOP
-    this.NO_X = this.WINDOW_CENTER_X + this.PADDING
+    this.NO_X = this.WINDOW_CENTER_X + this.PADDING + 2 * this.FONT_SIZE
     this.NO_Y = this.WINDOW_CENTER_Y + this.HEIGHT / 2 - this.FONT_SIZE_HEADER - this.PADDING_TOP
     this.dialogWindow.setX(this.WINDOW_CENTER_X)
     this.dialogWindow.setY(this.WINDOW_CENTER_Y)
     this.dialogWindow.setDisplaySize(this.WIDTH, this.HEIGHT)
-    this.dialogText.setX(this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING)
+    this.dialogText.setX(this.WINDOW_CENTER_X - this.WIDTH / 2 + this.PADDING + 2 * this.FONT_SIZE)
     this.dialogText.setY(this.WINDOW_CENTER_Y - this.HEIGHT / 2 + this.PADDING_TOP)
     this.dialogText.setStyle({
       color: 0xffffff,
@@ -98,7 +98,7 @@ export default class LinkDialog extends Dialog {
       this.alpha = 0
       window.open(this.setHttp(this.link))
     } else {
-      this.dialogFadeOut.play().on('complete', () => {})
+      this.dialogFadeOut().on('complete', () => {})
     }
     this.scene.gamepad.show()
     this.scene.camera.exitDialog()
@@ -134,6 +134,6 @@ export default class LinkDialog extends Dialog {
     this.scene.input.keyboard.on('keydown-SPACE', () => {
       this.confirm()
     })
-    this.dialogFadeIn.play()
+    this.dialogFadeIn()
   }
 }

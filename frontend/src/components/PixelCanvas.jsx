@@ -19,7 +19,9 @@ class PixelCanvas extends React.Component {
     this.drawHandlers = props.drawHandlersFactory(this)
     this.hoveredCell = props.hoveredCell
   }
-
+  // shouldComponentUpdate(props) {
+  //   return false
+  // }
   componentDidMount() {
     const { updateGridBoundariesThrottle } = this.props
     updateGridBoundariesThrottle()

@@ -100,7 +100,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
     if (this.inDialog) {
       this.dialogIndex++
       if (this.dialogIndex > this.sentences.length - 1) {
-        this.dialogFadeOut.play().on('complete', () => {
+        this.dialogFadeOut().on('complete', () => {
           this.inDialog = false
           this.scene.gamepad.show()
         })
@@ -128,7 +128,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
       this.proceedDialog()
     })
 
-    this.dialogFadeIn.play()
+    this.dialogFadeIn()
     this.sentences = dialog
     this.dialogIndex = 0
     if (name != '') {
@@ -138,5 +138,31 @@ export default class Dialog extends Phaser.GameObjects.Container {
     }
     this.dialogText.setText(this.sentences[this.dialogIndex])
     console.log(this.sentences)
+  }
+  dialogFadeIn() {
+    if (this.fadeOutAnim) {
+      this.fadeOutAnim.stop()
+    }
+    this.fadeInAnim = this.scene.tweens.create({
+      targets: this,
+      props: { alpha: 1 },
+      ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
+      duration: 500,
+      completeDelay: 0,
+    })
+    return this.fadeInAnim.play()
+  }
+  dialogFadeOut() {
+    if (this.fadeInAnim) {
+      this.fadeInAnim.stop()
+    }
+    this.fadeOutAnim = this.scene.tweens.create({
+      targets: this,
+      props: { alpha: 0 },
+      ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
+      duration: 500,
+      completeDelay: 0,
+    })
+    return this.fadeOutAnim.play()
   }
 }

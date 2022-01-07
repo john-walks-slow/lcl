@@ -13,8 +13,8 @@ export default class ObjectData {
     this.list = list
       .sort((a, b) => b.birthday - a.birthday)
       .filter(o => configurations.TIMESTAMP - o.birthday > configurations.TIME_DELAY)
-    this.map = new ObjectMap(configurations.GRID_SIZE)
-    this.soundMap = new ObjectMap(configurations.SOUND_GRID_SIZE)
+    this.map = new ObjectMap(configurations.OBJECT_SIGHT)
+    this.soundMap = new ObjectMap(configurations.SOUND_SIGHT)
     this.playerData = secureStorage.getItem('player')
   }
   setupObject() {
