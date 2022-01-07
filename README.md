@@ -78,6 +78,7 @@
 ##### 当前版本
 
 - [ ] :musical_note: 使用 worker api 继续优化性能
+- [ ] :rocket: object pooling
 - [ ] :rocket: 研究到底性能的瓶颈在哪里
 - [x] :ambulance: jsdelivr 出问题了，增加 cdn fallback
 - [x] :alien: 邀请第一批用户
