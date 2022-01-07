@@ -101,6 +101,7 @@ const drawHandlersProvider = rootComponent => ({
       onMouseDown(ev) {
         if (!rootComponent.state.dragging) {
           const { props } = gridComponent
+          props.updateGridBoundariesNow()
           // let {
           //   gridBoundaries: { x, y, width, height },
           //   columns,

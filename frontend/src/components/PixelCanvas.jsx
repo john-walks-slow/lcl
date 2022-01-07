@@ -87,6 +87,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   cellAction: cellProps => dispatch(cellAction(cellProps)),
+  updateGridBoundariesNow: () => {
+    const gridElement = document.getElementsByClassName(gridContainerClass)[0]
+    dispatch(updateGridBoundaries(gridElement))
+  },
   updateGridBoundariesThrottle: throttle(() => {
     const gridElement = document.getElementsByClassName(gridContainerClass)[0]
     dispatch(updateGridBoundaries(gridElement))
