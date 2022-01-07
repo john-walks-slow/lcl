@@ -41,8 +41,8 @@ class Configurations {
     }
     this.TIME_DELAY = 60 * 60 * 1000
     this.RANDOM_ZONE_W = this.PLAYER_TARGET_H * 5
-    this.DAY_OFFSET = this.PLAYER_TARGET_H * 1
-    this.MAX_DAY_GAP = this.DEV_MODE ? 1 : 10
+    this.DAY_OFFSET = this.PLAYER_TARGET_H * 0.85
+    this.MAX_DAY_GAP = this.DEV_MODE ? 1 : 7
     this.DENSITY_OFFSET = this.PLAYER_TARGET_H * 1
     this.DENSITY_FACTOR = 0.73
     this.ACTIVITY_OFFSET = 1
