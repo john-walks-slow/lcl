@@ -9,7 +9,8 @@
     "build": "cross-env NODE_ENV=production BUILD_PLATFORM=web webpack --config webpack.config.js",
     "build-app": "cross-env NODE_ENV=production BUILD_PLATFORM=app webpack --config webpack.config.js",
     "dev": "cross-env NODE_ENV=development BUILD_PLATFORM=web webpack --config webpack.config.js",
-    "dev-app": "cross-env NODE_ENV=development BUILD_PLATFORM=app webpack --config webpack.config.js"
+    "dev-app": "cross-env NODE_ENV=development BUILD_PLATFORM=app webpack --config webpack.config.js",
+    "postinstall": "patch-package"
   },
   "main": "index.js",
   "license": "MIT",
@@ -27,6 +28,7 @@
     "box-shadow-pixels": "0.0.4",
     "canvas-toBlob": "^1.0.0",
     "cookie-parser": "^1.4.4",
+    "core-js-pure": "^3.20.2",
     "crypto-js": "^4.1.1",
     "css-loader": "^3.2.0",
     "deepool": "^3.0.0",
@@ -43,6 +45,7 @@
     "lineclip": "^1.1.5",
     "lost": "^8.3.1",
     "oauth": "^0.9.15",
+    "patch-package": "^6.4.7",
     "phaser": "^3.55.2",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",

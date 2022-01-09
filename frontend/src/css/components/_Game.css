@@ -15,35 +15,62 @@
     font-size: 13px;
   }
 }
-#GAME_MENU {
-  pointer-events: none;
+
+#GAME_MENU{
   position: fixed;
-  opacity: 0;
-  transition: 300ms;
-  background: white;
   border: solid 4px;
   border-bottom: none;
   border-radius: 10px 10px 0px 0px;
   bottom: 0px;
   right: 5px;
+}
+#GAME_DATE{
+  position: fixed;
+  border: solid 4px;
+  border-top: none;
+  border-radius: 0px 0px 10px 10px ;
+  top: 0px;
+  left: 5px;
+}
+#GAME_LOCATION{
+  position: fixed;
+  border: solid 4px;
+  border-top: none;
+  border-radius: 0px 0px 10px 10px ;
+  top: 0px;
+  right: 5px;
+}
+
+#GAME_UI{
+  pointer-events: none;
+  opacity: 0;
+  transition: 1500ms;
+}
+#GAME_UI.show {
+  pointer-events: initial;
+  opacity: 1;
+}
+.game__div-ui {
+  transition: 1000ms;
+  background: white;
   z-index: 99;
   font-family: "pixelJP";
   font-size: 1.2em;
+  padding: 0px 5px;
+  transform: scale(0.7);
 }
-#GAME_MENU.show {
-  pointer-events: initial;
-  position: fixed;
-  transition: 1000ms;
-  opacity: 1;
+#GAME_UI.show > .game__div-ui {
+  transform: scale(1);
 }
 .game__button-menu {
   image-rendering: pixelated;
   user-select: none;
-  margin: 0;
-  padding: 0.4em 0.3em 0.2em;
+  margin: 0.2em 0.1em 0em;
+  padding: 0.2em 0.05em 0.2em;
   border: none;
   background: transparent;
   font-weight: 100;
+  cursor: grab;
 }
 #GAME_MENU.hide .game__button-menu {
   opacity: 0;
@@ -100,7 +127,7 @@
 }
 #GAME_INVENTORY {
   user-select: none;
-  background-color: darkgrey;
+  background-color: grey;
   color: white;
   right: 9px;
   bottom: 47px;

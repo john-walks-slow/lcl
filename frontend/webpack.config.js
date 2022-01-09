@@ -67,6 +67,10 @@ module.exports = (() => {
           use: ['babel-loader'],
         },
         {
+          test: /\.ts$/,
+          use: ['babel-loader'],
+        },
+        {
           test: /\.css$/i,
           use: [
             'style-loader',
@@ -131,46 +135,41 @@ module.exports = (() => {
         },
     plugins: [
       production ? false : new BundleAnalyzerPlugin(),
-      new CleanWebpackPlugin(),
+      production ? new CleanWebpackPlugin() : false,
       new CopyWebpackPlugin([{ from: 'src/assets/public_res', to: outputPath }]),
       new WorkboxPlugin.GenerateSW({
         clientsClaim: true,
         skipWaiting: true,
         maximumFileSizeToCacheInBytes: 50000000,
         include: [/\.(ttf|png|json|ico|html|js|xml)$/],
-        exclude: [/main\.bundle\.js/],
-        additionalManifestEntries: [...publicRes].map(r => ({ url: r, revision: '20220106' })),
-        runtimeCaching: [
-          // {
-          //   // Match any request that ends with .png, .jpg, .jpeg or .svg.
-          //   urlPattern: /\.(?:js)$/,
-          //   // Apply a cache-first strategy.
-          //   handler: 'NetworkFirst',
-          //   options: {
-          //     // Use a custom cache name.
-          //     cacheName: 'app',
-          //     // Only cache 10 images.
-          //   },
-          // },
-          {
-            // Match any request that ends with .png, .jpg, .jpeg or .svg.
-            urlPattern: /main\.bundle\.js/,
-            // Apply a cache-first strategy.
-            handler: 'NetworkFirst',
-            options: {
-              // Use a custom cache name.
-              cacheName: 'app',
-              // Only cache 10 images.
-            },
-          },
-          {
-            urlPattern: /objects$/,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'object',
-            },
-          },
-        ],
+        exclude: production ? [/main\.bundle\.js/] : [],
+        additionalManifestEntries: [...publicRes].map(r => ({ url: r, revision: '20220108' })),
+        runtimeCaching: production
+          ? [
+              {
+                urlPattern: /main\.bundle\.js/,
+                handler: 'NetworkFirst',
+                options: {
+                  cacheName: 'app',
+                },
+              },
+              {
+                urlPattern: /objects$/,
+                handler: 'NetworkFirst',
+                options: {
+                  cacheName: 'object',
+                },
+              },
+            ]
+          : [
+              {
+                urlPattern: /objects$/,
+                handler: 'NetworkFirst',
+                options: {
+                  cacheName: 'object',
+                },
+              },
+            ],
       }),
       new HtmlWebpackPlugin({
         excludeAssets: [/.*\.fallback\.bundle\.js/],

@@ -1,5 +1,4 @@
 import MS from 'teoria'
-import * as Tone from 'tone'
 import { range } from '../../utils/utils'
 import { customIntRandom, customWRandom, seededRandom, seededRandomKept } from '../../utils/random'
 import { secureStorage } from '../../utils/storage'
@@ -36,6 +35,7 @@ export default class MainScene extends Phaser.Scene {
     window.addEventListener('resize', () => {
       this.setDisplay()
     })
+    this.configurations = configurations
   }
   setDisplay() {
     configurations.updateConfigurations()
@@ -118,7 +118,7 @@ export default class MainScene extends Phaser.Scene {
       this.pointerOnPlayer = false
     })
     this.player.on('pointerdown', () => {
-      this.toggleShowMenu()
+      this.toggleShowUI()
     })
     this.camera.startFollow(this.player, false)
     this.gameObjectsLayer.add(this.player)
@@ -263,41 +263,24 @@ export default class MainScene extends Phaser.Scene {
     })
 
     // - Setup Ui
-    let setupLocation = () => {
-      this.location = this.add.text(15, 15, '', {
-        color: 0xffffff,
-        fontFamily: 'pixelTitle',
-      })
-      setTimeout(() => {
-        this.location.setText('...')
-      }, 400)
-      this.location.updateLocation = () => {
-        this.location.rad =
-          Math.round(Phaser.Math.Angle.Between(0, 0, this.player.x, this.player.y) * 100) / 100
-        this.location.distance =
-          Math.round(
-            ((this.objectData.zeroDistance ** (1 / configurations.DENSITY_FACTOR) -
-              Phaser.Math.Distance.Between(0, 0, this.player.x, this.player.y) **
-                (1 / configurations.DENSITY_FACTOR)) /
-              5000) *
-              10
-          ) / 10
-        this.location.setText(`(${this.location.rad}, ${this.location.distance})`)
-      }
-      this.uiLayer.add(this.location)
-    }
-    setupLocation()
+
     this.gameDialog = new Dialog(this)
     this.itemDialog = new ItemDialog(this)
     this.linkDialog = new LinkDialog(this)
     this.uiLayer.add([this.gameDialog, this.itemDialog, this.linkDialog])
 
     // - Stop propagation on external UIs
+    let reactUI = document.getElementById('GAME_UI')
+    let reactDate = document.getElementById('GAME_DATE')
+    let reactLocation = document.getElementById('GAME_LOCATION')
     let reactMenu = document.getElementById('GAME_MENU')
     let gameInfo = document.getElementById('GAME_INFO')
     let gameInventory = document.getElementById('GAME_INVENTORY')
     let gameButtons = document.getElementsByClassName('game__button-menu')
-    this.reactComponents = [reactMenu, gameInfo, gameInventory, ...gameButtons]
+    // this.reactComponents = [reactDate, reactLocation, gameInfo, gameInventory, ...gameButtons]
+    console.log(gameButtons)
+    this.reactComponents = [reactUI]
+    // this.reactComponents = [reactMenu, gameInfo, gameInventory, ...gameButtons]
     const stopEventPropagation = e => {
       if (e.target.tagName != 'canvas') {
         e.stopPropagation()
@@ -403,20 +386,24 @@ export default class MainScene extends Phaser.Scene {
 
     // - Startup
     this.objectGroup.updateObjects(false, [0, 0])
-    generativeMusic.startBgm(this)
-    generativeMusic.updateSound()
-    this.setupKeyboard()
-    this.setShowMenu(true)
-    setInterval(() => {
-      this.objectGroup.updateObjects()
-    }, 100)
-    setInterval(() => {
-      generativeMusic.updateSound()
-      generativeMusic.updateSynths(250)
-    }, 250)
+    generativeMusic.setupScene(this)
+    setTimeout(() => {
+      generativeMusic.startBgm()
 
-    this.scene.stop('LoadingScene')
-    this.camera.initAnim()
+      this.setupKeyboard()
+      this.setShowUI(true)
+      setInterval(() => {
+        this.objectGroup.updateObjects()
+        this.updateLocation()
+      }, 100)
+      setInterval(() => {
+        generativeMusic.updateSound()
+        generativeMusic.updateSynths(200)
+      }, 200)
+
+      this.scene.stop('LoadingScene')
+      this.camera.initAnim()
+    }, 500)
   }
   setupKeyboard() {
     this.input.keyboard.on('keydown-B', () => {
@@ -426,7 +413,7 @@ export default class MainScene extends Phaser.Scene {
       this.toggleShowInfo()
     })
     this.input.keyboard.on('keydown-I', () => {
-      this.toggleShowMenu()
+      this.toggleShowUI()
     })
     this.input.keyboard.on('keydown-N', () => {
       this.navigateToAdd()
@@ -435,7 +422,15 @@ export default class MainScene extends Phaser.Scene {
       this.camera.toggleZoom()
     })
   }
-
+  updateLocation = () => {
+    let rad = Phaser.Math.Angle.Between(0, 0, this.player.x, this.player.y)
+    let distance =
+      (this.objectData.zeroDistance ** (1 / configurations.DENSITY_FACTOR) -
+        Phaser.Math.Distance.Between(0, 0, this.player.x, this.player.y) **
+          (1 / configurations.DENSITY_FACTOR)) /
+      5000
+    this.setLocation(`(${rad.toFixed(2)},${distance.toFixed(1)})`)
+  }
   update(time, delta) {
     // console.log(this.input.activePointer.x, this.input.activePointer.y);
     // console.log(this.gamepad.padX, this.gamepad.padY);
@@ -443,7 +438,6 @@ export default class MainScene extends Phaser.Scene {
     // this.game.canvas.style.filter = this.filter(this.player.x, this.player.y);
     // console.log(this.filter(this.player.x, this.player.y));
     // console.log(this.player.body);
-    this.location.updateLocation()
     let notTouching = this.player.body.touching.none
     let velocityX = notTouching ? this.player.body.velocity.x : 0
     let velocityY = notTouching ? this.player.body.velocity.y : 0
@@ -456,7 +450,7 @@ export default class MainScene extends Phaser.Scene {
     this.visibleObjects.forEach(({ gameObject }) => {
       if (gameObject.oData && gameObject.oData.type == 'object') {
         try {
-          gameObject.setVelocity(0, 0)
+          gameObject.active && gameObject.setVelocity(0, 0)
         } catch (error) {
           console.log(gameObject, error)
         }

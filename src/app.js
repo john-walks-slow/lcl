@@ -1,5 +1,5 @@
-const path = require('path')
-const favicon = require('serve-favicon')
+// const path = require('path')
+// const favicon = require('serve-favicon')
 const compress = require('compression')
 const helmet = require('helmet')
 const cors = require('cors')
@@ -8,7 +8,7 @@ const logger = require('./logger')
 const feathers = require('@feathersjs/feathers')
 const configuration = require('@feathersjs/configuration')
 const express = require('@feathersjs/express')
-const socketio = require('@feathersjs/socketio')
+// const socketio = require('@feathersjs/socketio')
 
 const middleware = require('./middleware')
 const services = require('./services')
@@ -46,15 +46,15 @@ app.configure(middleware)
 app.configure(services)
 // Set up event channels (see channels.js)
 app.configure(channels)
+app.use(express.static(app.get('public')))
 
-app.use('/', express.static(app.get('public')))
-app.use('/*', express.static(app.get('public')))
+app.get('/*', function (req, res) {
+  res.sendFile('index.html', { root: app.get('public') })
+})
+// app.use('/*', express.static(app.get('public')))
 // app.get('/objects', function (req, res) {
 //   res.sendFile('index.html', { root: app.get('public') })
 // })
-app.get('/add', function (req, res) {
-  res.sendFile('index.html', { root: app.get('public') })
-})
 
 // Configure a middleware for 404s and the error handler
 // app.use(express.notFound());

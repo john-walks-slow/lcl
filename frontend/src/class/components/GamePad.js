@@ -1,5 +1,3 @@
-import configurations from '../configurations'
-
 export default class GamePad extends Phaser.GameObjects.Sprite {
   constructor(scene) {
     super(scene, 0, 0, 'gamepad', 0)
@@ -14,7 +12,7 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
     })
   }
   setDisplay() {
-    this.IS_MOBILE = configurations.IS_MOBILE
+    this.IS_MOBILE = this.scene.configurations.IS_MOBILE
     if (!this.IS_MOBILE) {
       this.alpha = 0
       this.removeInteractive()
@@ -22,14 +20,14 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
       this.alpha = 1
       this.setInteractive()
     }
-    let WIDTH = configurations.WINDOW_W / 6
+    let WIDTH = this.scene.configurations.WINDOW_W / 6
     WIDTH = WIDTH - (WIDTH % 16)
-    const PADDING = configurations.WINDOW_W / 12
+    const PADDING = this.scene.configurations.WINDOW_W / 12
     this.setDisplaySize(WIDTH, WIDTH)
     this.setX(PADDING + WIDTH / 2)
-    this.setY(configurations.WINDOW_H - PADDING - WIDTH / 2)
+    this.setY(this.scene.configurations.WINDOW_H - PADDING - WIDTH / 2)
     let centerX = PADDING + WIDTH / 2
-    let centerY = configurations.WINDOW_H - (PADDING + WIDTH / 2)
+    let centerY = this.scene.configurations.WINDOW_H - (PADDING + WIDTH / 2)
     let onInput = pointer => {
       this.padX = pointer.x - centerX
       this.padY = centerY - pointer.y

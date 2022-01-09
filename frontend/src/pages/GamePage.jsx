@@ -15,6 +15,7 @@ import MainScene from '../class/scenes/MainScene'
 import LoadingScene from '../class/scenes/LoadingScene'
 import emoji from 'emoji-dictionary/lib/index'
 import { secureStorage } from '../utils/storage'
+import GenerativeMusic from '../class/GenerativeMusic'
 
 // function createTestObject(object) {
 //   object._id = 3;
@@ -27,12 +28,13 @@ const Game = ({ dispatch, isShown }) => {
   const [gameRef, setGame] = useState()
   const [showInfo, setShowInfo] = useState(false)
   const [showInventory, setShowInventory] = useState(false)
-  const [showMenu, setShowMenu] = useState(false)
+  const [showUI, setShowUI] = useState(false)
   const [hideMenu, setHideMenu] = useState(false)
   const [showGame, setShowGame] = useState(true)
   const [zoomed, setZoomed] = useState(false)
+  const [date, setDate] = useState(false)
+  const [location, setLocation] = useState('(0,0)')
   const player = useSelector(state => state.present.get('player')).toJS()
-  console.log(player)
   const newObject = useSelector(state => state.present.get('newObject'))
   // const objects = useSelector(state => state.present.get('objects'));
   const deferredPrompt = window.deferredPrompt
@@ -43,8 +45,8 @@ const Game = ({ dispatch, isShown }) => {
   function toggleHideMenu() {
     setHideMenu(!hideMenu)
   }
-  function toggleShowMenu() {
-    setShowMenu(!showMenu)
+  function toggleShowUI() {
+    setShowUI(!showUI)
   }
   function toggleShowInfo() {
     setShowInfo(!showInfo)
@@ -66,16 +68,22 @@ const Game = ({ dispatch, isShown }) => {
   function updateUIMethod(mainScene) {
     mainScene.toggleShowInventory = toggleShowInventory
     mainScene.toggleHideMenu = toggleHideMenu
-    mainScene.toggleShowMenu = toggleShowMenu
+    mainScene.toggleShowUI = toggleShowUI
     mainScene.toggleShowInfo = toggleShowInfo
   }
   useEffect(() => {
     mainSceneRef && updateUIMethod(mainSceneRef)
-  }, [showInventory, showInfo, hideMenu, showMenu])
-  useEffect(() => {}, [])
+  }, [showInventory, showInfo, hideMenu, showUI])
+  useEffect(() => {
+    setDate(new Date())
+    let timer = setInterval(() => setDate(new Date()), 1000)
+    return () => {
+      clearInterval(timer)
+    }
+  }, [])
   useEffect(() => {
     if (!isShown && mainSceneRef) {
-      setShowMenu(false)
+      setShowUI(false)
       setShowInventory(false)
       setShowInfo(false)
       setShowGame(false)
@@ -88,9 +96,10 @@ const Game = ({ dispatch, isShown }) => {
       document.title = '白洞 / 意识海'
       document.body.style.overflow = 'hidden'
       document.body.style.backgroundColor = '#131313'
+
       // if not initial run
       if (mainSceneRef) {
-        setShowMenu(true)
+        setShowUI(true)
         console.log('resume')
         mainSceneRef.resume()
         // mainSceneRef.scene.restart({ objectList: mainSceneRef.objectList, gameObjectMap: mainSceneRef.gameObjectMap });
@@ -108,15 +117,16 @@ const Game = ({ dispatch, isShown }) => {
         // let toggleShowInfoRef = useRef(toggleShowInfo).current;
         // let toggleShowInventoryRef = useRef(toggleShowInventory).current;
         let methods = {
-          setShowMenu,
           toggleShowInfo,
           toggleShowInventory,
-          toggleShowMenu,
+          toggleShowUI,
           toggleHideMenu,
+          setShowUI,
+          setLocation,
           setStorage,
+          setZoomed,
           dispatch,
           updateUIMethod,
-          setZoomed,
           navigateToAdd,
         }
         var loadingScene = new LoadingScene(methods)
@@ -156,13 +166,20 @@ const Game = ({ dispatch, isShown }) => {
         // game.scale.autoRound = true;
         // game.scale.setMaxZoom();
       }
+      GenerativeMusic.channels.master.volume.rampTo(0, 4)
     }
   }, [isShown])
   return (
     <div id="GAME_DIV" className={showGame ? 'show' : ''}>
       <div id="PHASER_ROOT"></div>
-      <div id="GAME_UI">
-        <div id="GAME_MENU" className={(showMenu ? 'show' : '') + (hideMenu ? ' hide' : '')}>
+      <div id="GAME_UI" className={showUI ? 'show' : ''}>
+        <div id="GAME_DATE" className="game__div-ui">
+          {date ? date.toLocaleTimeString() : ''}
+        </div>
+        <div id="GAME_LOCATION" className="game__div-ui">
+          {location}
+        </div>
+        <div id="GAME_MENU" className={'game__div-ui' + (hideMenu ? ' hide' : '')}>
           <div className="">
             {/* <input className="game__button-menu" type="image" onClick={() => { navigateToAdd(); }} src={newBtnURL} /> */}
             {/* <input className="game__button-menu" type="image" onClick={() => { mainSceneRef.camera.toggleZoom(); }} src={mapBtnURL} /> */}

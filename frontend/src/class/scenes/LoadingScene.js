@@ -12,7 +12,7 @@ import whiteURL from '../../assets/game/white.png'
 import moreURL from '../../assets/game/more.png'
 import { setObjects } from '../../store/actions/actionCreators'
 import configurations from '../configurations'
-import generativeMusic from '../GenerativeMusic'
+// import generativeMusic from '../GenerativeMusic'
 import ObjectData from '../ObjectData'
 import { objectService } from '../feathers-service'
 export default class LoadingScene extends Phaser.Scene {

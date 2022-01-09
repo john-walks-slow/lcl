@@ -3,6 +3,7 @@ import rest from '@feathersjs/rest-client'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { objectService } from '../class/feathers-service'
+import GenerativeMusic from '../class/GenerativeMusic'
 import App from '../components/App'
 import { newProject, setPath, setStorage, updateUsedColors } from '../store/actions/actionCreators'
 import { REWARD_PALETTE } from '../store/reducers/paletteReducer'
@@ -181,12 +182,13 @@ const Page = ({ dispatch, isShown }) => {
   }
   useEffect(() => {
     document.body.style.backgroundColor = 'white'
+    document.body.style.overflowY = 'auto'
     document.title = '白洞 / 创建'
+    GenerativeMusic.channels.master.volume.rampTo(-40, 4)
     setShow(true)
     dispatch(newProject())
     dispatch(updateUsedColors())
     // setTimeout(() => {
-    document.body.style.overflow = 'auto'
     // }, 500);
     // Connect to the `http://feathers-api.com/messages` service
   }, [])

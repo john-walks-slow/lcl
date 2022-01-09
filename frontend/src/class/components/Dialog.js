@@ -1,9 +1,8 @@
-import configurations from '../configurations'
-
 export default class Dialog extends Phaser.GameObjects.Container {
   constructor(scene) {
     super(scene)
     this.scene = scene
+    this.configurations = this.scene.configurations
     this.initializeComponents()
     this.setDisplay()
     this.setScrollFactor(0)
@@ -57,20 +56,18 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.add([this.dialogWindow, this.dialogText, this.dialogHeader])
   }
   setDisplayParams() {
-    Object.assign(this, configurations)
+    Object.assign(this, this.configurations)
     this.DIALOG_HEIGHT = this.WINDOW_H / 2.7
-    this.TEXT_PADDING_W = 25
-    this.TEXT_PADDING_H = 25
+    this.TEXT_PADDING_W = 0
+    this.TEXT_PADDING_H = 0
     this.PADDING_BETWEEN = 10 * this.RESOLUTION
-    this.DIALOG_PADDING_W = 20
+    this.DIALOG_PADDING_W = 50 + this.WINDOW_W / 20
     this.DIALOG_PADDING_H = 0
     this.FONT_SIZE = Math.max(this.WINDOW_H / 35, this.WINDOW_W / 45)
     this.FONT_SIZE_HEADER = this.FONT_SIZE * 1.2
     this.FONT_FAMILY = 'pixelCN'
     this.FONT_FAMILY_HEADER = 'pixelCN'
-    this.DIALOG_WIDTH =
-      Math.min(Math.min(this.MASK_RADIUS * 2, this.WINDOW_W), this.WINDOW_H) -
-      this.DIALOG_PADDING_W * 2
+    this.DIALOG_WIDTH = Math.min(Math.min(this.MASK_RADIUS * 2, this.WINDOW_W), this.WINDOW_H * 1.3)
     this.DIALOG_X = this.WINDOW_CENTER_X
     this.DIALOG_Y = this.WINDOW_CENTER_Y
     this.DIALOG_HEADER_X =
@@ -101,10 +98,7 @@ export default class Dialog extends Phaser.GameObjects.Container {
     })
     // this.dialogText.alpha = 0.5
     this.dialogText.setWordWrapWidth(
-      Math.max(
-        this.WINDOW_W - this.DIALOG_PADDING_W * 2 - this.TEXT_PADDING_W * 2 + 10,
-        this.FONT_SIZE
-      ),
+      Math.max(this.DIALOG_WIDTH - 2 * this.DIALOG_PADDING_W, this.FONT_SIZE * 2),
       true
     )
   }

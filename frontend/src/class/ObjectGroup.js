@@ -1,6 +1,5 @@
-import * as Tone from 'tone'
 import configurations from './configurations'
-import GenerativeMusic from './GenerativeMusic'
+// import GenerativeMusic from './GenerativeMusic'
 
 export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
@@ -65,7 +64,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
         currentZone[1] == this.previousZone[1]
       )
     ) {
-      console.time('updateObjects')
+      console.time('updateObjects Performance')
       let previousZones = this.scene.objectData.map.getNearBy(this.previousZone)
       let currentZones = this.scene.objectData.map.getNearBy(currentZone)
       let createZones = currentZones.filter(
@@ -199,7 +198,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
       //   };
       //   return `${result}`;
       // };
-      console.timeEnd('updateObjects')
+      console.timeEnd('updateObjects Performance')
     }
   }
 }

@@ -1,10 +1,8 @@
-import configurations from '../configurations'
-
 export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
   constructor(scene) {
-    super(0, 0, configurations.WINDOW_W, configurations.WINDOW_H)
-    this.cameraManager = scene.cameras
+    super(0, 0, scene.configurations.WINDOW_W, scene.configurations.WINDOW_H)
     this.scene = scene
+    this.cameraManager = scene.cameras
     this.state = 'zoomIn'
     this.setBackgroundColor(0xffffff)
     // this.setFollowOffset(0, 100);
@@ -12,15 +10,15 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     // this.setRoundPixels(false);
     this.initTween = this.scene.tweens.create({
       targets: this,
-      props: { zoom: configurations.ZOOM_LEVEL, alpha: 1 },
+      props: { zoom: this.scene.configurations.ZOOM_LEVEL, alpha: 1 },
       ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
-      duration: 1000,
+      duration: 2000,
       completeDelay: 0,
     })
 
     this.setDisplay()
     // this.fadeIn()
-    this.setZoom(configurations.ZOOM_OUT_LEVEL)
+    this.setZoom(this.scene.configurations.ZOOM_OUT_LEVEL)
   }
   enterDialog() {
     if (this.exitAnim) {
@@ -49,16 +47,16 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     return this.exitAnim.play()
   }
   setDisplay() {
-    // this.setZoom(configurations.ZOOM_LEVEL);
-    this.setSize(configurations.WINDOW_W, configurations.WINDOW_H)
+    // this.setZoom(this.scene.configurations.ZOOM_LEVEL);
+    this.setSize(this.scene.configurations.WINDOW_W, this.scene.configurations.WINDOW_H)
     this.setMask(
       new Phaser.Display.Masks.GeometryMask(
         this.scene,
         new Phaser.GameObjects.Graphics(this.scene, {
-          x: configurations.WINDOW_CENTER_X,
-          y: configurations.WINDOW_CENTER_Y,
+          x: this.scene.configurations.WINDOW_CENTER_X,
+          y: this.scene.configurations.WINDOW_CENTER_Y,
         })
-          .fillCircle(0, 0, configurations.MASK_RADIUS)
+          .fillCircle(0, 0, this.scene.configurations.MASK_RADIUS)
           .setAlpha(1)
       )
     )
@@ -76,7 +74,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     }
     this.zoomInAnim = this.scene.tweens.create({
       targets: this,
-      props: { zoom: configurations.ZOOM_LEVEL, alpha: 1 },
+      props: { zoom: this.scene.configurations.ZOOM_LEVEL, alpha: 1 },
       ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 800,
       completeDelay: 0,
@@ -95,7 +93,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     }
     this.zoomOutAnim = this.scene.tweens.create({
       targets: this,
-      props: { zoom: configurations.ZOOM_OUT_LEVEL, alpha: 1 },
+      props: { zoom: this.scene.configurations.ZOOM_OUT_LEVEL, alpha: 1 },
       ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 1000,
     })
@@ -109,8 +107,8 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     // this.zoomOutAnim.stop(0);
     // this.initAnim.stop(0);
     // let result = "unchanged";
-    this.zoom == configurations.ZOOM_LEVEL && this.zoomOut()
-    this.zoom < configurations.ZOOM_LEVEL && this.zoomIn()
+    this.zoom == this.scene.configurations.ZOOM_LEVEL && this.zoomOut()
+    this.zoom < this.scene.configurations.ZOOM_LEVEL && this.zoomIn()
     // return result;
   }
 }

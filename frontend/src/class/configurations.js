@@ -42,7 +42,7 @@ class Configurations {
     this.TIME_DELAY = 60 * 60 * 1000
     this.RANDOM_ZONE_W = this.PLAYER_TARGET_H * 5
     this.DAY_OFFSET = this.PLAYER_TARGET_H * 0.85
-    this.MAX_DAY_GAP = this.DEV_MODE ? 1 : 7
+    this.MAX_DAY_GAP = 5.5
     this.DENSITY_OFFSET = this.PLAYER_TARGET_H * 1
     this.DENSITY_FACTOR = 0.73
     this.ACTIVITY_OFFSET = 1
@@ -57,8 +57,8 @@ class Configurations {
     ]
 
     this.updateConfigurations()
-    this.SOUND_SIGHT = 15 * this.PLAYER_TARGET_H
-    this.OBJECT_SIGHT = 70 * this.PLAYER_TARGET_H
+    this.SOUND_SIGHT = 25 * this.PLAYER_TARGET_H
+    this.OBJECT_SIGHT = 35 * this.PLAYER_TARGET_H
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / 3
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL/2;
 

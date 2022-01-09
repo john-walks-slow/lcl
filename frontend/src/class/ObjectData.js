@@ -2,7 +2,7 @@ import { seededRandom } from '../utils/random'
 import { secureStorage } from '../utils/storage'
 import { range } from '../utils/utils'
 import configurations from './configurations'
-import GenerativeMusic from './GenerativeMusic'
+// import GenerativeMusic from './GenerativeMusic'
 import ObjectMap from './ObjectMap'
 export default class ObjectData {
   constructor(list) {
@@ -18,7 +18,7 @@ export default class ObjectData {
     this.playerData = secureStorage.getItem('player')
   }
   setupObject() {
-    console.time('setupObject')
+    console.time('setupObject Performance')
     let previousDate = configurations.TIMESTAMP
     // let offsetIndex = 0
     let densityOffset = 0
@@ -103,7 +103,7 @@ export default class ObjectData {
       this.map.pushNew(o.zone, o)
       this.soundMap.pushNew(this.soundMap.getZone(o), o)
     })
-    console.timeEnd('setupObject')
+    console.timeEnd('setupObject Performance')
     console.log(this.map)
     this.zeroDistance = this.list[this.list.length - 1].distance
   }
