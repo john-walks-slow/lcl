@@ -15,8 +15,8 @@ class GenerativeMusic {
     this.audibleList = []
     const initTone = () => {
       // const context = new Tone.Context({ latencyHint: 4000 })
-      // const context = new Tone.Context({ latencyHint: 'playback' })
-      // Tone.setContext(context)
+      const context = new Tone.Context({ latencyHint: 'playback' })
+      Tone.setContext(context)
       Tone.getTransport().bpm.value = 60
       Tone.getTransport().start()
     }

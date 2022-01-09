@@ -398,8 +398,8 @@ export default class MainScene extends Phaser.Scene {
       }, 100)
       setInterval(() => {
         generativeMusic.updateSound()
-        generativeMusic.updateSynths(200)
-      }, 200)
+        generativeMusic.updateSynths(300)
+      }, 300)
 
       this.scene.stop('LoadingScene')
       this.camera.initAnim()

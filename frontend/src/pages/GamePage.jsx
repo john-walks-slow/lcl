@@ -287,7 +287,10 @@ const Game = ({ dispatch, isShown }) => {
             ×
           </button>
           <ReactMarkdown>
-            {ReadMe.toString().replace(/:\w+:/gi, name => emoji.getUnicode(name))}
+            {ReadMe.toString()
+              .replace(/:\w+:/gi, name => emoji.getUnicode(name))
+              .replaceAll('[ ]', '☐')
+              .replaceAll('[x]', '☑')}
           </ReactMarkdown>
         </div>
       </div>

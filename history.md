@@ -1,3 +1,44 @@
+- 0.85: 程序化音乐差不多可以听了（使用采样音源，扩展Sampler支持多通道输出避免重复创建实例，重写Panner，动态调整的效果器、淡入淡出） 很多的性能优化（解决了像素画板断断续续、走着走着卡一下等问题） 重做界面（世界坐标、圆形遮罩）
+  - [x] :alien: uqn上发帖
+  - [x] :ambulance: jsdelivr 出问题了，增加 cdn fallback
+  - [x] :art: 调整 UI 色值，与色板吻合
+  - [x] :art: 新图标
+  - [x] :art: 修复字体缺失符号，增加日语、英语、繁体字
+  - [x] :art: 重新设计 Add Page
+  - [x] :art: 重新设计 pixel editor，布局更合理，大屏下工具栏横置，简化画布操作
+  - [x] :bug: 创建 game 前未更新屏幕坐标
+  - [x] :bug: 扩大 canvas/选择颜料时按钮位移
+  - [x] :bug: 连续点击 map 相机卡死
+  - [x] :bug: Add Page 改变屏幕大小导致坐标偏移
+  - [x] :bug: canvas 和 preview 像素间白边
+  - [x] :bug: frames drag&drop / scrollbar 重叠
+  - [x] :bug: Inventory reducer 未及时更新
+  - [x] :fire: 拒绝“白洞”这个名字，白洞是一个只发射，不吸收的时空区域。白洞更真，意识海更有指向性。
+  - [x] :fire: 字体加载超级慢，更换字体
+  - [x] :musical_note: 尝试不同音色
+  - [x] :musical_note: 重写panner算法（玩家在对象中的情况）
+  - [x] :musical_note: 根据对象参数动态调整的混响、延迟、eq
+  - [x] :musical_note: 和弦和旋律的时值更有随机性
+  - [x] :musical_note: 解决很多bug，调整参数
+  - [x] :musical_note: 每天会随机生成调性
+  - [x] :musical_note: 完成 pannernode 替代方案
+  - [x] :musical_note: 增加混响和延迟
+  - [x] :musical_note: 重构，大量性能优化，动态挂载 synth，仅更新可听见的 node，新手机上基本不卡
+  - [x] :musical_note: 重写sampler
+  - [x] :musical_note: start time 报错
+  - [x] :rocket: 细分onmousemove，解决像素画板断断续续的问题
+  - [x] :rocket: 研究到底性能的瓶颈在哪里
+  - [x] :rocket: object pooling
+  - [x] :sparkles: 尝试粒子（否决，用户可以自行创建粒子）
+  - [x] :sparkles: 分辨率自适应，优化 item 大小
+  - [x] :sparkles: 恒定的坐标系统
+  - [x] :sparkles: 没有对话的对象不增加空间密度，会更快飘走，不会生成道具和颜料
+  - [x] :sparkles: 深度不为 1 的对象不会挡路
+  - [x] :sparkles: 现在只有视野范围内的对象会根据 zfactor 更新坐标
+  - [x] :sparkles: 重新设计颜料色板，默认赠送 8 色，奖励颜色从 64 色中抽取
+  - [x] :sparkles: undo redo 现在会以一次完整的操作为单位
+  - [x] :wrench: 调试参数
+  - [x] :zap: 扩大按钮面积
 - 0.8: 初步完成程序化音乐 解决很多 bug 重做 ui 设置 M 以下及一级深度不消耗道具 离线可用 重构代码
   - [x] :art: 调整响应式布局
   - [x] :art: 重做滤镜

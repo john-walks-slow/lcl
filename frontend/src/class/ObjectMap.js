@@ -3,7 +3,7 @@ import { range } from '../utils/utils'
 export default class ObjectMap extends Array {
   constructor(sight) {
     super()
-    this.SCOPE = 2
+    this.SCOPE = 3
     this.gridSize = (sight * 2) / (2 * this.SCOPE + 1)
     // return the zone of o
     this.getZone = o => {

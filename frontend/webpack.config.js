@@ -45,7 +45,7 @@ module.exports = (() => {
   }
   return {
     mode: production ? 'production' : 'development',
-    devtool: production ? false : 'cheap-module-source-map',
+    devtool: false ? false : 'cheap-module-source-map',
     entry: {
       polyfill: 'babel-polyfill',
       main: './src/index.jsx',
@@ -209,7 +209,7 @@ module.exports = (() => {
           },
         },
       },
-      minimizer: production
+      minimizer: false
         ? [
             new TerserPlugin({
               terserOptions: {
