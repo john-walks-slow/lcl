@@ -23,8 +23,8 @@ body {
 body {
   overflow: hidden;
 }
-body::-webkit-scrollbar{
-  display:none
+body::-webkit-scrollbar {
+  display: none;
 }
 blockquote {
   background: #f9f9f9;
@@ -32,7 +32,7 @@ blockquote {
   margin: 5px 0px;
   font-size: 0.8em;
   padding: 0.5em 10px;
-  quotes: "\201C""\201D""\2018""\2019";
+  quotes: '\201C''\201D''\2018''\2019';
 }
 blockquote:before {
   color: #ccc;

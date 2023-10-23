@@ -1,14 +1,14 @@
-import React from 'react';
+import React from 'react'
 
 const PaletteColor = props => {
-  const { positionInPalette, width, color, selected, selectPaletteColor } = props;
+  const { positionInPalette, width, color, selected, selectPaletteColor } = props
 
-  const handleClick = () => selectPaletteColor(positionInPalette);
+  const handleClick = () => selectPaletteColor(positionInPalette)
 
-  const cellColor = color;
+  const cellColor = color
   const styles = {
     backgroundColor: cellColor,
-  };
+  }
 
   return (
     <button
@@ -19,7 +19,7 @@ const PaletteColor = props => {
       style={styles}
       onClick={handleClick}
     />
-  );
-};
+  )
+}
 
-export default PaletteColor;
+export default PaletteColor

@@ -22,6 +22,7 @@ const APP_PATTERN = /(main|game)\.bundle\.js/
 const PUBLIC_RES_PATH = path.join(__dirname, 'src/assets/public_res')
 let production = process.env.NODE_ENV == 'production'
 let platform = process.env.BUILD_PLATFORM
+console.log({ production, platform })
 // const publicRes = [
 //   '/android-chrome-192x192.png',
 //   '/android-chrome-256x256.png',

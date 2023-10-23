@@ -1,6 +1,5 @@
 #GAME_DIV {
   overflow: hidden;
-
 }
 
 #GAME_UI > div {
@@ -11,12 +10,12 @@
   #GAME_UI > div {
     filter: blur(0.2px);
   }
-  #GAME_UI{
+  #GAME_UI {
     font-size: 13px;
   }
 }
 
-#GAME_MENU{
+#GAME_MENU {
   position: fixed;
   border: solid 4px;
   border-bottom: none;
@@ -24,24 +23,24 @@
   bottom: 0px;
   right: 5px;
 }
-#GAME_DATE{
+#GAME_DATE {
   position: fixed;
   border: solid 4px;
   border-top: none;
-  border-radius: 0px 0px 10px 10px ;
+  border-radius: 0px 0px 10px 10px;
   top: 0px;
   left: 5px;
 }
-#GAME_LOCATION{
+#GAME_LOCATION {
   position: fixed;
   border: solid 4px;
   border-top: none;
-  border-radius: 0px 0px 10px 10px ;
+  border-radius: 0px 0px 10px 10px;
   top: 0px;
   right: 5px;
 }
 
-#GAME_UI{
+#GAME_UI {
   pointer-events: none;
   opacity: 0;
   transition: 1500ms;
@@ -54,7 +53,7 @@
   transition: 1000ms;
   background: white;
   z-index: 99;
-  font-family: "pixelJP";
+  font-family: 'pixelJP';
   font-size: 1.2em;
   padding: 0px 5px;
   transform: scale(0.7);
