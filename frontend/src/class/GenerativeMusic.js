@@ -38,16 +38,19 @@ class GenerativeMusic {
 
   loadSamples(callback) {
     console.time('loadSamples Performance')
-    this.samples = SampleLibrary.load({
+    let loaded = 0
+    const config = {
       instruments: ['salamander', 'cello'],
       options: [
         { attack: 0, release: 0.5 },
         { attack: 1.2, release: 0.5 },
       ],
       onload: () => {
-        callback && callback.apply()
+        loaded++
+        loaded === config.instruments.length && callback && callback.apply()
       },
-    })
+    }
+    this.samples = SampleLibrary.load(config)
     console.timeEnd('loadSamples Performance')
   }
   fadeIn() {
