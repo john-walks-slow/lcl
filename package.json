@@ -51,6 +51,7 @@
     "feathers-mongodb": "^6.4.1",
     "feathers-nedb": "^5.1.0",
     "fs-blob-store": "^6.0.0",
+    "glob": "^7.2.0",
     "helmet": "^4.6.0",
     "http-server": "^14.0.0",
     "husky-init": "^7.0.0",

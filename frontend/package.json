@@ -9,6 +9,7 @@
     "build": "cross-env NODE_ENV=production BUILD_PLATFORM=web webpack --config webpack.config.js",
     "build-app": "cross-env NODE_ENV=production BUILD_PLATFORM=app webpack --config webpack.config.js",
     "dev": "cross-env NODE_ENV=development BUILD_PLATFORM=web webpack --config webpack.config.js",
+    "dev-fe": "cross-env NODE_ENV=development-frontend BUILD_PLATFORM=web webpack --config webpack.config.js",
     "dev-app": "cross-env NODE_ENV=development BUILD_PLATFORM=app webpack --config webpack.config.js",
     "postinstall": "patch-package"
   },

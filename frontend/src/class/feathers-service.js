@@ -3260,7 +3260,7 @@ const MOCK_OBJECT = [
   },
 ]
   .reverse()
-  // .slice(0, 1)
+  // .slice(0, 30)
   .reverse()
 switch (process.env.BUILD_PLATFORM) {
   case 'web':
@@ -3274,10 +3274,9 @@ switch (process.env.BUILD_PLATFORM) {
 }
 
 export let objectService
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV == 'development-frontend') {
   objectService = {
     find: async () => MOCK_OBJECT,
-
     get: async () => MOCK_OBJECT,
     post: async () => MOCK_OBJECT,
   }
