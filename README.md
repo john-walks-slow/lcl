@@ -79,11 +79,26 @@
 ### 待办事项
 
 ##### 当前版本
-- [ ] :package: PC 版开发
 - [ ] :package: 安卓版开发
+- [ ] :package: PC 版开发
 - [ ] :sparkles: i18n
 - [ ] :sparkles: 自动翻译
-- [ ] :books: 
+- [ ] :sparkles: 静音/免打扰选项
+- [x] :rocket: 在需要时才加载程序化音乐
+- [x] :rocket: 优化webpack性能
+- [ ] :rocket: 性能优化，解决声音卡顿
+- [ ] :musical_note: 增加音色选项
+- [ ] :musical_note: 调整混音
+- [ ] :musical_note: 增加脚步声
+- [ ] :musical_note: 增加ui音效
+- [ ] :bug: 解决phaser和tonejs的冲突
+  - 
+  - [ ] 是audio context的问题吗？
+  - [ ] 在phaser运行前创建audionode才有声音
+  - [ ] 在setupsound前更新context就可以了，暂时解决了
+  - [x] 先确保有声音
+- [ ] :bug: 更新时要刷新
+- [x] :books: 更新缺失的emoji，替换待办事项框框
 
 ##### 今后
 - [ ] :shirt: SEO
