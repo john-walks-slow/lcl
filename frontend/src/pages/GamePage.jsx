@@ -1,5 +1,6 @@
 // import Phaser from 'jquery';
 import Phaser from 'phaser'
+import * as Tone from 'tone'
 import React, { useEffect, useState, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useSelector } from 'react-redux'
@@ -37,7 +38,7 @@ const Game = ({ dispatch, isShown }) => {
   const player = useSelector(state => state.present.get('player')).toJS()
   const newObject = useSelector(state => state.present.get('newObject'))
   // const objects = useSelector(state => state.present.get('objects'));
-  const deferredPrompt = window.deferredPrompt
+  let deferredPrompt = window.deferredPrompt
   function toggleShowInventory() {
     console.log(showInventory)
     setShowInventory(!showInventory)
@@ -140,6 +141,11 @@ const Game = ({ dispatch, isShown }) => {
             zoom: configurations.SCALE,
             // autoCenter: Phaser.Scale.CENTER_BOTH
           },
+          audio: {
+            // disableWebAudio: true,
+            // noAudio: true,
+            context: Tone.context.rawContext._nativeContext,
+          },
           // zoom: configurations.ZOOM,
           physics: {
             default: 'arcade',
@@ -166,7 +172,6 @@ const Game = ({ dispatch, isShown }) => {
         // game.scale.autoRound = true;
         // game.scale.setMaxZoom();
       }
-      GenerativeMusic.channels.master.volume.rampTo(0, 4)
     }
   }, [isShown])
   return (

@@ -184,7 +184,6 @@ const Page = ({ dispatch, isShown }) => {
     document.body.style.backgroundColor = 'white'
     document.body.style.overflowY = 'auto'
     document.title = '白洞 / 创建'
-    GenerativeMusic.channels.master.volume.rampTo(-40, 4)
     setShow(true)
     dispatch(newProject())
     dispatch(updateUsedColors())

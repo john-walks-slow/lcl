@@ -1,5 +1,6 @@
 import MS from 'teoria'
 import { range } from '../../utils/utils'
+import Phaser from 'phaser'
 import { customIntRandom, customWRandom, seededRandom, seededRandomKept } from '../../utils/random'
 import { secureStorage } from '../../utils/storage'
 import Dialog from '../components/Dialog'
@@ -387,23 +388,21 @@ export default class MainScene extends Phaser.Scene {
     // - Startup
     this.objectGroup.updateObjects(false, [0, 0])
     generativeMusic.setupScene(this)
-    setTimeout(() => {
-      generativeMusic.startBgm()
+    generativeMusic.startBgm()
+    generativeMusic.channels && generativeMusic.channels.master.volume.rampTo(0, 4)
+    this.setupKeyboard()
+    this.setShowUI(true)
+    setInterval(() => {
+      this.objectGroup.updateObjects()
+      this.updateLocation()
+    }, 100)
+    setInterval(() => {
+      generativeMusic.updateSound()
+      generativeMusic.updateSynths(300)
+    }, 300)
 
-      this.setupKeyboard()
-      this.setShowUI(true)
-      setInterval(() => {
-        this.objectGroup.updateObjects()
-        this.updateLocation()
-      }, 100)
-      setInterval(() => {
-        generativeMusic.updateSound()
-        generativeMusic.updateSynths(300)
-      }, 300)
-
-      this.scene.stop('LoadingScene')
-      this.camera.initAnim()
-    }, 500)
+    this.scene.stop('LoadingScene')
+    this.camera.initAnim()
   }
   setupKeyboard() {
     this.input.keyboard.on('keydown-B', () => {
@@ -598,6 +597,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   resume() {
+    generativeMusic.fadeIn()
     this.scene.resume(this)
     this.game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H)
     this.game.scale.setZoom(configurations.SCALE)
@@ -605,6 +605,7 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard.enableGlobalCapture()
   }
   pause() {
+    generativeMusic.fadeOut()
     this.scene.pause(this)
     this.input.keyboard.disableGlobalCapture()
 

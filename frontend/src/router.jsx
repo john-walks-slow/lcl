@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { render } from 'react-dom';
-import './css/imports.css'; // Import PostCSS files
-import configureStore from './store/configureStore';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AddPage from './pages/AddPage';
-import GamePage from './pages/GamePage';
-import { useSelector } from 'react-redux';
-import { setPath } from './store/actions/actionCreators';
-import configurations from "./class/configurations";
+import React, { useEffect, useState } from 'react'
+import './css/imports.css' // Import PostCSS files
+import configureStore from './store/configureStore'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import AddPage from './pages/AddPage'
+import GamePage from './pages/GamePage'
+import { useSelector } from 'react-redux'
+import { setPath } from './store/actions/actionCreators'
+import configurations from './class/configurations'
 
-export default function ({ dispatch }) {
-  let pathname = useSelector(state => state.present.get('pathname'));
-  const [error, setError] = useState();
-  let showGame = pathname == '/';
-  let showAdd = pathname == '/add' || pathname == '/add/';
-  console.log(pathname);
+export default function Router({ dispatch }) {
+  let pathname = useSelector(state => state.present.get('pathname'))
+  const [error, setError] = useState()
+  let showGame = pathname == '/'
+  let showAdd = pathname == '/add' || pathname == '/add/'
+  console.log(pathname)
   // useEffect(() => {
   //   showGame = pathname == '/';
   //   showAdd = pathname == '/add';
@@ -24,14 +23,14 @@ export default function ({ dispatch }) {
     // if (this.window.location != pathname) dispatch(setPath('/'));
     if (!configurations.DEV_MODE) {
       window.onerror = message => {
-        console.log(message);
-        setError(message);
-      };
+        console.log(message)
+        setError(message)
+      }
     }
     // window.onpopstate = (e) => {
     //   dispatch(setPath(window.location.pathname));
     // };
-  }, []);
+  }, [])
   return (
     // <div>
     //   <GamePage show-{location=='/'||location==''} dispatch={dispatch} />
@@ -39,11 +38,10 @@ export default function ({ dispatch }) {
     // </div>
     <div>
       <div className={'error__div' + (error ? ' show' : '')}>
-        {'对不起！出错了。错误代码：' + error}{' '}
-        <br />
+        {'对不起！出错了。错误代码：' + error} <br />
         <button
           onClick={() => {
-            setError(false);
+            setError(false)
           }}
         >
           Dismiss
@@ -52,5 +50,5 @@ export default function ({ dispatch }) {
       {showAdd ? <AddPage isShown={showAdd} dispatch={dispatch} /> : ''}
       <GamePage isShown={showGame} dispatch={dispatch} />
     </div>
-  );
+  )
 }

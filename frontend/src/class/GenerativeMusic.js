@@ -8,19 +8,60 @@ import _ from 'lodash'
 import SampleLibrary from './SampleLibrary'
 // export default
 class GenerativeMusic {
-  constructor(scene) {
-    console.log(Tone.getDestination().volume)
-    this.scene = scene
+  constructor() {
     this.soundList = { melody: [], chord: [] }
     this.audibleList = []
-    const initTone = () => {
-      // const context = new Tone.Context({ latencyHint: 4000 })
-      const context = new Tone.Context({ latencyHint: 'playback' })
-      Tone.setContext(context)
-      Tone.getTransport().bpm.value = 60
-      Tone.getTransport().start()
+    this.FADE_OUT_VOLUME = -40
+    Tone.setContext(new Tone.Context({ latencyHint: 'playback' }))
+    const startContext = async () => {
+      try {
+        // await Tone.start()
+        await Tone.start()
+        console.log('Generative Music Started')
+        // const osc = new Tone.Oscillator('C3').start()
+        // osc.toDestination()
+        document.removeEventListener('click', startContext)
+        document.removeEventListener('touchend', startContext)
+        document.removeEventListener('keydown', startContext)
+      } catch (error) {
+        console.log(error)
+      }
     }
-    initTone()
+    if (Tone.context.state == 'running') {
+      startContext()
+    } else {
+      document.addEventListener('click', startContext)
+      document.addEventListener('touchend', startContext)
+      document.addEventListener('keydown', startContext)
+    }
+  }
+
+  loadSamples(callback) {
+    console.time('loadSamples Performance')
+    this.samples = SampleLibrary.load({
+      instruments: ['salamander', 'cello'],
+      options: [
+        { attack: 0, release: 0.5 },
+        { attack: 1.2, release: 0.5 },
+      ],
+      onload: () => {
+        callback && callback.apply()
+      },
+    })
+    console.timeEnd('loadSamples Performance')
+  }
+  fadeIn() {
+    this.channels && this.channels.master.volume.rampTo(0, 4)
+  }
+  fadeOut() {
+    this.channels && this.channels.master.volume.rampTo(this.FADE_OUT_VOLUME, 4)
+  }
+  setupScene(scene) {
+    this.scene = scene
+  }
+  setupSound() {
+    console.time('setupSound Performance')
+    this.setupContext = Tone.context
     this.N4_LENGTH = Tone.Time('4n').toSeconds()
     this.CHORD_LENGTH = { 8: 0.1, 6: 0.1, 4: 0.8, 2: 0.5, 1: 0.3 }
     this.CHORD_SYNC = 32
@@ -60,7 +101,12 @@ class GenerativeMusic {
     ->Instance Effect Channel->Send To Effect Bus->Buses->Master
     */
     this.channels = {
-      master: new Tone.Channel({ volume: -40, pan: 0, channelCount: 2, mute: false }),
+      master: new Tone.Channel({
+        volume: this.FADE_OUT_VOLUME,
+        pan: 0,
+        channelCount: 2,
+        mute: false,
+      }),
       bell: new Tone.Channel({ volume: 10, pan: 0, channelCount: 2, mute: false }),
       pad: new Tone.Channel({ volume: -35, pan: 0, channelCount: 2, mute: false }),
       buses: new Tone.Channel({ volume: -10, pan: 0, channelCount: 2, mute: false }),
@@ -70,20 +116,10 @@ class GenerativeMusic {
     this.channels.buses.chain(this.channels.master)
     this.channels.master.connect(Tone.getDestination())
     this.synths = {}
-    let instruments = SampleLibrary.load({
-      instruments: ['salamander', 'cello'],
-      options: [
-        { attack: 0, release: 0.5 },
-        { attack: 1.2, release: 0.5 },
-      ],
-      onload: () => {
-        // Object.assign(synth, synthAsync)
-      },
-    })
 
     this.synths.bell = deePool.create(() => {
       let synth = {}
-      synth.instrument = instruments['salamander']
+      synth.instrument = this.samples['salamander']
       // synth.current = synthFallback
       synth.fadeFactor = this.melodyFadeFactor
       synth.MinAudible = this.melodyMinAudible
@@ -101,7 +137,7 @@ class GenerativeMusic {
     this.synths.bell.grow(50)
     this.synths.pad = deePool.create(() => {
       let synth = {}
-      synth.instrument = instruments['cello']
+      synth.instrument = this.samples['cello']
       synth.fadeFactor = this.chordFadeFactor
       synth.MinAudible = this.chordMinAudible
       synth.MaxAudible = this.chordMaxAudible
@@ -172,198 +208,192 @@ class GenerativeMusic {
       return MS.note(this.notes()[degree].name() + octave.toString())
     }
 
-    // const context = new Tone.Context({ latencyHint: "playback" });
-    // set this context as the global Context
-    // Tone.setContext(context);
-    const generateChord = () => {
-      const day = configurations.DAY
+    const day = configurations.DAY
 
-      const CHORD_TYPE = {
-        T: 0,
-        D: 1,
-        S: 2,
+    const CHORD_TYPE = {
+      T: 0,
+      D: 1,
+      S: 2,
+    }
+    let majorMinor = day.random() * 1.6 + 0.2
+    console.log(majorMinor)
+    let CHORDS_LIST
+    if (majorMinor > 1) {
+      CHORDS_LIST = [
+        { 1: Math.round((majorMinor - 0.4) * 0.6), 3: 0.2, 6: 0.2 },
+        { 5: Math.round((majorMinor - 0.4) * 0.6), 3: 0.2, 5: 0.2 },
+        { 4: Math.round((majorMinor - 0.4) * 0.6), 2: 0.2, 6: 0.2 },
+      ]
+    } else {
+      CHORDS_LIST = [
+        { 6: Math.round(0.6 / (majorMinor + 0.4)), 1: 0.2, 4: 0.2 },
+        { 3: Math.round(0.6 / (majorMinor + 0.4)), 1: 0.2, 5: 0.2 },
+        { 2: Math.round(0.6 / (majorMinor + 0.4)), 4: 0.2, 5: 0.2 },
+      ]
+    }
+    let chords = []
+    let currentPos = 0
+    let currentType = false
+    // this.chordSequence = [...Array(this.chordLoopLength)].map(i => []);
+    this.chordSequence = [...Array(this.chordLoopLength)].map(i => [])
+    while (currentPos < this.chordLoopLength) {
+      switch (currentType) {
+        case 'D':
+          currentType = day.wRandom({ T: 4, D: 2, S: 1 })
+          break
+        case 'S':
+          currentType = day.wRandom({ T: 3, D: 4, S: 2 })
+          break
+        case 'T':
+          currentType = day.wRandom({ T: 2, D: 3, S: 4 })
+          break
+        default:
+          currentType = day.wRandom({ T: 1, D: 1, S: 1 })
+          break
       }
-      let majorMinor = day.random() * 1.6 + 0.2
-      console.log(majorMinor)
-      let CHORDS_LIST
-      if (majorMinor > 1) {
-        CHORDS_LIST = [
-          { 1: Math.round((majorMinor - 0.4) * 0.6), 3: 0.2, 6: 0.2 },
-          { 5: Math.round((majorMinor - 0.4) * 0.6), 3: 0.2, 5: 0.2 },
-          { 4: Math.round((majorMinor - 0.4) * 0.6), 2: 0.2, 6: 0.2 },
-        ]
-      } else {
-        CHORDS_LIST = [
-          { 6: Math.round(0.6 / (majorMinor + 0.4)), 1: 0.2, 4: 0.2 },
-          { 3: Math.round(0.6 / (majorMinor + 0.4)), 1: 0.2, 5: 0.2 },
-          { 2: Math.round(0.6 / (majorMinor + 0.4)), 4: 0.2, 5: 0.2 },
-        ]
+      // let currentChordDegree = CHORDS_LIST[CHORD_TYPE[currentType]][day.wRandom({ 0: 0.4, 1: 0.3, 2: 0.3 })] ;
+      let currentChordDegree = parseInt(day.wRandom(CHORDS_LIST[CHORD_TYPE[currentType]]))
+      // let currentChordNotes = [scale.get(currentChordDegree).name(), scale.get(currentChordDegree + 2).name(), scale.get(currentChordDegree + 4).name().toUpperCase()];
+
+      // if (day.random() > 0.9) {
+      //   this.chordSequence[currentPos].push(false);
+      // }
+
+      this.chordSequence[currentPos].push(currentChordDegree)
+      // this.chordSequence[currentPos].push(currentChordDegree);
+      let previousPos = currentPos
+      // currentPos += 4
+      currentPos += parseInt(day.wRandom(this.CHORD_LENGTH)) * 2
+
+      if ((previousPos + 1).iDivide(this.CHORD_SYNC) < (currentPos + 1).iDivide(this.CHORD_SYNC)) {
+        currentPos = currentPos - (currentPos + 1).mod(this.CHORD_SYNC)
       }
-      let chords = []
-      let currentPos = 0
-      let currentType = false
-      // this.chordSequence = [...Array(this.chordLoopLength)].map(i => []);
-      this.chordSequence = [...Array(this.chordLoopLength)].map(i => [])
-      while (currentPos < this.chordLoopLength) {
-        switch (currentType) {
-          case 'D':
-            currentType = day.wRandom({ T: 4, D: 2, S: 1 })
-            break
-          case 'S':
-            currentType = day.wRandom({ T: 3, D: 4, S: 2 })
-            break
-          case 'T':
-            currentType = day.wRandom({ T: 2, D: 3, S: 4 })
-            break
-          default:
-            currentType = day.wRandom({ T: 1, D: 1, S: 1 })
-            break
-        }
-        // let currentChordDegree = CHORDS_LIST[CHORD_TYPE[currentType]][day.wRandom({ 0: 0.4, 1: 0.3, 2: 0.3 })] ;
-        let currentChordDegree = parseInt(day.wRandom(CHORDS_LIST[CHORD_TYPE[currentType]]))
-        // let currentChordNotes = [scale.get(currentChordDegree).name(), scale.get(currentChordDegree + 2).name(), scale.get(currentChordDegree + 4).name().toUpperCase()];
-
-        // if (day.random() > 0.9) {
-        //   this.chordSequence[currentPos].push(false);
-        // }
-
-        this.chordSequence[currentPos].push(currentChordDegree)
-        // this.chordSequence[currentPos].push(currentChordDegree);
-        let previousPos = currentPos
-        // currentPos += 4
-        currentPos += parseInt(day.wRandom(this.CHORD_LENGTH)) * 2
-
-        if (
-          (previousPos + 1).iDivide(this.CHORD_SYNC) < (currentPos + 1).iDivide(this.CHORD_SYNC)
-        ) {
-          currentPos = currentPos - (currentPos + 1).mod(this.CHORD_SYNC)
-        }
-      }
-      console.log(`chordSequence: ${this.chordSequence}`)
-      console.log(this.chordSequence)
-      this.chordLoop = new Tone.Sequence(
-        (time, note) => {
-          this.soundList.chord.forEach(o => {
-            if (!o.synth) {
-              console.log('synth missing')
+    }
+    console.log(`chordSequence: ${this.chordSequence}`)
+    console.log(this.chordSequence)
+    this.chordLoop = new Tone.Sequence(
+      (time, note) => {
+        this.soundList.chord.forEach(o => {
+          if (!o.synth) {
+            console.log('synth missing')
+            return
+          }
+          if (o.synth.audible) {
+            if (!note) {
               return
             }
-            if (o.synth.audible) {
-              if (!note) {
-                return
+            let notes = [note - 1, note + 1, note + 3].map(n => this.scale.getNote(n).name())
+            const possibleNotes = o.range.filter(n => notes.includes(n.name()[0]))
+            possibleNotes.sort((a, b) => {
+              let jumpA
+              let jumpB
+              if (o.previousNote) {
+                jumpA = Math.abs(MS.interval(o.previousNote, a).semitones())
+                jumpB = Math.abs(MS.interval(o.previousNote, b).semitones())
+                // console.log(jumpA, jumpB);
+              } else {
+                jumpA = 0
+                jumpB = 0
               }
-              let notes = [note - 1, note + 1, note + 3].map(n => this.scale.getNote(n).name())
-              const possibleNotes = o.range.filter(n => notes.includes(n.name()[0]))
-              possibleNotes.sort((a, b) => {
-                let jumpA
-                let jumpB
-                if (o.previousNote) {
-                  jumpA = Math.abs(MS.interval(o.previousNote, a).semitones())
-                  jumpB = Math.abs(MS.interval(o.previousNote, b).semitones())
-                  // console.log(jumpA, jumpB);
-                } else {
-                  jumpA = 0
-                  jumpB = 0
-                }
-                if (jumpA == jumpB) {
-                  Math.random() > 0.5 ? jumpA++ : jumpB++
-                }
-                if (jumpA == 0) {
-                  Math.random() > 0.5 ? jumpA++ : false
-                }
-                if (jumpB == 0) {
-                  Math.random() > 0.5 ? jumpB++ : false
-                }
-                return jumpA - jumpB
-              })
-              console.log('release')
-              o.previousNote && o.synth.instrument.triggerRelease(o.previousNote.scientific())
-              o.note = o.previousNote = possibleNotes[0]
-              // o.note = o.previousNote = possibleNotes[o.intRandom(0, possibleNotes.length - 1)]
-              console.log(`H: ${o.note}`)
-              // console.log(`H: ${o.note.scientific()} ${o.dialog}`)
-              // o.synth.set({
-              //   width: Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180
-              // });
-              o.synth.instrument
-                .getAttackSources(o.note.scientific(), undefined, o.velocity)
-                .forEach(s => s.chain(o.synth.channel))
-            } else if (o.previousNote) {
-              o.synth.instrument.triggerRelease(o.previousNote.scientific())
-              o.previousNote = false
-            }
-          })
-        },
-        this.chordSequence,
-        '4n'
-      )
-      this.chordLoop.humanize = '8n'
-      // let rootPadSynth = new Tone.Synth({
-      //   oscillator: { type: 'sine', volume: -55 },
-      //   envelope: { release: '4n', attack: '4n' },
-      // })
-      // rootPadSynth.chain(this.channels.pad)
-      // new Tone.Sequence((time, note) => {
-      //   if (!note) {
-      //     return
-      //   }
-      //   // console.log(`R: ${this.scale.getNote(note - 14).scientific()}`)
-      //   rootPadSynth.instrument.triggerRelease()
-      //   rootPadSynth.instrument.triggerAttack(this.scale.getNote(note - 7).scientific())
-      // }, this.chordSequence).start()
-      // while (currentPos < 16) {
-      //   let chordLength = day.wRandom({
-      //     4: 0.1, 2: 0.5, 1: 0.2, 0.5: 0.1
-      //   });
-      //   // chordLength < 0.1 ? chordLength = 4 : (
-      //   //   chordLength < 0.6 ? chordLength = 2 : (
-      //   //     chordLength < 0.85 ? chordLength = 1 : (
-      //   //       chordLength <= 1 ? chordLength = 0.5 : false
-      //   //     )
-      //   //   )
-      //   // );
-      //   let notes = [];
-      //   let rootNoteOctave = {
-      //     1: [3],
-      //     2: [3],
-      //     3: [3, 2],
-      //     4: [3, 2],
-      //     5: [3, 2],
-      //     6: [2],
-      //     7: [2]
-      //   };
-      //   notes[0] = rootNoteOctave[currentChordDegree].map(i =>
-      //     MS.note(scale.get(currentChordDegree).toUpperCase() + i.toString())
-      //   ).sort(
-      //     (a, b) => {
-      //       if (chords.length == 0) {
-      //         return 0;
-      //       }
-      //       let previousRoot = chords[chords.length - 1].notes[0];
-      //       let intervalA = MS.interval(previousRoot, a).semitones();
-      //       let intervalB = MS.interval(previousRoot, b).semitones();
-      //       return intervalA - intervalB;
-      //     })[0];
-      //   let chordCombinations = [
-      //     [[1, 4], [5, 4], [3, 5]],
-      //     [[5, 4], [1, 5], [3, 5]],
-      //     [[5, 4], [3, 5], [1, 6]],
-      //     [[3, 4], [1, 5], [5, 5]],
-      //   ];
-      //   notes.push(
-      //     chordCombinations.map(c =>
-      //       MS.note(scale.get(currentChordDegree + c[0] - 1)))
-      //       .sort((a, b) => { }));
-      //   chords.push(
-      //     {
-      //       pos: currentPos,
-      //       notes: notes,
-      //       type: currentType
-      //     });
-      //   currentPos += chordLength;
-      // }
-    }
-    generateChord()
+              if (jumpA == jumpB) {
+                Math.random() > 0.5 ? jumpA++ : jumpB++
+              }
+              if (jumpA == 0) {
+                Math.random() > 0.5 ? jumpA++ : false
+              }
+              if (jumpB == 0) {
+                Math.random() > 0.5 ? jumpB++ : false
+              }
+              return jumpA - jumpB
+            })
+            console.log('release')
+            o.previousNote && o.synth.instrument.triggerRelease(o.previousNote.scientific())
+            o.note = o.previousNote = possibleNotes[0]
+            // o.note = o.previousNote = possibleNotes[o.intRandom(0, possibleNotes.length - 1)]
+            console.log(`H: ${o.note}`)
+            // console.log(`H: ${o.note.scientific()} ${o.dialog}`)
+            // o.synth.set({
+            //   width: Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180
+            // });
+            o.synth.instrument
+              .getAttackSources(o.note.scientific(), undefined, o.velocity)
+              .forEach(s => s.chain(o.synth.channel))
+            console.log(o.velocity, this.channels.master.volume)
+          } else if (o.previousNote) {
+            o.synth.instrument.triggerRelease(o.previousNote.scientific())
+            o.previousNote = false
+          }
+        })
+      },
+      this.chordSequence,
+      '4n'
+    )
+    this.chordLoop.humanize = '8n'
+    // let rootPadSynth = new Tone.Synth({
+    //   oscillator: { type: 'sine', volume: -55 },
+    //   envelope: { release: '4n', attack: '4n' },
+    // })
+    // rootPadSynth.chain(this.channels.pad)
+    // new Tone.Sequence((time, note) => {
+    //   if (!note) {
+    //     return
+    //   }
+    //   // console.log(`R: ${this.scale.getNote(note - 14).scientific()}`)
+    //   rootPadSynth.instrument.triggerRelease()
+    //   rootPadSynth.instrument.triggerAttack(this.scale.getNote(note - 7).scientific())
+    // }, this.chordSequence).start()
+    // while (currentPos < 16) {
+    //   let chordLength = day.wRandom({
+    //     4: 0.1, 2: 0.5, 1: 0.2, 0.5: 0.1
+    //   });
+    //   // chordLength < 0.1 ? chordLength = 4 : (
+    //   //   chordLength < 0.6 ? chordLength = 2 : (
+    //   //     chordLength < 0.85 ? chordLength = 1 : (
+    //   //       chordLength <= 1 ? chordLength = 0.5 : false
+    //   //     )
+    //   //   )
+    //   // );
+    //   let notes = [];
+    //   let rootNoteOctave = {
+    //     1: [3],
+    //     2: [3],
+    //     3: [3, 2],
+    //     4: [3, 2],
+    //     5: [3, 2],
+    //     6: [2],
+    //     7: [2]
+    //   };
+    //   notes[0] = rootNoteOctave[currentChordDegree].map(i =>
+    //     MS.note(scale.get(currentChordDegree).toUpperCase() + i.toString())
+    //   ).sort(
+    //     (a, b) => {
+    //       if (chords.length == 0) {
+    //         return 0;
+    //       }
+    //       let previousRoot = chords[chords.length - 1].notes[0];
+    //       let intervalA = MS.interval(previousRoot, a).semitones();
+    //       let intervalB = MS.interval(previousRoot, b).semitones();
+    //       return intervalA - intervalB;
+    //     })[0];
+    //   let chordCombinations = [
+    //     [[1, 4], [5, 4], [3, 5]],
+    //     [[5, 4], [1, 5], [3, 5]],
+    //     [[5, 4], [3, 5], [1, 6]],
+    //     [[3, 4], [1, 5], [5, 5]],
+    //   ];
+    //   notes.push(
+    //     chordCombinations.map(c =>
+    //       MS.note(scale.get(currentChordDegree + c[0] - 1)))
+    //       .sort((a, b) => { }));
+    //   chords.push(
+    //     {
+    //       pos: currentPos,
+    //       notes: notes,
+    //       type: currentType
+    //     });
+    //   currentPos += chordLength;
+    // }
+    console.timeEnd('setupSound Performance')
   }
   // updateSound(this.scene, delta) {
   //   console.time('updateSound Performance')
@@ -392,7 +422,7 @@ class GenerativeMusic {
   //     // o.oData.panner.positionYSignal.rampTo(positionY, delta)
   //     o.oData.panner.positionX.rampTo(positionX, 1)
   //     o.oData.panner.positionY.rampTo(positionY, 1)
-  //     // o.oData.synth.volume.rampTo(-100, 10, Tone.now())
+  //     // o.oData.synth.volume.rampTo(-100, 10, undefined)
   //     o.oData.synth.audible = positionX ** 2 + positionY ** 2 < o.oData.panner.maxDistance ** 2
   //   })
   //   console.timeEnd('updateSound Performance')
@@ -402,14 +432,14 @@ class GenerativeMusic {
    */
   updateSynths(delta) {
     this.audibleList = []
-    console.time('updateSynths Performance')
+    // console.time('updateSynths Performance')
     Object.keys(this.soundList).forEach(key =>
       this.soundList[key].forEach(o => {
         this.updateSynth(o, delta)
       })
     )
-    console.timeEnd('updateSynths Performance')
-    console.log('Audible:' + this.audibleList.length)
+    // console.timeEnd('updateSynths Performance')
+    // console.log('Audible:' + this.audibleList.length)
   }
 
   /**
@@ -424,7 +454,7 @@ class GenerativeMusic {
         currentZone[1] == this.previousZone[1]
       )
     ) {
-      console.time('updateSound Performance')
+      // console.time('updateSound Performance')
       let previousZones = this.scene.objectData.soundMap.getNearBy(this.previousZone)
       let currentZones = this.scene.objectData.soundMap.getNearBy(currentZone)
       let createZones = currentZones.filter(
@@ -498,7 +528,7 @@ class GenerativeMusic {
       //   };
       //   return `${result}`;
       // };
-      console.timeEnd('updateSound Performance')
+      // console.timeEnd('updateSound Performance')
     }
   }
   updateSynth(o, delta) {
@@ -691,33 +721,11 @@ class GenerativeMusic {
       console.log(error)
     }
   }
-  setupScene(scene) {
-    this.scene = scene
-  }
   startBgm() {
     this.updateSound()
-    const start = () => {
-      try {
-        Tone.start()
-        this.chordLoop.start()
-        console.log('Generative Music Started')
-        // const osc = new Tone.Oscillator('C3').start()
-        // osc.toDestination()
-        document.removeEventListener('click', start)
-        document.removeEventListener('touchend', start)
-        document.removeEventListener('keydown', start)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    if (Tone.context.state == 'running') {
-      // if (true) {
-      start()
-    } else {
-      document.addEventListener('click', start)
-      document.addEventListener('touchend', start)
-      document.addEventListener('keydown', start)
-    }
+    Tone.getTransport().bpm.value = 60
+    Tone.getTransport().start()
+    this.chordLoop.start()
   }
 }
 export default new GenerativeMusic()

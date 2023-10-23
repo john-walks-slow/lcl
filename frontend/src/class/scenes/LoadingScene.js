@@ -1,5 +1,6 @@
 import feathers from '@feathersjs/feathers'
 import rest from '@feathersjs/rest-client'
+import Phaser from 'phaser'
 import batteryURL from '../../assets/game/batteries.png'
 import bgURL from '../../assets/game/bg.png'
 import boxURL from '../../assets/game/boxes.png'
@@ -12,9 +13,10 @@ import whiteURL from '../../assets/game/white.png'
 import moreURL from '../../assets/game/more.png'
 import { setObjects } from '../../store/actions/actionCreators'
 import configurations from '../configurations'
-// import generativeMusic from '../GenerativeMusic'
+import generativeMusic from '../GenerativeMusic'
 import ObjectData from '../ObjectData'
 import { objectService } from '../feathers-service'
+// import GenerativeMusic from '../GenerativeMusic'
 export default class LoadingScene extends Phaser.Scene {
   constructor(methods) {
     super({
@@ -46,6 +48,7 @@ export default class LoadingScene extends Phaser.Scene {
           frameWidth: 16,
           frameHeight: 16,
         })
+
         // [...Array(10000)].forEach(() => {
         //   list.push(createTestObject({
         //     "birthday": 1637818994985,
@@ -86,17 +89,21 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.on(
           'complete',
           () => {
-            this.label.text += `\nLoading complete!`
-            this.label.text += `\nStarting ...`
-            // this.label.setText('test')
-            // this.label.updateText()
-            console.log(objectData)
-            setTimeout(() => {
-              this.scene.start('MainScene', {
-                objectData: objectData,
-              })
-              console.log('mainscene start')
-            }, 10)
+            this.label.text += `\nLoading Samples..`
+            generativeMusic.loadSamples(() => {
+              generativeMusic.setupSound()
+              this.label.text += `\n- Samples Loaded..`
+              this.label.text += `\nStarting ...`
+              // this.label.setText('test')
+              // this.label.updateText()
+              console.log(objectData)
+              setTimeout(() => {
+                this.scene.start('MainScene', {
+                  objectData: objectData,
+                })
+                console.log('mainscene start')
+              }, 10)
+            })
           },
           this
         )
@@ -105,11 +112,11 @@ export default class LoadingScene extends Phaser.Scene {
         })
         let loadStart = false
         this.load.on('filecomplete', (key, type, data) => {
-          if (!loadStart) {
-            loadStart = true
-            this.label.text += '\nLoading Content ...'
-          }
-          this.label.text += `\n- Fetching ${key} ..`
+          // if (!loadStart) {
+          //   loadStart = true
+          //   this.label.text += '\nLoading Content ...'
+          // }
+          this.label.text += `\n- ${key.charAt(0).toUpperCase() + key.slice(1)} Loaded ..`
         })
         this.load.start()
       }
@@ -141,6 +148,5 @@ export default class LoadingScene extends Phaser.Scene {
       }
     )
   }
-  update() {}
   update() {}
 }
