@@ -9,6 +9,71 @@
       "*.css": "scss",
       "files.insertFinalNewline": "false"
     },
-    "references.preferredLocation": "view"
+    "references.preferredLocation": "view",
+    "vscodeGitCommit.template": ["{emoji} {message} "],
+    "vscodeGitCommit.variables": {
+      "emoji": [
+        {
+          "label": ":tada:",
+          "detail": "🎉 新版本"
+        },
+        {
+          "label": ":sparkles:",
+          "detail": "✨ 新功能"
+        },
+        {
+          "label": ":bug:",
+          "detail": "🐛 Bug"
+        },
+        {
+          "label": ":wrench:",
+          "detail": "🔧 调整配置"
+        },
+        {
+          "label": ":hammer:",
+          "detail": "🔨 重构"
+        },
+        {
+          "label": ":fire:",
+          "detail": "🔥 删除"
+        },
+        {
+          "label": ":art:",
+          "detail": "🎨 美术"
+        },
+        {
+          "label": ":musical_note:",
+          "detail": "🎵 音乐"
+        },
+        {
+          "label": ":construction:",
+          "detail": "🚧 工具链"
+        },
+        {
+          "label": ":lipstick:",
+          "detail": "💄 代码格式"
+        },
+        {
+          "label": ":rocket:",
+          "detail": "🚀 优化"
+        },
+        {
+          "label": ":package:",
+          "detail": "📦 新平台"
+        },
+        {
+          "label": ":truck:",
+          "detail": "🚛 目录结构"
+        },
+        {
+          "label": ":memo:",
+          "detail": "📄 文档"
+        },
+        {
+          "label": ":zap:",
+          "detail": "⚡ 未归类"
+        }
+      ]
+    }
   }
 }

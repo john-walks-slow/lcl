@@ -10,8 +10,8 @@
 | :musical_note: | 音乐     |
 | :construction: | 工具链   |
 | :lipstick:     | 代码格式 |
-| :rocket:       | 优化      |
+| :rocket:       | 优化     |
 | :package:      | 新平台   |
 | :truck:        | 目录结构 |
-| :books:        | 文档     |
+| :memo:         | 文档     |
 | :zap:          | 未归类   |
