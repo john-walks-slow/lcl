@@ -1,3 +1,4 @@
+import Phaser from 'phaser'
 export default class Dialog extends Phaser.GameObjects.Container {
   constructor(scene) {
     super(scene)
