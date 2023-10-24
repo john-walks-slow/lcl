@@ -10,8 +10,8 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
   constructor(scene) {
     super(0, 0, scene.configurations.WINDOW_W, scene.configurations.WINDOW_H)
     this.scene = scene
-    this.cameras = scene.cameras
-    this.cameras.addExisting(this)
+    this.cameraManager = scene.cameras
+    this.cameraManager.addExisting(this)
     this.state = 'zoomIn'
     this.setBackgroundColor(0xffffff)
     // this.setFollowOffset(0, 100);
@@ -24,47 +24,56 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
   }
   enterDialog() {
     this?.exitAnim?.stop()
-    this.enterAnim = this.scene.tweens.add({
+    return (this.enterAnim = this.scene.tweens.add({
       targets: this,
       props: { alpha: 0.4 },
       ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 500,
       completeDelay: 0,
-    })
+    }))
   }
   exitDialog() {
     this?.enterAnim?.stop()
-    this.exitAnim = this.scene.tweens.add({
+    return (this.exitAnim = this.scene.tweens.add({
       targets: this,
       props: { alpha: 1 },
       ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 500,
       completeDelay: 0,
-    })
+    }))
   }
   setDisplay() {
     // this.setZoom(this.scene.configurations.ZOOM_LEVEL);
     this.setSize(this.scene.configurations.WINDOW_W, this.scene.configurations.WINDOW_H)
-    // this.setMask(
-    //   new Phaser.Display.Masks.GeometryMask(
-    //     this.scene,
-    //     new Phaser.GameObjects.Graphics(this.scene, {
-    //       x: this.scene.configurations.WINDOW_CENTER_X,
-    //       y: this.scene.configurations.WINDOW_CENTER_Y,
-    //     })
-    //       .fillCircle(0, 0, this.scene.configurations.MASK_RADIUS)
-    //       .setAlpha(1)
-    //   )
-    // )
+    let hour = new Date().getHours()
+    let maskAlpha = hour > 7 && hour < 18 ? 0.9 : 0.7
+    let maskShape = new Phaser.GameObjects.Graphics(this.scene, {
+      x: this.scene.configurations.WINDOW_CENTER_X,
+      y: this.scene.configurations.WINDOW_CENTER_Y,
+    })
+      .fillCircle(0, 0, this.scene.configurations.MASK_RADIUS)
+      .setAlpha(maskAlpha)
+    this.setMask(new Phaser.Display.Masks.GeometryMask(this.scene, maskShape))
+    // this?.maskTween?.stop()
+    // this.maskTween = this.scene.tweens.add({
+    //   targets: maskShape,
+    //   props: { alpha: maskAlpha * 0.9, scale: 1.1 },
+    //   // ease: '', // 'Cubic', 'Elastic', 'Bounce', 'Back'
+    //   duration: 10000,
+    //   yoyo: true,
+    //   repeat: -1,
+    //   repeatDelay: 2000,
+    // })
   }
   initAnim() {
-    this.initTween = this.scene.tweens.add({
+    this.fadeIn()
+    return (this.initTween = this.scene.tweens.add({
       targets: this,
       props: { zoom: this.scene.configurations.ZOOM_LEVEL, alpha: 1 },
       ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 2000,
       completeDelay: 0,
-    })
+    }))
   }
   zoomIn() {
     console.log('zoom in ')
