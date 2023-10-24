@@ -18,11 +18,13 @@ const BIG_CHUNKS = {
   tone: 'https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js',
 }
 
-const APP_PATTERN = /(main|game)\.bundle\.js/
+const APP_PATTERN = /(main|game)\..*\.js/
 const PUBLIC_RES_PATH = path.join(__dirname, 'src/assets/public_res')
-let production = process.env.NODE_ENV == 'production'
+let env = process.env.NODE_ENV
+let production = env == 'production'
 let platform = process.env.BUILD_PLATFORM
-console.log({ production, platform })
+
+console.log({ env, platform })
 // const publicRes = [
 //   '/android-chrome-192x192.png',
 //   '/android-chrome-256x256.png',
@@ -35,6 +37,8 @@ console.log({ production, platform })
 //   '/mstile-150x150.png',
 //   '/safari-pinned-tab.svg',
 // ]
+
+const useWorkbox = true && env !== 'development-frontend'
 let additionalResources = []
 function* walkSync(dir) {
   const files = fs.readdirSync(dir, { withFileTypes: true })
@@ -46,14 +50,13 @@ function* walkSync(dir) {
     }
   }
 }
-if (production) {
+if (useWorkbox) {
   for (const filePath of walkSync(PUBLIC_RES_PATH)) {
     additionalResources.push({
       url: filePath.slice(filePath.indexOf('public_res') + 10).replaceAll('\\', '/'),
       revision: fs.statSync(filePath).mtime.toUTCString(),
     })
   }
-  console.log(additionalResources)
 }
 // let publicRes = glob.sync(publicResPath + '/**/*').map(r => r.slice(r.indexOf('public_res') + 10))
 
@@ -71,15 +74,17 @@ module.exports = (() => {
   }
   return {
     mode: production ? 'production' : 'development',
-    devtool: false ? false : 'eval-cheap-source-map',
+    devtool: production ? false : 'eval',
     entry: {
       polyfill: 'babel-polyfill',
       main: './src/index.jsx',
     },
     output: {
+      clean: true,
       path: outputPath,
       publicPath: '/',
-      filename: '[name].bundle.js',
+      filename: '[name].[hash].js',
+      chunkFilename: 'chunks/[name].[hash].js',
     },
     module: {
       rules: [
@@ -141,45 +146,31 @@ module.exports = (() => {
         stream: require.resolve('stream-browserify'),
       },
     },
-    // devServer: {
-    //   contentBase: './build'
-    // },
-    externals: production
-      ? {
-          // phaser: 'Phaser',
-          // react: 'React',
-          // 'react-dom': 'ReactDOM',
-          // tone: 'Tone',
-          // lodash: '_'
-        }
-      : {
-          // phaser: 'Phaser',
-          // react: 'React',
-          // 'react-dom': 'ReactDOM',
-          // 'tone': 'Tone',
-          // 'lodash': '_',
+    devServer: {
+      static: {
+        directory: outputPath,
+      },
+      compress: true,
+      port: 3030,
+      client: {
+        overlay: {
+          warnings: false,
+          errors: true,
         },
+      },
+    },
     plugins: [
-      true ? false : new BundleAnalyzerPlugin(),
-      production ? new CleanWebpackPlugin() : false,
+      false ? new BundleAnalyzerPlugin() : false,
       new CopyWebpackPlugin([{ from: PUBLIC_RES_PATH, to: outputPath }]),
-      production
+      useWorkbox
         ? new WorkboxPlugin.GenerateSW({
             clientsClaim: true,
             skipWaiting: true,
             maximumFileSizeToCacheInBytes: 50000000,
             include: [/\.(ttf|png|json|ico|html|js|xml|mp3|ogg)$/],
-            exclude: [APP_PATTERN],
             // additionalManifestEntries: [...publicRes].map(r => ({ url: r, revision: '20220108' })),
             additionalManifestEntries: additionalResources,
             runtimeCaching: [
-              {
-                urlPattern: APP_PATTERN,
-                handler: 'NetworkFirst',
-                options: {
-                  cacheName: 'app',
-                },
-              },
               {
                 urlPattern: /objects$/,
                 handler: 'NetworkFirst',
@@ -200,6 +191,7 @@ module.exports = (() => {
 
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(process.env),
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         'process.browser': true,
       }),
     ].filter(Boolean),
@@ -234,7 +226,7 @@ module.exports = (() => {
               },
               game: {
                 test: /[\\/]src[\\/]class[\\/].*$/,
-                filename: 'game.bundle.js',
+                name: 'game',
               },
             },
           }
@@ -251,13 +243,9 @@ module.exports = (() => {
           ]
         : [],
     },
-    output: {
-      pathinfo: false,
-    },
-    // watch: false,
-    watch: !production,
-    target: 'web',
     stats: 'normal',
+    watch: env === 'development',
+    target: 'web',
     experiments: {
       // lazyCompilation: {
       //   entries: false,

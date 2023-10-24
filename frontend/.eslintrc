@@ -2,21 +2,16 @@
   "env": {
     "es6": true,
     "commonjs": true,
-    "browser":true,
+    "browser": true,
     "mocha": true
   },
   "parserOptions": {
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "prettier"
-  ],
-  "rules":{
+  "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
+  "rules": {
     "react/prop-types": "off",
     "no-unused-vars": "off"
   }
- 
 }

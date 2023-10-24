@@ -6,11 +6,11 @@
     "prettier": "prettier **/*.{js,jsx,json,yml,yaml,css,md}",
     "format": "npm run prettier -- --write --list-different",
     "lint": "npm run eslint && npm run csslint",
-    "build": "cross-env NODE_ENV=production BUILD_PLATFORM=web webpack --config webpack.config.js",
-    "build-app": "cross-env NODE_ENV=production BUILD_PLATFORM=app webpack --config webpack.config.js",
-    "dev": "cross-env NODE_ENV=development BUILD_PLATFORM=web webpack --config webpack.config.js",
-    "dev-fe": "cross-env NODE_ENV=development-frontend BUILD_PLATFORM=web webpack --config webpack.config.js",
-    "dev-app": "cross-env NODE_ENV=development BUILD_PLATFORM=app webpack --config webpack.config.js",
+    "build": "cross-env NODE_ENV=production BUILD_PLATFORM=web webpack",
+    "build-app": "cross-env NODE_ENV=production BUILD_PLATFORM=app webpack",
+    "dev": "cross-env NODE_ENV=development BUILD_PLATFORM=web webpack",
+    "dev-fe": "cross-env NODE_ENV=development-frontend BUILD_PLATFORM=web webpack serve",
+    "dev-app": "cross-env NODE_ENV=development BUILD_PLATFORM=app webpack",
     "postinstall": "patch-package"
   },
   "main": "index.js",
@@ -30,6 +30,7 @@
     "canvas-toBlob": "^1.0.0",
     "cookie-parser": "^1.4.4",
     "core-js-pure": "^3.20.2",
+    "cross-env": "^7.0.3",
     "crypto-js": "^4.1.1",
     "css-loader": "^3.2.0",
     "deepool": "^3.0.0",
@@ -132,7 +133,7 @@
     "webpack-cdn-plugin": "^3.3.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-middleware": "^3.7.0",
-    "webpack-dev-server": "^3.7.2",
+    "webpack-dev-server": "^4.15.1",
     "webpack-hot-middleware": "^2.25.0",
     "workbox-webpack-plugin": "^6.4.1"
   }
