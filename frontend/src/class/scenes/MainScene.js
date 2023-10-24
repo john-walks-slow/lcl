@@ -68,10 +68,9 @@ export default class MainScene extends Phaser.Scene {
     this.uiLayer.depth = 100
 
     // - Create Cameras
-    this.cameras.remove(this.cameras.main)
     this.camera = new GameCamera(this)
-    this.cameras.addExisting(this.camera, false)
     this.camera.ignore(this.uiLayer)
+    this.cameras.remove(this.cameras.main)
     this.staticCamera = this.cameras.add()
     this.staticCamera.ignore(this.gameObjectsLayer)
 
@@ -208,6 +207,7 @@ export default class MainScene extends Phaser.Scene {
       let player = secureStorage.getItem('player')
       if (!player.ownItems.includes(currentObj._id)) {
         if (configurations.SETTINGS.quiet || this.camera.state == 'zoomOut') {
+          // do nothing
         } else {
           this.itemDialog.showDialog([dialog])
         }
@@ -234,6 +234,7 @@ export default class MainScene extends Phaser.Scene {
       }
       if (currentObj.oData.dialog.length > 0) {
         if (configurations.SETTINGS.quiet || this.camera.state == 'zoomOut') {
+          // do nothing
         } else {
           this.gameDialog.showDialog(currentObj.oData.dialog, currentObj.oData.name, () => {
             if (currentObj.oData.link.length > 0) {
@@ -421,7 +422,7 @@ export default class MainScene extends Phaser.Scene {
       this.camera.toggleZoom()
     })
   }
-  updateLocation = () => {
+  updateLocation() {
     let rad = Phaser.Math.Angle.Between(0, 0, this.player.x, this.player.y)
     let distance =
       (this.objectData.zeroDistance ** (1 / configurations.DENSITY_FACTOR) -
