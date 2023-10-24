@@ -1,10 +1,11 @@
+import Phaser from 'phaser'
 import configurations from './configurations'
 // import GenerativeMusic from './GenerativeMusic'
 
 export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
     super(scene.physics.world, scene, [], {
-      immovable: false,
+      immovable: true,
       pushable: false,
     })
     this.previousZone = null
@@ -73,6 +74,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
       let destroyZones = previousZones.filter(
         x => !JSON.stringify(currentZones).includes(JSON.stringify(x))
       )
+      console.log({ createZones, destroyZones })
       this.previousZone = currentZone
       // console.log({ prev: previousZones, cur: currentZones });
       // console.log({ create: JSON.stringify(createZones), destroy: JSON.stringify(destroyZones) })
@@ -100,19 +102,19 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
               o.isBackground && (o.instance.alpha = 1 - Math.abs(o.zFactor - 1) ** 0.5)
               o.instance.oData = o
               o.instance.setDisplaySize(o.displayWidth, o.displayHeight)
-              o.instance.body.onOverlap = true
+              // o.instance.body.onOverlap = true
               if (o.isAnimate) {
                 o.instance.anims.play('spritesheet' + o._id)
               }
               // if (o.dialog.length > 0) {
-              let collider = this.scene.physics.add.collider(
+              var collider = this.scene.physics.add.collider(
                 this.scene.player,
                 o.instance,
                 this.scene.objectCollideHandler
               )
               o.instance.collider = collider
               //  }
-              o.instance.refreshBody()
+              // o.instance.refreshBody()
               this.scene.gameObjectsLayer.add(o.instance)
               if (o.loop) {
                 // GenerativeMusic.startLoop(o)
@@ -122,18 +124,10 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
               o.instance = this.scene.itemGroup
                 .create(o.x, o.y, configurations.ITEM_LIST[o.itemId].name)
                 .setDisplaySize(o.displayWidth, o.displayWidth)
-              o.instance.fadeOut = this.scene.tweens.create({
-                targets: o.instance,
-                duration: 600,
-                props: { alpha: 0 },
-                onComplete: () => {
-                  o.instance.destroy()
-                },
-              })
               o.instance.alpha = 1
               o.instance.depth = 1
               o.instance._id = o._id
-              let itemCollider = this.scene.physics.add.collider(
+              var itemCollider = this.scene.physics.add.collider(
                 this.scene.player,
                 o.instance,
                 this.scene.itemCollideHandler

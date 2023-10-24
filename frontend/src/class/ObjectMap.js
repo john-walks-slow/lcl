@@ -3,8 +3,8 @@ import { range } from '../utils/utils'
 export default class ObjectMap extends Array {
   constructor(sight) {
     super()
-    this.SCOPE = 3
-    this.gridSize = (sight * 2) / (2 * this.SCOPE + 1)
+    this.SCOPE = 5
+    this.gridSize = sight / (2 * this.SCOPE + 1)
     // return the zone of o
     this.getZone = o => {
       return [
@@ -20,7 +20,7 @@ export default class ObjectMap extends Array {
       let results = []
       range(-scope, scope).forEach(v1 => {
         range(-scope, scope).forEach(v2 => {
-          results.push([zone[0] + v1, zone[1] + v2])
+          this?.[zone[0] + v1]?.[zone[1] + v2] && results.push([zone[0] + v1, zone[1] + v2])
         })
       })
       return results

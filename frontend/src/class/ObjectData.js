@@ -97,7 +97,7 @@ export default class ObjectData {
           i.displayWidth = configurations.OBJECT_W.XS
           i.displayWidth = Math.max(Math.round(i.displayWidth / 17), 1) * 17
           i.type = 'item'
-          this.map.pushNew(this.map.getZone(i), i)
+          this.map.pushNew(i.zone, i)
         }
       }
       this.map.pushNew(o.zone, o)
