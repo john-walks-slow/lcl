@@ -7,33 +7,29 @@ import deePool from './deePool'
 import _ from 'lodash'
 import SampleLibrary from './SampleLibrary'
 // export default
+/**
+ * @typedef {{
+ *  synth: Tone.Sampler,
+ *  instrument: Tone.Sampler,
+ *  fadeFactor: number,
+ *  MinAudible: number,
+ *  MaxAudible: number,
+ *  audible: boolean,
+ *  channel: Tone.Channel,
+ *  dryChannel: Tone.Channel,
+ *  effectChannel: Tone.Channel,
+ *  eq: Tone.EQ3,
+ * }} soundObject
+ */
 class GenerativeMusic {
   constructor() {
+    Tone.setContext(new Tone.Context({ latencyHint: 'playback' }))
+    window.Tone = Tone
+    window.gm = this
+    /**@type {Object<string,Array<soundObject>>} */
     this.soundList = { melody: [], chord: [] }
     this.audibleList = []
     this.FADE_OUT_VOLUME = -40
-    Tone.setContext(new Tone.Context({ latencyHint: 'playback' }))
-    const startContext = async () => {
-      try {
-        // await Tone.start()
-        await Tone.start()
-        console.log('Generative Music Started')
-        // const osc = new Tone.Oscillator('C3').start()
-        // osc.toDestination()
-        document.removeEventListener('click', startContext)
-        document.removeEventListener('touchend', startContext)
-        document.removeEventListener('keydown', startContext)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    if (Tone.context.state == 'running') {
-      startContext()
-    } else {
-      document.addEventListener('click', startContext)
-      document.addEventListener('touchend', startContext)
-      document.addEventListener('keydown', startContext)
-    }
   }
 
   loadSamples(callback) {
@@ -45,13 +41,18 @@ class GenerativeMusic {
         { attack: 0, release: 0.5 },
         { attack: 1.2, release: 0.5 },
       ],
+      ext: '.ogg',
       onload: () => {
         loaded++
-        loaded === config.instruments.length && callback && callback.apply()
+        console.log(config.instruments.length, loaded)
+        if (loaded === config.instruments.length) {
+          console.timeEnd('loadSamples Performance')
+          this.setup()
+          callback && callback.apply()
+        }
       },
     }
     this.samples = SampleLibrary.load(config)
-    console.timeEnd('loadSamples Performance')
   }
   fadeIn() {
     this.channels && this.channels.master.volume.rampTo(0, 4)
@@ -59,10 +60,7 @@ class GenerativeMusic {
   fadeOut() {
     this.channels && this.channels.master.volume.rampTo(this.FADE_OUT_VOLUME, 4)
   }
-  setupScene(scene) {
-    this.scene = scene
-  }
-  setupSound() {
+  setup() {
     console.time('setupSound Performance')
     this.setupContext = Tone.context
     this.N4_LENGTH = Tone.Time('4n').toSeconds()
@@ -118,6 +116,9 @@ class GenerativeMusic {
     this.channels.pad.chain(this.channels.master)
     this.channels.buses.chain(this.channels.master)
     this.channels.master.connect(Tone.getDestination())
+    /**
+     * @type {Object<string,deePool>}
+     */
     this.synths = {}
 
     this.synths.bell = deePool.create(() => {
@@ -137,7 +138,7 @@ class GenerativeMusic {
       synth.dryChannel.chain(synth.eq, this.channels.bell)
       return synth
     })
-    this.synths.bell.grow(50)
+    this.synths.bell.grow(5)
     this.synths.pad = deePool.create(() => {
       let synth = {}
       synth.instrument = this.samples['cello']
@@ -154,7 +155,7 @@ class GenerativeMusic {
       synth.dryChannel.chain(synth.eq, this.channels.pad)
       return synth
     })
-    this.synths.pad.grow(50)
+    this.synths.pad.grow(5)
 
     let makeBus = (node, name) => {
       let bus = new Tone.Channel({ channelCount: 2 })
@@ -205,7 +206,7 @@ class GenerativeMusic {
     // .connect(this.effectNodes.compressor2)
     // .connect(this.effectNodes.limiter)
     // this.effects.delay.bus.send('reverb', -4)
-    MS.Scale.prototype.getNote = function(i) {
+    MS.Scale.prototype.getNote = function (i) {
       let degree = i.mod(this.notes().length)
       let octave = (i - degree) / this.notes().length + this.tonic.octave()
       return MS.note(this.notes()[degree].name() + octave.toString())
@@ -238,7 +239,7 @@ class GenerativeMusic {
     let currentPos = 0
     let currentType = false
     // this.chordSequence = [...Array(this.chordLoopLength)].map(i => []);
-    this.chordSequence = [...Array(this.chordLoopLength)].map(i => [])
+    this.chordSequence = [...Array(this.chordLoopLength)].map((i) => [])
     while (currentPos < this.chordLoopLength) {
       switch (currentType) {
         case 'D':
@@ -276,7 +277,7 @@ class GenerativeMusic {
     console.log(this.chordSequence)
     this.chordLoop = new Tone.Sequence(
       (time, note) => {
-        this.soundList.chord.forEach(o => {
+        this.soundList.chord.forEach((o) => {
           if (!o.synth) {
             console.log('synth missing')
             return
@@ -285,8 +286,8 @@ class GenerativeMusic {
             if (!note) {
               return
             }
-            let notes = [note - 1, note + 1, note + 3].map(n => this.scale.getNote(n).name())
-            const possibleNotes = o.range.filter(n => notes.includes(n.name()[0]))
+            let notes = [note - 1, note + 1, note + 3].map((n) => this.scale.getNote(n).name())
+            const possibleNotes = o.range.filter((n) => notes.includes(n.name()[0]))
             possibleNotes.sort((a, b) => {
               let jumpA
               let jumpB
@@ -318,9 +319,13 @@ class GenerativeMusic {
             // o.synth.set({
             //   width: Phaser.Math.Angle.WrapDegrees(Phaser.Math.Angle.BetweenPoints(this.player, o)) / 180
             // });
-            o.synth.instrument
-              .getAttackSources(o.note.scientific(), undefined, o.velocity)
-              .forEach(s => s.chain(o.synth.channel))
+
+            o.synth.instrument.triggerAttack(
+              o.note.scientific(),
+              undefined,
+              o.velocity,
+              o.synth.channel
+            )
             console.log(o.velocity, this.channels.master.volume)
           } else if (o.previousNote) {
             o.synth.instrument.triggerRelease(o.previousNote.scientific())
@@ -436,8 +441,8 @@ class GenerativeMusic {
   updateSynths(delta) {
     this.audibleList = []
     // console.time('updateSynths Performance')
-    Object.keys(this.soundList).forEach(key =>
-      this.soundList[key].forEach(o => {
+    Object.keys(this.soundList).forEach((key) =>
+      this.soundList[key].forEach((o) => {
         this.updateSynth(o, delta)
       })
     )
@@ -461,15 +466,15 @@ class GenerativeMusic {
       let previousZones = this.scene.objectData.soundMap.getNearBy(this.previousZone)
       let currentZones = this.scene.objectData.soundMap.getNearBy(currentZone)
       let createZones = currentZones.filter(
-        x => !JSON.stringify(previousZones).includes(JSON.stringify(x))
+        (x) => !JSON.stringify(previousZones).includes(JSON.stringify(x))
       )
       let destroyZones = previousZones.filter(
-        x => !JSON.stringify(currentZones).includes(JSON.stringify(x))
+        (x) => !JSON.stringify(currentZones).includes(JSON.stringify(x))
       )
       this.previousZone = currentZone
       // console.log({ prev: previousZones, cur: currentZones });
       console.log({ create: JSON.stringify(createZones), destroy: JSON.stringify(destroyZones) })
-      createZones.forEach(zone => {
+      createZones.forEach((zone) => {
         // console.log(this.scene.objectData.soundMap);
         if (!this.scene.objectData.soundMap[zone[0]]) {
           return
@@ -478,13 +483,13 @@ class GenerativeMusic {
           return
         }
         let os = this.scene.objectData.soundMap[zone[0]][zone[1]]
-        os.forEach(o => {
+        os.forEach((o) => {
           o.loop || this.setupLoop(o)
           this.soundList[o.character].push(o)
           this.setupSynth(o)
         })
       })
-      destroyZones.forEach(zone => {
+      destroyZones.forEach((zone) => {
         if (!this.scene.objectData.soundMap[zone[0]]) {
           return
         }
@@ -492,7 +497,7 @@ class GenerativeMusic {
           return
         }
         let os = this.scene.objectData.soundMap[zone[0]][zone[1]]
-        os.forEach(o => {
+        os.forEach((o) => {
           if (o.synth) {
             this.soundList[o.character].indexOf(o) > -1 &&
               this.soundList[o.character].splice(this.soundList[o.character].indexOf(o), 1)
@@ -590,7 +595,7 @@ class GenerativeMusic {
         o.max = o.min + o.intRandom(4, 6)
         // o.min = scale.getNote(o.min);
         // o.max = scale.getNote(o.max);
-        o.range = range(o.min, o.max).map(i => this.scale.getNote(i))
+        o.range = range(o.min, o.max).map((i) => this.scale.getNote(i))
         o.loop = true
         break
       case 'melody':
@@ -610,7 +615,7 @@ class GenerativeMusic {
 
         o.beat = o.intRandom(0, this.melodyLoopLength - 1)
         o.subdivision = parseFloat(
-          o.wRandom({ '0': 5, '0.5': 4, '0.3': 0.3, '0.6': 0.3, '0.25': 0.3, '0.75': 0.3 })
+          o.wRandom({ 0: 5, 0.5: 4, 0.3: 0.3, 0.6: 0.3, 0.25: 0.3, 0.75: 0.3 })
         )
         o.time = (o.beat + o.subdivision) * this.N4_LENGTH
         // o.melodySequence[o.beat][o.subdivision] = o.note
@@ -619,7 +624,7 @@ class GenerativeMusic {
         o.note = this.scale.getNote(parseInt(o.noteIndex))
         o.beat = o.intRandom(0, this.melodyLoopLength - 1)
         o.subdivision = parseFloat(
-          o.wRandom({ '0': 5, '0.5': 4, '0.3': 0.3, '0.6': 0.3, '0.25': 0.3, '0.75': 0.3 })
+          o.wRandom({ 0: 5, 0.5: 4, 0.3: 0.3, 0.6: 0.3, 0.25: 0.3, 0.75: 0.3 })
         )
         o.time = (o.beat + o.subdivision) * this.N4_LENGTH
         // o.melodySequence.push([o.time + this.melodyLoopLength, o.note])
@@ -638,9 +643,15 @@ class GenerativeMusic {
             console.log(`M: ${note}`)
             // console.log(`M: ${o.note.scientific()} ${o.dialog}`)
             // o.synth.instrument.getAttackSources(o.note.scientific()).forEach(s => s.chain(o.synth.channel))
-            o.synth.instrument
-              .getAttackReleaseSources(o.note.scientific(), '4n', undefined, o.velocity)
-              .forEach(s => s.chain(o.synth.channel))
+
+            o.synth.instrument.triggerAttackRelease(
+              o.note.scientific(),
+              '4n',
+              undefined,
+              o.velocity,
+              o.synth.channel
+            )
+
             // o.synth
             //   .getAttackReleaseSources(o.note.scientific())
             //   .forEach(s => s.chain(o.synth.channel))
@@ -677,7 +688,7 @@ class GenerativeMusic {
     }
   }
   /**
-   * @param  {Object} o
+   * @param  {soundObject} o
    */
   setupSynth(o) {
     try {
@@ -724,11 +735,37 @@ class GenerativeMusic {
       console.log(error)
     }
   }
-  startBgm() {
-    this.updateSound()
-    Tone.getTransport().bpm.value = 60
-    Tone.getTransport().start()
-    this.chordLoop.start()
+  start(scene) {
+    this.scene = scene
+    const startContext = async () => {
+      try {
+        // await Tone.start()
+        await Tone.start()
+        console.log('Generative Music Started')
+        this.updateSound()
+        Tone.getTransport().bpm.value = 60
+        Tone.getTransport().start()
+        this.chordLoop.start()
+        setInterval(() => {
+          this.updateSound()
+          this.updateSynths(300)
+        }, 300)
+        // const osc = new Tone.Oscillator('C3').start()
+        // osc.toDestination()
+        document.removeEventListener('click', startContext)
+        document.removeEventListener('touchend', startContext)
+        document.removeEventListener('keydown', startContext)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    if (Tone.context.state == 'running') {
+      startContext()
+    } else {
+      document.addEventListener('click', startContext)
+      document.addEventListener('touchend', startContext)
+      document.addEventListener('keydown', startContext)
+    }
   }
 }
 export default new GenerativeMusic()
