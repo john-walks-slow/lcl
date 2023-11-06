@@ -3,13 +3,15 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+// const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-var HtmlWebpackSkipAssetsPlugin = require('html-webpack-skip-assets-plugin')
-  .HtmlWebpackSkipAssetsPlugin
+const { HtmlWebpackSkipAssetsPlugin } = require('html-webpack-skip-assets-plugin')
+const BitBarWebpackProgressPlugin = require('bitbar-webpack-progress-plugin')
 const fs = require('fs')
 const path = require('path')
+const crypto = require('crypto')
 
+// 较大的库单独打包
 const BIG_CHUNKS = {
   phaser: 'https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js',
   react: 'https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js',
@@ -18,27 +20,17 @@ const BIG_CHUNKS = {
   tone: 'https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.min.js',
 }
 
-const APP_PATTERN = /(main|game)\..*\.js/
-const PUBLIC_RES_PATH = path.join(__dirname, 'src/assets/public_res')
+/** @type {'production'|'development'|'development-frontend'} */
 let env = process.env.NODE_ENV
 let production = env == 'production'
 let platform = process.env.BUILD_PLATFORM
-
 console.log({ env, platform })
-// const publicRes = [
-//   '/android-chrome-192x192.png',
-//   '/android-chrome-256x256.png',
-//   '/apple-touch-icon.png',
-//   '/browserconfig.xml',
-//   '/favicon-16x16.png',
-//   '/favicon-32x32.png',
-//   '/favicon.ico',
-//   '/manifest.json',
-//   '/mstile-150x150.png',
-//   '/safari-pinned-tab.svg',
-// ]
 
-const useWorkbox = true && env !== 'development-frontend'
+const PUBLIC_RES_PATH = path.join(__dirname, 'src/assets/public_res')
+const useWorkbox = true
+
+/* ----------------------- Setup additional resources ----------------------- */
+// HACK 理想情况下，generateSw 应该包含 copyWebpackPlugin 处理的素材，现在折衷的方案是，手动遍历并添加到additionalResources。将 generateSw 替换为 injectManifest 可能可以解决。
 let additionalResources = []
 function* walkSync(dir) {
   const files = fs.readdirSync(dir, { withFileTypes: true })
@@ -52,19 +44,22 @@ function* walkSync(dir) {
 }
 if (useWorkbox) {
   for (const filePath of walkSync(PUBLIC_RES_PATH)) {
-    additionalResources.push({
-      url: filePath.slice(filePath.indexOf('public_res') + 10).replaceAll('\\', '/'),
-      revision: fs.statSync(filePath).mtime.toUTCString(),
-    })
+    if (filePath.match(/\.(png|xml|html|ico|json|svg|ogg)$/)) {
+      additionalResources.push({
+        url: filePath.slice(filePath.indexOf('public_res') + 10).replaceAll('\\', '/'),
+        revision: crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex'),
+      })
+    }
   }
 }
 // let publicRes = glob.sync(publicResPath + '/**/*').map(r => r.slice(r.indexOf('public_res') + 10))
+/* -------------------------------------------------------------------------- */
 
 module.exports = (() => {
-  let outputPath = path.join(__dirname, '../frontend/dist')
+  let outputPath = path.join(__dirname, '../dist')
   switch (platform) {
     case 'web':
-      outputPath = path.join(__dirname, '../frontend/dist')
+      outputPath = path.join(__dirname, '../dist')
       break
     case 'app':
       outputPath = path.join(__dirname, '../cordova/www')
@@ -74,17 +69,17 @@ module.exports = (() => {
   }
   return {
     mode: production ? 'production' : 'development',
-    devtool: production ? false : 'eval',
+    devtool: production ? false : 'eval-source-map',
     entry: {
       polyfill: 'babel-polyfill',
       main: './src/index.jsx',
     },
     output: {
-      clean: true,
+      // devserver 每次都会clean，把copywebpackplugin也clean了
+      clean: production,
       path: outputPath,
       publicPath: '/',
-      filename: '[name].[hash].js',
-      chunkFilename: 'chunks/[name].[hash].js',
+      filename: true ? '[name].[hash].js' : '[name].js',
     },
     module: {
       rules: [
@@ -132,7 +127,7 @@ module.exports = (() => {
     },
     resolve: {
       extensions: ['.js', '.jsx', '.json'],
-
+      alias: { '@tone': path.resolve(__dirname, 'node_modules/tone/') },
       fallback: {
         fs: false,
         tls: false,
@@ -142,35 +137,32 @@ module.exports = (() => {
         http: false,
         https: false,
         crypto: false,
-        assert: require.resolve('assert/'),
+        assert: false,
         stream: require.resolve('stream-browserify'),
       },
     },
-    devServer: {
-      static: {
-        directory: outputPath,
-      },
-      compress: true,
-      port: 3030,
-      client: {
-        overlay: {
-          warnings: false,
-          errors: true,
-        },
-      },
-    },
+
     plugins: [
       false ? new BundleAnalyzerPlugin() : false,
-      new CopyWebpackPlugin([{ from: PUBLIC_RES_PATH, to: outputPath }]),
+      // new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: [outputPath] }),
+      new CopyWebpackPlugin({ patterns: [{ from: PUBLIC_RES_PATH, to: outputPath }] }),
       useWorkbox
         ? new WorkboxPlugin.GenerateSW({
+            disableDevLogs: true,
             clientsClaim: true,
             skipWaiting: true,
             maximumFileSizeToCacheInBytes: 50000000,
-            include: [/\.(ttf|png|json|ico|html|js|xml|mp3|ogg)$/],
+            include: [/\.(ttf|png|json|ico|js|xml|ogg)$/],
             // additionalManifestEntries: [...publicRes].map(r => ({ url: r, revision: '20220108' })),
-            additionalManifestEntries: additionalResources,
+            // additionalManifestEntries: additionalResources,
             runtimeCaching: [
+              {
+                urlPattern: /\/$/,
+                handler: 'NetworkFirst',
+                options: {
+                  cacheName: 'index',
+                },
+              },
               {
                 urlPattern: /objects$/,
                 handler: 'NetworkFirst',
@@ -191,9 +183,9 @@ module.exports = (() => {
 
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(process.env),
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         'process.browser': true,
       }),
+      new BitBarWebpackProgressPlugin(),
     ].filter(Boolean),
     optimization: {
       // removeAvailableModules: production,
@@ -206,7 +198,7 @@ module.exports = (() => {
             // minSize: 0,
             cacheGroups: {
               bigChunks: {
-                test: module => {
+                test: (module) => {
                   const packageName = module?.context?.match(
                     /[\\/]node_modules[\\/](.*?)([\\/]|$)/
                   )?.[1]
@@ -231,7 +223,7 @@ module.exports = (() => {
             },
           }
         : false,
-      minimizer: false
+      minimizer: production
         ? [
             new TerserPlugin({
               terserOptions: {
@@ -244,7 +236,21 @@ module.exports = (() => {
         : [],
     },
     stats: 'normal',
+    // Not used in frontend only development
     watch: env === 'development',
+    devServer: {
+      static: {
+        directory: outputPath,
+      },
+      compress: true,
+      port: 3030,
+      client: {
+        overlay: {
+          warnings: false,
+          errors: true,
+        },
+      },
+    },
     target: 'web',
     experiments: {
       // lazyCompilation: {

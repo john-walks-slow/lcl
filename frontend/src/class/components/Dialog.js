@@ -16,27 +16,25 @@ export default class Dialog extends Phaser.GameObjects.Container {
     if (this.fadeOutAnim) {
       this.fadeOutAnim.stop()
     }
-    this.fadeInAnim = this.scene.tweens.create({
+    return (this.fadeInAnim = this.scene.tweens.add({
       targets: this,
       props: { alpha: 1 },
       ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 500,
       completeDelay: 0,
-    })
-    return this.fadeInAnim.play()
+    }))
   }
   dialogFadeOut() {
     if (this.fadeInAnim) {
       this.fadeInAnim.stop()
     }
-    this.fadeOutAnim = this.scene.tweens.create({
+    return (this.fadeOutAnim = this.scene.tweens.add({
       targets: this,
       props: { alpha: 0 },
       ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 500,
       completeDelay: 0,
-    })
-    return this.fadeOutAnim.play()
+    }))
   }
   initializeComponents() {
     // this.dialogWindow = this.scene.add.sprite(0, 0, 'dialog')
@@ -63,8 +61,8 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.TEXT_PADDING_H = 0
     this.PADDING_BETWEEN = 10 * this.RESOLUTION
     this.DIALOG_PADDING_W = 50 + this.WINDOW_W / 20
-    this.DIALOG_PADDING_H = 0
-    this.FONT_SIZE = Math.max(this.WINDOW_H / 35, this.WINDOW_W / 45)
+    this.DIALOG_PADDING_H = 10
+    this.FONT_SIZE = Math.max(this.WINDOW_H / 40, this.WINDOW_W / 50)
     this.FONT_SIZE_HEADER = this.FONT_SIZE * 1.2
     this.FONT_FAMILY = 'pixelCN'
     this.FONT_FAMILY_HEADER = 'pixelCN'
@@ -123,14 +121,14 @@ export default class Dialog extends Phaser.GameObjects.Container {
       }
     }
   }
-  showDialog(dialog, name, callback) {
+  showDialog(dialog, name, birthday, callback) {
     this.dialogCallback = callback || false
     this.inDialog = true
     this.scene.camera.enterDialog()
     this.scene.gamepad.hide()
     // this.scene.camera.shake(100, 0.01);
     // dialogWindow.on('pointerdown', () => { this.proceedDialog() });
-    this.scene.input.on('pointerdown', e => {
+    this.scene.input.on('pointerdown', (e) => {
       this.proceedDialog()
     })
     this.scene.input.keyboard.on('keydown-SPACE', () => {
@@ -140,11 +138,8 @@ export default class Dialog extends Phaser.GameObjects.Container {
     this.dialogFadeIn()
     this.sentences = dialog
     this.dialogIndex = 0
-    if (name != '') {
-      this.dialogHeader.setText(name)
-    } else {
-      this.dialogHeader.setText('???')
-    }
+    name = name || '???'
+    this.dialogHeader.setText(`${name}   ${new Date(birthday).toLocaleString()}`)
     this.dialogText.setText(this.sentences[this.dialogIndex])
     console.log(this.sentences)
   }

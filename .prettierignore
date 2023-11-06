@@ -1,0 +1,7 @@
+frontend/build
+frontend/dist
+frontend/deploy
+# frontend/*config.js
+frontend/images
+frontend/screenshots
+frontend/examples

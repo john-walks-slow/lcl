@@ -1,5 +1,3 @@
-import feathers from '@feathersjs/feathers'
-import rest from '@feathersjs/rest-client'
 import Phaser from 'phaser'
 import batteryURL from '../../assets/game/batteries.png'
 import bgURL from '../../assets/game/bg.png'
@@ -16,7 +14,7 @@ import configurations from '../configurations'
 import generativeMusic from '../GenerativeMusic'
 import ObjectData from '../ObjectData'
 import { objectService } from '../feathers-service'
-// import GenerativeMusic from '../GenerativeMusic'
+
 export default class LoadingScene extends Phaser.Scene {
   constructor(methods) {
     super({
@@ -29,7 +27,7 @@ export default class LoadingScene extends Phaser.Scene {
 
   create() {
     try {
-      const setup = data => {
+      const setup = (data) => {
         this.dispatch(setObjects(data))
         let objectList = data
         this.load.image('bg', bgURL)
@@ -90,8 +88,7 @@ export default class LoadingScene extends Phaser.Scene {
           'complete',
           () => {
             this.label.text += `\nLoading Samples..`
-            generativeMusic.loadSamples(() => {
-              generativeMusic.setupSound()
+            generativeMusic.prepare(() => {
               this.label.text += `\n- Samples Loaded..`
               this.label.text += `\nStarting ...`
               // this.label.setText('test')
@@ -101,13 +98,14 @@ export default class LoadingScene extends Phaser.Scene {
                 this.scene.start('MainScene', {
                   objectData: objectData,
                 })
+                this.scene.stop()
                 console.log('mainscene start')
               }, 10)
             })
           },
           this
         )
-        this.load.on('start', progress => {
+        this.load.on('start', (progress) => {
           this.label.text += '\nFetching assets ...'
         })
         let loadStart = false

@@ -53,7 +53,8 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     })
       .fillCircle(0, 0, this.scene.configurations.MASK_RADIUS)
       .setAlpha(maskAlpha)
-    this.setMask(new Phaser.Display.Masks.GeometryMask(this.scene, maskShape))
+    // this.setMask(new Phaser.Display.Masks.GeometryMask(this.scene, maskShape))
+
     // this?.maskTween?.stop()
     // this.maskTween = this.scene.tweens.add({
     //   targets: maskShape,

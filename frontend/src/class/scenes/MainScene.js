@@ -82,10 +82,10 @@ export default class MainScene extends Phaser.Scene {
     this.player.move = (x, y) => {
       this.player.setVelocity(x, y)
     }
-    this.player.moveX = x => {
+    this.player.moveX = (x) => {
       this.player.setVelocityX(x)
     }
-    this.player.moveY = y => {
+    this.player.moveY = (y) => {
       this.player.setVelocityY(y)
     }
 
@@ -216,7 +216,14 @@ export default class MainScene extends Phaser.Scene {
         this.dispatch(this.setStorage(player))
       }
       console.log(currentObj)
-      currentObj.fadeOut.play()
+      this.tweens.add({
+        targets: currentObj,
+        duration: 600,
+        props: { alpha: 0 },
+        onComplete: () => {
+          currentObj.destroy()
+        },
+      })
     }
     this.objectCollideHandler = (o1, o2) => {
       this.physics.collide(o1, o2)
@@ -236,11 +243,16 @@ export default class MainScene extends Phaser.Scene {
         if (configurations.SETTINGS.quiet || this.camera.state == 'zoomOut') {
           // do nothing
         } else {
-          this.gameDialog.showDialog(currentObj.oData.dialog, currentObj.oData.name, () => {
-            if (currentObj.oData.link.length > 0) {
-              this.linkDialog.showDialog(currentObj.oData.link)
+          this.gameDialog.showDialog(
+            currentObj.oData.dialog,
+            currentObj.oData.name,
+            currentObj.oData.birthday,
+            () => {
+              if (currentObj.oData.link.length > 0) {
+                this.linkDialog.showDialog(currentObj.oData.link)
+              }
             }
-          })
+          )
         }
       }
       if (currentObj.oData.isBackground || currentObj.oData.isForeground) {
@@ -251,7 +263,7 @@ export default class MainScene extends Phaser.Scene {
     }
 
     // - Load Objects
-    this.objectData.list.forEach(o => {
+    this.objectData.list.forEach((o) => {
       o.isAnimate
         ? this.anims.create({
             key: 'spritesheet' + o._id,
@@ -283,12 +295,12 @@ export default class MainScene extends Phaser.Scene {
     console.log(gameButtons)
     this.reactComponents = [reactUI]
     // this.reactComponents = [reactMenu, gameInfo, gameInventory, ...gameButtons]
-    const stopEventPropagation = e => {
+    const stopEventPropagation = (e) => {
       if (e.target.tagName != 'canvas') {
         e.stopPropagation()
       }
     }
-    this.reactComponents.forEach(c => {
+    this.reactComponents.forEach((c) => {
       c.addEventListener('mousedown', stopEventPropagation)
       c.addEventListener('touchstart', stopEventPropagation)
     })
@@ -317,9 +329,10 @@ export default class MainScene extends Phaser.Scene {
       let i = 0
       for (const [key, { min, max, unit, probability }] of Object.entries(FILTER_LIST)) {
         seeds[i] < probability &&
-          (result += `${key}(${min +
-            (max - min) *
-              Math.min((seeds[i] * Math.abs(x)) / configurations.MOVE_SPEED / 5, 1)}${unit}) `)
+          (result += `${key}(${
+            min +
+            (max - min) * Math.min((seeds[i] * Math.abs(x)) / configurations.MOVE_SPEED / 5, 1)
+          }${unit}) `)
         i++
         RESULT_LIST[key] = false
       }
@@ -329,9 +342,10 @@ export default class MainScene extends Phaser.Scene {
           continue
         }
         seeds[i] < probability &&
-          (result += `${key}(${min +
-            (max - min) *
-              Math.min((seeds[i] * Math.abs(y)) / configurations.MOVE_SPEED / 5, 1)}${unit}) `)
+          (result += `${key}(${
+            min +
+            (max - min) * Math.min((seeds[i] * Math.abs(y)) / configurations.MOVE_SPEED / 5, 1)
+          }${unit}) `)
         i++
       }
       return `${result}`
@@ -388,19 +402,13 @@ export default class MainScene extends Phaser.Scene {
 
     // - Startup
     this.objectGroup.updateObjects(false, [0, 0])
-    generativeMusic.setupScene(this)
-    generativeMusic.startBgm()
-    generativeMusic.channels && generativeMusic.channels.master.volume.rampTo(0, 4)
+    generativeMusic.start(this)
     this.setupKeyboard()
     this.setShowUI(true)
     setInterval(() => {
       this.objectGroup.updateObjects()
       this.updateLocation()
     }, 100)
-    setInterval(() => {
-      generativeMusic.updateSound()
-      generativeMusic.updateSynths(300)
-    }, 300)
 
     this.scene.stop('LoadingScene')
     this.camera.initAnim()
@@ -419,7 +427,7 @@ export default class MainScene extends Phaser.Scene {
       this.navigateToAdd()
     })
     this.input.keyboard.on('keydown-M', () => {
-      this.camera.toggleZoom()
+      this.toggleMuted()
     })
   }
   updateLocation() {
@@ -470,18 +478,13 @@ export default class MainScene extends Phaser.Scene {
             this.player.body.velocity.y * (gameObject.oData.zFactor - 1)) /
             1000) *
           delta
-        // GenerativeMusic.updateSound(this, gameObject.oData, delta)
       }
     })
-    // this.objectGroup.children.each(o => {
-    //   GenerativeMusic.updateSound(this, o.oData, delta)
-    // })
-
     if (
       this.gameDialog.inDialog ||
       this.itemDialog.inDialog ||
-      this.linkDialog.inDialog ||
-      !this.player.body.blocked.none
+      this.linkDialog.inDialog
+      // !this.player.body.blocked.none
     ) {
       this.player.stopMovement()
     } else {

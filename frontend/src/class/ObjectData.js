@@ -2,8 +2,9 @@ import { seededRandom } from '../utils/random'
 import { secureStorage } from '../utils/storage'
 import { range } from '../utils/utils'
 import configurations from './configurations'
-// import GenerativeMusic from './GenerativeMusic'
 import ObjectMap from './ObjectMap'
+
+// For preparing game object data
 export default class ObjectData {
   constructor(list) {
     this.map = []

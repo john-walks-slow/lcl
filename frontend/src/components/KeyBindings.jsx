@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import tinykeys from 'tinykeys'
+import { tinykeys } from 'tinykeys'
 import { undo, redo, switchTool, changeDimensions } from '../store/actions/actionCreators'
 import { MOVE, ERASER, BUCKET, EYEDROPPER, COLOR_PICKER } from '../store/reducers/drawingToolStates'
 

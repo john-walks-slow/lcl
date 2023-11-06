@@ -3260,7 +3260,7 @@ const MOCK_OBJECT = [
   },
 ]
   .reverse()
-  // .slice(0, 30)
+  // .slice(0, 5)
   .reverse()
 switch (process.env.BUILD_PLATFORM) {
   case 'web':
@@ -3272,14 +3272,12 @@ switch (process.env.BUILD_PLATFORM) {
   default:
     break
 }
-
-export let objectService
-if (process.env.NODE_ENV == 'development-frontend') {
-  objectService = {
-    find: async () => MOCK_OBJECT,
-    get: async () => MOCK_OBJECT,
-    post: async () => MOCK_OBJECT,
-  }
-} else {
-  objectService = app.service(url)
-}
+// eslint-disable-next-line no-undef
+export let objectService =
+  process.env.NODE_ENV === 'development-frontend'
+    ? {
+        find: async () => MOCK_OBJECT,
+        get: async () => MOCK_OBJECT,
+        post: async () => MOCK_OBJECT,
+      }
+    : app.service(url)

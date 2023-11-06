@@ -34,7 +34,7 @@ function setInitialState(state) {
   const batteries = player.batteries
   const palette = player.palette
   const fats = player.fats
-  const initialState = {
+  const initialState = Map({
     cellSize,
     loading: false,
     notifications: List(),
@@ -50,7 +50,7 @@ function setInitialState(state) {
     },
     // objects: {}
     // palette,
-  }
+  })
   return state.merge(initialState)
 }
 
@@ -74,12 +74,9 @@ function setPath(state, action) {
   return state.set('pathname', action.pathname)
 }
 function updateUsedColors(state) {
-  let frameList = state
-    .get('frames')
-    .get('list')
-    .toJSON()
+  let frameList = state.get('frames').get('list').toJS()
   let usedColors = []
-    .concat(frameList.map(v => v.grid))[0]
+    .concat(frameList.map((v) => v.grid))[0]
     .filter((value, index, self) => self.indexOf(value) === index)
     .filter((value, index) => value.length == 7)
   return state.set('usedColors', usedColors)
@@ -135,7 +132,7 @@ function generateDefaultState() {
   })
 }
 
-const pipeReducers = reducers => (initialState, action) =>
+const pipeReducers = (reducers) => (initialState, action) =>
   reducers.reduce((state, reducer) => reducer(state, action), initialState)
 
 function partialReducer(state, action) {
@@ -183,7 +180,7 @@ function partialReducer(state, action) {
   return state
 }
 
-export default function(state = generateDefaultState(), action) {
+export default function (state = generateDefaultState(), action) {
   return partialReducer(state, action).merge({
     drawingTool: drawingToolReducer(state.get('drawingTool'), action),
     palette: paletteReducer(state.get('palette'), action),

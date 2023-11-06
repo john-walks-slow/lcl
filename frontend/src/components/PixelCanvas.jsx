@@ -23,16 +23,16 @@ class PixelCanvas extends React.Component {
   //   return false
   // }
   componentDidMount() {
-    const { updateGridBoundariesThrottle } = this.props
-    updateGridBoundariesThrottle()
-    window.addEventListener('resize', updateGridBoundariesThrottle)
-    window.addEventListener('scroll', updateGridBoundariesThrottle)
+    const { updateGridBoundariesNow } = this.props
+    updateGridBoundariesNow()
+    window.addEventListener('resize', updateGridBoundariesNow)
+    window.addEventListener('scroll', updateGridBoundariesNow)
   }
 
   componentWillUnmount() {
-    const { updateGridBoundariesThrottle } = this.props
-    window.removeEventListener('resize', updateGridBoundariesThrottle)
-    window.removeEventListener('scroll', updateGridBoundariesThrottle)
+    const { updateGridBoundariesNow } = this.props
+    window.removeEventListener('resize', updateGridBoundariesNow)
+    window.removeEventListener('scroll', updateGridBoundariesNow)
   }
 
   render() {
@@ -64,7 +64,7 @@ class PixelCanvas extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const frames = state.present.get('frames')
   const activeFrameIndex = frames.get('activeIndex')
   const drawingTool = state.present.get('drawingTool')
@@ -85,8 +85,8 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  cellAction: cellProps => dispatch(cellAction(cellProps)),
+const mapDispatchToProps = (dispatch) => ({
+  cellAction: (cellProps) => dispatch(cellAction(cellProps)),
   updateGridBoundariesNow: () => {
     const gridElement = document.getElementsByClassName(gridContainerClass)[0]
     dispatch(updateGridBoundaries(gridElement))
@@ -95,9 +95,9 @@ const mapDispatchToProps = dispatch => ({
     const gridElement = document.getElementsByClassName(gridContainerClass)[0]
     dispatch(updateGridBoundaries(gridElement))
   }, 500),
-  applyMove: moveDiff => dispatch(moveDrawing(moveDiff)),
+  applyMove: (moveDiff) => dispatch(moveDrawing(moveDiff)),
   endDrag: () => dispatch(endDrag()),
-  hoveredCell: cellPosition => dispatch(changeHoveredCell(cellPosition)),
+  hoveredCell: (cellPosition) => dispatch(changeHoveredCell(cellPosition)),
 })
 
 const PixelCanvasContainer = connect(mapStateToProps, mapDispatchToProps)(PixelCanvas)

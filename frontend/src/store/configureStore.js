@@ -31,13 +31,13 @@ const createIncludedActions = () =>
     NEW_PROJECT,
   ])
 
-const configureStore = devMode => {
+const configureStore = (devMode) => {
   let store
   if (devMode) {
     store = createStore(
       undoable(reducer, {
         filter: createIncludedActions(),
-        debug: true,
+        debug: false,
         ignoreInitialState: true,
       })
     )

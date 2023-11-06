@@ -1,5 +1,4 @@
 import { seededRandomKept, customWRandom, customIntRandom } from '../utils/random'
-import _ from 'lodash'
 class Configurations {
   constructor() {
     this.SETTINGS = {
@@ -7,7 +6,7 @@ class Configurations {
       quiet: false,
     }
     // eslint-disable-next-line no-undef
-    this.DEV_MODE = NODE_ENV !== 'production'
+    this.DEV_MODE = process.env.NODE_ENV !== 'production'
     this.TIMESTAMP = Date.parse(new Date())
     this.DAY = {}
     // this.DAY.stamp = Math.floor(this.TIMESTAMP / (24 * 60 * 60 * 1000))
@@ -43,11 +42,13 @@ class Configurations {
     this.TIME_DELAY = 60 * 60 * 1000
     this.RANDOM_ZONE_W = this.PLAYER_TARGET_H * 5
     this.DAY_OFFSET = this.PLAYER_TARGET_H * 0.85
-    this.MAX_DAY_GAP = 5.5
+    // this.MAX_DAY_GAP = 5.5
+    this.MAX_DAY_GAP = 2
     this.DENSITY_OFFSET = this.PLAYER_TARGET_H * 1
+    // this.DENSITY_FACTOR = 0.73
     this.DENSITY_FACTOR = 0.73
     this.ACTIVITY_OFFSET = 1
-    this.MOVE_SPEED = this.PLAYER_TARGET_H * (this.DEV_MODE ? 2 : 1.2)
+    this.MOVE_SPEED = this.PLAYER_TARGET_H * 2
     this.OBLIQUE_MOVE_SPEED = Math.round(this.MOVE_SPEED * 0.74)
     this.ITEM_LIST = [
       { name: 'boxes', dialog: '哇！你捡到了一个箱子' },
@@ -58,8 +59,8 @@ class Configurations {
     ]
 
     this.updateConfigurations()
-    this.SOUND_SIGHT = 25 * this.PLAYER_TARGET_H
-    this.OBJECT_SIGHT = 2 * this.WINDOW_W
+    this.OBJECT_SIGHT = this.WINDOW_W * 1.5
+    this.SOUND_SIGHT = this.PLAYER_TARGET_H * 20
     // this.OBJECT_SIGHT = 10 * this.PLAYER_TARGET_H
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / 3
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / this.ZOOM_OUT_LEVEL/2;

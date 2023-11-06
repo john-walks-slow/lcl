@@ -33,8 +33,9 @@ export default {
     'salamander',
   ],
   onload: null,
+  onerror: null,
 
-  setExt: function(newExt) {
+  setExt: function (newExt) {
     var i
     for (i = 0; i <= this.list.length - 1; i++) {
       for (var property in this[this.list[i]]) {
@@ -45,12 +46,18 @@ export default {
     return console.log('sample extensions set to ' + this.ext)
   },
 
-  load: function(arg) {
+  /**
+   *
+   * @param {*} arg
+   * @returns {Object<string,Tone.CustomSampler>}
+   */
+  load: function (arg) {
     var t, rt, i
     arg ? (t = arg) : (t = {})
     t.instruments = t.instruments || this.list
     t.baseUrl = t.baseUrl || this.baseUrl
     t.onload = t.onload || this.onload
+    t.onerror = t.onerror || this.onerror
     t.options = t.options || {}
     // update extensions if arg given
     if (t.ext) {
@@ -79,17 +86,18 @@ export default {
             minBy = 6
           }
 
-          var filtered = Object.keys(newT).filter(function(_, i) {
+          var filtered = Object.keys(newT).filter(function (_, i) {
             return i % minBy != 0
           })
-          filtered.forEach(function(f) {
+          filtered.forEach(function (f) {
             delete newT[f]
           })
         }
 
-        rt[t.instruments[i]] = new Tone.Sampler(newT, {
+        rt[t.instruments[i]] = new Tone.CustomSampler(newT, {
           baseUrl: t.baseUrl + t.instruments[i] + '/',
           onload: t.onload,
+          onerror: t.onerror,
           attack: t.options[i]?.attack,
           release: t.options[i]?.release,
         })
@@ -114,17 +122,18 @@ export default {
           minBy = 6
         }
 
-        filtered = Object.keys(newT).filter(function(_, i) {
+        filtered = Object.keys(newT).filter(function (_, i) {
           return i % minBy != 0
         })
-        filtered.forEach(function(f) {
+        filtered.forEach(function (f) {
           delete newT[f]
         })
       }
 
-      var s = new Tone.Sampler(newT, {
+      var s = new Tone.CustomSampler(newT, {
         baseUrl: t.baseUrl + t.instruments + '/',
         onload: t.onload,
+        onerror: t.onerror,
         attack: t.options?.attack,
         release: t.options?.release,
       })

@@ -16,7 +16,7 @@ import MainScene from '../class/scenes/MainScene'
 import LoadingScene from '../class/scenes/LoadingScene'
 import emoji from 'emoji-dictionary/lib/index'
 import { secureStorage } from '../utils/storage'
-import GenerativeMusic from '../class/GenerativeMusic'
+import generativeMusic from '../class/GenerativeMusic'
 
 // function createTestObject(object) {
 //   object._id = 3;
@@ -32,11 +32,11 @@ const Game = ({ dispatch, isShown }) => {
   const [showUI, setShowUI] = useState(false)
   const [hideMenu, setHideMenu] = useState(false)
   const [showGame, setShowGame] = useState(true)
-  const [zoomed, setZoomed] = useState(false)
+  const [muted, setMuted] = useState(false)
   const [date, setDate] = useState(false)
   const [location, setLocation] = useState('(0,0)')
-  const player = useSelector(state => state.present.get('player')).toJS()
-  const newObject = useSelector(state => state.present.get('newObject'))
+  const player = useSelector((state) => state.present.get('player'))
+  const newObject = useSelector((state) => state.present.get('newObject'))
   // const objects = useSelector(state => state.present.get('objects'));
   let deferredPrompt = window.deferredPrompt
   function toggleShowInventory() {
@@ -49,6 +49,10 @@ const Game = ({ dispatch, isShown }) => {
   function toggleShowUI() {
     setShowUI(!showUI)
   }
+  function toggleMuted() {
+    setMuted(!muted)
+    muted ? generativeMusic.fadeIn() : generativeMusic.fadeOut()
+  }
   function toggleShowInfo() {
     setShowInfo(!showInfo)
     if (!showInfo) {
@@ -59,11 +63,11 @@ const Game = ({ dispatch, isShown }) => {
     }
   }
   function navigateToAdd() {
-    if (secureStorage.getItem('haveReadInfo')) {
-      dispatch(setPath('/add', true))
-    } else {
-      alert('请看看帮助中的“规则”')
-    }
+    // if (secureStorage.getItem('haveReadInfo')) {
+    dispatch(setPath('/add', true))
+    // } else {
+    // alert('请看看帮助中的“规则”')
+    // }
   }
 
   function updateUIMethod(mainScene) {
@@ -94,7 +98,7 @@ const Game = ({ dispatch, isShown }) => {
     }
     if (isShown) {
       setShowGame(true)
-      document.title = '白洞 / 意识海'
+      document.title = '白洞'
       document.body.style.overflow = 'hidden'
       document.body.style.backgroundColor = '#131313'
 
@@ -121,11 +125,12 @@ const Game = ({ dispatch, isShown }) => {
           toggleShowInfo,
           toggleShowInventory,
           toggleShowUI,
+          toggleMuted,
           toggleHideMenu,
           setShowUI,
           setLocation,
           setStorage,
-          setZoomed,
+          setMuted,
           dispatch,
           updateUIMethod,
           navigateToAdd,
@@ -199,12 +204,12 @@ const Game = ({ dispatch, isShown }) => {
               <u>N</u>ew
             </button>
             <button
-              className={'game__button-menu' + (zoomed ? ' selected' : '')}
+              className={'game__button-menu' + (muted ? ' selected' : '')}
               onClick={() => {
-                mainSceneRef && mainSceneRef.camera.toggleZoom()
+                toggleMuted()
               }}
             >
-              <u>M</u>ap
+              <u>M</u>ute
             </button>
             <button
               className={'game__button-menu' + (showInventory ? ' selected' : '')}
@@ -253,7 +258,7 @@ const Game = ({ dispatch, isShown }) => {
               </div>
               <div>
                 颜料:
-                {player.palette.map(color => (
+                {player.palette.map((color) => (
                   <span
                     key={color}
                     className="page__span-color"
@@ -271,7 +276,7 @@ const Game = ({ dispatch, isShown }) => {
             className={'game__button-install' + (deferredPrompt ? ' show' : '')}
             onClick={() => {
               deferredPrompt.prompt()
-              deferredPrompt.userChoice.then(choiceResult => {
+              deferredPrompt.userChoice.then((choiceResult) => {
                 if (choiceResult.outcome === 'accepted') {
                   console.log('User accepted the A2HS prompt')
                 } else {
@@ -293,7 +298,7 @@ const Game = ({ dispatch, isShown }) => {
           </button>
           <ReactMarkdown>
             {ReadMe.toString()
-              .replace(/:\w+:/gi, name => emoji.getUnicode(name))
+              .replace(/:\w+:/gi, (name) => emoji.getUnicode(name))
               .replaceAll('[ ]', '☐')
               .replaceAll('[x]', '☑')}
           </ReactMarkdown>

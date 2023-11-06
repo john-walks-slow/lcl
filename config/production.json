@@ -1,4 +1,4 @@
 {
-  "host": "feathers-test-app.feathersjs.com",
-  "port": "PORT"
+  "mongodb": "mongodb+srv://08d146e1d00063a1:d7459a7eeed9f72cce7581fb0e1b9c5d@mongodb.mongodb--2hy69y27fx9m.addon.code.run/d53a3d951f74?replicaSet=rs0&authSource=d53a3d951f74&tls=true",
+  "dbName": "d53a3d951f74"
 }

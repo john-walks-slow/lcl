@@ -5,12 +5,12 @@ const fromPositionToId = (posX, posY, grid, columns) => {
   const id = posX + columns * posY
   return id < grid.size && posX >= 0 && posX < columns && posY >= 0 ? id : null
 }
-var Vector = function(x, y) {
+var Vector = function (x, y) {
   this.x = x
   this.y = y
 }
 
-Vector.prototype.normalize = function(length) {
+Vector.prototype.normalize = function (length) {
   var distance = this.distance() //calculating length
   if (distance == 0) {
     return this
@@ -19,7 +19,7 @@ Vector.prototype.normalize = function(length) {
   this.y = (this.y / distance) * length //assigning new value to y
   return this
 }
-Vector.prototype.distance = function() {
+Vector.prototype.distance = function () {
   return Math.sqrt(this.x * this.x + this.y * this.y) //calculating length
 }
 
@@ -74,7 +74,7 @@ const fromEventToIds = (ev, props) => {
     (currentPoint.x - finalPoint.x) * stepVector.x <= 0 &&
     (currentPoint.y - finalPoint.y) * stepVector.y <= 0
   )
-  let ids = positions.map(position => fromPositionToId(position[0], position[1], grid, columns))
+  let ids = positions.map((position) => fromPositionToId(position[0], position[1], grid, columns))
   return ids
 }
 
@@ -90,7 +90,7 @@ const getCellCoordinates = (id, columnsCount) => {
   return { x: x + 1, y: y + 1 }
 }
 
-const drawHandlersProvider = rootComponent => ({
+const drawHandlersProvider = (rootComponent) => ({
   onMouseUp() {
     rootComponent.setState({
       dragging: false,
@@ -101,7 +101,7 @@ const drawHandlersProvider = rootComponent => ({
       onMouseDown(ev) {
         if (!rootComponent.state.dragging) {
           const { props } = gridComponent
-          props.updateGridBoundariesNow()
+          // props.updateGridBoundariesNow()
           // let {
           //   gridBoundaries: { x, y, width, height },
           //   columns,
@@ -112,7 +112,7 @@ const drawHandlersProvider = rootComponent => ({
           // let id = row * columns + column
           if (props.drawingTool !== 'MOVE') {
             const ids = fromEventToIds(ev, props)
-            ids.forEach(id => {
+            ids.forEach((id) => {
               const actionProps = getCellActionProps(props, id)
               props.cellAction(actionProps)
             })
@@ -143,7 +143,7 @@ const drawHandlersProvider = rootComponent => ({
           const { props } = gridComponent
           if (props.drawingTool !== 'MOVE') {
             const ids = fromEventToIds(ev, props)
-            ids.forEach(id => {
+            ids.forEach((id) => {
               const actionProps = getCellActionProps(props, id)
               if (id !== null) {
                 props.cellAction(actionProps)

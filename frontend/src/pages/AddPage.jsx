@@ -1,9 +1,6 @@
-import feathers from '@feathersjs/feathers'
-import rest from '@feathersjs/rest-client'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { objectService } from '../class/feathers-service'
-import GenerativeMusic from '../class/GenerativeMusic'
 import App from '../components/App'
 import { newProject, setPath, setStorage, updateUsedColors } from '../store/actions/actionCreators'
 import { REWARD_PALETTE } from '../store/reducers/paletteReducer'
@@ -24,16 +21,16 @@ const Page = ({ dispatch, isShown }) => {
   const [uploading, setUploading] = useState(false)
   const [show, setShow] = useState(false)
   const [rewardColor, setRewardColor] = useState(false)
-  const player = useSelector(state => state.present.get('player'))
-  const labels = player.get('labels')
-  const fats = player.get('fats')
-  const telescopes = player.get('telescopes')
-  const batteries = player.get('batteries')
-  const boxes = player.get('boxes')
-  const usedColors = useSelector(state => state.present.get('usedColors'))
+  const player = useSelector((state) => state.present.get('player'))
+  const labels = player['labels']
+  const fats = player['fats']
+  const telescopes = player['telescopes']
+  const batteries = player['batteries']
+  const boxes = player['boxes']
+  const usedColors = useSelector((state) => state.present.get('usedColors'))
   const isEmpty = usedColors ? usedColors.length == 0 : true
-  const frames = useSelector(state => state.present.get('frames'))
-  const framesList = useSelector(state => state.present.get('frames').get('list'))
+  const frames = useSelector((state) => state.present.get('frames'))
+  const framesList = useSelector((state) => state.present.get('frames').get('list'))
   const isAnimate = framesList.size > 1
   const type = framesList.size > 1 ? 'spritesheet' : 'single'
   const activeFrameIndex = frames.get('activeIndex')
@@ -42,7 +39,7 @@ const Page = ({ dispatch, isShown }) => {
   const columns = frames.get('columns')
   const rows = frames.get('rows')
   const cellSize = 1
-  const duration = useSelector(state => state.present.get('duration'))
+  const duration = useSelector((state) => state.present.get('duration'))
   const options = {
     type,
     frames: framesList,
@@ -86,17 +83,17 @@ const Page = ({ dispatch, isShown }) => {
 
   function blobToDataURL(blob, callback) {
     var a = new FileReader()
-    a.onload = function(e) {
+    a.onload = function (e) {
       callback(e.target.result)
     }
     a.readAsDataURL(blob)
   }
-  const submit = event => {
+  const submit = (event) => {
     setUploading(true)
     event.preventDefault()
 
-    renderBlob(options, b => {
-      blobToDataURL(b, uri => {
+    renderBlob(options, (b) => {
+      blobToDataURL(b, (uri) => {
         blobURI = uri
         upload()
         // setSubmitted(true);
@@ -162,10 +159,9 @@ const Page = ({ dispatch, isShown }) => {
         newRewardColor = false
       }
       setRewardColor(newRewardColor)
-      currentPlayer.palette = (getColor
-        ? [...currentPlayer.palette, newRewardColor]
-        : currentPlayer.palette
-      ).filter(c => usedColors.indexOf(c) == -1)
+      currentPlayer.palette = (
+        getColor ? [...currentPlayer.palette, newRewardColor] : currentPlayer.palette
+      ).filter((c) => usedColors.indexOf(c) == -1)
       currentPlayer.labels -= labelConsumption
       currentPlayer.fats -= fatConsumption
       currentPlayer.telescopes -= telescopeConsumption
@@ -180,6 +176,7 @@ const Page = ({ dispatch, isShown }) => {
       setSubmitted(true)
     }
   }
+
   useEffect(() => {
     document.body.style.backgroundColor = 'white'
     document.body.style.overflowY = 'auto'
@@ -252,7 +249,7 @@ const Page = ({ dispatch, isShown }) => {
             <textarea
               type="text"
               value={dialog}
-              onChange={event => {
+              onChange={(event) => {
                 setDialog(event.target.value)
               }}
               placeholder="注:对话是由回车分割的"
@@ -268,7 +265,7 @@ const Page = ({ dispatch, isShown }) => {
               type="text"
               value={name}
               // disabled={labels <= 0}
-              onChange={event => {
+              onChange={(event) => {
                 setName(event.target.value)
               }}
               placeholder="？？？"
@@ -284,7 +281,7 @@ const Page = ({ dispatch, isShown }) => {
               type="text"
               value={link}
               // disabled={boxes <= 0}
-              onChange={event => {
+              onChange={(event) => {
                 setLink(event.target.value)
               }}
               placeholder="它可以携带一个网址"
@@ -299,7 +296,7 @@ const Page = ({ dispatch, isShown }) => {
             <sub>{'肥料数量：' + fats + (fatConsumption == 0 ? '' : `(-${fatConsumption})`)}</sub>
             <select
               value={size}
-              onChange={event => {
+              onChange={(event) => {
                 setSize(event.target.value)
               }}
               className="page__input"
@@ -335,7 +332,7 @@ const Page = ({ dispatch, isShown }) => {
               max="1.6"
               step="0.2"
               value={2 - zFactor}
-              onChange={event => {
+              onChange={(event) => {
                 setZFactor(Math.fround(2 - event.target.value))
               }}
               placeholder="深度的范围是0.5 - 1.5（近大远小）"
@@ -347,7 +344,7 @@ const Page = ({ dispatch, isShown }) => {
             className="page__submit"
             disabled={error || uploading}
             type="submit"
-            onClick={e => {
+            onClick={(e) => {
               submit(e)
             }}
             value={uploading ? '提交中...' : '提交'}

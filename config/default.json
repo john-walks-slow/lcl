@@ -1,7 +1,8 @@
 {
   "host": "localhost",
   "port": 3030,
-  "public": "../frontend/dist/",
+  "public": "../dist/",
   "paginate": false,
-  "mongodb": "mongodb+srv://john:john2014MONGO@lcl-db.wlm7x.mongodb.net/lcl?retryWrites=true&w=majority"
+  "mongodb": "mongodb://localhost:27017/",
+  "dbName": "local"
 }

@@ -1,5 +1,3 @@
-'use strict'
-
 const EMPTY_SLOT = Object.freeze(Object.create(null))
 
 module.exports = { create }
@@ -7,11 +5,18 @@ module.exports.create = create
 
 // ******************************
 
-// create a new pool
+/**
+ * @typedef {ReturnType<typeof create<T>>} DeePool
+ * @template T
+ */
+/**
+ * create a new pool
+ * @param {function():T} objectFactory
+ * @template T
+ */
 function create(objectFactory = () => ({})) {
   var objPool = []
   var nextFreeSlot = null // pool location to look for a free object to use
-
   return {
     pool: objPool,
     use,
@@ -21,7 +26,7 @@ function create(objectFactory = () => ({})) {
   }
 
   // ******************************
-
+  /** @type {function():T} use**/
   function use() {
     if (nextFreeSlot == null || nextFreeSlot == objPool.length) {
       objPool.length == 0 ? grow(5) : grow()

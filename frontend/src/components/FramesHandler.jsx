@@ -88,7 +88,7 @@ class FramesHandler extends React.Component {
           > */}
           <DragDropContext onDragEnd={this.onDragEnd}>
             <Droppable droppableId="droppable" direction="horizontal">
-              {provided => (
+              {(provided) => (
                 <div
                   className="list__container"
                   ref={provided.innerRef}
@@ -108,9 +108,9 @@ class FramesHandler extends React.Component {
   }
 }
 
-const mapStateToProps = state => state.present.get('frames').toObject()
+const mapStateToProps = (state) => state.present.get('frames').toObject()
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(actionCreators, dispatch),
 })
 

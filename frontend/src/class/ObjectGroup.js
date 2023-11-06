@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import configurations from './configurations'
-// import GenerativeMusic from './GenerativeMusic'
 
+// A arcade group with the ability to update game object instance according to player location
 export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
     super(scene.physics.world, scene, [], {
@@ -90,7 +90,6 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
         os.forEach(o => {
           switch (o.type) {
             case 'object':
-              // GenerativeMusic.setupSound(o)
               o.instance = this.create(o.x, o.y, 'object' + o._id)
               // o.instance.on('addedtoscene',()=>{
               //   console.log(collidedObjects);
@@ -116,9 +115,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
               //  }
               // o.instance.refreshBody()
               this.scene.gameObjectsLayer.add(o.instance)
-              if (o.loop) {
-                // GenerativeMusic.startLoop(o)
-              }
+
               break
             case 'item':
               o.instance = this.scene.itemGroup

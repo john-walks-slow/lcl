@@ -48,7 +48,8 @@ app.configure(services)
 app.configure(channels)
 app.use(express.static(app.get('public')))
 
-app.get('/*', function (req, res) {
+// 任何无后缀的，都route到index
+app.get(/\/[^.]*$/, function (req, res) {
   res.sendFile('index.html', { root: app.get('public') })
 })
 // app.use('/*', express.static(app.get('public')))

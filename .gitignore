@@ -112,3 +112,4 @@ data/*
 art
 /public
 /cordova/www
+/dist

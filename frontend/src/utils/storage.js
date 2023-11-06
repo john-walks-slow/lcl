@@ -41,7 +41,7 @@ export const secureStorage = new SecureStorage(localStorage, {
 
 function saveDataToStorage(storage, data) {
   try {
-    storage.setItem(STORAGE_KEY, JSON.stringify(data))
+    storage.setItem(SECRET_KEY, JSON.stringify(data))
     return true
   } catch (e) {
     return false // There was an error
@@ -53,7 +53,7 @@ function saveDataToStorage(storage, data) {
 */
 export function initStorage(storage) {
   storage.setItem(
-    STORAGE_KEY,
+    SECRET_KEY,
     JSON.stringify({
       stored: [], // Load an example project data by default
       current: 0,
@@ -66,7 +66,7 @@ export function initStorage(storage) {
 */
 export function getDataFromStorage(storage) {
   try {
-    const data = storage.getItem(STORAGE_KEY)
+    const data = storage.getItem(SECRET_KEY)
     return data ? JSON.parse(data) : false
   } catch (e) {
     return false // There was an error
@@ -88,7 +88,7 @@ export function saveProjectToStorage(storage, projectData) {
         current: 0,
       }
     }
-    storage.setItem(STORAGE_KEY, JSON.stringify(dataStored))
+    storage.setItem(SECRET_KEY, JSON.stringify(dataStored))
     return true
   } catch (e) {
     return false // There was an error

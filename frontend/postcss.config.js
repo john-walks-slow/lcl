@@ -5,5 +5,5 @@ module.exports = {
     require('precss'),
     require('lost'),
     require('postcss-reporter'),
-  ]
+  ],
 }

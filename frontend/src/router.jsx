@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import './css/imports.css' // Import PostCSS files
-import configureStore from './store/configureStore'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AddPage from './pages/AddPage'
 import GamePage from './pages/GamePage'
 import { useSelector } from 'react-redux'
-import { setPath } from './store/actions/actionCreators'
 import configurations from './class/configurations'
 
 export default function Router({ dispatch }) {
-  let pathname = useSelector(state => state.present.get('pathname'))
+  let pathname = useSelector((state) => state.present.get('pathname'))
   const [error, setError] = useState()
   let showGame = pathname == '/'
   let showAdd = pathname == '/add' || pathname == '/add/'
@@ -22,7 +18,7 @@ export default function Router({ dispatch }) {
   useEffect(() => {
     // if (this.window.location != pathname) dispatch(setPath('/'));
     if (!configurations.DEV_MODE) {
-      window.onerror = message => {
+      window.onerror = (message) => {
         console.log(message)
         setError(message)
       }

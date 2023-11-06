@@ -1,11 +1,13 @@
 import { range } from '../utils/utils'
 
+// A grid for quickly read/write object
 export default class ObjectMap extends Array {
   constructor(sight) {
     super()
     this.SCOPE = 5
     this.gridSize = sight / (2 * this.SCOPE + 1)
-    // return the zone of o
+    // Zone = [x,y]
+    // return the zone of an object with x,y
     this.getZone = o => {
       return [
         Math.ceil((o.x + this.gridSize / 2) / this.gridSize),
