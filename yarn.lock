@@ -574,7 +574,7 @@
   dependencies:
     debug "^4.3.3"
 
-"@feathersjs/express@4.5.18":
+"@feathersjs/express@^4.5.18":
   version "4.5.18"
   resolved "https://registry.npmmirror.com/@feathersjs/express/-/express-4.5.18.tgz#e5135c892c9fe6ec7ae52db278e92543f27a601d"
   integrity sha512-MqrVtUcWeMnJjlx+xL5DDbPRxB5wLvlVGwjqKV6csnjOmtY8Jhv0q8Y86oUWPf3Cb/HXV1s6uSQ1Yg/JTY2EcA==
@@ -1820,6 +1820,11 @@ doctrine@^3.0.0:
   integrity sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==
   dependencies:
     esutils "^2.0.2"
+
+dotenv@^16.3.1:
+  version "16.3.1"
+  resolved "https://registry.npmmirror.com/dotenv/-/dotenv-16.3.1.tgz#369034de7d7e5b120972693352a3bf112172cc3e"
+  integrity sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==
 
 duplexify@^4.1.1:
   version "4.1.2"
