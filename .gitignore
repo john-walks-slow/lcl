@@ -113,3 +113,5 @@ art
 /public
 /cordova/www
 /dist
+
+config/production.json
