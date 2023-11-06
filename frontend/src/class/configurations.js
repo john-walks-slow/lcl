@@ -48,7 +48,7 @@ class Configurations {
     // this.DENSITY_FACTOR = 0.73
     this.DENSITY_FACTOR = 0.73
     this.ACTIVITY_OFFSET = 1
-    this.MOVE_SPEED = this.PLAYER_TARGET_H * 2
+    this.MOVE_SPEED = this.PLAYER_TARGET_H * 1.7
     this.OBLIQUE_MOVE_SPEED = Math.round(this.MOVE_SPEED * 0.74)
     this.ITEM_LIST = [
       { name: 'boxes', dialog: '哇！你捡到了一个箱子' },
@@ -59,7 +59,7 @@ class Configurations {
     ]
 
     this.updateConfigurations()
-    this.OBJECT_SIGHT = this.WINDOW_W * 1.5
+    this.OBJECT_SIGHT = Math.max(this.WINDOW_W, this.WINDOW_H) * 1.5
     this.SOUND_SIGHT = this.PLAYER_TARGET_H * 20
     // this.OBJECT_SIGHT = 10 * this.PLAYER_TARGET_H
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / 3
@@ -78,7 +78,7 @@ class Configurations {
     //   Math.min(this.RAW_WINDOW_W / 15, this.RAW_WINDOW_H / 15) / this.PLAYER_TARGET_H,
     //   1
     // )
-    this.SCALE = this.RAW_WINDOW_W > 900 ? 0.75 : 0.5
+    this.SCALE = this.RAW_WINDOW_W > 900 ? 0.75 : 0.63
     this.WINDOW_W = this.RAW_WINDOW_W / this.SCALE
     this.WINDOW_H = this.RAW_WINDOW_H / this.SCALE
     this.WINDOW_CENTER_X = this.WINDOW_W / 2
@@ -86,10 +86,7 @@ class Configurations {
     this.MASK_RADIUS = Math.max(this.WINDOW_H, this.WINDOW_W) * 0.42
     // this.time = timestamp % (24 * 60 * 60 * 1000) ;
     this.IS_MOBILE =
-      ('ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        navigator.msMaxTouchPoints > 0) &&
-      this.WINDOW_W > this.WINDOW_H
+      'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
   }
 }
 export default new Configurations()
