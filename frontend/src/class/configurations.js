@@ -85,8 +85,11 @@ class Configurations {
     this.WINDOW_CENTER_Y = this.WINDOW_H / 2
     this.MASK_RADIUS = Math.max(this.WINDOW_H, this.WINDOW_W) * 0.42
     // this.time = timestamp % (24 * 60 * 60 * 1000) ;
-    this.IS_MOBILE =
-      'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
+    this.IS_GAMEPAD =
+      ('ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        navigator.msMaxTouchPoints > 0) &&
+      this.WINDOW_W > this.WINDOW_H
   }
 }
 export default new Configurations()

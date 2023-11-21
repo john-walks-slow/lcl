@@ -499,7 +499,7 @@ export default class MainScene extends Phaser.Scene {
       let mousePosY
       let isMouseMovement
 
-      if (configurations.IS_MOBILE) {
+      if (configurations.IS_GAMEPAD) {
         mousePosX = this.gamepad.padX
         mousePosY = this.gamepad.padY
         // console.log(mousePosX, mousePosY);

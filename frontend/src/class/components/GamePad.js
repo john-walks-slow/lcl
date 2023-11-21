@@ -13,8 +13,8 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
     })
   }
   setDisplay() {
-    this.IS_MOBILE = this.scene.configurations.IS_MOBILE
-    if (!this.IS_MOBILE) {
+    this.IS_GAMEPAD = this.scene.configurations.IS_GAMEPAD
+    if (!this.IS_GAMEPAD) {
       this.alpha = 0
       this.removeInteractive()
     } else {
@@ -29,7 +29,7 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
     this.setY(this.scene.configurations.WINDOW_H - PADDING - WIDTH / 2)
     let centerX = PADDING + WIDTH / 2
     let centerY = this.scene.configurations.WINDOW_H - (PADDING + WIDTH / 2)
-    let onInput = pointer => {
+    let onInput = (pointer) => {
       this.padX = pointer.x - centerX
       this.padY = centerY - pointer.y
     }
@@ -39,7 +39,7 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
     this.on('pointerdown', onInput)
   }
   hide() {
-    if (!this.IS_MOBILE) {
+    if (!this.IS_GAMEPAD) {
       return
     }
     this.scene.tweens.add({
@@ -51,7 +51,7 @@ export default class GamePad extends Phaser.GameObjects.Sprite {
     this.removeInteractive()
   }
   show() {
-    if (!this.IS_MOBILE) {
+    if (!this.IS_GAMEPAD) {
       return
     }
     this.scene.tweens.add({
