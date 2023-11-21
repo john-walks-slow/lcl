@@ -62,7 +62,7 @@ class GenerativeMusic {
   synths = {}
 
   constructor() {
-    Tone.setContext(new Tone.Context({ latencyHint: 'playback', sampleRate: 44100 }))
+    Tone.setContext(new Tone.Context({ latencyHint: 'interactive', sampleRate: 44100 }))
     // DEBUG
     window.Tone = Tone
     window.gm = this
