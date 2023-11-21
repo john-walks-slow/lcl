@@ -78,7 +78,7 @@ class Configurations {
     //   Math.min(this.RAW_WINDOW_W / 15, this.RAW_WINDOW_H / 15) / this.PLAYER_TARGET_H,
     //   1
     // )
-    this.SCALE = this.RAW_WINDOW_W > 900 ? 0.75 : 0.63
+    this.SCALE = this.RAW_WINDOW_W > 900 ? 0.75 : 0.65
     this.WINDOW_W = this.RAW_WINDOW_W / this.SCALE
     this.WINDOW_H = this.RAW_WINDOW_H / this.SCALE
     this.WINDOW_CENTER_X = this.WINDOW_W / 2
