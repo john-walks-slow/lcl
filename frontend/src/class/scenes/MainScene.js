@@ -427,7 +427,7 @@ export default class MainScene extends Phaser.Scene {
       this.navigateToAdd()
     })
     this.input.keyboard.on('keydown-M', () => {
-      this.toggleMuted()
+      this.camera.toggleZoom()
     })
   }
   updateLocation() {

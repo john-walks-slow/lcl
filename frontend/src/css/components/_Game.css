@@ -53,7 +53,7 @@
   transition: 1000ms;
   background: white;
   z-index: 99;
-  font-family: 'pixelCN';
+  font-family: 'pixelJP';
   font-size: 1.2em;
   padding: 0px 5px;
   transform: scale(0.7);
@@ -102,7 +102,7 @@
   background: transparent;
   border-radius: 3px;
   border: solid 1px #5d5d5d;
-  cursor:pointer;
+  cursor: pointer;
 }
 .game__button-install.show {
   opacity: 1;

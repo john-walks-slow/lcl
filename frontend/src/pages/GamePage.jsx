@@ -33,6 +33,7 @@ const Game = ({ dispatch, isShown }) => {
   const [hideMenu, setHideMenu] = useState(false)
   const [showGame, setShowGame] = useState(true)
   const [muted, setMuted] = useState(false)
+  const [zoomed, setZoomed] = useState(false)
   const [date, setDate] = useState(false)
   const [location, setLocation] = useState('(0,0)')
   const player = useSelector((state) => state.present.get('player'))
@@ -53,6 +54,7 @@ const Game = ({ dispatch, isShown }) => {
     setMuted(!muted)
     muted ? generativeMusic.fadeIn() : generativeMusic.fadeOut()
   }
+
   function toggleShowInfo() {
     setShowInfo(!showInfo)
     if (!showInfo) {
@@ -126,6 +128,7 @@ const Game = ({ dispatch, isShown }) => {
           toggleShowInventory,
           toggleShowUI,
           toggleMuted,
+          setZoomed,
           toggleHideMenu,
           setShowUI,
           setLocation,
@@ -204,12 +207,12 @@ const Game = ({ dispatch, isShown }) => {
               <u>N</u>ew
             </button>
             <button
-              className={'game__button-menu' + (muted ? ' selected' : '')}
+              className={'game__button-menu' + (zoomed ? ' selected' : '')}
               onClick={() => {
-                toggleMuted()
+                mainSceneRef && mainSceneRef.camera.toggleZoom()
               }}
             >
-              <u>M</u>ute
+              <u>M</u>ap
             </button>
             <button
               className={'game__button-menu' + (showInventory ? ' selected' : '')}
