@@ -35,18 +35,24 @@ class Configurations {
       XXL: this.PLAYER_TARGET_H * 5,
       XL: this.PLAYER_TARGET_H * 3.5,
       L: this.PLAYER_TARGET_H * 2.5,
-      M: this.PLAYER_TARGET_H * 1.8,
-      S: this.PLAYER_TARGET_H * 1.2,
-      XS: this.PLAYER_TARGET_H * 0.8,
+      M: this.PLAYER_TARGET_H * 2,
+      S: this.PLAYER_TARGET_H * 1.5,
+      XS: this.PLAYER_TARGET_H * 0.9,
     }
+    // 过多久出现
     this.TIME_DELAY = 60 * 60 * 1000
+    // 随机范围
     this.RANDOM_ZONE_W = this.PLAYER_TARGET_H * 5
+    // 每一天增加的距离
     this.DAY_OFFSET = this.PLAYER_TARGET_H * 0.85
     // this.MAX_DAY_GAP = 5.5
+    // 最长的空白
     this.MAX_DAY_GAP = 2
+    // 未使用
     this.DENSITY_OFFSET = this.PLAYER_TARGET_H * 1
-    // this.DENSITY_FACTOR = 0.73
+    // 密度系数，越大密度越高
     this.DENSITY_FACTOR = 0.73
+    // 未使用
     this.ACTIVITY_OFFSET = 1
     this.MOVE_SPEED = this.PLAYER_TARGET_H * 1.7
     this.OBLIQUE_MOVE_SPEED = Math.round(this.MOVE_SPEED * 0.74)

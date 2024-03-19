@@ -13,7 +13,7 @@ export default class ObjectData {
     this.zeroDistance
     this.list = list
       .sort((a, b) => b.birthday - a.birthday)
-      .filter(o => configurations.TIMESTAMP - o.birthday > configurations.TIME_DELAY)
+      .filter((o) => configurations.TIMESTAMP - o.birthday > configurations.TIME_DELAY)
     this.map = new ObjectMap(configurations.OBJECT_SIGHT)
     this.soundMap = new ObjectMap(configurations.SOUND_SIGHT)
     this.playerData = secureStorage.getItem('player')
@@ -58,8 +58,8 @@ export default class ObjectData {
       o.displayHeight = Math.max(Math.round(o.height / o.rows), 1) * o.rows
 
       o.distance = Math.max(
-        -configurations.RANDOM_ZONE_W / 2 +
-          o.seed[1] * configurations.RANDOM_ZONE_W +
+        // -configurations.RANDOM_ZONE_W / 2 +
+        o.seed[1] * configurations.RANDOM_ZONE_W +
           configurations.calculateDistance(densityOffset + dateOffset),
         0
       )
@@ -106,6 +106,6 @@ export default class ObjectData {
     })
     console.timeEnd('setupObject Performance')
     console.log(this.map)
-    this.zeroDistance = this.list[this.list.length - 1].distance
+    this.zeroDistance = this.list?.[this.list.length - 1]?.distance || 0
   }
 }

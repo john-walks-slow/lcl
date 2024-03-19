@@ -12,7 +12,7 @@ const Picker = ({ type, value, action, min = 4, max = 64 }) => {
               type="button"
               onClick={() => {
                 if (max === 0 || value < max) {
-                  action(type, 1)
+                  action(type, 2)
                 }
               }}
               className="button-add"
@@ -24,7 +24,7 @@ const Picker = ({ type, value, action, min = 4, max = 64 }) => {
               type="button"
               onClick={() => {
                 if (min === 0 || value > min) {
-                  action(type, -1)
+                  action(type, -2)
                 }
               }}
               className="button-remove"

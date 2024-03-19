@@ -3,7 +3,7 @@ import shortid from 'shortid'
 import * as types from '../actions/actionTypes'
 import getTimeInterval from '../../utils/intervals'
 
-const createGrid = numCells => {
+const createGrid = (numCells) => {
   let newGrid = List()
   // Set every cell with the initial color
   for (let i = 0; i < numCells; i++) {
@@ -53,7 +53,7 @@ const create = (cellsCount, intervalPercentage) =>
     key: shortid.generate(),
   })
 
-const resetIntervals = frameList =>
+const resetIntervals = (frameList) =>
   frameList.map((frame, index) =>
     Map({
       grid: frame.get('grid'),
@@ -74,8 +74,8 @@ const getFrame = (frames, frameId) => {
 const initFrames = (action = {}) => {
   const options = action.options || {}
   // Default canvas size
-  const columns = parseInt(options.columns, 10) || 20
-  const rows = parseInt(options.rows, 10) || 20
+  const columns = parseInt(options.columns, 10) || 26
+  const rows = parseInt(options.rows, 10) || 26
   const list = resetIntervals(List([create(columns * rows)]))
   const hoveredIndex = undefined
   return Map({
@@ -108,7 +108,7 @@ const reorderFrame = (frames, action) => {
   })
 }
 
-const createNewFrame = frames => {
+const createNewFrame = (frames) => {
   const frameList = frames.get('list')
   const list = resetIntervals(frameList.push(create(frameList.getIn([0, 'grid']).size, 100)))
   return frames.merge({
@@ -148,7 +148,7 @@ const changeDimensions = (frames, { gridProperty, increment }) => {
     columns: frames.get('columns'),
     rows: frames.get('rows'),
   }
-  const list = frames.get('list').map(frame =>
+  const list = frames.get('list').map((frame) =>
     Map({
       grid: resizeGrid(frame.get('grid'), gridProperty, increment, dimensions),
       interval: frame.get('interval'),
@@ -180,7 +180,7 @@ const setFrames = (frames, action) => {
 
 const changeHoveredCell = (frames, cell) => frames.merge({ hoveredIndex: cell })
 
-export default function(frames = initFrames({}), action) {
+export default function (frames = initFrames({}), action) {
   switch (action.type) {
     case types.SET_INITIAL_STATE:
     case types.NEW_PROJECT:
