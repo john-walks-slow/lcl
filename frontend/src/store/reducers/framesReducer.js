@@ -74,8 +74,8 @@ const getFrame = (frames, frameId) => {
 const initFrames = (action = {}) => {
   const options = action.options || {}
   // Default canvas size
-  const columns = parseInt(options.columns, 10) || 26
-  const rows = parseInt(options.rows, 10) || 26
+  const columns = parseInt(options.columns, 10) || 25
+  const rows = parseInt(options.rows, 10) || 25
   const list = resetIntervals(List([create(columns * rows)]))
   const hoveredIndex = undefined
   return Map({
