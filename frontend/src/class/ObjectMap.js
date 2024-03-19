@@ -4,11 +4,13 @@ import { range } from '../utils/utils'
 export default class ObjectMap extends Array {
   constructor(sight) {
     super()
+    // 决定了区域的划分细度
     this.SCOPE = 5
+    // 决定了实际上的区域大小
     this.gridSize = sight / (2 * this.SCOPE + 1)
     // Zone = [x,y]
     // return the zone of an object with x,y
-    this.getZone = o => {
+    this.getZone = (o) => {
       return [
         Math.ceil((o.x + this.gridSize / 2) / this.gridSize),
         Math.ceil((o.y + this.gridSize / 2) / this.gridSize),
@@ -20,12 +22,18 @@ export default class ObjectMap extends Array {
         return []
       }
       let results = []
-      range(-scope, scope).forEach(v1 => {
-        range(-scope, scope).forEach(v2 => {
+      range(-scope, scope).forEach((v1) => {
+        range(-scope, scope).forEach((v2) => {
           this?.[zone[0] + v1]?.[zone[1] + v2] && results.push([zone[0] + v1, zone[1] + v2])
         })
       })
-      return results
+      return results.sort((a, b) => {
+        return (
+          Math.abs(a[0] - zone[0]) +
+          Math.abs(a[1] - zone[1]) -
+          (Math.abs(b[0] - zone[0]) + Math.abs(b[1] - zone[1]))
+        )
+      })
     }
     this.pushNew = (zone, o) => {
       if (!this[zone[0]]) {

@@ -41,6 +41,7 @@ class GenerativeMusic {
    * */
   soundList = { melody: [], chord: [] }
   audibleList = []
+  MAX_SOUND = 8
   FADE_OUT_VOLUME = -40
   MASTER_VOLUME = 10
   N4_LENGTH = Tone.Time('4n').toSeconds()
@@ -380,21 +381,6 @@ class GenerativeMusic {
         create: JSON.stringify(createZones),
         destroy: JSON.stringify(destroyZones),
       })
-      createZones.forEach((zone) => {
-        // console.log(this.scene.objectData.soundMap);
-        if (!this.scene.objectData.soundMap[zone[0]]) {
-          return
-        }
-        if (!this.scene.objectData.soundMap[zone[0]][[zone[1]]]) {
-          return
-        }
-        let os = this.scene.objectData.soundMap[zone[0]][zone[1]]
-        os.forEach((o) => {
-          o.loop || this._setupLoop(o)
-          this.soundList[o.character].push(o)
-          this._setupSynth(o)
-        })
-      })
       destroyZones.forEach((zone) => {
         if (!this.scene.objectData.soundMap[zone[0]]) {
           return
@@ -411,6 +397,24 @@ class GenerativeMusic {
           }
         })
       })
+      createZones.forEach((zone) => {
+        // console.log(this.scene.objectData.soundMap);
+        if (!this.scene.objectData.soundMap[zone[0]]) {
+          return
+        }
+        if (!this.scene.objectData.soundMap[zone[0]][[zone[1]]]) {
+          return
+        }
+        let os = this.scene.objectData.soundMap[zone[0]][zone[1]]
+        os.forEach((o) => {
+          if (this.soundList[o.character].length < this.MAX_SOUND) {
+            o.loop || this._setupLoop(o)
+            this.soundList[o.character].push(o)
+            this._setupSynth(o)
+          }
+        })
+      })
+
       console.timeEnd('updateSound Performance')
       console.log(
         Object.keys(this.soundList).reduce(
