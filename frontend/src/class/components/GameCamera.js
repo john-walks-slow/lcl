@@ -20,7 +20,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
 
     this.setDisplay()
     // this.fadeIn()
-    this.setZoom(this.scene.configurations.ZOOM_LEVEL)
+    this.setZoom(this.scene.configurations.ZOOM_OUT_LEVEL)
   }
   enterDialog() {
     this?.exitAnim?.stop()
@@ -67,17 +67,19 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     // })
   }
   initAnim() {
-    this.fadeIn()
-    return (this.initTween = this.scene.tweens.add({
-      targets: this,
-      props: {
-        // zoom: this.scene.configurations.ZOOM_LEVEL,
-        alpha: 1,
-      },
-      ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
-      duration: 2000,
-      completeDelay: 0,
-    }))
+    setTimeout(() => {
+      this.fadeIn()
+      return (this.initTween = this.scene.tweens.add({
+        targets: this,
+        props: {
+          zoom: this.scene.configurations.ZOOM_LEVEL,
+          alpha: 1,
+        },
+        ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
+        duration: 2000,
+        completeDelay: 0,
+      }))
+    }, 700)
   }
   zoomIn() {
     console.log('zoom in ')
