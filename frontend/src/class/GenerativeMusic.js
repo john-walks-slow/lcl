@@ -42,8 +42,8 @@ class GenerativeMusic {
   soundList = { melody: [], chord: [] }
   audibleList = []
   MAX_SOUND = 8
-  FADE_OUT_VOLUME = -40
-  MASTER_VOLUME = 10
+  FADE_OUT_VOLUME = -50
+  MASTER_VOLUME = 6
   N4_LENGTH = Tone.Time('4n').toSeconds()
   CHAR2INST = {
     chord: 'cello',
@@ -63,7 +63,7 @@ class GenerativeMusic {
   synths = {}
 
   constructor() {
-    Tone.setContext(new Tone.Context({ latencyHint: 'interactive', sampleRate: 44100 }))
+    Tone.setContext(new Tone.Context({ latencyHint: 'balanced', sampleRate: 44100 }))
     // DEBUG
     window.Tone = Tone
     window.gm = this
@@ -97,7 +97,7 @@ class GenerativeMusic {
     }
     this.VOLUME_RANGE = {
       melody: [-25, 3],
-      chord: [-35, -20],
+      chord: [-40, -25],
     }
     this.CHORD_TYPE = { T: 0, D: 1, S: 2 }
     this.SCALE = MS.note.fromMIDI(configurations.DAY.intRandom(68, 80)).scale('major')
@@ -407,8 +407,8 @@ class GenerativeMusic {
         }
         let os = this.scene.objectData.soundMap[zone[0]][zone[1]]
         os.forEach((o) => {
+          o.loop || this._setupLoop(o)
           if (this.soundList[o.character].length < this.MAX_SOUND) {
-            o.loop || this._setupLoop(o)
             this.soundList[o.character].push(o)
             this._setupSynth(o)
           }

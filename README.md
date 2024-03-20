@@ -50,7 +50,7 @@
 
 ### 平台/版本
 
-- 网页版：[地址 1](https://lcl.yu-me.workers.dev) [地址 2](https://lcl-web.herokuapp.com)
+- 网页版：[地址 1](lcl.onrender.com)
 - 将网页安装为 PWA（网页应用）
   - Chrome 等浏览器会自动弹出安装提示。你也可以点击本页面顶部的 “安装到桌面” 按钮安装。
   - IOS 在 Safari 中点击 `分享 - 添加到主屏幕` 可以将本应用安装到主屏。
