@@ -69,16 +69,16 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
       let previousZones = this.scene.objectData.map.getNearBy(this.previousZone)
       let currentZones = this.scene.objectData.map.getNearBy(currentZone)
       let createZones = currentZones.filter(
-        x => !JSON.stringify(previousZones).includes(JSON.stringify(x))
+        (x) => !JSON.stringify(previousZones).includes(JSON.stringify(x))
       )
       let destroyZones = previousZones.filter(
-        x => !JSON.stringify(currentZones).includes(JSON.stringify(x))
+        (x) => !JSON.stringify(currentZones).includes(JSON.stringify(x))
       )
       console.log({ createZones, destroyZones })
       this.previousZone = currentZone
       // console.log({ prev: previousZones, cur: currentZones });
       // console.log({ create: JSON.stringify(createZones), destroy: JSON.stringify(destroyZones) })
-      createZones.forEach(zone => {
+      createZones.forEach((zone) => {
         // console.log(this.scene.objectData.map);
         if (!this.scene.objectData.map[zone[0]]) {
           return
@@ -87,7 +87,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
           return
         }
         let os = this.scene.objectData.map[zone[0]][zone[1]]
-        os.forEach(o => {
+        os.forEach((o) => {
           switch (o.type) {
             case 'object':
               o.instance = this.create(o.x, o.y, 'object' + o._id)
@@ -98,7 +98,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
               // console.log(this.scene.objectGroup);
               o.instance.depth = o.zFactor
               o.isForeground && (o.instance.alpha = 1 - Math.abs(o.zFactor - 1) / 2)
-              o.isBackground && (o.instance.alpha = 1 - Math.abs(o.zFactor - 1) ** 0.5)
+              o.isBackground && (o.instance.alpha = 1 - Math.abs(o.zFactor - 1) ** 0.35)
               o.instance.oData = o
               o.instance.setDisplaySize(o.displayWidth, o.displayHeight)
               // o.instance.body.onOverlap = true
@@ -139,7 +139,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
           }
         })
       })
-      destroyZones.forEach(zone => {
+      destroyZones.forEach((zone) => {
         if (!this.scene.objectData.map[zone[0]]) {
           return
         }
@@ -147,7 +147,7 @@ export default class ObjectGroup extends Phaser.Physics.Arcade.Group {
           return
         }
         let os = this.scene.objectData.map[zone[0]][zone[1]]
-        os.forEach(o => {
+        os.forEach((o) => {
           switch (o.type) {
             case 'object':
               this.remove(o.instance, true, true)

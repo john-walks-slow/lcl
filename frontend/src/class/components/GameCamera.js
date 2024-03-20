@@ -26,7 +26,7 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     this?.exitAnim?.stop()
     return (this.enterAnim = this.scene.tweens.add({
       targets: this,
-      props: { alpha: 0.4 },
+      props: { alpha: 0.3 },
       ease: 'Cubic', // 'Cubic', 'Elastic', 'Bounce', 'Back'
       duration: 500,
       completeDelay: 0,
