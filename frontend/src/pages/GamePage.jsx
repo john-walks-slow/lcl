@@ -5,18 +5,23 @@ import React, { useEffect, useState, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useSelector } from 'react-redux'
 import ReadMe from '../../../README.md'
-import newBtnURL from '../assets/game/new.png'
-import mapBtnURL from '../assets/game/map.png'
-import bagBtnURL from '../assets/game/bag.png'
-import infoBtnURL from '../assets/game/info.png'
-import moreBtnURL from '../assets/game/more.png'
+import newImg from '../assets/game/new.png'
+import mapImg from '../assets/game/map.png'
+import bagImg from '../assets/game/bag.png'
+import infoImg from '../assets/game/info.png'
+import moreImg from '../assets/game/more.png'
+import musicOffImg from '../assets/game/musicOff.png'
+import musicImg from '../assets/game/music.png'
+import worldImg from '../assets/game/world.png'
+import locationImg from '../assets/game/location.png'
 import configurations from '../class/configurations'
-import { setPath, setStorage } from '../store/actions/actionCreators'
+import { setPath, setStorage, setLocation } from '../store/actions/actionCreators'
 import MainScene from '../class/scenes/MainScene'
 import LoadingScene from '../class/scenes/LoadingScene'
 import emoji from 'emoji-dictionary/lib/index'
 import { secureStorage } from '../utils/storage'
 import generativeMusic from '../class/GenerativeMusic'
+import { joinPath } from '../utils/utils'
 
 // function createTestObject(object) {
 //   object._id = 3;
@@ -32,10 +37,16 @@ const Game = ({ dispatch, isShown }) => {
   const [showUI, setShowUI] = useState(false)
   const [hideMenu, setHideMenu] = useState(false)
   const [showGame, setShowGame] = useState(true)
+  const [showWorldDialog, setShowWorldDialog] = useState(false)
+  const [showLocDialog, setShowLocDialog] = useState(false)
   const [muted, setMuted] = useState(false)
   const [zoomed, setZoomed] = useState(false)
   const [date, setDate] = useState(false)
-  const [location, setLocation] = useState('(0,0)')
+  const location = useSelector((state) => state.present.get('location'))
+  const dispatchLocation = (location) => {
+    dispatch(setLocation(location))
+  }
+  const world = useSelector((state) => state.present.get('world'))
   const player = useSelector((state) => state.present.get('player'))
   const newObject = useSelector((state) => state.present.get('newObject'))
   // const objects = useSelector(state => state.present.get('objects'));
@@ -51,6 +62,11 @@ const Game = ({ dispatch, isShown }) => {
     setShowUI(!showUI)
   }
   function toggleMuted() {
+    if (!muted) {
+      localStorage.setItem('muted', 'true')
+    } else {
+      localStorage.setItem('muted', 'false')
+    }
     setMuted(!muted)
     muted ? generativeMusic.fadeIn() : generativeMusic.fadeOut()
   }
@@ -66,7 +82,7 @@ const Game = ({ dispatch, isShown }) => {
   }
   function navigateToAdd() {
     // if (secureStorage.getItem('haveReadInfo')) {
-    dispatch(setPath('/add', true))
+    dispatch(setPath(joinPath(window.location.pathname, 'add')))
     // } else {
     // alert('请看看帮助中的“规则”')
     // }
@@ -131,16 +147,19 @@ const Game = ({ dispatch, isShown }) => {
           setZoomed,
           toggleHideMenu,
           setShowUI,
-          setLocation,
+          dispatchLocation,
           setStorage,
           setMuted,
           dispatch,
           updateUIMethod,
           navigateToAdd,
         }
-        var loadingScene = new LoadingScene(methods)
-        var mainScene = new MainScene(methods)
+        var loadingScene = new LoadingScene(methods, world)
+        var mainScene = new MainScene(methods, location)
         setMainScene(mainScene)
+        if (localStorage.getItem('muted') === 'true') {
+          setMuted(true)
+        }
         var config = {
           type: Phaser.CANVAS,
           width: configurations.WINDOW_W,
@@ -186,11 +205,68 @@ const Game = ({ dispatch, isShown }) => {
     <div id="GAME_DIV" className={showGame ? 'show' : ''}>
       <div id="PHASER_ROOT"></div>
       <div id="GAME_UI" className={showUI ? 'show' : ''}>
+        {/* <div id="WORLD_DIALOG" className={showWorldDialog ? 'show' : ''}>
+          <input placeholder="输入要前往的世界"></input>
+          <button>前往</button>
+        </div> */}
+        {/* <div id="LOC_DIALOG" className={showLocDialog ? 'show' : ''}></div> */}
         <div id="GAME_DATE" className="game__div-ui">
           {date ? date.toLocaleTimeString() : ''}
         </div>
+        <div id="GAME_SUBMENU" className={'game__div-ui' + (hideMenu ? ' hide' : '')}>
+          <button
+            className="game__button-menu"
+            onClick={() => {
+              // setShowWorldDialog(!showWorldDialog)
+              let targetWorld = prompt('输入要前往的世界', world)
+              if (targetWorld === null) return
+              if (targetWorld !== world) {
+                if (
+                  targetWorld.includes('.') ||
+                  targetWorld.includes('/') ||
+                  targetWorld.includes('\\')
+                ) {
+                  alert('不合法的世界名')
+                  return
+                }
+                let targetUrl =
+                  targetWorld === '' || targetWorld === 'default' ? '/' : '/world/' + targetWorld
+                window.open(targetUrl, '_self')
+              }
+            }}
+          >
+            <img src={worldImg} />
+          </button>
+          <button
+            className="game__button-menu"
+            onClick={() => {
+              let targetLoc = prompt(
+                '输入要前往的坐标',
+                `${location[0].toFixed(2)},${location[1].toFixed(1)}`
+              )
+              if (targetLoc === null) return
+              const locMatches = targetLoc.match(/^(-?[0-9.]+),(-?[0-9.]+)$/)
+              if (locMatches) {
+                mainSceneRef &&
+                  mainSceneRef.setPlayerLoc([parseFloat(locMatches[1]), parseFloat(locMatches[2])])
+              } else {
+                alert('不合法的坐标')
+              }
+            }}
+          >
+            <img src={locationImg} />
+          </button>
+          <button
+            className="game__button-menu"
+            onClick={() => {
+              toggleMuted()
+            }}
+          >
+            <img src={muted ? musicOffImg : musicImg} />
+          </button>
+        </div>
         <div id="GAME_LOCATION" className="game__div-ui">
-          {location}
+          {`(${location?.[0]?.toFixed(2)},${location?.[1]?.toFixed(1)})`}
         </div>
         <div id="GAME_MENU" className={'game__div-ui' + (hideMenu ? ' hide' : '')}>
           <div className="">

@@ -6,14 +6,20 @@ import ObjectMap from './ObjectMap'
 
 // For preparing game object data
 export default class ObjectData {
-  constructor(list) {
+  constructor(list, targetWorld = 'default') {
     this.map = []
     this.soundMap = []
     this.itemList = []
     this.zeroDistance
     this.list = list
       .sort((a, b) => b.birthday - a.birthday)
-      .filter((o) => configurations.TIMESTAMP - o.birthday > configurations.TIME_DELAY)
+      .filter(
+        (o) =>
+          // (targetWorld === 'default'
+          // ? o?.world === undefined || o.world === targetWorld
+          // : o.world === targetWorld) &&
+          configurations.TIMESTAMP - o.birthday > configurations.TIME_DELAY
+      )
     this.map = new ObjectMap(configurations.OBJECT_SIGHT)
     this.soundMap = new ObjectMap(configurations.SOUND_SIGHT)
     this.playerData = secureStorage.getItem('player')
@@ -58,10 +64,10 @@ export default class ObjectData {
       o.displayHeight = Math.max(Math.round(o.height / o.rows), 1) * o.rows
 
       o.distance = Math.max(
-        // -configurations.RANDOM_ZONE_W / 2 +
-        o.seed[1] * configurations.RANDOM_ZONE_W +
+        -configurations.RANDOM_ZONE_W / 2 +
+          o.seed[1] * configurations.RANDOM_ZONE_W +
           configurations.calculateDistance(densityOffset + dateOffset),
-        0
+        (configurations.PLAYER_TARGET_H + o.displayHeight) / 2
       )
       // *  zFactorOffset
       // o.distance = (o.seed[1] * configurations.RANDOM_ZONE_W + offset + dateOffset) * zFactorOffset * (2 + o.seed[1]) / 3;

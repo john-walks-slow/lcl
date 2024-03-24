@@ -205,7 +205,21 @@ export function setObjects(objects) {
   }
 }
 
+export function setWorld(world) {
+  return {
+    type: types.SET_WORLD,
+    world,
+  }
+}
+export function setLocation(location) {
+  return {
+    type: types.SET_LOCATION,
+    location,
+  }
+}
+
 export function setPath(pathname, withoutHistory = false) {
+  console.log(pathname)
   return {
     type: types.SET_PATH,
     pathname,

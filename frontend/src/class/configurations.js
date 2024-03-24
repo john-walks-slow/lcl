@@ -76,6 +76,7 @@ class Configurations {
   calculateDistance(d) {
     return (d * 16) ** this.DENSITY_FACTOR
   }
+
   updateConfigurations() {
     // Actually the size of the canvas,not the window
     this.RAW_WINDOW_W = window.innerWidth || document.body.clientWidth

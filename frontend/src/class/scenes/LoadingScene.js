@@ -16,12 +16,13 @@ import ObjectData from '../ObjectData'
 import { objectService } from '../feathers-service'
 
 export default class LoadingScene extends Phaser.Scene {
-  constructor(methods) {
+  constructor(methods, world) {
     super({
       key: 'LoadingScene',
     })
     this.configurations = configurations
     this.dispatch = methods.dispatch
+    this.world = world
   }
   preload() {}
 
@@ -61,7 +62,7 @@ export default class LoadingScene extends Phaser.Scene {
         //   }))
         // });
 
-        let objectData = new ObjectData(objectList)
+        let objectData = new ObjectData(objectList, this.world)
         objectData.setupObject()
         objectData.list.forEach((o, i) => {
           switch (o.isAnimate) {
@@ -118,7 +119,14 @@ export default class LoadingScene extends Phaser.Scene {
         })
         this.load.start()
       }
-      objectService.find({ paginate: false }).then(setup)
+      // if (this.world === 'default') {
+      //   query = {
+      //     $or: [{ world: null }, { world: 'default' }],
+      //   }
+      // } else {
+      //   query = { world: this.world }
+      // }
+      objectService.find({ paginate: false, query: { world: this.world } }).then(setup)
     } catch (error) {
       console.log(error)
     }
@@ -134,7 +142,7 @@ export default class LoadingScene extends Phaser.Scene {
       configurations.WINDOW_H / 20,
       new Date(configurations.TIMESTAMP).toString().split('GMT')[0] +
         'user@remote' +
-        '\n Fetching object list...',
+        '\n Fetching objects ...',
       {
         align: 'left',
         color: '#FFFFFF',

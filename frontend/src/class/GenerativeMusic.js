@@ -43,7 +43,7 @@ class GenerativeMusic {
   audibleList = []
   MAX_SOUND = 8
   FADE_OUT_VOLUME = -50
-  MASTER_VOLUME = 6
+  MASTER_VOLUME = 5
   N4_LENGTH = Tone.Time('4n').toSeconds()
   CHAR2INST = {
     chord: 'cello',
@@ -62,11 +62,12 @@ class GenerativeMusic {
   /**@type {{[k in SynthType]: deePool.DeePool<Synth>}} */
   synths = {}
 
-  constructor() {
-    Tone.setContext(new Tone.Context({ latencyHint: 'balanced', sampleRate: 44100 }))
+  constructor(startMuted = false) {
+    Tone.setContext(new Tone.Context({ latencyHint: 'interactive', sampleRate: 44100 }))
     // DEBUG
     window.Tone = Tone
     window.gm = this
+    this.startMuted = startMuted
     this._setupChordSequence()
   }
 
@@ -88,8 +89,8 @@ class GenerativeMusic {
     }
     this.CHORD_LENGTH_PROBS = { 8: 0.1, 6: 0.1, 4: 0.8, 2: 0.6, 1: 0.3 }
     this.CHORD_SYNC = 24
-    this.CHORD_LOOP_LENGTH = 128
-    this.MELODY_LOOP_LENGTH = 8
+    this.CHORD_LOOP_LENGTH = 150
+    this.MELODY_LOOP_LENGTH = 10
     this.FADE_FACTOR = { melody: 1.5, chord: 1.5 }
     this.AUDIBLE_RANGE = {
       melody: [configurations.PLAYER_TARGET_H, configurations.PLAYER_TARGET_H * 20],
@@ -97,10 +98,10 @@ class GenerativeMusic {
     }
     this.VOLUME_RANGE = {
       melody: [-25, 3],
-      chord: [-40, -25],
+      chord: [-43, -28],
     }
     this.CHORD_TYPE = { T: 0, D: 1, S: 2 }
-    this.SCALE = MS.note.fromMIDI(configurations.DAY.intRandom(68, 80)).scale('major')
+    this.SCALE = MS.note.fromMIDI(configurations.DAY.intRandom(70, 78)).scale('major')
 
     let majorMinor = configurations.DAY.random() + 0.1
     this.CHORD_PROBS =
@@ -289,6 +290,18 @@ class GenerativeMusic {
         // eq: new Tone.EQ3({}),
         // stereoWidener: new Tone.StereoWidener(0.7),
         // stereoWidener2: new Tone.StereoWidener(0.96),
+        delay: new Tone.FeedbackDelay({
+          delayTime: '8n.',
+          maxDelayTime: '4n',
+          feedback: 0.4,
+          wet: 0.15,
+        }),
+        reverb: new Tone.Reverb({
+          roomSize: 0.65,
+          decay: '3',
+          // decay: '1n',
+          wet: 0.2,
+        }),
         compressor: new Tone.Compressor({
           ratio: 5,
           threshold: -5,
@@ -298,8 +311,8 @@ class GenerativeMusic {
         limiter: new Tone.Limiter(-0.6),
       },
     }
-    this.channels.reverbBus.connect(this.channels.master)
-    this.channels.delayBus.connect(this.channels.master)
+    // this.channels.reverbBus.connect(this.channels.master)
+    // this.channels.delayBus.connect(this.channels.master)
     this.channels.master.chain(...Object.values(this.channels.masterFx), Tone.getDestination())
 
     this.synths = deePool.create(() => {
@@ -312,8 +325,8 @@ class GenerativeMusic {
         eq: new Tone.EQ3(),
       }
       synth.panVol.chain(synth.eq, this.channels.master)
-      synth.panVol.chain(synth.delaySend, this.channels.delayBus)
-      synth.panVol.chain(synth.reverbSend, this.channels.reverbBus)
+      // synth.panVol.chain(synth.delaySend, this.channels.delayBus)
+      // synth.panVol.chain(synth.reverbSend, this.channels.reverbBus)
       return synth
     })
     this.synths.grow(15)
@@ -328,14 +341,16 @@ class GenerativeMusic {
         await Tone.start()
         console.log('Generative Music Started')
         this._updateSound()
-        Tone.getTransport().bpm.value = 120
-        Tone.getTransport().start()
+        Tone.getTransport().bpm.value = 165
         this.chordLoop.start()
         setInterval(() => {
           this._updateSound()
           this._updateSynths(500)
         }, 500)
-        this.fadeIn()
+        if (!this.startMuted) {
+          Tone.getTransport().start()
+          this.fadeIn()
+        }
         // const osc = new Tone.Oscillator('C3').start()
         // osc.toDestination()
         document.removeEventListener('click', startContext)
@@ -434,8 +449,10 @@ class GenerativeMusic {
     console.time('updateSynths Performance')
 
     Object.keys(this.soundList).forEach((key) =>
-      this.soundList[key].forEach((o) => {
+      this.soundList[key].forEach((o, i) => {
+        // if (i < this.MAX_SOUND) {
         this._updateSynth(o, delta)
+        // }
       })
     )
     console.timeEnd('updateSynths Performance')
@@ -511,7 +528,7 @@ class GenerativeMusic {
     switch (o.character) {
       case 'chord':
         // PadSynth
-        o.min = o.intRandom(-this.SCALE.notes().length - 8, -5)
+        o.min = o.intRandom(-this.SCALE.notes().length - 12, -5)
         o.max = o.min + o.intRandom(4, 6)
         // o.min = scale.getNote(o.min);
         // o.max = scale.getNote(o.max);
@@ -555,7 +572,7 @@ class GenerativeMusic {
         //   isMelodySpaced = o.wRandom({ false: 0.4, true: 0.1 })
         // }
         o.loop = new Tone.Part((time, note) => {
-          if (Math.random() > 0.5) {
+          if (Math.random() > 0.62) {
             o.noteIndex = o.wRandom(this.MELODY_PROBS)
             o.note = this.SCALE.getNote(parseInt(o.noteIndex))
           }
@@ -616,8 +633,8 @@ class GenerativeMusic {
    */
   _setupSynth(o) {
     const EQ_AMOUNT = 4
-    const DELAY_AMOUNT = 0
-    const REVERB_AMOUNT = -15
+    const DELAY_AMOUNT = -10
+    const REVERB_AMOUNT = -10
     try {
       if (!o.synth) {
         o.synth = this.synths.use()
@@ -664,10 +681,12 @@ class GenerativeMusic {
   }
   fadeIn() {
     this.channels && this.channels.master.volume.rampTo(this.MASTER_VOLUME, 2)
+    Tone.getTransport().start()
   }
   fadeOut() {
     this.channels && this.channels.master.volume.rampTo(this.FADE_OUT_VOLUME, 4)
+    Tone.getTransport().pause()
   }
 }
-const generativeMusic = new GenerativeMusic()
+const generativeMusic = new GenerativeMusic(localStorage.getItem('muted') === 'true')
 export default generativeMusic

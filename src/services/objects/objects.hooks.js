@@ -26,6 +26,7 @@ const schema = yup.object().shape({
     }),
     yup.boolean(),
   ]),
+  world: yup.string(),
 })
 
 const trimDialog = (context) => {
@@ -80,10 +81,20 @@ const schemaCheck = async (context) => {
   return context
 }
 
+// When querying world:"default",also include records that don't have a world field
+const defaultWorld = async (context) => {
+  if (context.params.query.world === 'default') {
+    context.params.query = {
+      $or: [{ world: null }, { world: 'default' }],
+    }
+  }
+  return context
+}
+
 module.exports = {
   before: {
     all: [],
-    find: [],
+    find: [defaultWorld],
     get: [],
     create: [setTimestamp('birthday'), setSeed, trimDialog, generateItem, schemaCheck],
     update: [disallow('external')],

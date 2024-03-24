@@ -27,13 +27,14 @@ export default class ObjectMap extends Array {
           this?.[zone[0] + v1]?.[zone[1] + v2] && results.push([zone[0] + v1, zone[1] + v2])
         })
       })
-      return results.sort((a, b) => {
-        return (
-          Math.abs(a[0] - zone[0]) +
-          Math.abs(a[1] - zone[1]) -
-          (Math.abs(b[0] - zone[0]) + Math.abs(b[1] - zone[1]))
-        )
-      })
+      // results = results.sort((a, b) => {
+      //   return (
+      //     Math.abs(a[0] - zone[0]) +
+      //     Math.abs(a[1] - zone[1]) -
+      //     (Math.abs(b[0] - zone[0]) + Math.abs(b[1] - zone[1]))
+      //   )
+      // })
+      return results
     }
     this.pushNew = (zone, o) => {
       if (!this[zone[0]]) {

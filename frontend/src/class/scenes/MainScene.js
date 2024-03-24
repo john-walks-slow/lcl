@@ -21,13 +21,19 @@ function vectorAngle(x, y) {
 }
 
 export default class MainScene extends Phaser.Scene {
-  constructor(methods) {
+  constructor(methods, startLoc = undefined) {
     super({
       key: 'MainScene',
       active: false,
     })
-
+    this.startLoc = startLoc
     Object.assign(this, methods)
+  }
+  setPlayerLoc(loc) {
+    const pos = this.locToPos(loc)
+    console.log(pos)
+    this.player.x = pos[0]
+    this.player.y = pos[1]
   }
   preload() {}
   init(data) {
@@ -49,8 +55,6 @@ export default class MainScene extends Phaser.Scene {
   create() {
     // - Setup World
     // this.physics.world.setFPS(30)
-    this.startPosX = 0
-    this.startPosY = 0
     this.pointerOnPlayer = false
     this.updateUIMethod(this)
     this.cursors = this.input.keyboard.createCursorKeys()
@@ -75,8 +79,10 @@ export default class MainScene extends Phaser.Scene {
     this.staticCamera.ignore(this.gameObjectsLayer)
 
     // - Create Player
+    const startPos = this.startLoc ? this.locToPos(this.startLoc) : [0, 0]
+    console.log('startPos', startPos)
     this.player = this.physics.add
-      .sprite(this.startPosX, this.startPosY, 'player')
+      .sprite(...startPos, 'player')
       .setDisplaySize(configurations.PLAYER_TARGET_W, configurations.PLAYER_TARGET_H)
     this.player.depth = 0.9
     this.player.move = (x, y) => {
@@ -404,14 +410,18 @@ export default class MainScene extends Phaser.Scene {
     this.objectGroup.updateObjects(false, [0, 0])
     generativeMusic.start(this)
     this.setupKeyboard()
-    this.setShowUI(true)
     setInterval(() => {
       this.objectGroup.updateObjects()
       this.updateLocation()
-    }, 100)
+    }, 150)
 
     this.scene.stop('LoadingScene')
-    this.camera.initAnim()
+    setTimeout(() => {
+      this.setShowUI(true)
+    }, 250)
+    setTimeout(() => {
+      this.camera.initAnim()
+    }, 600)
   }
   setupKeyboard() {
     this.input.keyboard.on('keydown-B', () => {
@@ -431,13 +441,28 @@ export default class MainScene extends Phaser.Scene {
     })
   }
   updateLocation() {
-    let rad = Phaser.Math.Angle.Between(0, 0, this.player.x, this.player.y)
+    const loc = this.posToLoc([this.player.x, this.player.y])
+    this.dispatchLocation(loc)
+  }
+  posToLoc([x, y]) {
+    let rad = Phaser.Math.Angle.Between(0, 0, x, y)
     let distance =
       (this.objectData.zeroDistance ** (1 / configurations.DENSITY_FACTOR) -
-        Phaser.Math.Distance.Between(0, 0, this.player.x, this.player.y) **
-          (1 / configurations.DENSITY_FACTOR)) /
+        Phaser.Math.Distance.Between(0, 0, x, y) ** (1 / configurations.DENSITY_FACTOR)) /
       5000
-    this.setLocation(`(${rad.toFixed(2)},${distance.toFixed(1)})`)
+    return [rad, distance]
+  }
+  // Reverse of posToLoc
+  locToPos([rad, distance]) {
+    const partial =
+      this.objectData.zeroDistance ** (1 / configurations.DENSITY_FACTOR) - 5000 * distance
+    distance =
+      partial > 0
+        ? partial ** configurations.DENSITY_FACTOR
+        : -((-partial) ** configurations.DENSITY_FACTOR)
+    console.log('distance', distance)
+    return [distance * Math.cos(rad), distance * Math.sin(rad)]
+    // return [rad, distance]
   }
   update(time, delta) {
     // console.log(this.input.activePointer.x, this.input.activePointer.y);

@@ -3266,9 +3266,9 @@ switch (process.env.BUILD_PLATFORM) {
   case 'web':
     url = 'objects'
     break
-  case 'app':
-    url = 'https://lcl.yu-me.workers.dev/objects'
-    break
+  // case 'app':
+  // url = 'https://lcl.yu-me.workers.dev/objects'
+  // break
   default:
     break
 }

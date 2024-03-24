@@ -48,8 +48,9 @@ function setInitialState(state) {
       fats,
       palette,
     },
+    location: undefined,
+    world: 'default',
     // objects: {}
-    // palette,
   })
   return state.merge(initialState)
 }
@@ -62,6 +63,12 @@ function setNewObject(state, action) {
 }
 function setObjects(state, action) {
   return state.set('objects', action.objects)
+}
+function setWorld(state, action) {
+  return state.set('world', action.world)
+}
+function setLocation(state, action) {
+  return state.set('location', action.location)
 }
 function setPath(state, action) {
   if (action.pathname != window.location.pathname) {
@@ -175,6 +182,10 @@ function partialReducer(state, action) {
       return setNewObject(state, action)
     case types.SET_OBJECTS:
       return setObjects(state, action)
+    case types.SET_WORLD:
+      return setWorld(state, action)
+    case types.SET_LOCATION:
+      return setLocation(state, action)
     default:
   }
   return state

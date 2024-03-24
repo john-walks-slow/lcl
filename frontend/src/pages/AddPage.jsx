@@ -6,6 +6,7 @@ import { newProject, setPath, setStorage, updateUsedColors } from '../store/acti
 import { REWARD_PALETTE } from '../store/reducers/paletteReducer'
 import { renderBlob } from '../utils/canvasGIF'
 import { secureStorage } from '../utils/storage'
+import { choose, formatPath, joinPath } from '../utils/utils'
 
 const Page = ({ dispatch, isShown }) => {
   const [name, setName] = useState('')
@@ -27,6 +28,7 @@ const Page = ({ dispatch, isShown }) => {
   const telescopes = player['telescopes']
   const batteries = player['batteries']
   const boxes = player['boxes']
+  const world = useSelector((state) => state.present.get('world'))
   const usedColors = useSelector((state) => state.present.get('usedColors'))
   const isEmpty = usedColors ? usedColors.length == 0 : true
   const frames = useSelector((state) => state.present.get('frames'))
@@ -72,13 +74,18 @@ const Page = ({ dispatch, isShown }) => {
   const regex = new RegExp(
     /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
   )
-  const error =
-    isEmpty ||
-    labels < labelConsumption ||
-    batteries < batteryConsumption ||
-    fats < fatConsumption ||
-    telescopes < telescopeConsumption ||
-    (link !== '' && !link.match(regex))
+  let [invalid, setInvalid] = useState(true)
+  useEffect(() => {
+    setInvalid(
+      isEmpty ||
+        labels < labelConsumption ||
+        batteries < batteryConsumption ||
+        fats < fatConsumption ||
+        telescopes < telescopeConsumption ||
+        (link !== '' && !link.match(regex))
+    )
+  })
+
   var blobURI = null
 
   function blobToDataURL(blob, callback) {
@@ -138,6 +145,7 @@ const Page = ({ dispatch, isShown }) => {
         columns,
         rows,
         blobURI,
+        world,
       })
       console.log(`Data uploaded ${result}`)
       // dispatch(setNewObject(result));
@@ -150,18 +158,16 @@ const Page = ({ dispatch, isShown }) => {
       setZFactor(1)
 
       let currentPlayer = secureStorage.getItem('player')
-      const getColor = Math.round(Math.random()) == 1 && dialog.length > 0
+      const getColor = currentPlayer.palette.length < REWARD_PALETTE.length && Math.random() < 0.5
+      // && dialog.length > 0
       // let newRewardColor = Array(colorCount).map(i => ((Math.floor(Math.random() * 16777215).toString(16))));
       let newRewardColor = getColor
-        ? REWARD_PALETTE[Math.floor(Math.random() * REWARD_PALETTE.length)]
+        ? choose(REWARD_PALETTE.filter((c) => currentPlayer.palette.indexOf(c) === -1))
         : false
-      if (currentPlayer.palette.indexOf(newRewardColor) > -1) {
-        newRewardColor = false
-      }
       setRewardColor(newRewardColor)
-      currentPlayer.palette = (
-        getColor ? [...currentPlayer.palette, newRewardColor] : currentPlayer.palette
-      ).filter((c) => usedColors.indexOf(c) == -1)
+      // currentPlayer.palette = (
+      //   getColor ? [...currentPlayer.palette, newRewardColor] : currentPlayer.palette
+      // ).filter((c) => usedColors.indexOf(c) == -1)
       currentPlayer.labels -= labelConsumption
       currentPlayer.fats -= fatConsumption
       currentPlayer.telescopes -= telescopeConsumption
@@ -194,7 +200,7 @@ const Page = ({ dispatch, isShown }) => {
         <button
           className="page__button-back"
           onClick={() => {
-            dispatch(setPath('/', true))
+            dispatch(setPath(formatPath(window.location.pathname.replace(/add$/, '')), true))
           }}
         >
           {/* <i class="fas fa-sign-out-alt"></i> */}⏎ 回到白洞
@@ -222,6 +228,7 @@ const Page = ({ dispatch, isShown }) => {
                 setRewardColor(false)
                 setErrorData(false)
                 setSubmitted(false)
+                setInvalid(true)
               }}
             >
               再创建一个
@@ -342,7 +349,7 @@ const Page = ({ dispatch, isShown }) => {
 
           <input
             className="page__submit"
-            disabled={error || uploading}
+            disabled={invalid || uploading}
             type="submit"
             onClick={(e) => {
               submit(e)
