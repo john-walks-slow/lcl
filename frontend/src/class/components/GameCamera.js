@@ -46,14 +46,15 @@ export default class GameCamera extends Phaser.Cameras.Scene2D.Camera {
     // this.setZoom(this.scene.configurations.ZOOM_LEVEL);
     this.setSize(this.scene.configurations.WINDOW_W, this.scene.configurations.WINDOW_H)
     let hour = new Date().getHours()
-    let maskAlpha = hour > 7 && hour < 18 ? 0.9 : 0.7
+    let isDay = hour > 6 && hour < 20
+    let maskAlpha = isDay ? 0.98 : 0.8
     let maskShape = new Phaser.GameObjects.Graphics(this.scene, {
       x: this.scene.configurations.WINDOW_CENTER_X,
       y: this.scene.configurations.WINDOW_CENTER_Y,
     })
       .fillCircle(0, 0, this.scene.configurations.MASK_RADIUS)
       .setAlpha(maskAlpha)
-    // this.setMask(new Phaser.Display.Masks.GeometryMask(this.scene, maskShape))
+    this.setMask(new Phaser.Display.Masks.GeometryMask(this.scene, maskShape))
 
     // this?.maskTween?.stop()
     // this.maskTween = this.scene.tweens.add({

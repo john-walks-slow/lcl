@@ -90,7 +90,7 @@ class Configurations {
     this.WINDOW_H = this.RAW_WINDOW_H / this.SCALE
     this.WINDOW_CENTER_X = this.WINDOW_W / 2
     this.WINDOW_CENTER_Y = this.WINDOW_H / 2
-    this.MASK_RADIUS = Math.max(this.WINDOW_H, this.WINDOW_W) * 0.42
+    this.MASK_RADIUS = Math.max(this.WINDOW_H * 1.2, this.WINDOW_W) * 0.49
     // this.time = timestamp % (24 * 60 * 60 * 1000) ;
     this.IS_GAMEPAD =
       ('ontouchstart' in window ||
