@@ -27,7 +27,7 @@ class Configurations {
     this.PLAYER_TARGET_W = 40 * this.RESOLUTION
     this.PLAYER_TARGET_H = 46 * this.RESOLUTION
     // this.ZOOM_LEVEL = Math.min(Math.min(this.WINDOW_W / 15, this.WINDOW_H / 15) / this.PLAYER_TARGET_H, 1);
-    this.ZOOM_LEVEL = 1
+    this.ZOOM_LEVEL = 1.1
     // this.ZOOM_LEVEL = (this.WINDOW_W < 600 || this.WINDOW_W < 600) ? 0.6 : 1;
     this.ZOOM_OUT_LEVEL = 0.6 * this.ZOOM_LEVEL
     // this.ZOOM_LEVEL = (Math.max(Math.min(this.WINDOW_W / 18, this.WINDOW_H / 15 / 46 * 40),) / this.PLAYER_TARGET_W);
@@ -65,7 +65,7 @@ class Configurations {
     ]
 
     this.updateConfigurations()
-    this.OBJECT_SIGHT = Math.max(this.WINDOW_W, this.WINDOW_H) * 1.45
+    this.OBJECT_SIGHT = Math.max(this.WINDOW_W, this.WINDOW_H) * 1.5
     this.SOUND_SIGHT = this.PLAYER_TARGET_H * 20
     // this.OBJECT_SIGHT = 10 * this.PLAYER_TARGET_H
     // this.GRID_SIZE = Math.max(this.WINDOW_H, this.WINDOW_W) / 3

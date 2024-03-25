@@ -49,7 +49,6 @@ function setInitialState(state) {
       palette,
     },
     location: undefined,
-    world: 'default',
     // objects: {}
   })
   return state.merge(initialState)

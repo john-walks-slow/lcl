@@ -33,6 +33,7 @@ export default function Router({ dispatch }) {
     const worldRegex = /^\/(?:world\/([^./]+))?\/?(?:add)?$/
     let matches = pathname.match(worldRegex)
     if (matches) {
+      console.log(matches)
       dispatch(setWorld(pathname.match(worldRegex)?.[1] || 'default'))
       setShowAdd(pathname.endsWith('/add'))
       setShowGame(!pathname.endsWith('/add'))

@@ -107,7 +107,6 @@ const Page = ({ dispatch, isShown }) => {
       })
     })
   }
-
   const upload = async () => {
     console.log({
       dialog,
