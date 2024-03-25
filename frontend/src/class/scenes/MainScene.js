@@ -11,6 +11,7 @@ import LinkDialog from '../components/LinkDialog'
 import configurations from '../configurations'
 import ObjectGroup from '../ObjectGroup'
 import generativeMusic from '../GenerativeMusic'
+import { store } from '../../index.jsx'
 
 let listener = false
 
@@ -626,7 +627,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   resume() {
-    generativeMusic.fadeIn()
+    localStorage.getItem('muted') !== 'true' && generativeMusic.fadeIn()
     this.scene.resume(this)
     this.game.scale.resize(configurations.WINDOW_W, configurations.WINDOW_H)
     this.game.scale.setZoom(configurations.SCALE)
@@ -634,7 +635,7 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard.enableGlobalCapture()
   }
   pause() {
-    generativeMusic.fadeOut()
+    localStorage.getItem('muted') !== 'true' && generativeMusic.fadeOut()
     this.scene.pause(this)
     this.input.keyboard.disableGlobalCapture()
 

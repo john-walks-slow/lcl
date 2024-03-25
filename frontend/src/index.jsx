@@ -29,6 +29,7 @@ import { Provider } from 'react-redux'
 // fallback.ready(function() {
 const devMode = process.env.NODE_ENV === 'development'
 const store = configureStore(devMode)
+
 // try {
 const root = createRoot(document.getElementById('app'))
 root.render(
