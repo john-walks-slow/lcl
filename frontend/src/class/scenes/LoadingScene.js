@@ -126,7 +126,9 @@ export default class LoadingScene extends Phaser.Scene {
       // } else {
       //   query = { world: this.world }
       // }
-      objectService.find({ paginate: false, query: { world: this.world } }).then(setup)
+      // HACK 暂时调整为全部显示
+      objectService.find({ paginate: false }).then(setup)
+      // objectService.find({ paginate: false, query: { world: this.world } }).then(setup)
     } catch (error) {
       console.log(error)
     }
