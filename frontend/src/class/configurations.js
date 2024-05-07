@@ -48,7 +48,7 @@ class Configurations {
     // this.MAX_DAY_GAP = 5.5
     // 最长的空白
     // HACK 暂时设置为1，正常为2
-    this.MAX_DAY_GAP = 1
+    this.MAX_DAY_GAP = 1.5
     // 未使用
     this.DENSITY_OFFSET = this.PLAYER_TARGET_H * 1
     // 密度系数，越大密度越高
